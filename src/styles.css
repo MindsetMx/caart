@@ -1,4 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "optima";
+  src: url("/assets/fonts/OptimaLTPro-Roman.otf") format("opentype");
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "optima";
+  src: url("/assets/fonts/OptimaLTPro-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "optima";
+  src: url("/assets/fonts/OptimaLTPro-DemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "optima";
+  src: url("/assets/fonts/OptimaLTPro-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "optima";
+  src: url("/assets/fonts/OptimaLTPro-Black.otf") format("opentype");
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "optima";
+  src: url("/assets/fonts/OptimaLTPro-ExtraBlack") format("opentype");
+  font-weight: 900;
+  font-display: swap;
+}

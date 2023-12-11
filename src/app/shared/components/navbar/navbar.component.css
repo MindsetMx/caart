@@ -1,3 +1,9 @@
-:host {
-  display: block;
+#customBorder::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: radial-gradient(circle, rgba(243, 227, 125, 1) 0%, rgba(178, 134, 44, 1) 92%);
 }
