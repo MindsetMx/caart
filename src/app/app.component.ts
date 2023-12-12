@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+import { FooterComponent } from '@shared/components/footer/footer.component';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 
 @Component({
@@ -9,7 +11,8 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component';
   imports: [
     CommonModule,
     RouterOutlet,
-    NavbarComponent
+    NavbarComponent,
+    FooterComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
