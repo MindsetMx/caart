@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, WritableSignal, signal } from '@angular/core';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { DropdownLink } from '@shared/interfaces/DropdownLink';
 import { RouterModule } from '@angular/router';
@@ -17,6 +17,8 @@ import { RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
+  menuIsOpen: WritableSignal<boolean> = signal(false);
+
   dropdownLinksCategories: DropdownLink[] = [
     {
       label: 'All',
@@ -35,4 +37,8 @@ export class NavbarComponent {
       route: ['/products', 'clothing']
     },
   ];
+
+  toggleMenu(): void {
+    this.menuIsOpen.set(!this.menuIsOpen());
+  }
 }

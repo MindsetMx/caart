@@ -7,7 +7,11 @@ export const routes: Routes = [
   },
   {
     path: 'iniciar-sesion',
-    loadComponent: () => import('./sign-in/pages/sign-in/sign-in.component').then((m) => m.SignInComponent),
+    loadComponent: () => import('./auth/components/sign-in/sign-in.component').then((m) => m.SignInComponent),
+  },
+  {
+    path: 'registrarse',
+    loadComponent: () => import('./auth/components/register/register.component').then((m) => m.RegisterComponent),
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

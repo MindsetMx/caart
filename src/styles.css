@@ -4,6 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+select {
+  appearance: none;
+  background-image: url(./assets/img/shared/icons/arrow-down.svg);
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
 @font-face {
   font-family: "optima";
   src: url("/assets/fonts/OptimaLTPro-Roman.otf") format("opentype");

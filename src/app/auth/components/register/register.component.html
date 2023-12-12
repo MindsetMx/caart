@@ -1,0 +1,183 @@
+<section class="container mt-16">
+  <h1 class="text-center font-optima font-bold text-4xl mb-6">REGISTRO</h1>
+
+  <p class="text-center font-optima font-bold text-3xl">Te damos la bienvenida a CAART</p>
+
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md mb-32">
+    <form class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="nombre" class="sr-only">Nombre/s</label>
+        <input id="nombre" type="text" placeholder="Nombre/s" sharedInput>
+      </div>
+
+      <div>
+        <label for="apellidos" class="sr-only">Apellido/s</label>
+        <input id="apellidos" type="text" placeholder="Apellido/s" sharedInput>
+      </div>
+
+      <div class="col-span-2">
+        <label for="username" class="sr-only">Nombre de usuario</label>
+        <input id="username" type="text" placeholder="Nombre de usuario" sharedInput>
+      </div>
+
+      <div>
+        <label for="pais" class="sr-only">País</label>
+        <select id="pais" sharedInput>
+          <option value="" disabled selected>País</option>
+          <option value="mexico">México</option>
+          <option value="colombia">Colombia</option>
+          <option value="argentina">Argentina</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="estado" class="sr-only">Estado</label>
+        <select id="estado" sharedInput>
+          <option value="" disabled selected>Estado</option>
+          <option value="mexico">México</option>
+          <option value="colombia">Colombia</option>
+          <option value="argentina">Argentina</option>
+        </select>
+      </div>
+
+      <div class="col-span-2">
+        <label for="celular" class="sr-only">Celular</label>
+        <input id="celular" type="number" placeholder="Celular" sharedInput>
+      </div>
+
+      <div class="col-span-2">
+        <label for="email" class="sr-only">Correo electrónico</label>
+        <input id="email" type="email" placeholder="Correo electrónico" sharedInput>
+      </div>
+
+      <div class="col-span-2">
+        <label for="password" class="sr-only">Contraseña</label>
+        <input id="password" type="password" placeholder="Contraseña" sharedInput>
+      </div>
+
+      <div class="col-span-2">
+        <label for="password_confirmation" class="sr-only">Confirmar contraseña</label>
+        <input id="password_confirmation" type="password" placeholder="Confirmar contraseña" sharedInput>
+      </div>
+
+      <dl class="col-span-2">
+        <dt>
+          <!-- Expand/collapse question button -->
+          <button (click)="toggleDropdown()" type="button" class="flex w-full items-start justify-between text-left"
+            aria-controls="faq-0" aria-expanded="false">
+            <span class="leading-7">Datos para ofertar en subastas</span>
+            <span class="ml-6 mr-4 flex h-7 items-center">
+              <img class="mb-1" src="assets/img/shared/icons/arrow-down.svg" alt="flecha">
+            </span>
+          </button>
+        </dt>
+        <dd *ngIf="dropdownIsOpen()" class="mt-2" id="faq-0">
+          <p class="text-gray4">
+            *Para ofertar o publicar una subasta, es necesario completar estos datos ahora o los puede completar más
+            adelante.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="col-span-2">
+              <label for="rfc" class="block mb-1">RFC</label>
+              <input id="rfc" type="text" placeholder="Escribe tu RFC" sharedInput>
+            </div>
+
+            <div class="col-span-2 font-bold">
+              Datos bancarios
+            </div>
+
+            <div class="col-span-2">
+              <label for="titular" class="block mb-1">Nombre del titular de la tarjeta</label>
+              <input id="titular" type="text" placeholder="Nombre completo del titular de la tarjeta" sharedInput>
+            </div>
+
+            <div class="col-span-2">
+              <label for="numero" class="block mb-1">Número de tarjeta</label>
+              <input id="numero" type="text" placeholder="Número de 16 dígitos de la tarjeta" sharedInput>
+            </div>
+
+            <div>
+              <label for="vencimiento" class="block mb-1">Fecha de vencimiento</label>
+              <input id="vencimiento" type="text" placeholder="MM/AA" sharedInput>
+            </div>
+
+            <div>
+              <label for="cvv" class="block mb-1">CVV</label>
+              <input id="cvv" type="text" placeholder="CVV" sharedInput>
+            </div>
+
+            <div class="col-span-2 font-bold">
+              Dirección
+            </div>
+
+            <div class="col-span-2">
+              <label for="calle" class="block mb-1">Calle y número</label>
+              <input id="calle" type="text" placeholder="Calle y número interno y externo" sharedInput>
+            </div>
+
+            <div class="col-span-2">
+              <label for="cp" class="block mb-1">Código Postal</label>
+              <input id="cp" type="text" placeholder="C.P." sharedInput>
+            </div>
+
+            <fieldset class=" col-span-2 mt-4">
+              <legend class="sr-only">Notification method</legend>
+              <div class="space-y-2">
+                <div class="flex items-center">
+                  <input id="ine" name="notification-method" type="radio" checked class="h-4 w-4">
+                  <label for="ine" class="ml-3 block leading-6">INE</label>
+                </div>
+                <div class="flex items-center">
+                  <input id="pasaporte" name="notification-method" type="radio" class="h-4 w-4">
+                  <label for="pasaporte" class="ml-3 block leading-6">Pasaporte</label>
+                </div>
+              </div>
+            </fieldset>
+
+            <label for="frontal" class="text-sm">
+              INE frontal
+              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
+                <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                <input id="frontal" type="file" class="sr-only">
+              </div>
+            </label>
+
+            <label for="posterior" class="text-sm">
+              INE posterior
+              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
+                <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                <input id="posterior" type="file" class="sr-only">
+              </div>
+            </label>
+          </div>
+        </dd>
+      </dl>
+
+      <div class="col-span-2 mt-8">
+        <!-- checkbox terminos y condiciones -->
+        <div class="flex items-center text-xs">
+          <input id="terminos" name="terminos" type="checkbox" class="h-4 w-4">
+          <label for="terminos" class="ml-3 block leading-6">
+            Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
+            <a class="underline">Acuerdos de usuarios.</a>
+          </label>
+        </div>
+      </div>
+
+      <div class="col-span-2">
+        <button sharedPrimaryButton>
+          Registrarme
+        </button>
+        <div class="text-center mt-4">
+          <span>¿Ya tienes una cuenta en CAART?</span>&nbsp;&nbsp;&nbsp;<a routerLink="/iniciar-sesion"
+            class="font-bold underline">Inicia sesión</a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</section>
