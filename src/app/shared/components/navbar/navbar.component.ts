@@ -2,13 +2,15 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { DropdownLink } from '@shared/interfaces/DropdownLink';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'shared-navbar',
   standalone: true,
   imports: [
     CommonModule,
-    DropdownComponent
+    DropdownComponent,
+    RouterModule,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',

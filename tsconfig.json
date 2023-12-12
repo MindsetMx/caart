@@ -4,7 +4,10 @@
   "compilerOptions": {
     "paths": {
       "@shared/*": [
-        "./src/app/shared/*"
+        "./src/app/shared/*",
+      ],
+      "@auth/*": [
+        "./src/app/auth/*"
       ],
     },
     "outDir": "./dist/out-tsc",
