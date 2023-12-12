@@ -45,3 +45,7 @@
   font-weight: 900;
   font-display: swap;
 }
+
+.custom-border {
+  background: linear-gradient(90deg, #B2862C 0%, #F3E37D 100%);
+}
