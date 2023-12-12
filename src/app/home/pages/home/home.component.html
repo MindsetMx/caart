@@ -1,4 +1,4 @@
-<div class="container mt-6 mb-24">
+<section class="container mt-6 mb-24">
   <div class="flex justify-center space-x-4">
     <button class="border rounded-lg px-12 py-2 font-optima font-semibold">
       AUTOS
@@ -7,4 +7,92 @@
       ARTE
     </button>
   </div>
-</div>
+
+  <swiper-container class="mt-6" init="false" #carousel>
+    @for (item of [].constructor(5); track $index) {
+    <swiper-slide class="relative">
+      <img src="assets/img/home/carousel/banner.png" alt="imagen automóvil">
+      <div class="text-white text-lg absolute bottom-0 pb-10 pl-20 pt-6 gradient w-full">
+        <p class="font-optima text-3xl font-bold">1993 Porsche 911 Turbo</p>
+        <p>Oferta: $5,350,234&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;4 días</p>
+        CDMX, México
+      </div>
+
+      <button class="absolute bottom-10 bg-white/50 rounded-full p-2 right-20">
+        <img class="w-6 h-6" src="assets/img/navbar/star.svg" alt="ícono estrella">
+      </button>
+    </swiper-slide>
+    }
+  </swiper-container>
+</section>
+
+<section class="container">
+  <h2 class="font-optima font-bold text-4xl mb-8">CATEGORÍAS</h2>
+
+  <div class="grid grid-cols-1 gap-y-4 md:gap-y-0 md:grid-cols-2 md:gap-5 text-white">
+    <div class="relative">
+      <img src="assets/img/home/categorias/ferrari 1.png" alt="ferrari">
+      <div class="absolute bottom-0 left-0 pl-12 pb-6 pt-8 gradient w-full">
+        <p class="font-optima text-3xl font-semibold">Autos</p>
+        <p class="text-lg">500 subastas en vivo</p>
+      </div>
+    </div>
+    <div class="relative">
+      <img src="assets/img/home/categorias/perritou.png" alt="perrito">
+      <div class="absolute bottom-0 left-0 pl-12 pb-6 pt-8 gradient w-full">
+        <p class="font-optima text-3xl font-semibold">Arte</p>
+        <p class="text-lg">300 subastas en vivo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container mt-16">
+  <h2 class="font-optima font-bold text-4xl">AUTOS EN VIVO</h2>
+
+  <div class="flex mb-8">
+    <p class="ml-auto underline font-optima font-semibold">Ver todo</p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:gap-y-0 lg:grid-cols-3 lg:gap-x-8">
+    @for (item of [].constructor(3); track $index) {
+    <div class="relative">
+      <img src="../../../../assets/img/home/autos en vivo/ford-gt.png" alt="">
+      <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
+        <img class="w-6 h-6" src="assets/img/navbar/star.svg" alt="ícono estrella">
+      </button>
+
+      <div class="mt-4">
+        <p class="font-optima font-semibold text-xl">2017 Ford GT Heritage Edition</p>
+        <p>Oferta: $8,000,500 MXN&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;4 días</p>
+        <span class="text-gray4">CDMX, México</span>
+      </div>
+    </div>
+    }
+  </div>
+</section>
+
+<section class="container mt-16 mb-32">
+  <h2 class="font-optima font-bold text-4xl">ARTE EN VIVO</h2>
+
+  <div class="flex mb-8">
+    <p class="ml-auto underline font-optima font-semibold">Ver todo</p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:gap-y-0 lg:grid-cols-3 lg:gap-x-8">
+    @for (item of [].constructor(3); track $index) {
+    <div class="relative">
+      <img src="../../../../assets/img/home/arte en vivo/BalloonVenusHohlenFelsMagenta01 1.png" alt="">
+      <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
+        <img class="w-6 h-6" src="assets/img/navbar/star.svg" alt="ícono estrella">
+      </button>
+
+      <div class="mt-4">
+        <p class="font-optima font-semibold text-xl">Ballon Venus, Jeff Koons</p>
+        <p>Oferta: $8,000,500 MXN&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;4 días</p>
+        <span class="text-gray4">CDMX, México</span>
+      </div>
+    </div>
+    }
+  </div>
+</section>
