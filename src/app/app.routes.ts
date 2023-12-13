@@ -13,5 +13,9 @@ export const routes: Routes = [
     path: 'registrarse',
     loadComponent: () => import('./auth/components/register/register.component').then((m) => m.RegisterComponent),
   },
+  {
+    path: 'confirmacion',
+    loadComponent: () => import('./auth/components/confirmation/confirmation.component').then((m) => m.ConfirmationComponent),
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

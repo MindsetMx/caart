@@ -26,5 +26,9 @@ module.exports = {
     },
   },
   plugins: [],
+  safelist: [
+    "py-3",
+    "py-3.5",
+  ]
 }
 
