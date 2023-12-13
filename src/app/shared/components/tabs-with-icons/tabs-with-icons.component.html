@@ -1,0 +1,20 @@
+<div class="flex {{justify}} border-b border-gray3">
+  <div>
+    <div>
+      <nav class="-mb-px flex" aria-label="Tabs">
+        <button *ngFor="let tab of tabs()" (click)="changeTab(tab)" class="py-4 px-6 {{px}} relative group">
+          <div class="flex justify-center">
+            <img class="w-7 h-7 object-contain" [src]="tab.img" alt="icono {{tab.name}}">
+          </div>
+          <div [ngClass]="tab.current ? 'text-black font-semibold':'text-gray4'"
+            class="mt-2 hover:text-gray-700 text-sm">{{tab.name}}
+          </div>
+
+          <div class="absolute -bottom-[0.5px] left-0 w-full h-1"
+            [ngClass]="(tab.current)?'border-black border-b-2':'border-transparent group-hover:border-gray-300 border-b-2'">
+          </div>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>

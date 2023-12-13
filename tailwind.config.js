@@ -29,6 +29,7 @@ module.exports = {
   safelist: [
     "py-3",
     "py-3.5",
+    "px-8",
   ]
 }
 

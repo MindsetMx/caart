@@ -1,0 +1,189 @@
+<section class="container mt-16">
+  <h1 class="text-center font-optima font-bold text-4xl mb-6">SUBASTA TU AUTO</h1>
+
+  <p class="text-center text-lg mb-4">
+    Registra los siguientes datos de tu automóvil
+  </p>
+
+  <shared-tabs-with-icons [tabs]="tabs" (tabSelected)="onTabSelected($event)"></shared-tabs-with-icons>
+
+  @switch (currentTab().id) {
+  @case (1) {
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-xl mb-32">
+    <div class="grid grid-cols-1 gap-y-2 md:gap-y-0 md:grid-cols-3 justify-center gap-x-4 mb-8">
+      @if (currentSubastaAutomovilesType()===subastaAutomovilesType.AUTOMOVILES) {
+      <button py="py-2" sharedPrimaryButton>
+        Automóviles
+      </button>
+      } @else {
+      <button py="py-2" (click)="setSubastaAutomovilesType(subastaAutomovilesType.AUTOMOVILES)" sharedSecondaryButton>
+        Automóviles
+      </button>
+      }
+      @if (currentSubastaAutomovilesType()===subastaAutomovilesType.AUTOPARTES) {
+      <button py="py-2" sharedPrimaryButton>
+        Autopartes
+      </button>
+      } @else {
+      <button py="py-2" (click)="setSubastaAutomovilesType(subastaAutomovilesType.AUTOPARTES)" sharedSecondaryButton>
+        Autopartes
+      </button>
+      }
+      @if (currentSubastaAutomovilesType()===subastaAutomovilesType.MEMORABILIA) {
+      <button py="py-2" sharedPrimaryButton>
+        Memorabilia
+      </button>
+      } @else {
+      <button py="py-2" (click)="setSubastaAutomovilesType(subastaAutomovilesType.MEMORABILIA)" sharedSecondaryButton>
+        Memorabilia
+      </button>
+      }
+    </div>
+
+    <p class="mb-8">Para continuar <span class="underline">Inicia sesión</span> o <span
+        class="underline">regístrate</span></p>
+
+    <form class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="marca" class="sr-only">Marca</label>
+        <select id="marca" sharedInput>
+          <option value="" disabled selected>Marca</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="año" class="sr-only">Año</label>
+        <select id="año" sharedInput>
+          <option value="" disabled selected>Año</option>
+        </select>
+      </div>
+
+      <div class="col-span-2">
+        <label for="modelo" class="sr-only">Modelo</label>
+        <input id="modelo" type="text" placeholder="Modelo" sharedInput>
+      </div>
+
+      <div>
+        <label for="color_exterior" class="sr-only">Color exterior</label>
+        <input id="color_exterior" type="text" placeholder="Color exterior" sharedInput>
+      </div>
+
+      <div>
+        <label for="color_interior" class="sr-only">Color interior</label>
+        <input id="color_interior" type="text" placeholder="Color interior" sharedInput>
+      </div>
+
+      <div>
+        <label for="ciudad" class="sr-only">Ciudad</label>
+        <input id="ciudad" type="text" placeholder="Ciudad" sharedInput>
+      </div>
+
+      <div>
+        <label for="cp" class="sr-only">Código Postal</label>
+        <input id="cp" type="text" placeholder="Código Postal" sharedInput>
+      </div>
+
+      <div>
+        <label for="reserva" class="sr-only">Reserva</label>
+        <select id="reserva" sharedInput>
+          <option value="" disabled selected>Sin reserva</option>
+        </select>
+
+        <div class="flex items-center mt-2">
+          <span class="text-gray4 text-xs">¿Qué significa la Reserva?</span>
+          <img class="ml-2" src="../../../../assets/img/registrar auto/help-circle-outline.svg" alt="ícono de ayuda">
+        </div>
+      </div>
+
+      <div class="col-start-1">
+        <label for="kilometraje" class="sr-only">Kilometraje</label>
+        <select id="kilometraje" sharedInput>
+          <option value="" disabled selected>Kilometraje</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="kilometraje" class="sr-only">Kilometraje</label>
+        <input id="kilometraje" type="text" placeholder="Kilometraje" sharedInput>
+      </div>
+
+      <div class="col-span-2">
+        <label for="como_te_enteraste" class="sr-only">¿Cómo te enteraste de la plataforma?</label>
+        <input id="como_te_enteraste" type="text" placeholder="¿Cómo te enteraste de la plataforma?" sharedInput>
+      </div>
+
+      <div class="col-span-2">
+        <label for="cp" class="block mb-1">Código Postal</label>
+        <input id="cp" type="text" placeholder="C.P." sharedInput>
+      </div>
+
+      <div class="col-span-2">
+        <p class="text-xl font-bold mb-2">Subir fotos/videos del auto</p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <label for="frontal" class="text-sm">
+            <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8">
+              <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
+              <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
+              <input id="frontal" type="file" class="sr-only">
+            </div>
+          </label>
+
+          <label for="posterior" class="text-sm">
+            <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8">
+              <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
+              <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
+              <input id="posterior" type="file" class="sr-only">
+            </div>
+          </label>
+
+          <label for="posterior" class="text-sm">
+            <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8">
+              <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
+              <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
+              <input id="posterior" type="file" class="sr-only">
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="col-span-2 mt-4">
+        <p class="text-xl font-bold mb-4">¿En qué estas interesado?</p>
+        <fieldset>
+          <legend class="sr-only">Notification method</legend>
+          <div class="space-y-2">
+            <div class="flex items-center">
+              <input id="ine" name="notification-method" type="radio" checked class="h-4 w-4">
+              <label for="ine" class="ml-3 block leading-6">Enlistar tu auto en el marketplace</label>
+            </div>
+            <div class="flex items-center">
+              <input id="pasaporte" name="notification-method" type="radio" class="h-4 w-4">
+              <label for="pasaporte" class="ml-3 block leading-6">
+                Enlistar tu auto en el marketplace + sesión fotográfica
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col-span-2 mt-8">
+        <!-- checkbox terminos y condiciones -->
+        <div class="flex items-center text-xs">
+          <input id="terminos" name="terminos" type="checkbox" class="h-4 w-4">
+          <label for="terminos" class="ml-3 block leading-6">
+            Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
+            <a class="underline">Acuerdos de usuarios.</a>
+          </label>
+        </div>
+      </div>
+
+      <button class="col-span-2" sharedPrimaryButton>
+        Enviar solicitud a revisión
+      </button>
+    </form>
+  </div>
+  }
+  @case (2) {
+  tab 2
+  }
+  }
+</section>

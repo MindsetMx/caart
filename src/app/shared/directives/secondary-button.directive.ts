@@ -1,12 +1,12 @@
 import { Directive, ElementRef, Input, Renderer2, inject } from '@angular/core';
 
 @Directive({
-  selector: '[sharedPrimaryButton]',
+  selector: '[sharedSecondaryButton]',
   standalone: true,
 })
-export class PrimaryButtonDirective {
+export class SecondaryButtonDirective {
   @Input() px: string = 'px-8';
-  @Input() py: string = 'py-3.5';
+  @Input() py: string = 'py-2';
 
   private element = inject(ElementRef<HTMLElement>);
   private renderer2 = inject(Renderer2);
@@ -14,7 +14,7 @@ export class PrimaryButtonDirective {
   defaultClasses?: string;
 
   ngOnInit(): void {
-    this.defaultClasses = `bg-black text-white rounded-lg w-full ${this.px} ${this.py}`;
+    this.defaultClasses = `border rounded-lg ${this.px} ${this.py} font-optima font-semibold`;
 
     const classes = this.element.nativeElement.getAttribute('class');
 

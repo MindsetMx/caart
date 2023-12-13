@@ -17,5 +17,9 @@ export const routes: Routes = [
     path: 'confirmacion',
     loadComponent: () => import('./auth/components/confirmation/confirmation.component').then((m) => m.ConfirmationComponent),
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: 'registrar-vehiculo',
+    loadComponent: () => import('./register-car/pages/register-car/register-car.component').then((m) => m.RegisterCarComponent),
+  },
+  { path: '**', redirectTo: '' },
 ];
