@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, signal } fr
 import { InputDirective } from '@shared/directives/input.directive';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
+import { SubastaAutomovilesTypes } from '@app/register-car/enums/subastaAutomovilesTypes.enum';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
-import { SubastaAutomovilesTypes } from '../../enums/SubastaAutomovilesTypes.enum';
 
 @Component({
   selector: 'register-car',

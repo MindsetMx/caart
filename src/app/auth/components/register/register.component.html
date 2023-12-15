@@ -37,8 +37,8 @@
         <label for="country" class="sr-only">País</label>
         <select id="country" formControlName="country" autocomplete="country" sharedInput>
           <option value disabled selected>País</option>
-          @for (pais of paises; track $index) {
-          <option value="{{pais}}">{{pais}}</option>
+          @for (country of countries; track $index) {
+          <option value="{{country}}">{{country}}</option>
           }
         </select>
         @if (hasError('country')) {
@@ -94,8 +94,8 @@
       <dl class="col-span-2">
         <dt>
           <!-- Expand/collapse question button -->
-          <button (click)="toggleDropdown()" type="button" class="flex w-full items-start justify-between text-left"
-            aria-controls="faq-0" aria-expanded="false">
+          <button type="button" (click)="toggleDropdown()" type="button"
+            class="flex w-full items-start justify-between text-left" aria-controls="faq-0" aria-expanded="false">
             <span class="leading-7">Datos para ofertar en subastas</span>
             <span class="ml-6 mr-4 flex h-7 items-center">
               <img class="mb-1" src="assets/img/shared/icons/arrow-down.svg" alt="flecha">
@@ -110,8 +110,11 @@
 
           <div class="grid grid-cols-2 gap-4 mt-4">
             <div class="col-span-2">
-              <label for="rfc" class="block mb-1">RFC</label>
-              <input id="rfc" type="text" placeholder="Escribe tu RFC" sharedInput>
+              <label for="taxId" class="block mb-1">RFC</label>
+              <input id="taxId" formControlName="taxId" autocomplete="tax-id" type="text" placeholder="RFC" sharedInput>
+              @if (hasError('taxId')) {
+              <shared-input-error [message]="getFieldError('taxId')"></shared-input-error>
+              }
             </div>
 
             <div class="col-span-2 font-bold">
@@ -143,46 +146,81 @@
             </div>
 
             <div class="col-span-2">
-              <label for="calle" class="block mb-1">Calle y número</label>
-              <input id="calle" type="text" placeholder="Calle y número interno y externo" sharedInput>
+              <label for="street" class="block mb-1">Calle y número</label>
+              <input id="street" formControlName="street" autocomplete="street-address" type="text"
+                placeholder="Calle y número interno y externo" sharedInput>
+              @if (hasError('street')) {
+              <shared-input-error [message]="getFieldError('street')"></shared-input-error>
+              }
             </div>
 
             <div class="col-span-2">
-              <label for="cp" class="block mb-1">Código Postal</label>
-              <input id="cp" type="text" placeholder="C.P." sharedInput>
+              <label for="postalCode" class="block mb-1">Código Postal</label>
+              <input id="postalCode" formControlName="postalCode" autocomplete="postal-code" type="text"
+                placeholder="C.P." sharedInput>
+              @if (hasError('postalCode')) {
+              <shared-input-error [message]="getFieldError('postalCode')"></shared-input-error>
+              }
             </div>
 
-            <fieldset class=" col-span-2 mt-4">
-              <legend class="sr-only">Notification method</legend>
+            <fieldset class="col-span-2 mt-4">
+              <legend class="sr-only">Tipo de identificación</legend>
               <div class="space-y-2">
                 <div class="flex items-center">
-                  <input id="ine" name="notification-method" type="radio" checked class="h-4 w-4">
+                  <input id="ine" formControlName="validationType" [value]="idTypes.ine" type="radio" checked
+                    class="h-4 w-4">
                   <label for="ine" class="ml-3 block leading-6">INE</label>
                 </div>
                 <div class="flex items-center">
-                  <input id="pasaporte" name="notification-method" type="radio" class="h-4 w-4">
-                  <label for="pasaporte" class="ml-3 block leading-6">Pasaporte</label>
+                  <input id="passport" formControlName="validationType" [value]="idTypes.pasaporte" type="radio"
+                    class="h-4 w-4">
+                  <label for="passport" class="ml-3 block leading-6">Pasaporte</label>
                 </div>
               </div>
             </fieldset>
 
-            <label for="frontal" class="text-sm">
-              INE frontal
-              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
-                <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
-                <p class="text-center text-gray4 text-sm">Subir imagen</p>
-                <input id="frontal" type="file" class="sr-only">
+            @switch (registerForm.get('validationType')?.value) {
+            @case (idTypes.ine) {
+            <div class="col-span-2">
+              <div class="grid grid-cols-2 gap-x-4">
+                <label for="frontal" class="text-sm cursor-pointer">
+                  INE frontal
+                  <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
+                    <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                    <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                    <input id="frontal" formControlName="validationImg" type="file" class="sr-only">
+                  </div>
+                </label>
+                <label for="posterior" class="text-sm cursor-pointer">
+                  INE posterior
+                  <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
+                    <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                    <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                    <input id="posterior" formControlName="validationImg" type="file" class="sr-only">
+                  </div>
+                </label>
               </div>
-            </label>
-
-            <label for="posterior" class="text-sm">
-              INE posterior
-              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
-                <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
-                <p class="text-center text-gray4 text-sm">Subir imagen</p>
-                <input id="posterior" type="file" class="sr-only">
-              </div>
-            </label>
+              @if (hasError('validationImg')) {
+              <shared-input-error [message]="getFieldError('validationImg')"></shared-input-error>
+              }
+            </div>
+            }
+            @case (idTypes.pasaporte) {
+            <div>
+              <label for="passportImg" class="text-sm cursor-pointer">
+                Foto Pasaporte
+                <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
+                  <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                  <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                  <input id="passportImg" formControlName="validationImg" type="file" class="sr-only">
+                </div>
+              </label>
+              @if (hasError('validationImg')) {
+              <shared-input-error [message]="getFieldError('validationImg')"></shared-input-error>
+              }
+            </div>
+            }
+            }
           </div>
         </dd>
       </dl>
@@ -202,7 +240,8 @@
       </div>
 
       <div class="col-span-2">
-        <button type="submit" sharedPrimaryButton>
+        <button type="submit" [disabled]="isButtonSubmitDisabled()" [class.opacity-25]="isButtonSubmitDisabled()"
+          sharedPrimaryButton>
           Registrarme
         </button>
         <div class="text-center mt-4">

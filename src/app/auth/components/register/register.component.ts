@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
+import { countries } from '@shared/countries';
+import { idTypes } from '@auth/enums/idTypes.enum';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { paises } from '@shared/paises';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
 
@@ -36,7 +37,8 @@ export class RegisterComponent {
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   dropdownIsOpen: WritableSignal<boolean> = signal(false);
   registerForm: FormGroup;
-  paises: string[] = paises;
+  countries: string[] = countries;
+  selectedTypeOfValidation: FormControl = new FormControl('', Validators.required);
 
   constructor() {
     this.registerForm = this.fb.group({
@@ -50,9 +52,23 @@ export class RegisterComponent {
       password: ['', Validators.required],
       password2: ['', Validators.required],
       acceptTermsAndConditions: [false, Validators.requiredTrue],
+      //Optional fields
+      taxId: [''],
+      clientId: [''],
+      street: [''],
+      internalNumber: [''],
+      externalNumber: [''],
+      state: [''],
+      postalCode: ['', [Validators.minLength(5), Validators.maxLength(5)]],
+      validationType: [idTypes.ine],
+      validationImg: [[]],
     }, {
       validators: [this.validatorsService.samePasswords('password', 'password2')]
     });
+  }
+
+  get idTypes(): typeof idTypes {
+    return idTypes;
   }
 
   register(): void {
@@ -91,15 +107,6 @@ export class RegisterComponent {
     });
   }
 
-  limpiarErroresDeValidacionSiElValorDelCampoCambia(): void {
-    if (!this.registerForm)
-      throw new Error('Register form is undefined');
-
-    this.registerForm.valueChanges.subscribe(() => {
-      this.registerForm?.markAllAsTouched();
-    });
-  }
-
   hasError(field: string): boolean {
     return this.validatorsService.hasError(this.registerForm, field);
   }
@@ -112,6 +119,36 @@ export class RegisterComponent {
 
   toggleDropdown(): void {
     this.dropdownIsOpen.update((value) => !value);
+
+    if (!this.registerForm) return;
+
+    const dropdownFields = [
+      'taxId',
+      'clientId',
+      'street',
+      'internalNumber',
+      'externalNumber',
+      'state',
+      'postalCode',
+      'validationType',
+      'validationImg'
+    ];
+
+    console.log({ dropdownIsOpen: this.dropdownIsOpen() });
+
+    if (this.dropdownIsOpen()) {
+      // add required validators to dropdown fields
+      dropdownFields.forEach((field) => {
+        this.registerForm.get(field)?.addValidators(Validators.required);
+        this.registerForm.get(field)?.updateValueAndValidity();
+      });
+    } else {
+      // remove required validators from dropdown fields
+      dropdownFields.forEach((field) => {
+        this.registerForm.get(field)?.clearValidators();
+        this.registerForm.get(field)?.updateValueAndValidity();
+      });
+    }
   }
 
   toastSuccess(message: string): void {
