@@ -17,7 +17,7 @@ export class AuthService {
   public registerUser(registerForm: FormGroup): Observable<any> {
     const body = this.appService.trimObjectValues(registerForm.value, ['password', 'password2']);
 
-    return this.http.post(`${this.baseUrl}/auth/register`, body);
+    return this.http.post(`${this.baseUrl}/users/register`, body);
   }
 
   public toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {

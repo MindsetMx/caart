@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { paises } from '@shared/paises';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
 
@@ -29,11 +30,13 @@ export class RegisterComponent {
   private appService = inject(AppService);
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
   private validatorsService = inject(ValidatorsService);
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   dropdownIsOpen: WritableSignal<boolean> = signal(false);
   registerForm: FormGroup;
+  paises: string[] = paises;
 
   constructor() {
     this.registerForm = this.fb.group({
@@ -53,8 +56,6 @@ export class RegisterComponent {
   }
 
   register(): void {
-    this.toastSuccess('Usuario registrado correctamente');
-
     this.isButtonSubmitDisabled.set(true);
 
     if (!this.registerForm)
@@ -69,10 +70,21 @@ export class RegisterComponent {
 
     this.authService.registerUser(this.registerForm).subscribe({
       next: () => {
-
+        this.toastSuccess('Usuario registrado correctamente');
+        this.registerForm?.reset();
+        this.router.navigate(['/iniciar-sesion']);
       },
       error: (err) => {
         console.error(err);
+
+        const fieldName = err.source;
+        const errorMessage = err.message;
+
+        if (this.registerForm) {
+          this.appService.addServerErrorsToForm(this.registerForm, fieldName, errorMessage);
+        }
+
+        this.toastError(errorMessage);
       }
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);

@@ -37,9 +37,9 @@
         <label for="country" class="sr-only">País</label>
         <select id="country" formControlName="country" autocomplete="country" sharedInput>
           <option value disabled selected>País</option>
-          <option value="mexico">México</option>
-          <option value="colombia">Colombia</option>
-          <option value="argentina">Argentina</option>
+          @for (pais of paises; track $index) {
+          <option value="{{pais}}">{{pais}}</option>
+          }
         </select>
         @if (hasError('country')) {
         <shared-input-error [message]="getFieldError('country')"></shared-input-error>
