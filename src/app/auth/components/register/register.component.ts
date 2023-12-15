@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { AppService } from '@app/app.service';
+import { AuthService } from '@auth/services/auth.service';
 import { InputDirective } from '@shared/directives/input.directive';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { AuthService } from '@auth/services/auth.service';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +26,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
+  private appService = inject(AppService);
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private validatorsService = inject(ValidatorsService);
@@ -51,6 +53,8 @@ export class RegisterComponent {
   }
 
   register(): void {
+    this.toastSuccess('Usuario registrado correctamente');
+
     this.isButtonSubmitDisabled.set(true);
 
     if (!this.registerForm)
@@ -94,8 +98,15 @@ export class RegisterComponent {
     return this.validatorsService.getFieldError(this.registerForm, field);
   }
 
-
   toggleDropdown(): void {
     this.dropdownIsOpen.update((value) => !value);
+  }
+
+  toastSuccess(message: string): void {
+    this.appService.toastSuccess(message);
+  }
+
+  toastError(message: string): void {
+    this.appService.toastError(message);
   }
 }

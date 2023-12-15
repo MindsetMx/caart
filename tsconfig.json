@@ -9,6 +9,9 @@
       "@auth/*": [
         "./src/app/auth/*"
       ],
+      "@app/*": [
+        "./src/app/*"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
