@@ -39,6 +39,6 @@ export class NavbarComponent {
   ];
 
   toggleMenu(): void {
-    this.menuIsOpen.set(!this.menuIsOpen());
+    this.menuIsOpen.update((value) => !value);
   }
 }

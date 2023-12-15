@@ -25,7 +25,7 @@ export class SignInComponent {
   showPassword: WritableSignal<boolean> = signal(false);
 
   togglePassword(): void {
-    this.showPassword.set(!this.showPassword());
+    this.showPassword.update((value) => !value);
     this.authService.toggleShowPassword(this.passwordInput);
   }
 }

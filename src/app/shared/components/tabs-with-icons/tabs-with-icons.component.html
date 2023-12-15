@@ -2,7 +2,7 @@
   <div>
     <div>
       <nav class="-mb-px flex" aria-label="Tabs">
-        <button *ngFor="let tab of tabs()" (click)="changeTab(tab)" class="py-4 px-6 {{px}} relative group">
+        <button *ngFor="let tab of tabs" (click)="changeTab(tab)" class="py-4 px-6 {{px}} relative group">
           <div class="flex justify-center">
             <img class="w-7 h-7 object-contain" [src]="tab.img" alt="icono {{tab.name}}">
           </div>

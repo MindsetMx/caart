@@ -1,10 +1,26 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable, inject } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { AppService } from '../../app.service';
+import { environments } from '../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {
+  private readonly baseUrl = environments.baseUrl;
+  private appService = inject(AppService);
+  private http = inject(HttpClient);
+
+  public registerUser(registerForm: FormGroup): Observable<any> {
+    const body = this.appService.trimObjectValues(registerForm.value, ['password', 'password2']);
+
+    return this.http.post(`${this.baseUrl}/auth/register`, body);
+  }
+
+  public toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {
 
     this.changeInputType(element);
 
@@ -13,7 +29,7 @@ export class AuthService {
     }
   }
 
-  changeInputType(element: ElementRef<HTMLInputElement>): void {
+  public changeInputType(element: ElementRef<HTMLInputElement>): void {
     const input = element.nativeElement;
     input.type = input.type === 'password' ? 'text' : 'password';
   }

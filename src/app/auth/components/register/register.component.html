@@ -5,60 +5,90 @@
 
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md mb-32">
-    <form class="grid grid-cols-2 gap-4">
+    <form [formGroup]="registerForm" (ngSubmit)="register()" class="grid grid-cols-2 gap-4">
       <div>
-        <label for="nombre" class="sr-only">Nombre/s</label>
-        <input id="nombre" type="text" placeholder="Nombre/s" sharedInput>
+        <label for="firstName" class="sr-only">Nombre/s</label>
+        <input id="firstName" formControlName="firstName" autocomplete="given-name" type="text" placeholder="Nombre/s"
+          sharedInput>
+        @if (hasError('firstName')) {
+        <shared-input-error [message]="getFieldError('firstName')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="apellidos" class="sr-only">Apellido/s</label>
-        <input id="apellidos" type="text" placeholder="Apellido/s" sharedInput>
+        <label for="lastName" class="sr-only">Apellido/s</label>
+        <input id="lastName" formControlName="lastName" autocomplete="family-name" type="text" placeholder="Apellido/s"
+          sharedInput>
+        @if (hasError('lastName')) {
+        <shared-input-error [message]="getFieldError('lastName')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
         <label for="username" class="sr-only">Nombre de usuario</label>
-        <input id="username" type="text" placeholder="Nombre de usuario" sharedInput>
+        <input id="username" formControlName="username" autocomplete="username" type="text"
+          placeholder="Nombre de usuario" sharedInput>
+        @if (hasError('username')) {
+        <shared-input-error [message]="getFieldError('username')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="pais" class="sr-only">País</label>
-        <select id="pais" sharedInput>
-          <option value="" disabled selected>País</option>
+        <label for="country" class="sr-only">País</label>
+        <select id="country" formControlName="country" autocomplete="country" sharedInput>
+          <option value disabled selected>País</option>
           <option value="mexico">México</option>
           <option value="colombia">Colombia</option>
           <option value="argentina">Argentina</option>
         </select>
+        @if (hasError('country')) {
+        <shared-input-error [message]="getFieldError('country')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="estado" class="sr-only">Estado</label>
-        <select id="estado" sharedInput>
-          <option value="" disabled selected>Estado</option>
-          <option value="mexico">México</option>
-          <option value="colombia">Colombia</option>
-          <option value="argentina">Argentina</option>
-        </select>
+        <label for="city" class="sr-only">Ciudad</label>
+        <input id="city" formControlName="city" autocomplete="address-level1" type="text" placeholder="Ciudad"
+          sharedInput>
+        @if (hasError('city')) {
+        <shared-input-error [message]="getFieldError('city')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
-        <label for="celular" class="sr-only">Celular</label>
-        <input id="celular" type="number" placeholder="Celular" sharedInput>
+        <label for="phoneNumber" class="sr-only">Celular</label>
+        <input id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel" placeholder="Celular"
+          sharedInput>
+        @if (hasError('phoneNumber')) {
+        <shared-input-error [message]="getFieldError('phoneNumber')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
         <label for="email" class="sr-only">Correo electrónico</label>
-        <input id="email" type="email" placeholder="Correo electrónico" sharedInput>
+        <input id="email" formControlName="email" autocomplete="email" type="email" placeholder="Correo electrónico"
+          sharedInput>
+        @if (hasError('email')) {
+        <shared-input-error [message]="getFieldError('email')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
         <label for="password" class="sr-only">Contraseña</label>
-        <input id="password" type="password" placeholder="Contraseña" sharedInput>
+        <input id="password" formControlName="password" autocomplete="new-password" type="password"
+          placeholder="Contraseña" sharedInput>
+        @if (hasError('password')) {
+        <shared-input-error [message]="getFieldError('password')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
-        <label for="password_confirmation" class="sr-only">Confirmar contraseña</label>
-        <input id="password_confirmation" type="password" placeholder="Confirmar contraseña" sharedInput>
+        <label for="password2" class="sr-only">Confirmar contraseña</label>
+        <input id="password2" formControlName="password2" autocomplete="new-password" type="password"
+          placeholder="Confirmar contraseña" sharedInput>
+        @if (hasError('password2')) {
+        <shared-input-error [message]="getFieldError('password2')"></shared-input-error>
+        }
       </div>
 
       <dl class="col-span-2">
@@ -158,18 +188,21 @@
       </dl>
 
       <div class="col-span-2 mt-8">
-        <!-- checkbox terminos y condiciones -->
         <div class="flex items-center text-xs">
-          <input id="terminos" name="terminos" type="checkbox" class="h-4 w-4">
-          <label for="terminos" class="ml-3 block leading-6">
+          <input id="acceptTermsAndConditions" formControlName="acceptTermsAndConditions" type="checkbox"
+            class="h-4 w-4">
+          <label for="acceptTermsAndConditions" class="ml-3 block leading-6">
             Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
             <a class="underline">Acuerdos de usuarios.</a>
           </label>
         </div>
+        @if (hasError('acceptTermsAndConditions')) {
+        <shared-input-error [message]="getFieldError('acceptTermsAndConditions')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
-        <button sharedPrimaryButton>
+        <button type="submit" sharedPrimaryButton>
           Registrarme
         </button>
         <div class="text-center mt-4">

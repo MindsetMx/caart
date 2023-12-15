@@ -13,14 +13,14 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabsWithIconsComponent {
-  @Input({ required: true }) tabs: WritableSignal<TabWithIcon[]> = signal<TabWithIcon[]>([]);
+  @Input({ required: true }) tabs!: TabWithIcon[];
   @Input() px: string = 'md:px-16';
   @Input() justify: string = 'justify-center';
   @Output() tabSelected: EventEmitter<TabWithIcon> = new EventEmitter<TabWithIcon>();
 
   changeTab(tab: TabWithIcon): void {
-    this.tabs().forEach((element, index) => {
-      this.tabs()[index].current = (element.id === tab.id) ? true : false;
+    this.tabs.forEach((element, index) => {
+      this.tabs[index].current = (element.id === tab.id) ? true : false;
     });
 
     this.tabSelected.emit(tab);

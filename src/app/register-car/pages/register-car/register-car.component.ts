@@ -21,7 +21,7 @@ import { SubastaAutomovilesTypes } from '../../enums/SubastaAutomovilesTypes.enu
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterCarComponent implements OnInit {
-  tabs: WritableSignal<TabWithIcon[]> = signal<TabWithIcon[]>([]);
+  tabs: TabWithIcon[];
   currentTab: WritableSignal<TabWithIcon> = signal<TabWithIcon>({} as TabWithIcon);
   currentSubastaAutomovilesType: WritableSignal<SubastaAutomovilesTypes> = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
 
@@ -29,8 +29,8 @@ export class RegisterCarComponent implements OnInit {
     return SubastaAutomovilesTypes;
   }
 
-  ngOnInit(): void {
-    this.tabs.set(
+  constructor() {
+    this.tabs =
       [
         {
           id: 1,
@@ -44,10 +44,12 @@ export class RegisterCarComponent implements OnInit {
           img: 'assets/img/registrar auto/milo-venus.svg',
           current: false
         },
-      ]
-    );
+      ];
 
-    this.currentTab.set(this.tabs()[0]);
+    this.currentTab.set(this.tabs[0]);
+  }
+
+  ngOnInit(): void {
   }
 
   setSubastaAutomovilesType(type: SubastaAutomovilesTypes): void {
