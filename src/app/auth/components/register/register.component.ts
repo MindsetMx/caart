@@ -9,8 +9,8 @@ import { StripeElementsOptions, StripeCardElementOptions, TokenResult } from '@s
 import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
 import { countries } from '@shared/countries';
-import { environments } from '../../../../environments/environments';
-import { idTypes } from '@auth/enums/idTypes.enum';
+import { environments } from '@env/environments';
+import { idTypes } from '@auth/enums';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
@@ -117,7 +117,8 @@ export class RegisterComponent {
 
         return of();
       })).subscribe({
-        next: () => {
+        next: (response) => {
+          console.log({ response });
           this.toastSuccess('Usuario registrado correctamente');
           this.registerForm?.reset();
           this.router.navigate(['/iniciar-sesion']);
@@ -195,9 +196,5 @@ export class RegisterComponent {
 
   toastSuccess(message: string): void {
     this.appService.toastSuccess(message);
-  }
-
-  toastError(message: string): void {
-    this.appService.toastError(message);
   }
 }

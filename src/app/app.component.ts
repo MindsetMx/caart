@@ -1,9 +1,11 @@
+import { AuthService } from '@auth/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, effect, inject } from '@angular/core';
+import { Router, RouterOutlet, } from '@angular/router';
 
 import { FooterComponent } from '@shared/components/footer/footer.component';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
+import { AuthStatus } from '@auth/enums';
 
 @Component({
   selector: 'app-root',
@@ -19,4 +21,26 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 })
 export class AppComponent {
   title = 'caart';
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  authStatusChangedEffect = effect(() => {
+    console.log('authStatus', this.authService.authStatus());
+
+    switch (this.authService.authStatus()) {
+      case AuthStatus.authenticated:
+        const url = localStorage.getItem('url');
+
+        if (url) {
+          this.router.navigate([url]);
+          localStorage.removeItem('url');
+        }
+        break;
+    }
+  });
+
+  constructor() {
+    this.authService.checkAuthStatus().subscribe();
+  }
 }

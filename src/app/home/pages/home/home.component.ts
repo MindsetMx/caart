@@ -19,7 +19,6 @@ export class HomeComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const swiperEl = this.carousel.nativeElement;
-    console.log({ swiperEl });
 
     // swiper parameters
     const swiperParams = {

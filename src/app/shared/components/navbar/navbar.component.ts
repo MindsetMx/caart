@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, WritableSignal, signal } from '@angular/core';
-import { DropdownComponent } from '../dropdown/dropdown.component';
+import { DropdownComponent } from '@shared/components/dropdown/dropdown.component';
 import { DropdownLink } from '@shared/interfaces/DropdownLink';
 import { RouterModule } from '@angular/router';
 
