@@ -7,6 +7,26 @@ import { VALIDATION_MESSAGES } from '@shared/validation-messages';
   providedIn: 'root'
 })
 export class ValidatorsService {
+  addServerErrorsToForm(formGroup: FormGroup, fieldName: string, errorMessage: string): void {
+    // Añadir el error al array de errores del campo correspondiente
+    this.addErrorToValidationMessages(fieldName, errorMessage);
+    // Añadir el error al FormGroup
+    this.addErrorToFormGroup(formGroup, fieldName);
+
+    formGroup.markAllAsTouched();
+  }
+
+  addErrorToValidationMessages(fieldName: string, errorMessage: string): void {
+    VALIDATION_MESSAGES[fieldName] = (): string => errorMessage;
+  }
+
+  addErrorToFormGroup(formGroup: FormGroup, fieldName: string): void {
+    const errors: any = {};
+    errors[fieldName] = true;
+
+    formGroup.get(fieldName)?.setErrors(errors);
+  }
+
   public hasError(form: FormGroup, field: string): boolean {
     return form.controls[field].touched && form.controls[field].errors !== null;
   }

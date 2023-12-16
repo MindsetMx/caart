@@ -3,8 +3,11 @@
 
   <p class="text-center font-optima font-bold text-3xl">Te damos la bienvenida a CAART</p>
 
-
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md mb-32">
+    <pre>
+      {{registerForm.value | json}}
+    </pre>
+
     <form [formGroup]="registerForm" (ngSubmit)="register()" class="grid grid-cols-2 gap-4">
       <div>
         <label for="firstName" class="sr-only">Nombre/s</label>
@@ -33,7 +36,7 @@
         }
       </div>
 
-      <div>
+      <div class="col-span-2">
         <label for="country" class="sr-only">País</label>
         <select id="country" formControlName="country" autocomplete="country" sharedInput>
           <option value disabled selected>País</option>
@@ -43,6 +46,15 @@
         </select>
         @if (hasError('country')) {
         <shared-input-error [message]="getFieldError('country')"></shared-input-error>
+        }
+      </div>
+
+      <div>
+        <label for="state" class="sr-only">Estado</label>
+        <input id="state" formControlName="state" autocomplete="address-level1" type="text" placeholder="Estado"
+          sharedInput>
+        @if (hasError('state')) {
+        <shared-input-error [message]="getFieldError('state')"></shared-input-error>
         }
       </div>
 
@@ -122,6 +134,16 @@
             </div>
 
             <div class="col-span-2">
+              <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
+                <ngx-stripe-card [options]="cardOptions" />
+              </ngx-stripe-elements>
+
+              @if(hasError('token')) {
+              <shared-input-error [message]="getFieldError('token')"></shared-input-error>
+              }
+            </div>
+
+            <!-- <div class="col-span-2">
               <label for="titular" class="block mb-1">Nombre del titular de la tarjeta</label>
               <input id="titular" type="text" placeholder="Nombre completo del titular de la tarjeta" sharedInput>
             </div>
@@ -139,7 +161,7 @@
             <div>
               <label for="cvv" class="block mb-1">CVV</label>
               <input id="cvv" type="text" placeholder="CVV" sharedInput>
-            </div>
+            </div> -->
 
             <div class="col-span-2 font-bold">
               Dirección

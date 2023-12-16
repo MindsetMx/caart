@@ -13,27 +13,7 @@ export class AppService {
     closeButton: true, // Mostrar botón de cierre
     progressBar: true, // Mostrar barra de progreso
     timeOut: 3000, // Duración del mensaje
-  }
-
-  addServerErrorsToForm(formGroup: FormGroup, fieldName: string, errorMessage: string): void {
-    // Añadir el error al array de errores del campo correspondiente
-    this.addErrorToValidationMessages(fieldName, errorMessage);
-    // Añadir el error al FormGroup
-    this.addErrorToFormGroup(formGroup, fieldName);
-
-    formGroup.markAllAsTouched();
-  }
-
-  addErrorToValidationMessages(fieldName: string, errorMessage: string): void {
-    VALIDATION_MESSAGES[fieldName] = (): string => errorMessage;
-  }
-
-  addErrorToFormGroup(formGroup: FormGroup, fieldName: string): void {
-    const errors: any = {};
-    errors[fieldName] = true;
-
-    formGroup.get(fieldName)?.setErrors(errors);
-  }
+  };
 
   toastSuccess(message: string, titulo?: string, toastOptions: Partial<IndividualConfig> = this.toastOptions): void {
     this.toastr.success(message, titulo, toastOptions);
