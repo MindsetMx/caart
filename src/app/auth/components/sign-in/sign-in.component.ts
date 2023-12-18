@@ -26,20 +26,20 @@ import { ValidatorsService } from '@shared/services/validators.service';
 export class SignInComponent {
   @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
 
-  private appService = inject(AppService);
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private validatorsService = inject(ValidatorsService);
+  #appService = inject(AppService);
+  #authService = inject(AuthService);
+  #router = inject(Router);
+  #validatorsService = inject(ValidatorsService);
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   showPassword: WritableSignal<boolean> = signal(false);
 
   get loginForm(): FormGroup {
-    return this.authService.loginForm;
+    return this.#authService.loginForm;
   }
 
   login(): void {
-    this.authService.login(this.loginForm).subscribe({
+    this.#authService.login(this.loginForm).subscribe({
       next: () => {
         this.toastSuccess('Has iniciado sesión correctamente');
         this.redirectToPreviousUrlIfExistOrHome();
@@ -54,25 +54,25 @@ export class SignInComponent {
   redirectToPreviousUrlIfExistOrHome(): void {
     const url = localStorage.getItem('url');
 
-    url ? this.router.navigate([url]) : this.router.navigate(['/']);
+    url ? this.#router.navigate([url]) : this.#router.navigate(['/']);
   }
 
   togglePassword(): void {
     this.showPassword.update((value) => !value);
-    this.authService.toggleShowPassword(this.passwordInput);
+    this.#authService.toggleShowPassword(this.passwordInput);
   }
 
   hasError(field: string): boolean {
-    return this.validatorsService.hasError(this.loginForm, field);
+    return this.#validatorsService.hasError(this.loginForm, field);
   }
 
-  getFieldError(field: string): string | undefined {
+  getError(field: string): string | undefined {
     if (!this.loginForm) return undefined;
 
-    return this.validatorsService.getFieldError(this.loginForm, field);
+    return this.#validatorsService.getError(this.loginForm, field);
   }
 
   toastSuccess(message: string): void {
-    this.appService.toastSuccess(message);
+    this.#appService.toastSuccess(message);
   }
 }

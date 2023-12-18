@@ -35,13 +35,13 @@ import { ValidatorsService } from '@shared/services/validators.service';
 })
 export class RegisterComponent {
   @ViewChild(StripeCardComponent) card!: StripeCardComponent;
-  private readonly stripePublishableKey = environments.stripe.publishableKey;
+  readonly #stripePublishableKey = environments.stripe.publishableKey;
 
-  private appService = inject(AppService);
-  private authService = inject(AuthService);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private validatorsService = inject(ValidatorsService);
+  #appService = inject(AppService);
+  #authService = inject(AuthService);
+  #fb = inject(FormBuilder);
+  #router = inject(Router);
+  #validatorsService = inject(ValidatorsService);
 
   countries: string[] = countries;
   dropdownIsOpen: WritableSignal<boolean> = signal(false);
@@ -73,20 +73,20 @@ export class RegisterComponent {
   }
 
   constructor() {
-    this.registerForm = this.fb.group({
+    this.registerForm = this.#fb.group({
+      acceptTermsAndConditions: [false, Validators.requiredTrue],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      country: ['', Validators.required],
-      state: ['', Validators.required],
-      city: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       password2: ['', Validators.required],
-      acceptTermsAndConditions: [false, Validators.requiredTrue],
+      phoneNumber: ['', Validators.required],
+      state: ['', Validators.required],
+      username: ['', Validators.required],
     }, {
-      validators: [this.validatorsService.samePasswords('password', 'password2')]
+      validators: [this.#validatorsService.samePasswords('password', 'password2')]
     });
   }
 
@@ -96,24 +96,24 @@ export class RegisterComponent {
     if (!this.registerForm)
       throw new Error('Register form is undefined');
 
-
-    const isValid = this.validatorsService.isValidForm(this.registerForm);
-
     this.createToken().pipe(
       switchMap((result) => {
         console.log({ result });
+        console.log({ token: result.token });
         if (result.token) {
-          this.registerForm?.get('token')?.setValue(result.token.id);
-          this.registerForm?.get('token')?.setErrors(null);
+          this.registerForm?.get('stripeToken')?.setValue(result.token.id);
+          this.registerForm?.get('stripeToken')?.setErrors(null);
         } else
           if (result.error && result.error.message) {
-            this.validatorsService.addServerErrorsToForm(this.registerForm, 'token', result.error.message);
+            this.#validatorsService.addServerErrorsToForm(this.registerForm, 'stripeToken', result.error.message);
             this.isButtonSubmitDisabled.set(false);
             return of();
           }
 
+        const isValid = this.#validatorsService.isValidForm(this.registerForm);
+
         if (isValid)
-          return this.authService.registerUser(this.registerForm);
+          return this.#authService.registerUser(this.registerForm);
 
         return of();
       })).subscribe({
@@ -121,7 +121,7 @@ export class RegisterComponent {
           console.log({ response });
           this.toastSuccess('Usuario registrado correctamente');
           this.registerForm?.reset();
-          this.router.navigate(['/iniciar-sesion']);
+          this.#router.navigate(['/iniciar-sesion']);
         },
         error: (err) => {
           console.error(err);
@@ -129,7 +129,7 @@ export class RegisterComponent {
           const errorMessage = err.message;
 
           if (this.registerForm) {
-            this.validatorsService.addServerErrorsToForm(this.registerForm, fieldName, errorMessage);
+            this.#validatorsService.addServerErrorsToForm(this.registerForm, fieldName, errorMessage);
           }
         }
       }).add(() => {
@@ -138,31 +138,25 @@ export class RegisterComponent {
   }
 
   addOptionalFieldsToRegisterForm(): void {
-    this.registerForm?.addControl('taxId', new FormControl('', Validators.required));
-    this.registerForm?.addControl('clientId', new FormControl('', Validators.required));
-    this.registerForm?.addControl('street', new FormControl('', Validators.required));
-    this.registerForm?.addControl('internalNumber', new FormControl('', Validators.required));
-    this.registerForm?.addControl('externalNumber', new FormControl('', Validators.required));
     this.registerForm?.addControl('postalCode', new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]));
-    this.registerForm?.addControl('validationType', new FormControl(idTypes.ine, Validators.required));
+    this.registerForm?.addControl('streetAndNumber', new FormControl('', Validators.required));
+    this.registerForm?.addControl('stripeToken', new FormControl('', Validators.required));
+    this.registerForm?.addControl('taxId', new FormControl('', Validators.required));
     this.registerForm?.addControl('validationImg', new FormControl([], Validators.required));
-    this.registerForm?.addControl('token', new FormControl('', Validators.required));
+    this.registerForm?.addControl('validationType', new FormControl(idTypes.ine, Validators.required));
   }
 
   removeOptionalFieldsFromRegisterForm(): void {
-    this.registerForm?.removeControl('taxId');
-    this.registerForm?.removeControl('clientId');
-    this.registerForm?.removeControl('street');
-    this.registerForm?.removeControl('internalNumber');
-    this.registerForm?.removeControl('externalNumber');
     this.registerForm?.removeControl('postalCode');
-    this.registerForm?.removeControl('validationType');
+    this.registerForm?.removeControl('streetAndNumber');
+    this.registerForm?.removeControl('stripeToken');
+    this.registerForm?.removeControl('taxId');
     this.registerForm?.removeControl('validationImg');
-    this.registerForm?.removeControl('token');
+    this.registerForm?.removeControl('validationType');
   }
 
   // Replace with your own public key
-  stripe = injectStripe(this.stripePublishableKey);
+  stripe = injectStripe(this.#stripePublishableKey);
 
   createToken(): Observable<TokenResult> {
     if (!this.card) return of({} as TokenResult);
@@ -173,13 +167,13 @@ export class RegisterComponent {
   }
 
   hasError(field: string): boolean {
-    return this.validatorsService.hasError(this.registerForm, field);
+    return this.#validatorsService.hasError(this.registerForm, field);
   }
 
-  getFieldError(field: string): string | undefined {
+  getError(field: string): string | undefined {
     if (!this.registerForm) return undefined;
 
-    return this.validatorsService.getFieldError(this.registerForm, field);
+    return this.#validatorsService.getError(this.registerForm, field);
   }
 
   toggleDropdown(): void {
@@ -195,6 +189,6 @@ export class RegisterComponent {
   }
 
   toastSuccess(message: string): void {
-    this.appService.toastSuccess(message);
+    this.#appService.toastSuccess(message);
   }
 }

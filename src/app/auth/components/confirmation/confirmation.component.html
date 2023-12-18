@@ -6,32 +6,43 @@
   </p>
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md mb-32">
-    <form class="space-y-6">
-      <div class="grid grid-cols-6 gap-4">
-        <label class="block relative group">
-          <input class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" type="text">
-          <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-        </label>
-        <label class="block relative group">
-          <input class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" type="text">
-          <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-        </label>
-        <label class="block relative group">
-          <input class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" type="text">
-          <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-        </label>
-        <label class="block relative group">
-          <input class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" type="text">
-          <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-        </label>
-        <label class="block relative group">
-          <input class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" type="text">
-          <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-        </label>
-        <label class="block relative group">
-          <input class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" type="text">
-          <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-        </label>
+    <form [formGroup]="codeForm" (ngSubmit)="confirm()" class="space-y-6">
+      <div>
+        <div class="grid grid-cols-6 gap-4">
+          <label class="block relative group">
+            <input formControlName="digit1" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
+              type="text">
+            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
+          </label>
+          <label class="block relative group">
+            <input formControlName="digit2" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
+              type="text">
+            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
+          </label>
+          <label class="block relative group">
+            <input formControlName="digit3" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
+              type="text">
+            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
+          </label>
+          <label class="block relative group">
+            <input formControlName="digit4" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
+              type="text">
+            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
+          </label>
+          <label class="block relative group">
+            <input formControlName="digit5" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
+              type="text">
+            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
+          </label>
+          <label class="block relative group">
+            <input formControlName="digit6" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
+              type="text">
+            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
+          </label>
+        </div>
+        @if (formHasError()) {
+        <shared-input-error class="mt-1" [message]="getFirstError()"></shared-input-error>
+        }
       </div>
 
       <button sharedPrimaryButton>

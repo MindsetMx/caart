@@ -22,18 +22,18 @@ import { AuthStatus } from '@auth/enums';
 export class AppComponent {
   title = 'caart';
 
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  #authService = inject(AuthService);
+  #router = inject(Router);
 
   authStatusChangedEffect = effect(() => {
-    console.log('authStatus', this.authService.authStatus());
+    console.log('authStatus', this.#authService.authStatus());
 
-    switch (this.authService.authStatus()) {
+    switch (this.#authService.authStatus()) {
       case AuthStatus.authenticated:
         const url = localStorage.getItem('url');
 
         if (url) {
-          this.router.navigate([url]);
+          this.#router.navigate([url]);
           localStorage.removeItem('url');
         }
         break;
@@ -41,6 +41,6 @@ export class AppComponent {
   });
 
   constructor() {
-    this.authService.checkAuthStatus().subscribe();
+    this.#authService.checkAuthStatus().subscribe();
   }
 }

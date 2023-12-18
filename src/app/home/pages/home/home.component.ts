@@ -37,6 +37,10 @@ export class HomeComponent implements AfterViewInit {
         `,
       ],
       pagination: true,
+      autoplay: {
+        delay: 5000
+      },
+      loop: true,
     };
 
     // now we need to assign all parameters to Swiper element

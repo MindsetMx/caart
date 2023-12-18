@@ -14,7 +14,7 @@
         <input id="firstName" formControlName="firstName" autocomplete="given-name" type="text" placeholder="Nombre/s"
           sharedInput>
         @if (hasError('firstName')) {
-        <shared-input-error [message]="getFieldError('firstName')"></shared-input-error>
+        <shared-input-error [message]="getError('firstName')"></shared-input-error>
         }
       </div>
 
@@ -23,7 +23,7 @@
         <input id="lastName" formControlName="lastName" autocomplete="family-name" type="text" placeholder="Apellido/s"
           sharedInput>
         @if (hasError('lastName')) {
-        <shared-input-error [message]="getFieldError('lastName')"></shared-input-error>
+        <shared-input-error [message]="getError('lastName')"></shared-input-error>
         }
       </div>
 
@@ -32,7 +32,7 @@
         <input id="username" formControlName="username" autocomplete="username" type="text"
           placeholder="Nombre de usuario" sharedInput>
         @if (hasError('username')) {
-        <shared-input-error [message]="getFieldError('username')"></shared-input-error>
+        <shared-input-error [message]="getError('username')"></shared-input-error>
         }
       </div>
 
@@ -45,7 +45,7 @@
           }
         </select>
         @if (hasError('country')) {
-        <shared-input-error [message]="getFieldError('country')"></shared-input-error>
+        <shared-input-error [message]="getError('country')"></shared-input-error>
         }
       </div>
 
@@ -54,7 +54,7 @@
         <input id="state" formControlName="state" autocomplete="address-level1" type="text" placeholder="Estado"
           sharedInput>
         @if (hasError('state')) {
-        <shared-input-error [message]="getFieldError('state')"></shared-input-error>
+        <shared-input-error [message]="getError('state')"></shared-input-error>
         }
       </div>
 
@@ -63,7 +63,7 @@
         <input id="city" formControlName="city" autocomplete="address-level1" type="text" placeholder="Ciudad"
           sharedInput>
         @if (hasError('city')) {
-        <shared-input-error [message]="getFieldError('city')"></shared-input-error>
+        <shared-input-error [message]="getError('city')"></shared-input-error>
         }
       </div>
 
@@ -72,7 +72,7 @@
         <input id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel" placeholder="Celular"
           sharedInput>
         @if (hasError('phoneNumber')) {
-        <shared-input-error [message]="getFieldError('phoneNumber')"></shared-input-error>
+        <shared-input-error [message]="getError('phoneNumber')"></shared-input-error>
         }
       </div>
 
@@ -81,7 +81,7 @@
         <input id="email" formControlName="email" autocomplete="email" type="email" placeholder="Correo electrónico"
           sharedInput>
         @if (hasError('email')) {
-        <shared-input-error [message]="getFieldError('email')"></shared-input-error>
+        <shared-input-error [message]="getError('email')"></shared-input-error>
         }
       </div>
 
@@ -90,7 +90,7 @@
         <input id="password" formControlName="password" autocomplete="new-password" type="password"
           placeholder="Contraseña" sharedInput>
         @if (hasError('password')) {
-        <shared-input-error [message]="getFieldError('password')"></shared-input-error>
+        <shared-input-error [message]="getError('password')"></shared-input-error>
         }
       </div>
 
@@ -99,7 +99,7 @@
         <input id="password2" formControlName="password2" autocomplete="new-password" type="password"
           placeholder="Confirmar contraseña" sharedInput>
         @if (hasError('password2')) {
-        <shared-input-error [message]="getFieldError('password2')"></shared-input-error>
+        <shared-input-error [message]="getError('password2')"></shared-input-error>
         }
       </div>
 
@@ -114,7 +114,8 @@
             </span>
           </button>
         </dt>
-        <dd *ngIf="dropdownIsOpen()" class="mt-2" id="faq-0">
+        @if (dropdownIsOpen()) {
+        <dd class="mt-2" id="faq-0">
           <p class="text-gray4">
             *Para ofertar o publicar una subasta, es necesario completar estos datos ahora o los puede completar más
             adelante.
@@ -125,7 +126,7 @@
               <label for="taxId" class="block mb-1">RFC</label>
               <input id="taxId" formControlName="taxId" autocomplete="tax-id" type="text" placeholder="RFC" sharedInput>
               @if (hasError('taxId')) {
-              <shared-input-error [message]="getFieldError('taxId')"></shared-input-error>
+              <shared-input-error [message]="getError('taxId')"></shared-input-error>
               }
             </div>
 
@@ -138,30 +139,30 @@
                 <ngx-stripe-card [options]="cardOptions" />
               </ngx-stripe-elements>
 
-              @if(hasError('token')) {
-              <shared-input-error [message]="getFieldError('token')"></shared-input-error>
+              @if(hasError('stripeToken')) {
+              <shared-input-error [message]="getError('stripeToken')"></shared-input-error>
               }
             </div>
 
             <!-- <div class="col-span-2">
-              <label for="titular" class="block mb-1">Nombre del titular de la tarjeta</label>
-              <input id="titular" type="text" placeholder="Nombre completo del titular de la tarjeta" sharedInput>
-            </div>
+                <label for="titular" class="block mb-1">Nombre del titular de la tarjeta</label>
+                <input id="titular" type="text" placeholder="Nombre completo del titular de la tarjeta" sharedInput>
+              </div>
 
-            <div class="col-span-2">
-              <label for="numero" class="block mb-1">Número de tarjeta</label>
-              <input id="numero" type="text" placeholder="Número de 16 dígitos de la tarjeta" sharedInput>
-            </div>
+              <div class="col-span-2">
+                <label for="numero" class="block mb-1">Número de tarjeta</label>
+                <input id="numero" type="text" placeholder="Número de 16 dígitos de la tarjeta" sharedInput>
+              </div>
 
-            <div>
-              <label for="vencimiento" class="block mb-1">Fecha de vencimiento</label>
-              <input id="vencimiento" type="text" placeholder="MM/AA" sharedInput>
-            </div>
+              <div>
+                <label for="vencimiento" class="block mb-1">Fecha de vencimiento</label>
+                <input id="vencimiento" type="text" placeholder="MM/AA" sharedInput>
+              </div>
 
-            <div>
-              <label for="cvv" class="block mb-1">CVV</label>
-              <input id="cvv" type="text" placeholder="CVV" sharedInput>
-            </div> -->
+              <div>
+                <label for="cvv" class="block mb-1">CVV</label>
+                <input id="cvv" type="text" placeholder="CVV" sharedInput>
+              </div> -->
 
             <div class="col-span-2 font-bold">
               Dirección
@@ -169,10 +170,10 @@
 
             <div class="col-span-2">
               <label for="street" class="block mb-1">Calle y número</label>
-              <input id="street" formControlName="street" autocomplete="street-address" type="text"
+              <input id="street" formControlName="streetAndNumber" autocomplete="street-address" type="text"
                 placeholder="Calle y número interno y externo" sharedInput>
-              @if (hasError('street')) {
-              <shared-input-error [message]="getFieldError('street')"></shared-input-error>
+              @if (hasError('streetAndNumber')) {
+              <shared-input-error [message]="getError('streetAndNumber')"></shared-input-error>
               }
             </div>
 
@@ -181,7 +182,7 @@
               <input id="postalCode" formControlName="postalCode" autocomplete="postal-code" type="text"
                 placeholder="C.P." sharedInput>
               @if (hasError('postalCode')) {
-              <shared-input-error [message]="getFieldError('postalCode')"></shared-input-error>
+              <shared-input-error [message]="getError('postalCode')"></shared-input-error>
               }
             </div>
 
@@ -223,7 +224,7 @@
                 </label>
               </div>
               @if (hasError('validationImg')) {
-              <shared-input-error [message]="getFieldError('validationImg')"></shared-input-error>
+              <shared-input-error [message]="getError('validationImg')"></shared-input-error>
               }
             </div>
             }
@@ -238,13 +239,14 @@
                 </div>
               </label>
               @if (hasError('validationImg')) {
-              <shared-input-error [message]="getFieldError('validationImg')"></shared-input-error>
+              <shared-input-error [message]="getError('validationImg')"></shared-input-error>
               }
             </div>
             }
             }
           </div>
         </dd>
+        }
       </dl>
 
       <div class="col-span-2 mt-8">
@@ -257,7 +259,7 @@
           </label>
         </div>
         @if (hasError('acceptTermsAndConditions')) {
-        <shared-input-error [message]="getFieldError('acceptTermsAndConditions')"></shared-input-error>
+        <shared-input-error [message]="getError('acceptTermsAndConditions')"></shared-input-error>
         }
       </div>
 

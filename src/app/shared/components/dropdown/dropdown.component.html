@@ -13,15 +13,19 @@
     </button>
   </div>
 
-  <div *ngIf="isOpen"
+  @if (isOpen) {
+  <div
     class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
     role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
     <div class="py-1" role="none">
-      <a *ngFor="let link of dropdownLinks; let i = index" [routerLink]="link.route"
-        routerLinkActive="bg-gray-100 text-gray-900" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem"
-        tabindex="-1" id="menu-item-{{ i }}">
+      @for (link of dropdownLinks; track i; let i = $index) {
+      <a [routerLink]="link.route" routerLinkActive="bg-gray-100 text-gray-900"
+        class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-{{ i }}">
         {{ link.label }}
       </a>
+      }
     </div>
   </div>
+  }
+
 </div>

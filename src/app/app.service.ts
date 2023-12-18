@@ -7,7 +7,7 @@ import { IndividualConfig, ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class AppService {
-  private toastr = inject(ToastrService);
+  #toastr = inject(ToastrService);
 
   toastOptions: Partial<IndividualConfig> = {
     closeButton: true, // Mostrar botón de cierre
@@ -16,11 +16,11 @@ export class AppService {
   };
 
   toastSuccess(message: string, titulo?: string, toastOptions: Partial<IndividualConfig> = this.toastOptions): void {
-    this.toastr.success(message, titulo, toastOptions);
+    this.#toastr.success(message, titulo, toastOptions);
   }
 
   toastError(message: string, titulo?: string | undefined, toastOptions: Partial<IndividualConfig> = this.toastOptions): void {
-    this.toastr.error(message, titulo, toastOptions);
+    this.#toastr.error(message, titulo, toastOptions);
   }
 
   trimObjectValues(obj: any, passwordFields: string[] = []): any {
