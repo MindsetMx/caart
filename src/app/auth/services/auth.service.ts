@@ -7,6 +7,7 @@ import { AppService } from '@app/app.service';
 import { AuthStatus } from '@auth/enums';
 import { CheckTokenResponse, RegisterResponse, loginResponse } from '@auth/interfaces';
 import { environments } from '@env/environments';
+import { register } from 'swiper/element/bundle';
 
 @Injectable({
   providedIn: 'root'
@@ -81,9 +82,21 @@ export class AuthService {
   }
 
   public registerUser(registerForm: FormGroup): Observable<RegisterResponse> {
-    const body = this.#appService.trimObjectValues(registerForm.value, ['password', 'password2']);
+    let registerFormValue = registerForm.value;
+    delete registerFormValue.password2;
+    registerFormValue = this.#appService.trimObjectValues(registerForm.value, ['password']);
 
-    return this.#http.post<RegisterResponse>(`${this.#baseUrl}/users/register`, body);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+
+    const formData = this.#appService.transformObjectToFormData(registerFormValue);
+
+    //imprimir los datos del formulario
+    formData.forEach((value, key) => {
+      console.log(key + ', ' + value);
+    });
+
+    return this.#http.post<RegisterResponse>(`${this.#baseUrl}/users/register`, formData, { headers });
   }
 
   public toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {

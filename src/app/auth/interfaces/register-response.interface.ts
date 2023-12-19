@@ -1,16 +1,16 @@
 export interface RegisterResponse {
-  _id: string;
-  acceptTermsAndConditions: boolean;
+  data: Data;
+}
+
+export interface Data {
+  attributes: User;
+  id: string;
+  type: string;
+}
+
+export interface User {
   accountVerified: boolean;
-  city: string;
-  country: string;
   email: string;
   firstName: string;
   lastName: string;
-  password: string;
-  phoneNumber: string;
-  username: string;
-  validationImg: any[];
-  verificationCode: string;
-  verificationCodeExpires: string;
 }

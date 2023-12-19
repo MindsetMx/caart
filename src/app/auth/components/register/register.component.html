@@ -4,10 +4,6 @@
   <p class="text-center font-optima font-bold text-3xl">Te damos la bienvenida a CAART</p>
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md mb-32">
-    <pre class="text-xs">
-      {{registerForm.value | json}}
-    </pre>
-
     <form [formGroup]="registerForm" (ngSubmit)="register()" class="grid grid-cols-2 gap-4">
       <div>
         <label for="firstName" class="sr-only">Nombre/s</label>
@@ -190,8 +186,7 @@
               <legend class="sr-only">Tipo de identificación</legend>
               <div class="space-y-2">
                 <div class="flex items-center">
-                  <input id="ine" formControlName="validationType" [value]="idTypes.ine" type="radio" checked
-                    class="h-4 w-4">
+                  <input id="ine" formControlName="validationType" [value]="idTypes.ine" type="radio" class="h-4 w-4">
                   <label for="ine" class="ml-3 block leading-6">INE</label>
                 </div>
                 <div class="flex items-center">
@@ -202,44 +197,81 @@
               </div>
             </fieldset>
 
-            @switch (registerForm.get('validationType')?.value) {
+            @switch (validationType.value) {
             @case (idTypes.ine) {
             <div class="col-span-2">
               <div class="grid grid-cols-2 gap-x-4">
-                <label for="frontal" class="text-sm cursor-pointer">
-                  INE frontal
-                  <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
-                    <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
-                    <p class="text-center text-gray4 text-sm">Subir imagen</p>
-                    <input id="frontal" formControlName="validationImg" type="file" class="sr-only">
-                  </div>
-                </label>
-                <label for="posterior" class="text-sm cursor-pointer">
-                  INE posterior
-                  <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
-                    <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
-                    <p class="text-center text-gray4 text-sm">Subir imagen</p>
-                    <input id="posterior" formControlName="validationImg" type="file" class="sr-only">
-                  </div>
-                </label>
+                <div>
+                  <label for="frontal" class="text-sm cursor-pointer">
+                    INE frontal
+                    @if(validationImgFormArray.at(0).value) {
+                    <img src="{{previewImages()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+                      alt="foto frontal de la INE">
+                    <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
+                    }@else {
+                    <div
+                      class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
+                      <div>
+                        <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                        <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                      </div>
+                      <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
+                    </div>
+                    }
+                  </label>
+
+                  @if (formArrayHasError(0)) {
+                  <shared-input-error [message]="getErrorFromFormArray(0)"></shared-input-error>
+                  }
+                </div>
+                <div>
+                  <label for="posterior" class="text-sm cursor-pointer">
+                    INE posterior
+                    @if (validationImgFormArray.at(1).value) {
+                    <img src="{{previewImages()[1]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+                      alt="foto posterior de la INE">
+                    <input (change)="selectFile($event, 1)" id="posterior" type="file" class="sr-only">
+                    } @else {
+                    <div
+                      class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
+                      <div>
+                        <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                        <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                      </div>
+                      <input (change)="selectFile($event, 1)" id="posterior" type="file" class="sr-only">
+                    </div>
+                    }
+                  </label>
+
+                  @if (formArrayHasError(1)) {
+                  <shared-input-error [message]="getErrorFromFormArray(1)"></shared-input-error>
+                  }
+                </div>
               </div>
-              @if (hasError('validationImg')) {
-              <shared-input-error [message]="getError('validationImg')"></shared-input-error>
-              }
             </div>
             }
             @case (idTypes.pasaporte) {
             <div>
               <label for="passportImg" class="text-sm cursor-pointer">
                 Foto Pasaporte
-                <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 mt-2">
-                  <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
-                  <p class="text-center text-gray4 text-sm">Subir imagen</p>
-                  <input id="passportImg" formControlName="validationImg" type="file" class="sr-only">
+                @if (validationImgFormArray.at(0).value) {
+                <img src="{{previewImages()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+                  alt="foto del pasaporte">
+                <input (change)="selectFile($event, 0)" id="passportImg" type="file" class="sr-only">
+                } @else {
+                <div
+                  class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
+                  <div>
+                    <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                    <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                  </div>
+                  <input (change)="selectFile($event, 0)" id="passportImg" type="file" class="sr-only">
                 </div>
+                }
               </label>
-              @if (hasError('validationImg')) {
-              <shared-input-error [message]="getError('validationImg')"></shared-input-error>
+
+              @if (formArrayHasError(0)) {
+              <shared-input-error [message]="getErrorFromFormArray(0)"></shared-input-error>
               }
             </div>
             }

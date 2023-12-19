@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, ViewChild, WritableSignal, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { injectStripe, StripeElementsDirective, StripeCardComponent } from 'ngx-stripe';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, Subscription, of, switchMap } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import { StripeElementsOptions, StripeCardElementOptions, TokenResult } from '@stripe/stripe-js';
 
@@ -46,8 +46,10 @@ export class RegisterComponent {
   countries: string[] = countries;
   dropdownIsOpen: WritableSignal<boolean> = signal(false);
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
+  previewImages: WritableSignal<string[]> = signal(['', '']);
   registerForm: FormGroup;
-  selectedTypeOfValidation: FormControl = new FormControl('', Validators.required);
+
+  validationTypeSubscription?: Subscription;
 
   cardOptions: StripeCardElementOptions = {
     style: {
@@ -70,6 +72,10 @@ export class RegisterComponent {
 
   get idTypes(): typeof idTypes {
     return idTypes;
+  }
+
+  get validationType(): FormControl {
+    return this.registerForm.get('validationType') as FormControl;
   }
 
   constructor() {
@@ -137,13 +143,39 @@ export class RegisterComponent {
       });
   }
 
+  setValidationType(type: idTypes): void {
+    switch (type) {
+      case idTypes.ine:
+        this.registerForm?.setControl('validationImg', new FormArray([
+          new FormControl(null, Validators.required),
+          new FormControl(null, Validators.required),
+        ]));
+
+        break;
+      case idTypes.pasaporte:
+        this.registerForm?.setControl('validationImg', new FormArray([
+          new FormControl(null, Validators.required),
+        ]));
+
+        break;
+    }
+  }
+
   addOptionalFieldsToRegisterForm(): void {
     this.registerForm?.addControl('postalCode', new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]));
     this.registerForm?.addControl('streetAndNumber', new FormControl('', Validators.required));
     this.registerForm?.addControl('stripeToken', new FormControl('', Validators.required));
     this.registerForm?.addControl('taxId', new FormControl('', Validators.required));
-    this.registerForm?.addControl('validationImg', new FormControl([], Validators.required));
+    this.registerForm?.addControl('validationImg', new FormArray([
+      new FormControl(null, Validators.required),
+      new FormControl(null, Validators.required),
+    ]));
     this.registerForm?.addControl('validationType', new FormControl(idTypes.ine, Validators.required));
+
+
+    this.validationTypeSubscription = this.validationType.valueChanges.subscribe((value) => {
+      this.setValidationType(value);
+    });
   }
 
   removeOptionalFieldsFromRegisterForm(): void {
@@ -153,6 +185,37 @@ export class RegisterComponent {
     this.registerForm?.removeControl('taxId');
     this.registerForm?.removeControl('validationImg');
     this.registerForm?.removeControl('validationType');
+
+    if (this.validationTypeSubscription)
+      this.validationTypeSubscription.unsubscribe();
+  }
+
+  get validationImgFormArray(): FormArray {
+    return this.registerForm.get('validationImg') as FormArray;
+  }
+
+  selectFile(event: Event, indice: number): void {
+    const inputElement = event.target as HTMLInputElement;
+
+    if (!inputElement.files?.length) return;
+
+    const file = inputElement.files[0];
+    this.validationImgFormArray.at(indice).setValue(file);
+
+    this.showPreview(file, indice);
+  }
+
+  showPreview(archivo: File, indice: number): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImages.set(
+        this.previewImages().map((image, index) => {
+          if (index === indice) return reader.result as string;
+          return image;
+        })
+      );
+    }
+    reader.readAsDataURL(archivo);
   }
 
   // Replace with your own public key
@@ -174,6 +237,18 @@ export class RegisterComponent {
     if (!this.registerForm) return undefined;
 
     return this.#validatorsService.getError(this.registerForm, field);
+  }
+
+  formArrayHasError(index: number): boolean {
+    if (!this.registerForm) return false;
+
+    return this.#validatorsService.formArrayHasError(this.validationImgFormArray, index);
+  }
+
+  getErrorFromFormArray(index: number): string | undefined {
+    if (!this.registerForm) return undefined;
+
+    return this.#validatorsService.getErrorFromFormArray(this.validationImgFormArray, index);
   }
 
   toggleDropdown(): void {

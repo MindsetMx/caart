@@ -1,4 +1,4 @@
 export enum idTypes {
-  ine,
-  pasaporte
+  ine = 'INE',
+  pasaporte = 'PASSPORT'
 }

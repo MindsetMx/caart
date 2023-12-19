@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { VALIDATION_MESSAGES } from '@shared/validation-messages';
 import { IndividualConfig, ToastrService } from 'ngx-toastr';
 
@@ -26,6 +26,8 @@ export class AppService {
   trimObjectValues(obj: any, passwordFields: string[] = []): any {
     if (Array.isArray(obj)) {
       return obj.map(item => this.trimObjectValues(item, passwordFields));
+    } else if (obj instanceof Date || obj instanceof Blob) {
+      return obj;
     } else if (typeof obj === 'object' && obj !== null) {
       const result: any = {};
       for (const key in obj) {
@@ -43,5 +45,29 @@ export class AppService {
     } else {
       return obj;
     }
+  }
+
+  transformObjectToFormData(data: any, formData: FormData = new FormData(), parentKey = ''): FormData {
+    Object.keys(data).forEach(key => {
+      const value = data[key];
+      const constructedKey = parentKey ? `${parentKey}.${key}` : key;
+
+      if (value instanceof Object && !(value instanceof File) && !Array.isArray(value)) {
+        this.transformObjectToFormData(value, formData, constructedKey);
+      } else if (Array.isArray(value)) {
+        value.forEach((val, index) => {
+          if (val instanceof File) {
+            formData.append(constructedKey, val);
+          } else {
+            const arrayKey = `${constructedKey}[${index}]`;
+            formData.append(arrayKey, val);
+          }
+        });
+      } else {
+        formData.append(constructedKey, value);
+      }
+    });
+
+    return formData;
   }
 }
