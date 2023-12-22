@@ -1,5 +1,21 @@
 export interface loginResponse {
-  userId: string;
-  token: string; //TODO pedir al backend que devuelva el token
+  data: Data;
+  meta: Meta;
+}
+
+interface Data {
+  type: string;
+  id: string;
+  attributes: User;
+}
+
+export interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
   accountVerified: boolean;
+}
+
+interface Meta {
+  token: string;
 }

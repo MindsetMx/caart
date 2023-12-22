@@ -1,13 +1,12 @@
 import { ElementRef, Injectable, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 
 import { AppService } from '@app/app.service';
 import { AuthStatus } from '@auth/enums';
-import { CheckTokenResponse, RegisterResponse, loginResponse } from '@auth/interfaces';
+import { CheckTokenResponse, RegisterResponse, User, loginResponse } from '@auth/interfaces';
 import { environments } from '@env/environments';
-import { register } from 'swiper/element/bundle';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class AuthService {
   #http = inject(HttpClient);
   #fb = inject(FormBuilder);
 
-  #currentUser = signal<string | null>(null);
+  #currentUser = signal<User | null>(null);
   #authStatus = signal<AuthStatus>(AuthStatus.checking);
 
   currentUser = computed(() => this.#currentUser());
@@ -34,7 +33,7 @@ export class AuthService {
   }
 
   public checkAuthStatus(): Observable<boolean> {
-    const url = `${this.#baseUrl}/auth/check-token`;
+    const url = `${this.#baseUrl}/users/check-token`;
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -45,10 +44,14 @@ export class AuthService {
     const headers = new HttpHeaders()
       .set('Authorization', `Bearer ${token}`);
 
-
     return this.#http.get<CheckTokenResponse>(url, { headers })
       .pipe(
-        map(({ userId, token }) => this.setAuthentication(userId, token)),
+        map((response: CheckTokenResponse) => {
+          const user = response.data.attributes;
+          const token = response.meta.token;
+
+          return this.setAuthentication(user, token)
+        }),
         catchError(() => {
           this.#authStatus.set(AuthStatus.notAuthenticated);
           return of(false);
@@ -60,8 +63,12 @@ export class AuthService {
     const body = this.#appService.trimObjectValues(loginForm.value);
 
     return this.#http.post<loginResponse>(`${this.#baseUrl}/users/login`, body).pipe(
-      tap((response) => console.log({ response })),
-      map(({ userId, token }) => this.setAuthentication(userId, token)),
+      map((response: loginResponse) => {
+        const user = response.data.attributes;
+        const token = response.meta.token;
+
+        return this.setAuthentication(user, token)
+      }),
       catchError(() => throwError(() => 'Usuario o contraseña incorrectos.'))
     );
   }
@@ -73,8 +80,8 @@ export class AuthService {
 
   }
 
-  private setAuthentication(userId: string, token: string): boolean {
-    this.#currentUser.set(userId);
+  private setAuthentication(user: User, token: string): boolean {
+    this.#currentUser.set(user);
     this.#authStatus.set(AuthStatus.authenticated);
     localStorage.setItem('token', token);
 

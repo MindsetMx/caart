@@ -26,8 +26,6 @@ export class AppComponent {
   #router = inject(Router);
 
   authStatusChangedEffect = effect(() => {
-    console.log('authStatus', this.#authService.authStatus());
-
     switch (this.#authService.authStatus()) {
       case AuthStatus.authenticated:
         const url = localStorage.getItem('url');

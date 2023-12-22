@@ -2,13 +2,13 @@ export interface RegisterResponse {
   data: Data;
 }
 
-export interface Data {
+interface Data {
   attributes: User;
   id: string;
   type: string;
 }
 
-export interface User {
+interface User {
   accountVerified: boolean;
   email: string;
   firstName: string;

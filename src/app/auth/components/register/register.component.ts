@@ -126,8 +126,17 @@ export class RegisterComponent {
         next: (response) => {
           console.log({ response });
           this.toastSuccess('Usuario registrado correctamente');
+
+          const loginForm = this.#fb.group({
+            email: [this.registerForm?.get('email')?.value, [Validators.required, Validators.email]],
+            password: [this.registerForm?.get('password')?.value, Validators.required]
+          });
+
           this.registerForm?.reset();
-          this.#router.navigate(['/iniciar-sesion']);
+
+          this.login(loginForm);
+
+          this.#router.navigate(['/confirmacion']);
         },
         error: (err) => {
           console.error(err);
@@ -141,6 +150,14 @@ export class RegisterComponent {
       }).add(() => {
         this.isButtonSubmitDisabled.set(false);
       });
+  }
+
+  login(loginForm: FormGroup): void {
+    this.#authService.login(loginForm).subscribe({
+      error: (error) => {
+        console.error({ error });
+      }
+    });
   }
 
   setValidationType(type: idTypes): void {

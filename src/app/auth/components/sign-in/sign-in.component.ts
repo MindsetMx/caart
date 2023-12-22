@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, WritableSignal, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AppService } from '@app/app.service';
 
 import { AuthService } from '@auth/services/auth.service';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -26,7 +25,6 @@ import { ValidatorsService } from '@shared/services/validators.service';
 export class SignInComponent {
   @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
 
-  #appService = inject(AppService);
   #authService = inject(AuthService);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
@@ -41,7 +39,6 @@ export class SignInComponent {
   login(): void {
     this.#authService.login(this.loginForm).subscribe({
       next: () => {
-        this.toastSuccess('Has iniciado sesión correctamente');
         this.redirectToPreviousUrlIfExistOrHome();
         localStorage.removeItem('url');
       },
@@ -70,9 +67,5 @@ export class SignInComponent {
     if (!this.loginForm) return undefined;
 
     return this.#validatorsService.getError(this.loginForm, field);
-  }
-
-  toastSuccess(message: string): void {
-    this.#appService.toastSuccess(message);
   }
 }

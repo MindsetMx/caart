@@ -1,26 +1,30 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output, WritableSignal, signal } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
-import { DropdownLink } from '@shared/interfaces/DropdownLink';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'shared-dropdown',
   standalone: true,
   imports: [
-    CommonModule,
-    RouterLink
+    CommonModule
+  ],
+  animations: [
+    trigger('fadeAndScale', [
+      state('void', style({})),
+      state('*', style({})),
+      transition(':enter', [
+        style({ transform: 'scale(0.95)', opacity: 0 }),
+        animate('100ms ease-out', style({ transform: 'scale(1)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('75ms ease-in', style({ transform: 'scale(0.95)', opacity: 0 }))
+      ])
+    ])
   ],
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./dropdown.component.css'],
 })
 export class DropdownComponent {
-  @Input({ required: true }) buttonText?: string;
-  @Input({ required: true }) dropdownLinks?: DropdownLink[];
-  isOpen: boolean = false;
-
-  toggleDropdown() {
-    this.isOpen = !this.isOpen;
-  }
+  @Input({ required: true }) isOpen: WritableSignal<boolean> = signal(false);
 }
