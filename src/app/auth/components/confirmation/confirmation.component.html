@@ -2,41 +2,16 @@
   <h1 class="text-center font-optima font-bold text-4xl mb-6">CONFIRMACIÓN</h1>
 
   <p class="text-center text-lg">
-    Te enviamos un código por SMS a tu celular, <br> ingrésalo para confirmar ltu cuenta
+    Te enviamos un código por SMS a tu celular, <br> ingrésalo para confirmar tu cuenta
   </p>
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md mb-32">
     <form [formGroup]="codeForm" (ngSubmit)="confirm()" class="space-y-6">
-      <div>
+      <div formArrayName="digits">
         <div class="grid grid-cols-6 gap-4">
-          <label class="block relative group">
-            <input formControlName="digit1" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
-              maxlength="1" type="text">
-            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-          </label>
-          <label class="block relative group">
-            <input formControlName="digit2" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
-              maxlength="1" type="text">
-            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-          </label>
-          <label class="block relative group">
-            <input formControlName="digit3" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
-              maxlength="1" type="text">
-            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-          </label>
-          <label class="block relative group">
-            <input formControlName="digit4" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
-              maxlength="1" type="text">
-            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-          </label>
-          <label class="block relative group">
-            <input formControlName="digit5" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
-              maxlength="1" type="text">
-            <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
-          </label>
-          <label class="block relative group">
-            <input formControlName="digit6" class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center"
-              maxlength="1" type="text">
+          <label class="block relative group" *ngFor="let control of digitsArray.controls; let i = index">
+            <input #digitInputs [formControlName]="i"
+              class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" maxlength="1" type="text">
             <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
           </label>
         </div>

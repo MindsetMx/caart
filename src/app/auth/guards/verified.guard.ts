@@ -12,9 +12,6 @@ export const verifiedGuard: CanActivateFn = (route, state) => {
 
   return authService.checkAuthStatus$().pipe(
     map(() => {
-      console.log({ authStatus: authService.authStatus() });
-      console.log({ currentUser: authService.currentUser() });
-
       if (authService.authStatus() === AuthStatus.authenticated && !authService.currentUser()?.attributes?.accountVerified) {
         saveCurrentUrlInLocalStorage(state);
 

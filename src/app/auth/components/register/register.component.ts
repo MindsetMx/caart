@@ -104,8 +104,6 @@ export class RegisterComponent {
 
     this.createToken().pipe(
       switchMap((result) => {
-        console.log({ result });
-        console.log({ token: result.token });
         if (result.token) {
           this.registerForm?.get('stripeToken')?.setValue(result.token.id);
           this.registerForm?.get('stripeToken')?.setErrors(null);
@@ -123,8 +121,7 @@ export class RegisterComponent {
 
         return of();
       })).subscribe({
-        next: (response) => {
-          console.log({ response });
+        next: () => {
           this.toastSuccess('Usuario registrado correctamente');
 
           const loginForm = this.#fb.group({
@@ -152,9 +149,7 @@ export class RegisterComponent {
 
   login(loginForm: FormGroup): void {
     this.#authService.login$(loginForm).subscribe({
-      next: (response) => {
-        console.log({ response });
-
+      next: () => {
         this.#router.navigate(['/confirmacion']);
       },
       error: (error) => {

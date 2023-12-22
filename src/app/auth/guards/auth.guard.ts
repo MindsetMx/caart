@@ -9,8 +9,6 @@ export const AuthenticatedGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const authStatus = authService.authStatus();
 
-  console.log({ authStatus });
-
   //Si está autenticado, puede acceder a la ruta
   if (authStatus === AuthStatus.authenticated) {
     return true;

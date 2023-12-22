@@ -14,6 +14,31 @@ export class ValidatorsService {
     this.addErrorToFormGroup(formGroup, fieldName);
 
     formGroup.markAllAsTouched();
+
+    setTimeout(() => {
+      this.clearErrorToValidationMessages(fieldName);
+
+      formGroup.controls[fieldName].setErrors(null);
+    });
+  }
+
+  addServerErrorsToFormArray(formArray: FormArray, errorMessage: string): void {
+    // Añadir el error al array de errores del campo correspondiente
+    this.addErrorToValidationMessages('server', errorMessage);
+
+    this.addErrorToFormArray(formArray);
+
+    formArray.markAllAsTouched();
+
+    setTimeout(() => {
+      this.clearErrorToValidationMessages('server');
+
+      formArray.controls.forEach(control => control.setErrors(null));
+    });
+  }
+
+  clearErrorToValidationMessages(fieldName: string): void {
+    delete VALIDATION_MESSAGES[fieldName];
   }
 
   addErrorToValidationMessages(fieldName: string, errorMessage: string): void {
@@ -27,6 +52,12 @@ export class ValidatorsService {
     formGroup.get(fieldName)?.setErrors(errors);
   }
 
+  addErrorToFormArray(formArray: FormArray): void {
+    const errors: { [key: string]: boolean } = { server: true };
+
+    formArray.at(formArray.length - 1)?.setErrors(errors);
+  }
+
   hasError(form: FormGroup, field: string): boolean {
     return form.controls[field].touched && form.controls[field].errors !== null;
   }
@@ -35,11 +66,11 @@ export class ValidatorsService {
     return formArray.controls[index].invalid && formArray.controls[index].touched;
   }
 
-  formHasError(form: FormGroup): boolean {
+  formHasError(form: FormGroup | FormArray): boolean {
     return form.invalid && form.touched;
   }
 
-  isValidForm(formGroup: FormGroup): boolean {
+  isValidForm(formGroup: FormGroup | FormArray): boolean {
     if (formGroup.invalid) {
       formGroup.markAllAsTouched();
       return false;
@@ -76,7 +107,7 @@ export class ValidatorsService {
     return errorKey && VALIDATION_MESSAGES[errorKey]?.(errors[errorKey]);
   }
 
-  getFirstInvalidControl(form: FormGroup): AbstractControl | null {
+  getFirstInvalidControl(form: FormGroup | FormArray): AbstractControl | null {
     const controlName = Object.keys(form.controls).find(controlName => {
       const control = form.get(controlName);
       return control?.invalid && control.touched;
@@ -99,7 +130,7 @@ export class ValidatorsService {
     return errorKey && VALIDATION_MESSAGES[errorKey]?.(control.errors[errorKey]);
   }
 
-  getFirstError(form: FormGroup): string | undefined {
+  getFirstError(form: FormGroup | FormArray): string | undefined {
     const control = this.getFirstInvalidControl(form);
     return this.getFirstErrorMessage(control);
   }

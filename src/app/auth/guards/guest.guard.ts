@@ -8,8 +8,6 @@ export const GuestGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const authStatus = authService.authStatus();
 
-  console.log({ authStatus });
-
   //Si NO está autenticado, puede acceder a la ruta
   if (authStatus === AuthStatus.notAuthenticated) {
     return true;

@@ -98,11 +98,6 @@ export class AuthService {
 
     const formData = this.#appService.transformObjectToFormData(registerFormValue);
 
-    //imprimir los datos del formulario
-    formData.forEach((value, key) => {
-      console.log(key + ', ' + value);
-    });
-
     return this.#http.post<RegisterResponse>(`${this.#baseUrl}/users/register`, formData, { headers });
   }
 
