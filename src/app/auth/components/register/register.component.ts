@@ -119,7 +119,7 @@ export class RegisterComponent {
         const isValid = this.#validatorsService.isValidForm(this.registerForm);
 
         if (isValid)
-          return this.#authService.registerUser(this.registerForm);
+          return this.#authService.registerUser$(this.registerForm);
 
         return of();
       })).subscribe({
@@ -135,8 +135,6 @@ export class RegisterComponent {
           this.registerForm?.reset();
 
           this.login(loginForm);
-
-          this.#router.navigate(['/confirmacion']);
         },
         error: (err) => {
           console.error(err);
@@ -153,7 +151,12 @@ export class RegisterComponent {
   }
 
   login(loginForm: FormGroup): void {
-    this.#authService.login(loginForm).subscribe({
+    this.#authService.login$(loginForm).subscribe({
+      next: (response) => {
+        console.log({ response });
+
+        this.#router.navigate(['/confirmacion']);
+      },
       error: (error) => {
         console.error({ error });
       }
@@ -182,7 +185,7 @@ export class RegisterComponent {
     this.registerForm?.addControl('postalCode', new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]));
     this.registerForm?.addControl('streetAndNumber', new FormControl('', Validators.required));
     this.registerForm?.addControl('stripeToken', new FormControl('', Validators.required));
-    this.registerForm?.addControl('taxId', new FormControl('', Validators.required));
+    this.registerForm?.addControl('taxId', new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(13)]));
     this.registerForm?.addControl('validationImg', new FormArray([
       new FormControl(null, Validators.required),
       new FormControl(null, Validators.required),

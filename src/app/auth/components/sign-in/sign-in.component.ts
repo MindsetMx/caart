@@ -37,7 +37,7 @@ export class SignInComponent {
   }
 
   login(): void {
-    this.#authService.login(this.loginForm).subscribe({
+    this.#authService.login$(this.loginForm).subscribe({
       next: () => {
         this.redirectToPreviousUrlIfExistOrHome();
         localStorage.removeItem('url');

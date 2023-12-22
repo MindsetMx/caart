@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
-import { confirmedGuard } from '@auth/guards/confirmed.guard';
+import { unverifiedGuard } from '@auth/guards/unverified.guard';
+import { verifiedGuard } from '@auth/guards/verified.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    canActivateChild: [confirmedGuard],
+    canActivateChild: [verifiedGuard],
     children: [
       {
         path: '',
@@ -26,6 +27,7 @@ export const routes: Routes = [
   },
   {
     path: 'confirmacion',
+    canActivate: [unverifiedGuard],
     loadComponent: () => import('./auth/components/confirmation/confirmation.component').then((m) => m.ConfirmationComponent),
   },
   { path: '**', redirectTo: '' },

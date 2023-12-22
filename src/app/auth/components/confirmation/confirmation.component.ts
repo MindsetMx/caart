@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, signal, inject, ElementRef, HostListener } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '@auth/services/auth.service';
+import { VerificationService } from '@auth/services/verification.service';
+import { AppService } from '@app/app.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -22,9 +25,12 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmationComponent {
+  #appService = inject(AppService);
   #el = inject(ElementRef);
   #fb = inject(FormBuilder);
+  #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
+  #verificationService = inject(VerificationService);
 
   codeForm: FormGroup;
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
@@ -40,15 +46,68 @@ export class ConfirmationComponent {
     });
   }
 
+  resendCodeToEmail(): void {
+    this.#verificationService.resendCodeToEmail$().subscribe({
+      next: (response) => {
+        console.log({ response });
+        this.toastSuccess('El código de verificación ha sido enviado a tu correo');
+      },
+      error: (error) => {
+        console.log({ error });
+
+        this.toastError(error.error.error);
+      }
+    });
+  }
+
+  resendCode(): void {
+    this.#verificationService.resendCode$().subscribe({
+      next: (response) => {
+        console.log({ response });
+        this.toastSuccess('El código de verificación ha sido enviado vía WhatsApp');
+      },
+      error: (error) => {
+        console.log({ error });
+
+        this.toastError(error.error.error);
+      }
+    });
+  }
+
   confirm(): void {
+    console.log('confirm');
+
+    console.log({ errors: this.codeForm.errors });
+
     this.isButtonSubmitDisabled.set(true);
 
     const isValid = this.#validatorsService.isValidForm(this.codeForm);
+
+    console.log({ isValid });
 
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);
       return;
     }
+
+    const code = Object.keys(this.codeForm.controls).map((controlName) => this.codeForm.get(controlName)?.value).join('');
+
+    console.log({ code });
+
+    this.#verificationService.confirmAccount$(code).subscribe({
+      next: (response) => {
+        console.log({ response });
+        this.toastSuccess('Tu cuenta ha sido verificada');
+        this.#router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error({ error });
+
+        this.#validatorsService.addServerErrorsToForm(this.codeForm, 'digit6', error.error.error);
+      }
+    }).add(() => {
+      this.isButtonSubmitDisabled.set(false);
+    });
   }
 
   @HostListener('input', ['$event.target'])
@@ -136,6 +195,14 @@ export class ConfirmationComponent {
     // Usa una expresión regular para eliminar todo lo que no sea un dígito
     const digitRegex = /[0-9]/g;
     return text.match(digitRegex)?.join('') || '';
+  }
+
+  toastSuccess(message: string): void {
+    this.#appService.toastSuccess(message);
+  }
+
+  toastError(message: string): void {
+    this.#appService.toastError(message);
   }
 
   formHasError(): boolean {

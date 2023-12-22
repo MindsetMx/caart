@@ -3,13 +3,13 @@ export interface loginResponse {
   meta: Meta;
 }
 
-interface Data {
+export interface Data {
   type: string;
   id: string;
   attributes: User;
 }
 
-export interface User {
+interface User {
   firstName: string;
   lastName: string;
   email: string;

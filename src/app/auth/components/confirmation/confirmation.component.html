@@ -45,14 +45,19 @@
         }
       </div>
 
-      <button sharedPrimaryButton>
+      <button [disabled]="isButtonSubmitDisabled()" [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
         Confirmar
       </button>
 
       <div class="text-center">
         <p>El SMS puede tardar hasta 1 minuto</p>
-        <span>Si no te llego el mensaje</span>&nbsp;&nbsp;&nbsp;<a routerLink="" class="font-bold underline">Enviar otro
-          mensaje</a>
+        <p class="mb-2">
+          Si no te llego el mensaje&nbsp;&nbsp;&nbsp;<a routerLink="" class="font-bold underline"
+            (click)="resendCode()">Enviar otro mensaje</a>
+        </p>
+
+        <span>¿No puedes verificar por Whatsapp? Da click <button type="button" (click)="resendCodeToEmail()"
+            class="underline font-bold">aquí</button> y recibe el código vía email</span>
       </div>
     </form>
   </div>

@@ -5,7 +5,7 @@ import { Observable, catchError, map, of, throwError } from 'rxjs';
 
 import { AppService } from '@app/app.service';
 import { AuthStatus } from '@auth/enums';
-import { CheckTokenResponse, RegisterResponse, User, loginResponse } from '@auth/interfaces';
+import { CheckTokenResponse, Data, RegisterResponse, loginResponse } from '@auth/interfaces';
 import { environments } from '@env/environments';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class AuthService {
   #http = inject(HttpClient);
   #fb = inject(FormBuilder);
 
-  #currentUser = signal<User | null>(null);
+  #currentUser = signal<Data | null>(null);
   #authStatus = signal<AuthStatus>(AuthStatus.checking);
 
   currentUser = computed(() => this.#currentUser());
@@ -32,7 +32,7 @@ export class AuthService {
     });
   }
 
-  public checkAuthStatus(): Observable<boolean> {
+  checkAuthStatus$(): Observable<boolean> {
     const url = `${this.#baseUrl}/users/check-token`;
     const token = localStorage.getItem('token');
 
@@ -47,10 +47,10 @@ export class AuthService {
     return this.#http.get<CheckTokenResponse>(url, { headers })
       .pipe(
         map((response: CheckTokenResponse) => {
-          const user = response.data.attributes;
+          const user = response.data;
           const token = response.meta.token;
 
-          return this.setAuthentication(user, token)
+          return this.setAuthentication$(user, token)
         }),
         catchError(() => {
           this.#authStatus.set(AuthStatus.notAuthenticated);
@@ -59,28 +59,28 @@ export class AuthService {
       );
   }
 
-  public login(loginForm: FormGroup): Observable<boolean> {
+  login$(loginForm: FormGroup): Observable<boolean> {
     const body = this.#appService.trimObjectValues(loginForm.value);
 
     return this.#http.post<loginResponse>(`${this.#baseUrl}/users/login`, body).pipe(
       map((response: loginResponse) => {
-        const user = response.data.attributes;
+        const user = response.data;
         const token = response.meta.token;
 
-        return this.setAuthentication(user, token)
+        return this.setAuthentication$(user, token)
       }),
       catchError(() => throwError(() => 'Usuario o contraseña incorrectos.'))
     );
   }
 
-  public logout() {
+  logout() {
     localStorage.removeItem('token');
     this.#currentUser.set(null);
     this.#authStatus.set(AuthStatus.notAuthenticated);
 
   }
 
-  private setAuthentication(user: User, token: string): boolean {
+  private setAuthentication$(user: Data, token: string): boolean {
     this.#currentUser.set(user);
     this.#authStatus.set(AuthStatus.authenticated);
     localStorage.setItem('token', token);
@@ -88,7 +88,7 @@ export class AuthService {
     return true;
   }
 
-  public registerUser(registerForm: FormGroup): Observable<RegisterResponse> {
+  registerUser$(registerForm: FormGroup): Observable<RegisterResponse> {
     let registerFormValue = registerForm.value;
     delete registerFormValue.password2;
     registerFormValue = this.#appService.trimObjectValues(registerForm.value, ['password']);
@@ -106,7 +106,7 @@ export class AuthService {
     return this.#http.post<RegisterResponse>(`${this.#baseUrl}/users/register`, formData, { headers });
   }
 
-  public toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {
+  toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {
 
     this.changeInputType(element);
 
@@ -115,7 +115,7 @@ export class AuthService {
     }
   }
 
-  public changeInputType(element: ElementRef<HTMLInputElement>): void {
+  changeInputType(element: ElementRef<HTMLInputElement>): void {
     const input = element.nativeElement;
     input.type = input.type === 'password' ? 'text' : 'password';
   }
