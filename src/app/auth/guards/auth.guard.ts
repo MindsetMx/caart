@@ -4,24 +4,31 @@ import { CanActivateFn, Router, RouterStateSnapshot } from "@angular/router";
 import { AuthStatus } from "@auth/enums";
 import { AuthService } from "@auth/services/auth.service";
 import { saveCurrentUrlInLocalStorage } from "@shared/common/saveCurrentUrlInLocalStorage";
+import { map } from "rxjs";
 
-export const AuthenticatedGuard: CanActivateFn = (route, state) => {
+export const AuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
-  const authStatus = authService.authStatus();
+  const router = inject(Router);
 
-  //Si está autenticado, puede acceder a la ruta
-  if (authStatus === AuthStatus.authenticated) {
-    return true;
-  }
+  return authService.checkAuthStatus$().pipe(
+    map(() => {
+      const authStatus = authService.authStatus();
 
-  //Si no está autenticado, guardamos la url a la que quería acceder en el localStorage
-  saveCurrentUrlInLocalStorage(state);
+      //Si está autenticado, puede acceder a la ruta
+      if (authStatus === AuthStatus.authenticated) {
+        return true;
+      }
 
-  //Redireccionamos a la página de login
-  if (authStatus === AuthStatus.notAuthenticated) {
-    const router = inject(Router);
-    router.navigate(['/login']);
-  }
+      //Si no está autenticado, guardamos la url a la que quería acceder en el localStorage
+      saveCurrentUrlInLocalStorage(state);
 
-  return false;
+      //Redireccionamos a la página de login
+      if (authStatus === AuthStatus.notAuthenticated) {
+        router.navigate(['/login']);
+      }
+
+      return false;
+    })
+  );
+
 };

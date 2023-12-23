@@ -3,18 +3,22 @@ import { Router, type CanActivateFn } from '@angular/router';
 
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
+import { map } from 'rxjs';
 
 export const GuestGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
-  const authStatus = authService.authStatus();
-
-  //Si NO está autenticado, puede acceder a la ruta
-  if (authStatus === AuthStatus.notAuthenticated) {
-    return true;
-  }
-
   const router = inject(Router);
-  router.navigate(['/']);
 
-  return false;
+  return authService.checkAuthStatus$().pipe(
+    map(() => {
+      //Si NO está autenticado, puede acceder a la ruta
+      if (authService.authStatus() === AuthStatus.notAuthenticated) {
+        return true;
+      }
+
+      router.navigate(['/']);
+
+      return false;
+    })
+  );
 }
