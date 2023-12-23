@@ -27,7 +27,6 @@ export class ConfirmationComponent {
   @ViewChildren('digitInputs') digitInputs?: QueryList<ElementRef>;
 
   #appService = inject(AppService);
-  #el = inject(ElementRef);
   #fb = inject(FormBuilder);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
@@ -35,6 +34,7 @@ export class ConfirmationComponent {
 
   codeForm: FormGroup;
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
+  editableIndex: WritableSignal<number> = signal(0);
 
   constructor() {
     this.codeForm = this.#fb.group({
@@ -106,6 +106,17 @@ export class ConfirmationComponent {
     });
   }
 
+  handleClick(index: number) {
+    if (index !== this.editableIndex() && this.digitInputs) {
+      const editableInput = this.digitInputs.toArray()[this.editableIndex()];
+
+      if (editableInput) {
+        editableInput.nativeElement.focus();
+      }
+    }
+  }
+
+
   @HostListener('input', ['$event.target'])
   onInput(target: HTMLInputElement) {
     if (target.value) {
@@ -119,8 +130,14 @@ export class ConfirmationComponent {
       if (currentControlIndex !== undefined && currentControlIndex < this.digitsArray.length - 1) {
         const nextInput = this.digitInputs?.toArray()[currentControlIndex + 1].nativeElement;
         if (nextInput) {
+          this.editableIndex.set(currentControlIndex + 1);
+
           nextInput.focus();
         }
+      }
+
+      if (currentControlIndex === this.digitsArray.length - 1) {
+        this.confirm();
       }
     }
   }
@@ -138,6 +155,8 @@ export class ConfirmationComponent {
         if (currentControlIndex !== undefined && currentControlIndex > 0) {
           const previousInput = this.digitInputs?.toArray()[currentControlIndex - 1].nativeElement;
           if (previousInput) {
+            this.editableIndex.set(currentControlIndex - 1);
+
             previousInput.focus();
           }
         }
@@ -172,12 +191,18 @@ export class ConfirmationComponent {
     if (digitsArray.length < this.digitsArray.length) {
       const nextInput = this.digitInputs?.toArray()[digitsArray.length].nativeElement;
       if (nextInput) {
+        this.editableIndex.set(digitsArray.length);
+
         nextInput.focus();
       }
     } else {
       const lastInput = this.digitInputs?.toArray()[digitsArray.length - 1].nativeElement;
       if (lastInput) {
+        this.editableIndex.set(digitsArray.length - 1);
+
         lastInput.focus();
+
+        this.confirm();
       }
     }
   }

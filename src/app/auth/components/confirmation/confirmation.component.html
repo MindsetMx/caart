@@ -9,8 +9,10 @@
     <form [formGroup]="codeForm" (ngSubmit)="confirm()" class="space-y-6">
       <div formArrayName="digits">
         <div class="grid grid-cols-6 gap-4">
-          <label class="block relative group" *ngFor="let control of digitsArray.controls; let i = index">
-            <input #digitInputs [formControlName]="i"
+          <label class="block relative" (click)="handleClick(i)" [class.group]="i === editableIndex()"
+            *ngFor="let control of digitsArray.controls; let i = index">
+            <input #digitInputs [formControlName]="i" [readonly]="i !== editableIndex()"
+              [ngClass]="{'focus:ring-2 focus:ring-inset focus:ring-black': i === editableIndex()}"
               class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" maxlength="1" type="text">
             <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
           </label>
