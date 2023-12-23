@@ -1,0 +1,60 @@
+<h1 class="font-optima text-4xl font-bold mb-8">Información general</h1>
+
+<form class="space-y-6">
+  <div>
+    <label for="rfc" class="block mb-2">RFC</label>
+    <input id="rfc" class="max-w-lg" type="text" placeholder="Escribe tu RFC" sharedInput>
+    @if (hasError('rfc')) {
+    <shared-input-error [message]="getError('rfc')"></shared-input-error>
+    }
+  </div>
+
+  <div>
+    <p class="text-xl font-bold mb-5">Elige tu paquete de subastas</p>
+    <fieldset>
+      <legend class="sr-only">Paquete de subastas</legend>
+      <div class="space-y-6">
+        <div class="flex">
+          <input id="ine" name="notification-method" type="radio" checked class="h-6 w-6">
+          <label for="ine" class="ml-3 block leading-6">
+            <p class="font-bold">$1,999.00 MXN</p>
+            Lista de subasta tu obra de arte + 1 mes en marketplace
+          </label>
+        </div>
+        <div class="flex">
+          <input id="pasaporte" name="notification-method" type="radio" class="h-6 w-6">
+          <label for="pasaporte" class="ml-3 block leading-6">
+            <p class="font-bold flex items-center">$6,499.00 MXN <span
+                class="bg-red-500 text-white rounded-md px-3 py-1 text-xs ml-2">Recomendado</span> </p>
+            <p>Lista de subasta tu obra de arte + 1 Mes en marketplace + Sesión fotofráfica profesional</p>
+            <span class="text-red-500">
+              Fotografías y videos profesionales a domicilio para ayudar a los espectadores a ofertar con confianza y
+              entusiasmo.
+            </span>
+          </label>
+        </div>
+      </div>
+    </fieldset>
+
+    @if(hasError('paquete')) {
+    <shared-input-error [message]="getError('paquete')"></shared-input-error>
+    }
+  </div>
+
+  <div>
+    <p class="text-xl font-bold mb-5">Añadé tus datos bancarios</p>
+
+    <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
+      <ngx-stripe-card [options]="cardOptions" />
+    </ngx-stripe-elements>
+
+    @if(hasError('stripeToken')) {
+    <shared-input-error [message]="getError('stripeToken')"></shared-input-error>
+    }
+  </div>
+
+  <button class="mt-36" type="submit" [disabled]="isButtonSubmitDisabled()"
+    [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
+    Pagar y continuar
+  </button>
+</form>
