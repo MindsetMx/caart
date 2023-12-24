@@ -1,0 +1,107 @@
+<h1 class="font-optima text-4xl font-bold mb-8">Interior del auto</h1>
+
+<h2 class="text-xl font-bold mb-5">Interior del auto</h2>
+<form [formGroup]="interiorOfTheCarForm" (ngSubmit)="submitExteriorOfTheCarForm()" class="grid grid-cols-2 gap-5">
+
+  <!-- color select -->
+  <div>
+    <label for="color" class="sr-only">Color</label>
+    <select id="color" formControlName="color" sharedInput>
+      <option value disabled selected>Color</option>
+    </select>
+    @if (hasError('color')) {
+    <shared-input-error [message]="getError('color')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Material select   -->
+  <div>
+    <label for="material" class="sr-only">Material</label>
+    <select id="material" formControlName="material" sharedInput>
+      <option value disabled selected>Material</option>
+    </select>
+    @if (hasError('material')) {
+    <shared-input-error [message]="getError('material')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Condiciones del interior select -->
+  <div class="col-span-2">
+    <label for="interiorCondition" class="sr-only">Condiciones del interior</label>
+    <select id="interiorCondition" formControlName="interiorCondition" sharedInput>
+      <option value disabled selected>Condiciones del interior</option>
+      <option value="excellent">Excelente</option>
+      <option value="good">Buena</option>
+      <option value="regular">Regular</option>
+      <option value="bad">Mala</option>
+    </select>
+    @if (hasError('interiorCondition')) {
+    <shared-input-error [message]="getError('interiorCondition')"></shared-input-error>
+    }
+  </div>
+
+  <!-- ¿Ha tenido modificaciones en el interior? select -->
+  <div class="col-span-2">
+    <label for="hasInteriorModification" class="sr-only">¿Ha tenido modificaciones en el interior?</label>
+    <select id="hasInteriorModification" formControlName="hasInteriorModification" sharedInput>
+      <option value disabled selected>¿Ha tenido modificaciones en el interior?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('hasInteriorModification')) {
+    <shared-input-error [message]="getError('hasInteriorModification')"></shared-input-error>
+    }
+  </div>
+
+  <!-- ¿Los accesorios y electrónicos funcionan? input-->
+  <div class="col-span-2">
+    <label for="accessoriesAndElectronicsWork" class="sr-only">¿Los accesorios y electrónicos funcionan?</label>
+    <input id="accessoriesAndElectronicsWork" formControlName="accessoriesAndElectronicsWork" type="text"
+      placeholder="¿Los accesorios y electrónicos funcionan?" sharedInput>
+    @if (hasError('accessoriesAndElectronicsWork')) {
+    <shared-input-error [message]="getError('accessoriesAndElectronicsWork')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Comentarios sobre detalles textarea -->
+  <div class="col-span-2">
+    <label for="detailsComments" class="sr-only">Comentarios sobre detalles</label>
+    <textarea id="detailsComments" formControlName="detailsComments" placeholder="Comentarios sobre detalles" rows="6"
+      sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('detailsComments')) {
+    <shared-input-error [message]="getError('detailsComments')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Fotos/vídeos del interior del auto -->
+  <div class="col-start-1">
+    <label for="interiorImagesOrVideos" class="text-sm cursor-pointer">
+      Fotos/vídeos del exterior del auto
+      @if(photosOrVideosInteriorOfTheCarFormArray.at(0).value) {
+      <img src="{{previewImagesCarInterior()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+        alt="foto frontal de la INE">
+      <input (change)="selectFile($event, 1)" id="frontal" type="file" class="sr-only">
+      } @else {
+      <div
+        class="bg-gray1 border border-dashed rounded-md border-gray4 w-64 h-44 mt-2 flex items-center justify-center">
+        <div>
+          <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+          <p class="text-center text-gray4 text-sm">Subir imagen</p>
+        </div>
+        <input (change)="selectFile($event, 1)" id="interiorImagesOrVideos" type="file" class="sr-only">
+      </div>
+      }
+    </label>
+
+    @if (hasError('interiorImagesOrVideos')) {
+    <shared-input-error [message]="getError('interiorImagesOrVideos')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <button class="mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
+      [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      Siguiente
+    </button>
+  </div>
+</form>
