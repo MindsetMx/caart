@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, WritableSignal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CompleteCarRegistrationService } from '../../complete-car-registration.service';
@@ -22,7 +22,7 @@ export class CompleteCarRegisterComponent {
     return this.#completeCarRegistrationService.steps;
   }
 
-  get indexCurrentStep(): number {
+  get indexCurrentStep(): WritableSignal<number> {
     return this.#completeCarRegistrationService.indexCurrentStep;
   }
 }
