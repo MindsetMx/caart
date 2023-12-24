@@ -1,0 +1,210 @@
+<h1 class="font-optima text-4xl font-bold mb-8">Mecánica</h1>
+
+<h2 class="text-xl font-bold mb-5">Llantas y rines</h2>
+<form [formGroup]="mechanicsForm" (ngSubmit)="submitExteriorOfTheCarForm()" class="grid grid-cols-2 gap-5">
+  <!-- Rines originales select -->
+  <div>
+    <label for="hasOriginalRims" class="sr-only">¿Rines originales?</label>
+    <select id="hasOriginalRims" formControlName="hasOriginalRims" sharedInput>
+      <option value disabled selected>¿Rines originales?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasOriginalRims')) {
+    <shared-input-error [message]="getError('hasOriginalRims')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Marca de llantas -->
+  <div>
+    <label for="tireBrand" class="sr-only">Marca de llantas</label>
+    <input id="tireBrand" formControlName="tireBrand" type="text" placeholder=" Marca de llantas" sharedInput>
+    @if (hasError('tireBrand')) {
+    <shared-input-error [message]="getError('tireBrand')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Condición de llantas -->
+  <div>
+    <label for="tireCondition" class="sr-only">Condición de llantas</label>
+    <select id="tireCondition" formControlName="tireCondition" sharedInput>
+      <option value disabled selected>Condición de llantas</option>
+      <option value="excellent">Excelente</option>
+      <option value="good">Buena</option>
+      <option value="regular">Regular</option>
+      <option value="bad">Mala</option>
+    </select>
+    @if (hasError('tireCondition')) {
+    <shared-input-error [message]="getError('tireCondition')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Llantas o rines extras select -->
+  <div>
+    <label for="hasExtraTiresOrRims" class="sr-only">¿Llantas o rines extras?</label>
+    <select id="hasExtraTiresOrRims" formControlName="hasExtraTiresOrRims" sharedInput>
+      <option value disabled selected>¿Llantas o rines extras?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasExtraTiresOrRims')) {
+    <shared-input-error [message]="getError('hasExtraTiresOrRims')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Llanta de refacción select -->
+  <div>
+    <label for="hasSpareTire" class="sr-only">¿Llanta de refacción?</label>
+    <select id="hasSpareTire" formControlName="hasSpareTire" sharedInput>
+      <option value disabled selected>¿Llanta de refacción?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasSpareTire')) {
+    <shared-input-error [message]="getError('hasSpareTire')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2 mt-4">
+    <h2 class="text-xl font-bold">Mecánica</h2>
+  </div>
+
+  <!-- Transmisión y motor original select -->
+  <div>
+    <label for="hasOriginalTransmissionAndMotor" class="sr-only">¿Transmisión y motor original?</label>
+    <select id="hasOriginalTransmissionAndMotor" formControlName="hasOriginalTransmissionAndMotor" sharedInput>
+      <option value disabled selected>¿Transmisión y motor original?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasOriginalTransmissionAndMotor')) {
+    <shared-input-error [message]="getError('hasOriginalTransmissionAndMotor')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Mejora o modificación general select -->
+  <div>
+    <label for="hasGeneralImprovementOrModification" class="sr-only">¿Mejora o modificación general?</label>
+    <select id="hasGeneralImprovementOrModification" formControlName="hasGeneralImprovementOrModification" sharedInput>
+      <option value disabled selected>¿Mejora o modificación general?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasGeneralImprovementOrModification')) {
+    <shared-input-error [message]="getError('hasGeneralImprovementOrModification')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Servicios realizados con fechas textarea -->
+  <div class="col-span-2">
+    <label for="servicesPerformedWithDates" class="sr-only">Servicios realizados con fechas</label>
+    <textarea id="servicesPerformedWithDates" formControlName="servicesPerformedWithDates" rows="4"
+      placeholder="Servicios realizados con fechas" sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('servicesPerformedWithDates')) {
+    <shared-input-error [message]="getError('servicesPerformedWithDates')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Problema o detalle mecánico select -->
+  <div>
+    <label for="hasMechanicalProblemOrDetail" class="sr-only">¿Problema o detalle mecánico?</label>
+    <select id="hasMechanicalProblemOrDetail" formControlName="hasMechanicalProblemOrDetail" sharedInput>
+      <option value disabled selected>¿Problema o detalle mecánico?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasMechanicalProblemOrDetail')) {
+    <shared-input-error [message]="getError('hasMechanicalProblemOrDetail')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Sensor iluminado en el tablero select -->
+  <div>
+    <label for="hasSensorLitOnTheDashboard" class="sr-only">¿Sensor iluminado en el tablero?</label>
+    <select id="hasSensorLitOnTheDashboard" formControlName="hasSensorLitOnTheDashboard" sharedInput>
+      <option value disabled selected>¿Sensor iluminado en el tablero?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasSensorLitOnTheDashboard')) {
+    <shared-input-error [message]="getError('hasSensorLitOnTheDashboard')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Equipamiento de fabrica select -->
+  <div>
+    <label for="hasFactoryEquipment" class="sr-only">¿Equipamiento de fabrica?</label>
+    <select id="hasFactoryEquipment" formControlName="hasFactoryEquipment" sharedInput>
+      <option value disabled selected>¿Equipamiento de fabrica?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasFactoryEquipment')) {
+    <shared-input-error [message]="getError('hasFactoryEquipment')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Equipamiento extra select -->
+  <div>
+    <label for="hasExtraEquipment" class="sr-only">¿Equipamiento extra?</label>
+    <select id="hasExtraEquipment" formControlName="hasExtraEquipment" sharedInput>
+      <option value disabled selected>¿Equipamiento extra?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('hasExtraEquipment')) {
+    <shared-input-error [message]="getError('hasExtraEquipment')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Comentarios sobre detalles textarea -->
+  <div class="col-span-2">
+    <label for="commentsOnDetails" class="sr-only">Comentarios sobre detalles</label>
+    <textarea id="commentsOnDetails" formControlName="commentsOnDetails" rows="4"
+      placeholder="Comentarios sobre detalles" sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('commentsOnDetails')) {
+    <shared-input-error [message]="getError('commentsOnDetails')"></shared-input-error>
+    }
+  </div>
+
+  <!--  Fotos/vídeos de la mecánica del auto -->
+  <div class="col-start-1">
+    <label for="mechanicsImagesOrVideos" class="text-sm cursor-pointer">
+      Fotos/vídeos de la mecánica del auto
+      @if(mechanicsImagesOrVideosFormArray.at(0).value) {
+      <img src="{{previewImagesCarExterior()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+        alt="foto frontal de la INE">
+      <input (change)="selectFile($event, 1)" id="frontal" type="file" class="sr-only">
+      } @else {
+      <div
+        class="bg-gray1 border border-dashed rounded-md border-gray4 w-64 h-44 mt-2 flex items-center justify-center">
+        <div>
+          <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+          <p class="text-center text-gray4 text-sm">Subir imagen</p>
+        </div>
+        <input (change)="selectFile($event, 1)" id="exteriorImagesOrVideos" type="file" class="sr-only">
+      </div>
+      }
+    </label>
+
+    @if (hasError('mechanicsImagesOrVideos')) {
+    <shared-input-error [message]="getError('mechanicsImagesOrVideos')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <button class="mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
+      [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      Siguiente
+    </button>
+  </div>
+</form>
