@@ -1,1 +1,293 @@
-<p>general-details-and-exterior-of-the-car works!</p>,
+<h1 class="font-optima text-4xl font-bold mb-8">Generales y exterior del auto</h1>
+
+<h2 class="text-xl font-bold mb-5">Información general del automóvil</h2>
+<form [formGroup]="exteriorOfTheCarForm" (ngSubmit)="submitExteriorOfTheCarForm()" class="grid grid-cols-2 gap-5">
+  <div>
+    <label for="brand" class="sr-only">Marca</label>
+    <select id="brand" formControlName="brand" sharedInput>
+      <option value disabled selected>Marca</option>
+    </select>
+    @if (hasError('brand')) {
+    <shared-input-error [message]="getError('brand')"></shared-input-error>
+    }
+  </div>
+
+  <div>
+    <label for="year" class="sr-only">Año</label>
+    <input id="year" formControlName="year" type="date" placeholder=" Año" sharedInput>
+    @if (hasError('year')) {
+    <shared-input-error [message]="getError('year')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <label for="model" class="sr-only">Modelo</label>
+    <input id="model" formControlName="model" type="text" placeholder=" Modelo" sharedInput>
+    @if (hasError('model')) {
+    <shared-input-error [message]="getError('model')"></shared-input-error>
+    }
+  </div>
+
+  <div>
+    <label for="mileage" class="sr-only">Kilometraje</label>
+    <input id="mileage" formControlName="mileage" type="number" placeholder=" Kilometraje" sharedInput>
+    @if (hasError('mileage')) {
+    <shared-input-error [message]="getError('mileage')"></shared-input-error>
+    }
+  </div>
+
+  <div>
+    <label for="isOdometerAccurate" class="sr-only">¿El odómetro es acertado?</label>
+    <select id="isOdometerAccurate" formControlName="isOdometerAccurate" sharedInput>
+      <option value disabled selected>¿El odómetro es acertado?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('isOdometerAccurate')) {
+    <shared-input-error [message]="getError('isOdometerAccurate')"></shared-input-error>
+    }
+  </div>
+
+  <!-- transmision select -->
+  <div>
+    <label for="transmission" class="sr-only">Transmisión</label>
+    <select id="transmission" formControlName="transmission" sharedInput>
+      <option value disabled selected>Transmisión</option>
+      <option value="manual">Manual</option>
+      <option value="automatic">Automática</option>
+    </select>
+    @if (hasError('transmission')) {
+    <shared-input-error [message]="getError('transmission')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Tipo de vendedor select -->
+  <div>
+    <label for="sellerType" class="sr-only">Tipo de vendedor</label>
+    <select id="sellerType" formControlName="sellerType" sharedInput>
+      <option value disabled selected>Tipo de vendedor</option>
+      <option value="individual">Individual</option>
+      <option value="dealer">Distribuidor</option>
+    </select>
+    @if (hasError('sellerType')) {
+    <shared-input-error [message]="getError('sellerType')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Garantías del auto select -->
+  <div class="col-span-2">
+    <label for="carWarranties" class="sr-only">Garantías del auto</label>
+    <select id="carWarranties" formControlName="carWarranties" sharedInput>
+      <option value disabled selected>Garantías del auto</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('carWarranties')) {
+    <shared-input-error [message]="getError('carWarranties')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Factura / Pedimento select -->
+  <div class="col-span-2">
+    <label for="invoiceOrPermit" class="sr-only">Factura / Pedimento</label>
+    <select id="invoiceOrPermit" formControlName="invoiceOrPermit" sharedInput>
+      <option value disabled selected>Factura / Pedimento</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('invoiceOrPermit')) {
+    <shared-input-error [message]="getError('invoiceOrPermit')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Explica los detalles de Factura / Pedimiento / Otro textarea -->
+  <div class="col-span-2">
+    <label for="invoiceOrPermitDetails" class="sr-only">Explica los detalles de Factura / Pedimiento / Otro</label>
+    <textarea id="invoiceOrPermitDetails" formControlName="invoiceOrPermitDetails" rows="4"
+      placeholder="Explica los detalles de Factura / Pedimiento / Otro" sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('invoiceOrPermitDetails')) {
+    <shared-input-error [message]="getError('invoiceOrPermitDetails')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Historia del auto textarea -->
+  <div class="col-span-2">
+    <label for="carHistory" class="sr-only">Historia del auto</label>
+    <textarea id="carHistory" formControlName="carHistory" placeholder="Historia del auto" rows="6" sharedInput
+      sharedAutoResizeTextarea></textarea>
+    @if (hasError('carHistory')) {
+    <shared-input-error [message]="getError('carHistory')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2 mt-4">
+    <h2 class="text-xl font-bold">Exterior del auto</h2>
+  </div>
+
+  <!-- Color exterior select -->
+  <div>
+    <label for="exteriorColor" class="sr-only">Color exterior</label>
+    <select id="exteriorColor" formControlName="exteriorColor" sharedInput>
+      <option value disabled selected>Color exterior</option>
+    </select>
+    @if (hasError('exteriorColor')) {
+    <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Color específico -->
+  <div>
+    <label for="specificColor" class="sr-only">Color específico</label>
+    <input id="specificColor" formControlName="specificColor" type="text" placeholder=" Color específico" sharedInput>
+    @if (hasError('specificColor')) {
+    <shared-input-error [message]="getError('specificColor')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Ha estado involucrado en un accidente select -->
+  <div class="col-span-2">
+    <label for="hasBeenInAccident" class="sr-only">¿Ha estado involucrado en un accidente?</label>
+    <select id="hasBeenInAccident" formControlName="hasBeenInAccident" sharedInput>
+      <option value disabled selected>¿Ha estado involucrado en un accidente?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('hasBeenInAccident')) {
+    <shared-input-error [message]="getError('hasBeenInAccident')"></shared-input-error>
+    }
+  </div>
+
+  <!-- El auto se ha corrido en pista / autodromo select -->
+  <div class="col-span-2">
+    <label for="hasBeenOnTrack" class="sr-only">¿El auto se ha corrido en pista / autodromo?</label>
+    <select id="hasBeenOnTrack" formControlName="hasBeenOnTrack" sharedInput>
+      <option value disabled selected>¿El auto se ha corrido en pista / autodromo?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('hasBeenOnTrack')) {
+    <shared-input-error [message]="getError('hasBeenOnTrack')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Pintura original select -->
+  <div>
+    <label for="isPaintOriginal" class="sr-only">¿Pintura original?</label>
+    <select id="isPaintOriginal" formControlName="isPaintOriginal" sharedInput>
+      <option value disabled selected>¿Pintura original?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('isPaintOriginal')) {
+    <shared-input-error [message]="getError('isPaintOriginal')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Cuentas con medidor de pintura select -->
+  <div>
+    <label for="hasPaintMeter" class="sr-only">¿Cuentas con medidor de pintura?</label>
+    <select id="hasPaintMeter" formControlName="hasPaintMeter" sharedInput>
+      <option value disabled selected>¿Cuentas con medidor de pintura?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('hasPaintMeter')) {
+    <shared-input-error [message]="getError('hasPaintMeter')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Se le ha modificado el exterior select -->
+  <div>
+    <label for="hasExteriorModification" class="sr-only">¿Se le ha modificado el exterior?</label>
+    <select id="hasExteriorModification" formControlName="hasExteriorModification" sharedInput>
+      <option value disabled selected>¿Se le ha modificado el exterior?</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('hasExteriorModification')) {
+    <shared-input-error [message]="getError('hasExteriorModification')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Condición del exterior select -->
+  <div>
+    <label for="exteriorCondition" class="sr-only">Condición del exterior</label>
+    <select id="exteriorCondition" formControlName="exteriorCondition" sharedInput>
+      <option value disabled selected>Condición del exterior</option>
+      <option value="excellent">Excelente</option>
+      <option value="good">Buena</option>
+      <option value="regular">Regular</option>
+      <option value="bad">Mala</option>
+    </select>
+    @if (hasError('exteriorCondition')) {
+    <shared-input-error [message]="getError('exteriorCondition')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Comentarios sobre detalles textarea -->
+  <div class="col-span-2">
+    <label for="detailsComments" class="sr-only">Comentarios sobre detalles</label>
+    <textarea id="detailsComments" formControlName="detailsComments" placeholder="Comentarios sobre detalles" rows="6"
+      sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('detailsComments')) {
+    <shared-input-error [message]="getError('detailsComments')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Fotos/vídeos de detalles -->
+  <div>
+    <label for="detailsImagesOrVideos" class="text-sm cursor-pointer">
+      Fotos/vídeos de detalles <span class="text-gray4">(Opcional)</span>
+      @if(detailsImagesOrVideosFormArray.at(0).value) {
+      <img src="{{previewImagesCarDetails()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+        alt="foto frontal de la INE">
+      <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
+      } @else {
+      <div
+        class="bg-gray1 border border-dashed rounded-md border-gray4 w-64 h-44 mt-2 flex items-center justify-center">
+        <div>
+          <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+          <p class="text-center text-gray4 text-sm">Subir imagen</p>
+        </div>
+        <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
+      </div>
+      }
+    </label>
+
+    @if (hasError('detailsImagesOrVideos')) {
+    <shared-input-error [message]="getError('detailsImagesOrVideos')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Fotos/vídeos del exterior del auto -->
+  <div class="col-start-1">
+    <label for="exteriorImagesOrVideos" class="text-sm cursor-pointer">
+      Fotos/vídeos del exterior del auto
+      @if(exteriorImagesOrVideosFormArray.at(0).value) {
+      <img src="{{previewImagesCarExterior()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+        alt="foto frontal de la INE">
+      <input (change)="selectFile($event, 1)" id="frontal" type="file" class="sr-only">
+      } @else {
+      <div
+        class="bg-gray1 border border-dashed rounded-md border-gray4 w-64 h-44 mt-2 flex items-center justify-center">
+        <div>
+          <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+          <p class="text-center text-gray4 text-sm">Subir imagen</p>
+        </div>
+        <input (change)="selectFile($event, 1)" id="frontal" type="file" class="sr-only">
+      </div>
+      }
+    </label>
+
+    @if (hasError('exteriorImagesOrVideos')) {
+    <shared-input-error [message]="getError('exteriorImagesOrVideos')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <button class="mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
+      [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      Siguiente
+    </button>
+  </div>
+</form>

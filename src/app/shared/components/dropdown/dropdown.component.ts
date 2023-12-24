@@ -1,14 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, WritableSignal, signal } from '@angular/core';
+import { Component, Input, WritableSignal, signal } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 
 @Component({
   selector: 'shared-dropdown',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+
   animations: [
     trigger('fadeAndScale', [
       state('void', style({})),
