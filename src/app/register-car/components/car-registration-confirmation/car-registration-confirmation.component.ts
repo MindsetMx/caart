@@ -6,6 +6,7 @@ import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-car-registration-confirmation',
@@ -16,6 +17,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     InputErrorComponent,
     PrimaryButtonDirective,
     ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './car-registration-confirmation.component.html',
   styleUrl: './car-registration-confirmation.component.css',

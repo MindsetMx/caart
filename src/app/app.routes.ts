@@ -31,6 +31,11 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         loadComponent: () => import('./register-car/pages/complete-car-register/complete-car-register.component').then((m) => m.CompleteCarRegisterComponent),
       },
+      {
+        path: 'registro-exitoso-auto',
+        canActivate: [AuthGuard],
+        loadComponent: () => import('./register-car/pages/successful-car-registration/successful-car-registration.component').then((m) => m.SuccessfulCarRegistrationComponent),
+      }
     ]
   },
   {
