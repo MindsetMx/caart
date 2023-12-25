@@ -1,0 +1,85 @@
+<h1 class="font-optima text-4xl font-bold mb-8">Confirmación</h1>
+
+<h2 class="text-xl font-bold mb-5">Confirma tus datos</h2>
+<form [formGroup]="confirmationForm" (ngSubmit)="submitExteriorOfTheCarForm()" class="grid grid-cols-2 gap-5">
+
+  <!-- Nombre -->
+  <div>
+    <label for="name" class="sr-only">Nombre</label>
+    <input id="name" formControlName="name" type="text" placeholder="Nombre" sharedInput>
+    @if (hasError('name')) {
+    <shared-input-error [message]="getError('name')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Apellido -->
+  <div>
+    <label for="lastName" class="sr-only">Apellido</label>
+    <input id="lastName" formControlName="lastName" type="text" placeholder="Apellido" sharedInput>
+    @if (hasError('lastName')) {
+    <shared-input-error [message]="getError('lastName')"></shared-input-error>
+    }
+  </div>
+
+  <!-- E-mail -->
+  <div class="col-span-2">
+    <label for="email" class="sr-only">E-mail</label>
+    <input id="email" formControlName="email" type="email" placeholder="E-mail" sharedInput>
+    @if (hasError('email')) {
+    <shared-input-error [message]="getError('email')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Número telefónico -->
+  <div>
+    <label for="phoneNumber" class="sr-only">Número telefónico</label>
+    <input id="phoneNumber" formControlName="phoneNumber" type="text" placeholder="Número telefónico" sharedInput>
+    @if (hasError('phoneNumber')) {
+    <shared-input-error [message]="getError('phoneNumber')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Código Postal -->
+  <div>
+    <label for="postalCode" class="sr-only">Código Postal</label>
+    <input id="postalCode" formControlName="postalCode" type="text" placeholder="Código Postal" sharedInput>
+    @if (hasError('postalCode')) {
+    <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Ciudad -->
+  <div>
+    <label for="city" class="sr-only">Ciudad</label>
+    <input id="city" formControlName="city" type="text" placeholder="Ciudad" sharedInput>
+    @if (hasError('city')) {
+    <shared-input-error [message]="getError('city')"></shared-input-error>
+    }
+  </div>
+
+  <!-- País -->
+  <div>
+    <label for="country" class="sr-only">País</label>
+    <input id="country" formControlName="country" type="text" placeholder="País" sharedInput>
+    @if (hasError('country')) {
+    <shared-input-error [message]="getError('country')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Calle y número interno y externo input -->
+  <div class="col-span-2">
+    <label for="streetAndExternalAndInternalNumber" class="sr-only">Calle y número interno y externo</label>
+    <input id="streetAndExternalAndInternalNumber" formControlName="streetAndExternalAndInternalNumber" type="text"
+      placeholder="Calle y número interno y externo" sharedInput>
+    @if (hasError('streetAndExternalAndInternalNumber')) {
+    <shared-input-error [message]="getError('streetAndExternalAndInternalNumber')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <button class="mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
+      [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      Publicar
+    </button>
+  </div>
+</form>

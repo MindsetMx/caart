@@ -5,14 +5,15 @@ import { GeneralDetailsAndExteriorOfTheCarComponent } from './components/general
 import { InteriorOfTheCarComponent } from './components/interior-of-the-car/interior-of-the-car.component';
 import { MechanicsComponent } from './components/mechanics/mechanics.component';
 import { CarExtrasComponent } from './components/car-extras/car-extras.component';
+import { CarRegistrationConfirmationComponent } from './components/car-registration-confirmation/car-registration-confirmation.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompleteCarRegistrationService {
-  steps = [GeneralInformationComponent, GeneralDetailsAndExteriorOfTheCarComponent, InteriorOfTheCarComponent, MechanicsComponent, CarExtrasComponent];
+  steps = [GeneralInformationComponent, GeneralDetailsAndExteriorOfTheCarComponent, InteriorOfTheCarComponent, MechanicsComponent, CarExtrasComponent, CarRegistrationConfirmationComponent];
 
-  indexCurrentStep: WritableSignal<number> = signal(4);
+  indexCurrentStep: WritableSignal<number> = signal(5);
 
   changeStep(step: number) {
     if (step < 0 || step >= this.steps.length) return;
