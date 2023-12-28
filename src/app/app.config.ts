@@ -1,7 +1,7 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideNgxStripe } from 'ngx-stripe';
 import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { routes } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,8 +14,8 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       HttpClientModule,
       ToastrModule.forRoot(),
-      BrowserAnimationsModule
     ),
+    provideAnimationsAsync(),
     provideNgxStripe(environments.stripe.publishableKey)
   ]
 };

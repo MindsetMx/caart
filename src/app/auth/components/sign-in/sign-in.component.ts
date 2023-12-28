@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild, WritableSignal, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -23,7 +23,11 @@ import { ValidatorsService } from '@shared/services/validators.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent {
+  @Output() isOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
+
+  @Input() mt: string = 'mt-16';
+  @Input() mb: string = 'mb-32';
 
   #authService = inject(AuthService);
   #router = inject(Router);
@@ -41,6 +45,14 @@ export class SignInComponent {
       next: () => {
         this.redirectToPreviousUrlIfExistOrHome();
         localStorage.removeItem('url');
+
+        const currentUrl = this.#router.url;
+        const currentUser = this.#authService.currentUser();
+
+        if (currentUrl === '/' && currentUser?.attributes?.accountVerified === false)
+          this.#router.navigate(['/confirmacion']);
+
+        this.isOpenChange.emit(false);
       },
       error: (error) => {
         console.error({ error });

@@ -1,20 +1,22 @@
 import { AuthService } from '@auth/services/auth.service';
-import { CommonModule } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import { Router, RouterOutlet, } from '@angular/router';
 
 import { FooterComponent } from '@shared/components/footer/footer.component';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { AuthStatus } from '@auth/enums';
+import { SignInComponent } from '@auth/components/sign-in/sign-in.component';
+import { ModalComponent } from '@shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    ModalComponent,
+    SignInComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

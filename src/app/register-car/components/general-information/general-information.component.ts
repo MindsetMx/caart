@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, ViewChild, WritableSignal, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StripeCardComponent, StripeElementsDirective, injectStripe } from 'ngx-stripe';
 import { StripeCardElementOptions, StripeElementsOptions } from '@stripe/stripe-js';
@@ -14,7 +13,6 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
   selector: 'register-car-general-information',
   standalone: true,
   imports: [
-    CommonModule,
     InputDirective,
     InputErrorComponent,
     PrimaryButtonDirective,

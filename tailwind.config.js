@@ -24,6 +24,13 @@ module.exports = {
         gray4: "#717171",
         gray5: "#f4f4f4",
         gray6: "#b2b2b2",
+      },
+      width: {
+        'fill': '-webkit-fill-available',
+      },
+      screens: {
+        'xs': '480px',
+        'xxs': '360px',
       }
     },
   },

@@ -5,8 +5,8 @@
 
   <!-- Nombre -->
   <div>
-    <label for="name" class="sr-only">Nombre</label>
-    <input id="name" formControlName="name" type="text" placeholder="Nombre" sharedInput>
+    <label for="name" class="block text-sm mb-1">Nombre</label>
+    <input id="name" formControlName="name" type="text" sharedInput>
     @if (hasError('name')) {
     <shared-input-error [message]="getError('name')"></shared-input-error>
     }
@@ -14,8 +14,8 @@
 
   <!-- Apellido -->
   <div>
-    <label for="lastName" class="sr-only">Apellido</label>
-    <input id="lastName" formControlName="lastName" type="text" placeholder="Apellido" sharedInput>
+    <label for="lastName" class="block text-sm mb-1">Apellido</label>
+    <input id="lastName" formControlName="lastName" type="text" sharedInput>
     @if (hasError('lastName')) {
     <shared-input-error [message]="getError('lastName')"></shared-input-error>
     }
@@ -23,8 +23,8 @@
 
   <!-- E-mail -->
   <div class="col-span-2">
-    <label for="email" class="sr-only">E-mail</label>
-    <input id="email" formControlName="email" type="email" placeholder="E-mail" sharedInput>
+    <label for="email" class="block text-sm mb-1">E-mail</label>
+    <input id="email" formControlName="email" type="email" sharedInput>
     @if (hasError('email')) {
     <shared-input-error [message]="getError('email')"></shared-input-error>
     }
@@ -32,8 +32,8 @@
 
   <!-- Número telefónico -->
   <div>
-    <label for="phoneNumber" class="sr-only">Número telefónico</label>
-    <input id="phoneNumber" formControlName="phoneNumber" type="text" placeholder="Número telefónico" sharedInput>
+    <label for="phoneNumber" class="block text-sm mb-1">Número telefónico</label>
+    <input id="phoneNumber" formControlName="phoneNumber" type="text" sharedInput>
     @if (hasError('phoneNumber')) {
     <shared-input-error [message]="getError('phoneNumber')"></shared-input-error>
     }
@@ -41,8 +41,8 @@
 
   <!-- Código Postal -->
   <div>
-    <label for="postalCode" class="sr-only">Código Postal</label>
-    <input id="postalCode" formControlName="postalCode" type="text" placeholder="Código Postal" sharedInput>
+    <label for="postalCode" class="block text-sm mb-1">Código Postal</label>
+    <input id="postalCode" formControlName="postalCode" type="text" sharedInput>
     @if (hasError('postalCode')) {
     <shared-input-error [message]="getError('postalCode')"></shared-input-error>
     }
@@ -50,8 +50,8 @@
 
   <!-- Ciudad -->
   <div>
-    <label for="city" class="sr-only">Ciudad</label>
-    <input id="city" formControlName="city" type="text" placeholder="Ciudad" sharedInput>
+    <label for="city" class="block text-sm mb-1">Ciudad</label>
+    <input id="city" formControlName="city" type="text" sharedInput>
     @if (hasError('city')) {
     <shared-input-error [message]="getError('city')"></shared-input-error>
     }
@@ -59,8 +59,8 @@
 
   <!-- País -->
   <div>
-    <label for="country" class="sr-only">País</label>
-    <input id="country" formControlName="country" type="text" placeholder="País" sharedInput>
+    <label for="country" class="block text-sm mb-1">País</label>
+    <input id="country" formControlName="country" type="text" sharedInput>
     @if (hasError('country')) {
     <shared-input-error [message]="getError('country')"></shared-input-error>
     }
@@ -68,9 +68,9 @@
 
   <!-- Calle y número interno y externo input -->
   <div class="col-span-2">
-    <label for="streetAndExternalAndInternalNumber" class="sr-only">Calle y número interno y externo</label>
+    <label for="streetAndExternalAndInternalNumber" class="block text-sm mb-1">Calle y número interno y externo</label>
     <input id="streetAndExternalAndInternalNumber" formControlName="streetAndExternalAndInternalNumber" type="text"
-      placeholder="Calle y número interno y externo" sharedInput>
+      sharedInput>
     @if (hasError('streetAndExternalAndInternalNumber')) {
     <shared-input-error [message]="getError('streetAndExternalAndInternalNumber')"></shared-input-error>
     }

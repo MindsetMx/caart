@@ -1,13 +1,14 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Interior del auto</h1>
 
 <h2 class="text-xl font-bold mb-5">Interior del auto</h2>
-<form [formGroup]="interiorOfTheCarForm" (ngSubmit)="submitExteriorOfTheCarForm()" class="grid grid-cols-2 gap-5">
+<form [formGroup]="interiorOfTheCarForm" (ngSubmit)="submitExteriorOfTheCarForm()"
+  class="grid grid-cols-2 items-end gap-5">
 
   <!-- color select -->
   <div>
-    <label for="color" class="sr-only">Color</label>
+    <label for="color" class="block mb-1 text-sm">Color</label>
     <select id="color" formControlName="color" sharedInput>
-      <option value disabled selected>Color</option>
+      <!-- <option value disabled selected>Color</option> -->
     </select>
     @if (hasError('color')) {
     <shared-input-error [message]="getError('color')"></shared-input-error>
@@ -16,9 +17,9 @@
 
   <!-- Material select   -->
   <div>
-    <label for="material" class="sr-only">Material</label>
+    <label for="material" class="block mb-1 text-sm">Material</label>
     <select id="material" formControlName="material" sharedInput>
-      <option value disabled selected>Material</option>
+      <!-- <option value disabled selected>Material</option> -->
     </select>
     @if (hasError('material')) {
     <shared-input-error [message]="getError('material')"></shared-input-error>
@@ -27,9 +28,9 @@
 
   <!-- Condiciones del interior select -->
   <div class="col-span-2">
-    <label for="interiorCondition" class="sr-only">Condiciones del interior</label>
+    <label for="interiorCondition" class="block mb-1 text-sm">Condiciones del interior</label>
     <select id="interiorCondition" formControlName="interiorCondition" sharedInput>
-      <option value disabled selected>Condiciones del interior</option>
+      <!-- <option value disabled selected>Condiciones del interior</option> -->
       <option value="excellent">Excelente</option>
       <option value="good">Buena</option>
       <option value="regular">Regular</option>
@@ -42,9 +43,10 @@
 
   <!-- ¿Ha tenido modificaciones en el interior? select -->
   <div class="col-span-2">
-    <label for="hasInteriorModification" class="sr-only">¿Ha tenido modificaciones en el interior?</label>
+    <label for="hasInteriorModification" class="block mb-1 text-sm">¿Ha tenido modificaciones en el
+      interior?</label>
     <select id="hasInteriorModification" formControlName="hasInteriorModification" sharedInput>
-      <option value disabled selected>¿Ha tenido modificaciones en el interior?</option>
+      <!-- <option value disabled selected>¿Ha tenido modificaciones en el interior?</option> -->
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
@@ -55,9 +57,9 @@
 
   <!-- ¿Los accesorios y electrónicos funcionan? input-->
   <div class="col-span-2">
-    <label for="accessoriesAndElectronicsWork" class="sr-only">¿Los accesorios y electrónicos funcionan?</label>
-    <input id="accessoriesAndElectronicsWork" formControlName="accessoriesAndElectronicsWork" type="text"
-      placeholder="¿Los accesorios y electrónicos funcionan?" sharedInput>
+    <label for="accessoriesAndElectronicsWork" class="block mb-1 text-sm">¿Los accesorios y electrónicos
+      funcionan?</label>
+    <input id="accessoriesAndElectronicsWork" formControlName="accessoriesAndElectronicsWork" type="text" sharedInput>
     @if (hasError('accessoriesAndElectronicsWork')) {
     <shared-input-error [message]="getError('accessoriesAndElectronicsWork')"></shared-input-error>
     }
@@ -65,16 +67,16 @@
 
   <!-- Comentarios sobre detalles textarea -->
   <div class="col-span-2">
-    <label for="detailsComments" class="sr-only">Comentarios sobre detalles</label>
-    <textarea id="detailsComments" formControlName="detailsComments" placeholder="Comentarios sobre detalles" rows="6"
-      sharedInput sharedAutoResizeTextarea></textarea>
+    <label for="detailsComments" class="block mb-1 text-sm">Comentarios sobre detalles</label>
+    <textarea id="detailsComments" formControlName="detailsComments" rows="6" sharedInput
+      sharedAutoResizeTextarea></textarea>
     @if (hasError('detailsComments')) {
     <shared-input-error [message]="getError('detailsComments')"></shared-input-error>
     }
   </div>
 
   <!-- Fotos/vídeos del interior del auto -->
-  <div class="col-start-1">
+  <div class="col-span-2">
     <label for="interiorImagesOrVideos" class="text-sm cursor-pointer">
       Fotos/vídeos del exterior del auto
       @if(photosOrVideosInteriorOfTheCarFormArray.at(0).value) {

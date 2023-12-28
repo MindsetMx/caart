@@ -12,10 +12,8 @@ export const AuthGuard: CanActivateFn = (route, state) => {
 
   return authService.checkAuthStatus$().pipe(
     map(() => {
-      const authStatus = authService.authStatus();
-
       //Si está autenticado, puede acceder a la ruta
-      if (authStatus === AuthStatus.authenticated) {
+      if (authService.authStatus() === AuthStatus.authenticated) {
         return true;
       }
 
@@ -23,8 +21,8 @@ export const AuthGuard: CanActivateFn = (route, state) => {
       saveCurrentUrlInLocalStorage(state);
 
       //Redireccionamos a la página de login
-      if (authStatus === AuthStatus.notAuthenticated) {
-        router.navigate(['/login']);
+      if (authService.authStatus() === AuthStatus.notAuthenticated) {
+        router.navigate(['/iniciar-sesion']);
       }
 
       return false;

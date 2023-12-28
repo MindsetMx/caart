@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
@@ -7,15 +6,16 @@ import { DropdownComponent } from '@shared/components/dropdown/dropdown.componen
 import { DropdownLink } from '@shared/interfaces/DropdownLink';
 import { Router, RouterModule } from '@angular/router';
 import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
+import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.component';
 
 @Component({
   selector: 'shared-navbar',
   standalone: true,
   imports: [
-    CommonModule,
+    ClickOutsideDirective,
     DropdownComponent,
     RouterModule,
-    ClickOutsideDirective
+    SignInModalComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
@@ -26,6 +26,7 @@ export class NavbarComponent {
   private router = inject(Router);
 
   menuIsOpen: WritableSignal<boolean> = signal(false);
+  modalSignInIsOpen: WritableSignal<boolean> = signal(false);
   categoriesDropdownIsOpen: WritableSignal<boolean> = signal(false);
   userDropdownIsOpen: WritableSignal<boolean> = signal(false);
 
@@ -54,6 +55,10 @@ export class NavbarComponent {
 
   get isAuthenticated(): boolean {
     return this.authStatus() === AuthStatus.authenticated;
+  }
+
+  openSignInModal(): void {
+    this.modalSignInIsOpen.set(true);
   }
 
   logout() {

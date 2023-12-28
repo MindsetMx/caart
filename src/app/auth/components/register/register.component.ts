@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, ViewChild, WritableSignal, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { injectStripe, StripeElementsDirective, StripeCardComponent } from 'ngx-stripe';
 import { Observable, Subscription, of, switchMap } from 'rxjs';
@@ -20,7 +19,6 @@ import { ValidatorsService } from '@shared/services/validators.service';
   selector: 'app-register',
   standalone: true,
   imports: [
-    CommonModule,
     InputDirective,
     PrimaryButtonDirective,
     ReactiveFormsModule,

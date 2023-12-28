@@ -1,13 +1,14 @@
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
-import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
 import { register } from 'swiper/element/bundle';
 register();
+
+import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
 
 @Component({
   selector: 'home',
   standalone: true,
   imports: [
-    SecondaryButtonDirective
+    SecondaryButtonDirective,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

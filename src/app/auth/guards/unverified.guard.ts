@@ -11,10 +11,8 @@ export const unverifiedGuard: CanActivateFn = (route, state) => {
 
   return authService.checkAuthStatus$().pipe(
     map(() => {
-      if (authService.authStatus() === AuthStatus.authenticated && !authService.currentUser()?.attributes?.accountVerified) {
-
+      if (authService.authStatus() === AuthStatus.authenticated && authService.currentUser()?.attributes?.accountVerified === false)
         return true
-      }
 
       router.navigate(['/']);
       return false;

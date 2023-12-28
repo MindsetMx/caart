@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+
 import { AutoResizeTextareaDirective } from '@shared/directives/auto-resize-textarea.directive';
 import { InputDirective } from '@shared/directives/input.directive';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
 

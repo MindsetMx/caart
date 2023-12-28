@@ -1,10 +1,11 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Extras</h1>
 
 <h2 class="text-xl font-bold mb-5">Extras del auto</h2>
-<form [formGroup]="exteriorOfTheCarForm" (ngSubmit)="submitExteriorOfTheCarForm()" class="grid grid-cols-2 gap-5">
+<form [formGroup]="exteriorOfTheCarForm" (ngSubmit)="submitExteriorOfTheCarForm()"
+  class="grid grid-cols-2 items-end gap-5">
   <div>
     <fieldset>
-      <legend class="block mb-2">Historial de servicios</legend>
+      <legend class="block text-sm mb-1">Historial de servicios</legend>
       <div class="flex">
         <div class="flex">
           <input id="hasServiceHistory" value="true" name="hasServiceHistory" type="radio" checked class="h-6 w-6">
@@ -12,7 +13,7 @@
             Sí
           </label>
         </div>
-        <div class="flex ml-16">
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
           <input id="hasNoServiceHistory" value="false" name="hasServiceHistory" type="radio" class="h-6 w-6">
           <label for="hasNoServiceHistory" class="ml-3 block font-bold">
             No
@@ -28,7 +29,7 @@
   <!-- Manuales radio input-->
   <div>
     <fieldset>
-      <legend class="block mb-2">Manuales</legend>
+      <legend class="block text-sm mb-1">Manuales</legend>
       <div class="flex">
         <div class="flex">
           <input id="hasManuals" value="true" name="hasManuals" type="radio" checked class="h-6 w-6">
@@ -36,7 +37,7 @@
             Sí
           </label>
         </div>
-        <div class="flex ml-16">
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
           <input id="hasNoManuals" value="false" name="hasManuals" type="radio" class="h-6 w-6">
           <label for="hasNoManuals" class="ml-3 block font-bold">
             No
@@ -52,7 +53,7 @@
   <!-- Caja de herramienta radio input -->
   <div>
     <fieldset>
-      <legend class="block mb-2">Caja de herramientas</legend>
+      <legend class="block text-sm mb-1">Caja de herramientas</legend>
       <div class="flex">
         <div class="flex">
           <input id="hasToolBox" value="true" name="hasToolBox" type="radio" checked class="h-6 w-6">
@@ -60,7 +61,7 @@
             Sí
           </label>
         </div>
-        <div class="flex ml-16">
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
           <input id="hasNoToolBox" value="false" name="hasToolBox" type="radio" class="h-6 w-6">
           <label for="hasNoToolBox" class="ml-3 block font-bold">
             No
@@ -76,7 +77,7 @@
   <!-- Llanta de refacción radio input -->
   <div>
     <fieldset>
-      <legend class="block mb-2">Llanta de refacción</legend>
+      <legend class="block text-sm mb-1">Llanta de refacción</legend>
       <div class="flex">
         <div class="flex">
           <input id="hasSpareTire" value="true" name="hasSpareTire" type="radio" checked class="h-6 w-6">
@@ -84,7 +85,7 @@
             Sí
           </label>
         </div>
-        <div class="flex ml-16">
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
           <input id="hasSpareTire" value="false" name="hasSpareTire" type="radio" class="h-6 w-6">
           <label for="hasSpareTire" class="ml-3 block font-bold">
             No
@@ -100,7 +101,7 @@
   <!-- Cubierta de auto radio input -->
   <div>
     <fieldset>
-      <legend class="block mb-2">Cubierta de auto</legend>
+      <legend class="block text-sm mb-1">Cubierta de auto</legend>
       <div class="flex">
         <div class="flex">
           <input id="hasCarCover" value="true" name="hasCarCover" type="radio" checked class="h-6 w-6">
@@ -108,7 +109,7 @@
             Sí
           </label>
         </div>
-        <div class="flex ml-16">
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
           <input id="hasNoCarCover" value="false" name="hasCarCover" type="radio" class="h-6 w-6">
           <label for="hasNoCarCover" class="ml-3 block font-bold">
             No
@@ -124,7 +125,7 @@
   <!-- Máquina para inflar llanta radio input -->
   <div>
     <fieldset>
-      <legend class="block mb-2">Máquina para inflar llanta</legend>
+      <legend class="block text-sm mb-1">Máquina para inflar llanta</legend>
       <div class="flex">
         <div class="flex">
           <input id="hasTireInflator" value="true" name="hasTireInflator" type="radio" checked class="h-6 w-6">
@@ -132,7 +133,7 @@
             Sí
           </label>
         </div>
-        <div class="flex ml-16">
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
           <input id="hasNoTireInflator" value="false" name="hasTireInflator" type="radio" class="h-6 w-6">
           <label for="hasNoTireInflator" class="ml-3 block font-bold">
             No
@@ -148,7 +149,7 @@
   <!-- Cargador de batería radio input -->
   <div>
     <fieldset>
-      <legend class="block mb-2">Cargador de batería</legend>
+      <legend class="block text-sm mb-1">Cargador de batería</legend>
       <div class="flex">
         <div class="flex">
           <input id="hasBatteryCharger" value="true" name="hasBatteryCharger" type="radio" checked class="h-6 w-6">
@@ -156,7 +157,7 @@
             Sí
           </label>
         </div>
-        <div class="flex ml-16">
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
           <input id="hasNoBatteryCharger" value="false" name="hasBatteryCharger" type="radio" class="h-6 w-6">
           <label for="hasNoBatteryCharger" class="ml-3 block font-bold">
             No
@@ -171,8 +172,8 @@
 
   <!-- Número de llaves select -->
   <div class="col-span-2">
+    <label for="numberOfKeys" class="block text-sm mb-2">Número de llaves</label>
     <select id="numberOfKeys" name="numberOfKeys" formControlName="numberOfKeys" sharedInput>
-      <option value disabled selected>Número de llaves</option>
       <option value="1">1</option>
       <option value="2">2</option>
     </select>
@@ -183,8 +184,8 @@
 
   <!-- Otros textarea -->
   <div class="col-span-2">
-    <textarea id="other" rows="4" name="other" placeholder="Otros" formControlName="other" sharedInput
-      sharedTextarea></textarea>
+    <label for="other" class="block text-sm mb-2">Otros</label>
+    <textarea id="other" rows="4" name="other" formControlName="other" sharedInput sharedTextarea></textarea>
     @if (hasError('other')) {
     <shared-input-error [message]="getError('other')"></shared-input-error>
     }
@@ -196,8 +197,9 @@
 
   <!-- Cargos adicionales input -->
   <div>
-    <input id="additionalCharges" name="additionalCharges" type="number" placeholder="Cargos adicionales"
-      formControlName="additionalCharges" sharedInput>
+    <label for="additionalCharges" class="block text-sm mb-2">Cargos adicionales</label>
+    <input id="additionalCharges" name="additionalCharges" type="number" formControlName="additionalCharges"
+      sharedInput>
     @if (hasError('additionalCharges')) {
     <shared-input-error [message]="getError('additionalCharges')"></shared-input-error>
     }
@@ -205,8 +207,8 @@
 
   <!-- Monto del cargo $ -->
   <div>
-    <input id="amountOfCharge" name="amountOfCharge" type="number" placeholder="Monto del cargo $"
-      formControlName="amountOfCharge" sharedInput>
+    <label for="amountOfCharge" class="block text-sm mb-2">Monto del cargo $</label>
+    <input id="amountOfCharge" name="amountOfCharge" type="number" formControlName="amountOfCharge" sharedInput>
     @if (hasError('amountOfCharge')) {
     <shared-input-error [message]="getError('amountOfCharge')"></shared-input-error>
     }
@@ -218,17 +220,18 @@
 
   <!-- ¿Algo más que nos quisieras comentar de tu auto? textarea -->
   <div class="col-span-2">
-    <textarea id="additionalComments" rows="6" name="additionalComments"
-      placeholder="¿Algo más que nos quisieras comentar de tu auto?" formControlName="additionalComments" sharedInput
-      sharedTextarea></textarea>
+    <label for="additionalComments" class="block text-sm mb-2">¿Algo más que nos quisieras comentar de tu auto?</label>
+    <textarea id="additionalComments" rows="6" name="additionalComments" formControlName="additionalComments"
+      sharedInput sharedTextarea></textarea>
     @if (hasError('additionalComments')) {
     <shared-input-error [message]="getError('additionalComments')"></shared-input-error>
     }
   </div>
 
   <div class="col-span-2 mt-8">
-    <div class="flex items-center text-xs">
-      <input id="acceptTermsAndConditions" formControlName="acceptTermsAndConditions" type="checkbox" class="h-4 w-4">
+    <div class="flex text-xs">
+      <input id="acceptTermsAndConditions" formControlName="acceptTermsAndConditions" type="checkbox"
+        class="h-4 w-4 mt-1">
       <label for="acceptTermsAndConditions" class="ml-3 block leading-6">
         Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
         <a class="underline">Acuerdos de usuarios.</a>

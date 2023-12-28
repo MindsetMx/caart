@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, signal, inject, ElementRef, HostListener, ViewChildren, QueryList } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 import { AppService } from '@app/app.service';
-import { CommonModule } from '@angular/common';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';

@@ -115,10 +115,10 @@
         } @else {
         <img class="w-6 h-6 mr-6" src="assets/img/navbar/star.svg" alt="ícono estrella">
 
-        <a routerLink="/iniciar-sesion" routerLinkActive="router-link-active" type="button"
+        <button (click)="openSignInModal()" routerLinkActive="router-link-active" type="button"
           class="font-semibold text-sm">
           INICIA SESIÓN
-        </a>
+        </button>
         }
       </div>
     </div>
@@ -201,3 +201,5 @@
   <div class="h-1 w-full custom-border -z-10"></div>
   <div class="h-1 w-full custom-border rotate-180 -z-10"></div>
 </div>
+
+<auth-sign-in-modal [isOpen]="modalSignInIsOpen"></auth-sign-in-modal>

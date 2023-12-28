@@ -11,9 +11,16 @@ import { CarRegistrationConfirmationComponent } from './components/car-registrat
   providedIn: 'root'
 })
 export class CompleteCarRegistrationService {
-  steps = [GeneralInformationComponent, GeneralDetailsAndExteriorOfTheCarComponent, InteriorOfTheCarComponent, MechanicsComponent, CarExtrasComponent, CarRegistrationConfirmationComponent];
+  steps = [
+    GeneralInformationComponent,
+    GeneralDetailsAndExteriorOfTheCarComponent,
+    InteriorOfTheCarComponent,
+    MechanicsComponent,
+    CarExtrasComponent,
+    CarRegistrationConfirmationComponent
+  ];
 
-  indexCurrentStep: WritableSignal<number> = signal(5);
+  indexCurrentStep: WritableSignal<number> = signal(4);
 
   changeStep(step: number) {
     if (step < 0 || step >= this.steps.length) return;
