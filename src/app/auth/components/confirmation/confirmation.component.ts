@@ -8,6 +8,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { VerificationService } from '@auth/services/verification.service';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-confirmation',
@@ -17,7 +18,8 @@ import { VerificationService } from '@auth/services/verification.service';
     RouterModule,
     ReactiveFormsModule,
     InputErrorComponent,
-    CommonModule
+    CommonModule,
+    SpinnerComponent
   ],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css',

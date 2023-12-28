@@ -296,9 +296,13 @@
       </div>
 
       <div class="col-span-2">
-        <button type="submit" [disabled]="isButtonSubmitDisabled()" [class.opacity-25]="isButtonSubmitDisabled()"
+        <button class="inline-flex justify-center items-center" type="submit" [disabled]="isButtonSubmitDisabled()"
           sharedPrimaryButton>
+          @if (isButtonSubmitDisabled()) {
+          <shared-spinner></shared-spinner>
+          } @else {
           Registrarme
+          }
         </button>
         <div class="text-center mt-4">
           <span>¿Ya tienes una cuenta en CAART?</span>&nbsp;&nbsp;&nbsp;<a routerLink="/iniciar-sesion"

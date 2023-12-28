@@ -14,6 +14,7 @@ import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
     RouterModule,
     InputErrorComponent,
     StripeElementsDirective,
-    StripeCardComponent
+    StripeCardComponent,
+    SpinnerComponent
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',

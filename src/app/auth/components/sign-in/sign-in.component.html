@@ -32,14 +32,18 @@
         <p class=" text-lg mt-2 underline">¿Ólvidaste tu contraseña?</p>
       </div>
 
-      <button type="submit" [disabled]="isButtonSubmitDisabled()" [class.opacity-25]="isButtonSubmitDisabled()"
+      <button class="inline-flex justify-center items-center" type="submit" [disabled]="isButtonSubmitDisabled()"
         sharedPrimaryButton>
+        @if (isButtonSubmitDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
         Iniciar sesión
+        }
       </button>
 
       <div class="text-center">
-        <span>¿No tienes cuenta en CAART?</span>&nbsp;&nbsp;&nbsp;<a routerLink="/registrarse"
-          class="font-bold underline">Regístrate</a>
+        <span>¿No tienes cuenta en CAART?</span>&nbsp;&nbsp;&nbsp;<button type="button" (click)="goToRegisterPage()"
+          class="font-bold underline">Regístrate</button>
       </div>
     </form>
   </div>

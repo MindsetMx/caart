@@ -3,9 +3,10 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 import { AuthService } from '@auth/services/auth.service';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { InputDirective } from '@shared/directives/input.directive';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
@@ -13,10 +14,10 @@ import { ValidatorsService } from '@shared/services/validators.service';
   standalone: true,
   imports: [
     InputDirective,
-    RouterModule,
-    PrimaryButtonDirective,
     InputErrorComponent,
-    ReactiveFormsModule
+    PrimaryButtonDirective,
+    ReactiveFormsModule,
+    SpinnerComponent
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
@@ -41,8 +42,19 @@ export class SignInComponent {
   }
 
   login(): void {
+    this.isButtonSubmitDisabled.set(true);
+
+    const isValid = this.#validatorsService.isValidForm(this.loginForm);
+
+    if (!isValid) {
+      this.isButtonSubmitDisabled.set(false);
+      return;
+    }
+
     this.#authService.login$(this.loginForm).subscribe({
       next: () => {
+        this.loginForm.reset();
+
         this.redirectToPreviousUrlIfExistOrHome();
         localStorage.removeItem('url');
 
@@ -57,7 +69,14 @@ export class SignInComponent {
       error: (error) => {
         console.error({ error });
       }
+    }).add(() => {
+      this.isButtonSubmitDisabled.set(false);
     });
+  }
+
+  goToRegisterPage(): void {
+    this.#router.navigate(['/registrarse']);
+    this.isOpenChange.emit(false);
   }
 
   redirectToPreviousUrlIfExistOrHome(): void {
