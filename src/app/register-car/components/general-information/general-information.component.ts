@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, ViewChild, WritableSignal, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { StripeCardComponent, StripeElementsDirective, injectStripe } from 'ngx-stripe';
 import { StripeCardElementOptions, StripeElementsOptions } from '@stripe/stripe-js';
 
 import { environments } from '@env/environments';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { ValidatorsService } from '@shared/services/validators.service';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
   selector: 'register-car-general-information',
@@ -16,6 +17,8 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
     InputDirective,
     InputErrorComponent,
     PrimaryButtonDirective,
+    ReactiveFormsModule,
+    SpinnerComponent,
     StripeCardComponent,
     StripeElementsDirective,
   ],
@@ -61,6 +64,17 @@ export class GeneralInformationComponent {
       paquete: ['', [Validators.required]],
       stripeToken: ['', [Validators.required]],
     });
+  }
+
+  generalInformationFormSubmit() {
+    this.isButtonSubmitDisabled.set(true);
+
+    const isValid = this.#validatorsService.isValidForm(this.generalInformationForm);
+
+    if (!isValid) {
+      this.isButtonSubmitDisabled.set(false);
+      return;
+    }
   }
 
   hasError(field: string): boolean {

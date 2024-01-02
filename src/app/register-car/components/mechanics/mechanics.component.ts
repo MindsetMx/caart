@@ -6,6 +6,7 @@ import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-mechanics',
@@ -16,6 +17,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     InputErrorComponent,
     PrimaryButtonDirective,
     ReactiveFormsModule,
+    SpinnerComponent,
   ],
   templateUrl: './mechanics.component.html',
   styleUrl: './mechanics.component.css',
@@ -56,7 +58,15 @@ export class MechanicsComponent {
     return this.mechanicsForm.get('mechanicsImagesOrVideos') as FormArray;
   }
 
-  submitExteriorOfTheCarForm(): void {
+  exteriorOfTheCarFormSubmit(): void {
+    this.isButtonSubmitDisabled.set(true);
+
+    const isValid = this.#validatorsService.isValidForm(this.mechanicsForm);
+
+    if (!isValid) {
+      this.isButtonSubmitDisabled.set(false);
+      return;
+    }
   }
 
   selectFile(event: Event, indice: number): void {

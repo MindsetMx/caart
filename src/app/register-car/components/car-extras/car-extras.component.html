@@ -1,8 +1,7 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Extras</h1>
 
 <h2 class="text-xl font-bold mb-5">Extras del auto</h2>
-<form [formGroup]="exteriorOfTheCarForm" (ngSubmit)="submitExteriorOfTheCarForm()"
-  class="grid grid-cols-2 items-end gap-5">
+<form [formGroup]="carExtrasForm" (ngSubmit)="carExtrasFormSubmit()" class="grid grid-cols-2 items-end gap-5">
   <div>
     <fieldset>
       <legend class="block text-sm mb-1">Historial de servicios</legend>
@@ -243,9 +242,13 @@
   </div>
 
   <div class="col-span-2">
-    <button type="submit" [disabled]="isButtonSubmitDisabled()" [class.opacity-25]="isButtonSubmitDisabled()"
+    <button type="submit" [disabled]="isButtonSubmitDisabled()" [class.opacity-50]="isButtonSubmitDisabled()"
       sharedPrimaryButton>
+      @if (isButtonSubmitDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
       Siguiente
+      }
     </button>
   </div>
 </form>

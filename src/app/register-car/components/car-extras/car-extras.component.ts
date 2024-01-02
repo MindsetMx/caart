@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+
 import { AutoResizeTextareaDirective } from '@shared/directives/auto-resize-textarea.directive';
 import { InputDirective } from '@shared/directives/input.directive';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
@@ -15,6 +17,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     InputErrorComponent,
     PrimaryButtonDirective,
     ReactiveFormsModule,
+    SpinnerComponent,
   ],
   templateUrl: './car-extras.component.html',
   styleUrl: './car-extras.component.css',
@@ -24,14 +27,14 @@ export class CarExtrasComponent {
   #validatorsService = inject(ValidatorsService);
   #fb = inject(FormBuilder);
 
-  exteriorOfTheCarForm: FormGroup;
+  carExtrasForm: FormGroup;
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   previewImagesCarDetails: WritableSignal<string[]> = signal(['', '']);
   previewImagesCarExterior: WritableSignal<string[]> = signal(['', '']);
 
   constructor() {
-    this.exteriorOfTheCarForm = this.#fb.group({
+    this.carExtrasForm = this.#fb.group({
       hasServiceHistory: [false, Validators.required],
       hasManuals: [false, Validators.required],
       hasToolBox: [false, Validators.required],
@@ -48,14 +51,22 @@ export class CarExtrasComponent {
   }
 
   get detailsImagesOrVideosFormArray(): FormArray {
-    return this.exteriorOfTheCarForm.get('detailsImagesOrVideos') as FormArray;
+    return this.carExtrasForm.get('detailsImagesOrVideos') as FormArray;
   }
 
   get exteriorImagesOrVideosFormArray(): FormArray {
-    return this.exteriorOfTheCarForm.get('exteriorImagesOrVideos') as FormArray;
+    return this.carExtrasForm.get('exteriorImagesOrVideos') as FormArray;
   }
 
-  submitExteriorOfTheCarForm(): void {
+  carExtrasFormSubmit(): void {
+    this.isButtonSubmitDisabled.set(true);
+
+    const isValid = this.#validatorsService.isValidForm(this.carExtrasForm);
+
+    if (!isValid) {
+      this.isButtonSubmitDisabled.set(false);
+      return;
+    }
   }
 
   selectFile(event: Event, indice: number): void {
@@ -83,12 +94,12 @@ export class CarExtrasComponent {
   }
 
   hasError(field: string): boolean {
-    return this.#validatorsService.hasError(this.exteriorOfTheCarForm, field);
+    return this.#validatorsService.hasError(this.carExtrasForm, field);
   }
 
   getError(field: string): string | undefined {
-    if (!this.exteriorOfTheCarForm) return undefined;
+    if (!this.carExtrasForm) return undefined;
 
-    return this.#validatorsService.getError(this.exteriorOfTheCarForm, field);
+    return this.#validatorsService.getError(this.carExtrasForm, field);
   }
 }

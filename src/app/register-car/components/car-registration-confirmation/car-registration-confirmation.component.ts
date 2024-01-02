@@ -7,6 +7,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { RouterLink } from '@angular/router';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-car-registration-confirmation',
@@ -17,7 +18,8 @@ import { RouterLink } from '@angular/router';
     InputErrorComponent,
     PrimaryButtonDirective,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    SpinnerComponent,
   ],
   templateUrl: './car-registration-confirmation.component.html',
   styleUrl: './car-registration-confirmation.component.css',
@@ -46,7 +48,15 @@ export class CarRegistrationConfirmationComponent {
     });
   }
 
-  submitExteriorOfTheCarForm(): void {
+  confirmationFormSubmit(): void {
+    this.isButtonSubmitDisabled.set(true);
+
+    const isValid = this.#validatorsService.isValidForm(this.confirmationForm);
+
+    if (!isValid) {
+      this.isButtonSubmitDisabled.set(false);
+      return;
+    }
   }
 
   hasError(field: string): boolean {

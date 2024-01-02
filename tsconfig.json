@@ -15,6 +15,9 @@
       "@env/*": [
         "./src/environments/*"
       ],
+      "@registerCarComponents/*": [
+        "./src/app/register-car/components/*"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

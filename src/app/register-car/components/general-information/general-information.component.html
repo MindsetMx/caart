@@ -1,6 +1,6 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Información general</h1>
 
-<form class="space-y-6">
+<form [formGroup]="generalInformationForm" (ngSubmit)="generalInformationFormSubmit()" class="space-y-6">
   <div>
     <label for="rfc" class="block mb-1 text-sm">RFC</label>
     <input id="rfc" class="max-w-lg" type="text" placeholder="Escribe tu RFC" sharedInput>
@@ -54,7 +54,11 @@
   </div>
 
   <button class="mt-36" type="submit" [disabled]="isButtonSubmitDisabled()"
-    [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
+    [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+    @if (isButtonSubmitDisabled()) {
+    <shared-spinner></shared-spinner>
+    } @else {
     Pagar y continuar
+    }
   </button>
 </form>

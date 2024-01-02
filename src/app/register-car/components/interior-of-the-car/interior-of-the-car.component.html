@@ -1,7 +1,7 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Interior del auto</h1>
 
 <h2 class="text-xl font-bold mb-5">Interior del auto</h2>
-<form [formGroup]="interiorOfTheCarForm" (ngSubmit)="submitExteriorOfTheCarForm()"
+<form [formGroup]="interiorOfTheCarForm" (ngSubmit)="exteriorOfTheCarFormSubmit()"
   class="grid grid-cols-2 items-end gap-5">
 
   <!-- color select -->
@@ -102,8 +102,12 @@
 
   <div class="col-span-2">
     <button class="mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
-      [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      @if (isButtonSubmitDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
       Siguiente
+      }
     </button>
   </div>
 </form>

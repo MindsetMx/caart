@@ -6,6 +6,7 @@ import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-interior-of-the-car',
@@ -16,6 +17,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     InputErrorComponent,
     PrimaryButtonDirective,
     ReactiveFormsModule,
+    SpinnerComponent,
   ],
   templateUrl: './interior-of-the-car.component.html',
   styleUrl: './interior-of-the-car.component.css',
@@ -48,7 +50,15 @@ export class InteriorOfTheCarComponent {
     return this.interiorOfTheCarForm.get('interiorImagesOrVideos') as FormArray;
   }
 
-  submitExteriorOfTheCarForm(): void {
+  exteriorOfTheCarFormSubmit(): void {
+    this.isButtonSubmitDisabled.set(true);
+
+    const isValid = this.#validatorsService.isValidForm(this.interiorOfTheCarForm);
+
+    if (!isValid) {
+      this.isButtonSubmitDisabled.set(false);
+      return;
+    }
   }
 
   selectFile(event: Event, indice: number): void {

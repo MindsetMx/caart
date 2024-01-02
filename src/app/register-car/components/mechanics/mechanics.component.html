@@ -1,7 +1,7 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Mecánica</h1>
 
 <h2 class="text-xl font-bold mb-5">Llantas y rines</h2>
-<form [formGroup]="mechanicsForm" (ngSubmit)="submitExteriorOfTheCarForm()" class="grid grid-cols-2 items-end gap-5">
+<form [formGroup]="mechanicsForm" (ngSubmit)="exteriorOfTheCarFormSubmit()" class="grid grid-cols-2 items-end gap-5">
   <!-- Rines originales select -->
   <div>
     <label for="hasOriginalRims" class="block mb-1 text-sm">¿Rines originales?</label>
@@ -193,8 +193,12 @@
 
   <div class="col-span-2">
     <button class="mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
-      [class.opacity-25]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      @if (isButtonSubmitDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
       Siguiente
+      }
     </button>
   </div>
 </form>

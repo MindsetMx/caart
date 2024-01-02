@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } fr
 
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
+import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 import { DropdownComponent } from '@shared/components/dropdown/dropdown.component';
 import { DropdownLink } from '@shared/interfaces/DropdownLink';
 import { Router, RouterModule } from '@angular/router';
-import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.component';
 
 @Component({

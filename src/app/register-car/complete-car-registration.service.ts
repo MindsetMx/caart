@@ -1,11 +1,11 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
-import { GeneralInformationComponent } from './components/general-information/general-information.component';
 
-import { GeneralDetailsAndExteriorOfTheCarComponent } from './components/general-details-and-exterior-of-the-car/general-details-and-exterior-of-the-car.component';
-import { InteriorOfTheCarComponent } from './components/interior-of-the-car/interior-of-the-car.component';
-import { MechanicsComponent } from './components/mechanics/mechanics.component';
-import { CarExtrasComponent } from './components/car-extras/car-extras.component';
-import { CarRegistrationConfirmationComponent } from './components/car-registration-confirmation/car-registration-confirmation.component';
+import { CarExtrasComponent } from '@registerCarComponents/car-extras/car-extras.component';
+import { CarRegistrationConfirmationComponent } from '@registerCarComponents/car-registration-confirmation/car-registration-confirmation.component';
+import { GeneralDetailsAndExteriorOfTheCarComponent } from '@registerCarComponents/general-details-and-exterior-of-the-car/general-details-and-exterior-of-the-car.component';
+import { GeneralInformationComponent } from '@registerCarComponents/general-information/general-information.component';
+import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-the-car/interior-of-the-car.component';
+import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class CompleteCarRegistrationService {
     InteriorOfTheCarComponent,
     MechanicsComponent,
     CarExtrasComponent,
-    CarRegistrationConfirmationComponent
+    CarRegistrationConfirmationComponent,
   ];
 
   indexCurrentStep: WritableSignal<number> = signal(0);

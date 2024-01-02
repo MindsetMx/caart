@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+
 import { AutoResizeTextareaDirective } from '@shared/directives/auto-resize-textarea.directive';
 import { InputDirective } from '@shared/directives/input.directive';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
@@ -15,6 +17,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     InputErrorComponent,
     PrimaryButtonDirective,
     ReactiveFormsModule,
+    SpinnerComponent,
   ],
   templateUrl: './general-details-and-exterior-of-the-car.component.html',
   styleUrl: './general-details-and-exterior-of-the-car.component.css',
@@ -70,7 +73,15 @@ export class GeneralDetailsAndExteriorOfTheCarComponent {
     return this.exteriorOfTheCarForm.get('exteriorImagesOrVideos') as FormArray;
   }
 
-  submitExteriorOfTheCarForm(): void {
+  exteriorOfTheCarFormSubmit() {
+    this.isButtonSubmitDisabled.set(true);
+
+    const isValid = this.#validatorsService.isValidForm(this.exteriorOfTheCarForm);
+
+    if (!isValid) {
+      this.isButtonSubmitDisabled.set(false);
+      return;
+    }
   }
 
   selectFile(event: Event, indice: number): void {
