@@ -20,7 +20,7 @@ export class CompleteCarRegistrationService {
     CarRegistrationConfirmationComponent
   ];
 
-  indexCurrentStep: WritableSignal<number> = signal(4);
+  indexCurrentStep: WritableSignal<number> = signal(0);
 
   changeStep(step: number) {
     if (step < 0 || step >= this.steps.length) return;

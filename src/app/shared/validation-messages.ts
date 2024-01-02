@@ -9,4 +9,6 @@ export let VALIDATION_MESSAGES: ValidationMessages = {
   maxlength: ({ requiredLength }): string => `El campo no debe tener más de ${requiredLength} caracteres.`,
   notEqual: (): string => `La confirmación de contraseña no coincide.`,
   menorEdad: (): string => `Debes estar bajo la supervisión de un adulto para registrarte.`,
+  min: ({ min }): string => `El valor mínimo es ${min}.`,
+  max: ({ max }): string => `El valor máximo es ${max}.`,
 };

@@ -25,6 +25,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent {
   #fb = inject(FormBuilder);
 
   exteriorOfTheCarForm: FormGroup;
+  currentYear = new Date().getFullYear();
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   previewImagesCarDetails: WritableSignal<string[]> = signal(['', '']);
@@ -33,7 +34,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent {
   constructor() {
     this.exteriorOfTheCarForm = this.#fb.group({
       brand: ['', [Validators.required]],
-      year: ['', [Validators.required]],
+      year: ['', [Validators.required, Validators.min(1900), Validators.max(this.currentYear)]],
       model: ['', [Validators.required]],
       mileage: ['', [Validators.required]],
       isOdometerAccurate: ['', [Validators.required]],

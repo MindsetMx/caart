@@ -33,7 +33,7 @@
       </div>
 
       <button class="inline-flex justify-center items-center" type="submit" [disabled]="isButtonSubmitDisabled()"
-        sharedPrimaryButton>
+        [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
         @if (isButtonSubmitDisabled()) {
         <shared-spinner></shared-spinner>
         } @else {
