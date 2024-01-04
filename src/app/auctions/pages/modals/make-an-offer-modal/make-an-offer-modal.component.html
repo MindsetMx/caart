@@ -1,0 +1,21 @@
+<shared-modal [isOpen]="isOpen" [verticalCenter]="true">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Hacer una oferta</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <div class="container mb-8">
+    <h1 class="text-center text-2xl font-optima font-bold mb-8">Haz una nueva oferta</h1>
+
+    <input class="mb-4" type="text" placeholder="Oferta $1,700,000 o más" sharedInput>
+
+    <input class="align-middle mr-2" type="checkbox" id="terms">
+    <label class="text-xs align-middle" for="terms">
+      Estoy consiente de que estoy haciendo una oferta y debo pagarlo
+    </label>
+
+    <button class="mt-8" sharedPrimaryButton>Hacer oferta</button>
+  </div>
+
+</shared-modal>

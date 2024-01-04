@@ -1,4 +1,4 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild, WritableSignal, signal } from '@angular/core';
 import { Fancybox } from "@fancyapps/ui";
 import { register } from 'swiper/element/bundle';
 
@@ -7,12 +7,14 @@ register();
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { InputDirective } from '@shared/directives/input.directive';
+import { MakeAnOfferModalComponent } from '../modals/make-an-offer-modal/make-an-offer-modal.component';
 
 @Component({
   selector: 'app-auction',
   standalone: true,
   imports: [
     InputDirective,
+    MakeAnOfferModalComponent,
     PrimaryButtonDirective,
     StarComponent,
   ],
@@ -28,6 +30,9 @@ export class AuctionComponent implements AfterViewInit {
   externalPhotoGalleryLength: number = 7;
   internalPhotoGalleryLength: number = 7;
   mechanicalPhotoGalleryLength: number = 7;
+
+  makeAnOfferModalIsOpen: WritableSignal<boolean> = signal(false);
+
   isMobile = window.innerWidth < 768;
 
   @HostListener('window:resize', ['$event'])
@@ -76,6 +81,10 @@ export class AuctionComponent implements AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery4']");
     Fancybox.bind("[data-fancybox='gallery5']");
     Fancybox.bind("[data-fancybox='gallery6']");
+  }
+
+  openMakeAnOfferModal(): void {
+    this.makeAnOfferModalIsOpen.set(true);
   }
 
   incrementExternalPhotoGalleryLength(): void {

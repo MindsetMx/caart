@@ -35,8 +35,8 @@
           <span class="underline">Seguir</span>
         </div>
         <div class="col-span-2 md:col-span-1">
-          <button rounded="rounded-xl" px="px-6" width="w-fit" classes="font-optima font-semibold text-sm"
-            sharedPrimaryButton>
+          <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-6" width="w-fit"
+            classes="font-optima font-semibold text-sm" sharedPrimaryButton>
             HACER UNA OFERTA
           </button>
         </div>
@@ -489,7 +489,9 @@
           <li>Comisión dealer: $3,100 MXN</li>
         </ul>
 
-        <button classes="font-optima font-semibold" sharedPrimaryButton>HACER UNA OFERTA</button>
+        <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
+          HACER UNA OFERTA
+        </button>
       </section>
 
       <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
@@ -501,7 +503,8 @@
       <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
         <div class="xl:flex items-center justify-between">
           <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
-          <button classes="font-optima font-semibold text-sm" width="w-fit" px="px-6" sharedPrimaryButton>
+          <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold text-sm" width="w-fit" px="px-6"
+            sharedPrimaryButton>
             HACER UNA OFERTA
           </button>
         </div>
@@ -583,3 +586,5 @@
     </div>
   </div>
 </div>
+
+<auction-make-an-offer-modal [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>
