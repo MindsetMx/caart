@@ -1,5 +1,7 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Fancybox } from "@fancyapps/ui";
 import { register } from 'swiper/element/bundle';
+
 register();
 
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
@@ -22,6 +24,16 @@ import { InputDirective } from '@shared/directives/input.directive';
 export class AuctionComponent implements AfterViewInit {
   @ViewChild('videoGallery') videoGallery!: ElementRef;
   @ViewChild('auctionsEnded') auctionsEnded!: ElementRef;
+
+  externalPhotoGalleryLength: number = 7;
+  internalPhotoGalleryLength: number = 7;
+  mechanicalPhotoGalleryLength: number = 7;
+  isMobile = window.innerWidth < 768;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.isMobile = window.innerWidth < 768; // Actualiza el valor en tiempo real
+  }
 
   get swiperParams(): any {
     return {
@@ -57,6 +69,31 @@ export class AuctionComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.initSwiperCarousel(this.videoGallery, this.swiperParams);
     this.initSwiperCarousel(this.auctionsEnded, this.swiperParams);
+
+    Fancybox.bind("[data-fancybox='gallery']");
+    Fancybox.bind("[data-fancybox='gallery2']");
+    Fancybox.bind("[data-fancybox='gallery3']");
+    Fancybox.bind("[data-fancybox='gallery4']");
+    Fancybox.bind("[data-fancybox='gallery5']");
+    Fancybox.bind("[data-fancybox='gallery6']");
+  }
+
+  incrementExternalPhotoGalleryLength(): void {
+    if (!this.isMobile) return;
+
+    this.externalPhotoGalleryLength += 8;
+  }
+
+  incrementInternalPhotoGalleryLength(): void {
+    if (!this.isMobile) return;
+
+    this.internalPhotoGalleryLength += 8;
+  }
+
+  incrementMechanicalPhotoGalleryLength(): void {
+    if (!this.isMobile) return;
+
+    this.mechanicalPhotoGalleryLength += 8;
   }
 
   initSwiperCarousel(swiperEl: ElementRef | undefined, swiperParams: any): void {
