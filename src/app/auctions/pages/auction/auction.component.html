@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container mt-4 mb-32">
   <section>
     <h1 class="font-optima font-semibold text-3xl inline-block mr-4">1993 Porsche 911 Turbo</h1>
     <span class="inline-block text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
@@ -12,7 +12,7 @@
           <span class="text-gray4 text-sm">Oferta actual</span>
         </div>
         <div>
-          <div class="bg-red1 rounded-lg px-3 py-1">
+          <div class="bg-gray1 rounded-lg px-3 py-1">
             <p class="text-red2 text-lg font-bold">02:58:04</p>
             <span class="text-gray4 text-sm">Hoy 18:00 PM</span>
           </div>
@@ -68,7 +68,7 @@
 
   <div class="grid grid-cols-12 gap-4">
     <div class="col-span-12 md:col-span-7">
-      <div class="flex justify-between mt-8">
+      <section class="flex justify-between mt-8">
         <div class="underline">5 Comentarios</div>
 
         <div class="text-gray4 text-sm flex space-x-4">
@@ -81,11 +81,11 @@
             235
           </div>
         </div>
-      </div>
+      </section>
 
       <hr class="my-4">
 
-      <div class="grid grid-cols-1 xs:grid-cols-2 gap-4">
+      <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
         <ul class="space-y-1">
           <li>
             <span class="text-gray4">Marca:</span>&nbsp;<span class="font-semibold">Porsche</span>
@@ -115,51 +115,293 @@
             <span class="text-gray4">Entregado en:</span>&nbsp;<span class="font-semibold">CDMX, México</span>
           </li>
         </ul>
-      </div>
+      </section>
 
       <hr class="my-6">
 
-      <h2 class="text-2xl font-semibold">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum </h2>
+      <section>
+        <h2 class="text-2xl font-semibold">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum </h2>
+        <p class="mt-4">
+          Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+        </p>
+        <img class="my-8" src="assets/img/home/carousel/banner.png" alt="">
+        <p>
+          Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+        </p>
+        <img class="my-8" src="assets/img/home/carousel/banner.png" alt="">
+        <p>
+          Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+        </p>
+      </section>
 
-      <p class="mt-4">
-        Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-      </p>
+      <section>
+        <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
+        <swiper-container init="false" #videoGallery>
+          @for (item of [].constructor(6); track $index) {
+          <swiper-slide class="pb-12">
+            <img src="assets/img/home/carousel/banner.png" alt="">
+          </swiper-slide>
+          }
+        </swiper-container>
+      </section>
 
-      <img class="my-8" src="assets/img/home/carousel/banner.png" alt="">
+      <section class="mt-12">
+        <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
 
-      <p>
-        Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-      </p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <div class="relative">
+            <img class="absolute inset-0 flex justify-center items-center" src="assets/img/home/carousel/banner.png"
+              alt="">
+            <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
+            <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
+              +12 fotos
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <img class="my-8" src="assets/img/home/carousel/banner.png" alt="">
+      <section class="mt-12">
+        <h2 class="text-xl font-bold mb-6">Galería de fotos interiores</h2>
 
-      <p>
-        Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-      </p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <div class="relative">
+            <img class="absolute inset-0 flex justify-center items-center" src="assets/img/home/carousel/banner.png"
+              alt="">
+            <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
+            <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
+              +12 fotos
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-12">
+        <h2 class="text-xl font-bold mb-6">Galería de fotos mecánicas</h2>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <img src="assets/img/home/carousel/banner.png" alt="">
+          <div class="relative">
+            <img class="absolute inset-0 flex justify-center items-center" src="assets/img/home/carousel/banner.png"
+              alt="">
+            <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
+            <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
+              +12 fotos
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="shadow mt-12 rounded-xl border border-gray3 px-6 py-6">
+        <h2 class="font-semibold text-xl">Resumen de la subasta</h2>
+
+        <hr class="my-4">
+
+        <div class="md:grid md:grid-cols-12 gap-4">
+          <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+            Oferta actual:
+          </div>
+          <span class="col-span-8 lg:col-span-9 font-semibold">$1,650,500 MXN</span>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="md:grid md:grid-cols-12 gap-4">
+          <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+            Tiempo restante:
+          </div>
+          <span class="col-span-8 lg:col-span-9 font-semibold text-red2">02 horas, 58 minutos, 04 segundos</span>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="md:grid md:grid-cols-12 gap-4">
+          <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+            Termina en:
+          </div>
+          <div class="col-span-8 lg:col-span-9">
+            <span class="font-semibold inline mr-4 lg:mr-12">
+              Miercoles, Noviembre 15 a la 18:00 PM
+            </span>
+            <img class="inline align-bottom" src="assets/img/icons/notifications-outline.svg" alt="">
+            <span class="underline">Recuerdame por correo</span>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="md:grid md:grid-cols-12 gap-4">
+          <div class="inline md:flex md:items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+            Ofertas:
+          </div>
+          <span class="col-span-8 lg:col-span-9 font-semibold">3</span>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="md:grid md:grid-cols-12 gap-4">
+          <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+            Haz una oferta:
+          </div>
+          <div class="col-span-8 lg:col-span-9 font-semibold">
+            <div class="lg:flex gap-4">
+              <input class="font-normal" type="text" placeholder="Oferta $1,700,000 o más" sharedInput>
+              <button width="w-fit lg:w-[14rem]" px="px-6" py="py-1" classes="text-xs xl:text-sm h-12 mt-2 lg:mt-0"
+                sharedPrimaryButton>
+                HACER OFERTA
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="lg:flex lg:justify-between">
+          <div class="md:flex md:items-center md:space-x-4 md:divide-x md:divide-gray3">
+            <div class="underline">¿Cómo funciona?</div>
+            <div class="md:pl-4 text-sm text-gray4">
+              <img class="inline mr-2" src="assets/img/icons/eye-outline.svg">
+              1,235 visualizaciones
+            </div>
+            <div class="md:pl-4 text-sm text-gray4">
+              <shared-star class="inline mr-2" classes="inline text-gray4 w-5 h-5"></shared-star>
+              235 seguidos
+            </div>
+          </div>
+
+          <div class="mt-4 lg:mt-0 w-fit ml-auto mr-auto flex items-center">
+            <img class="inline mr-2 w-6 h-6" src="assets/img/icons/share.svg" alt="">
+            <span class="underline align-middle">Compartir</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-12">
+        <h3 class="text-xl font-bold mb-6">5 Comentarios</h3>
+
+        <div class="flex">
+          <input placeholder="Haz un comentario" rounded="rounded-l-lg" type="text" sharedInput>
+          <button rounded="rounded-r-lg" width="w-fit" sharedPrimaryButton>Publicar</button>
+        </div>
+
+        <div class="mt-4">
+          <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
+          <span class="underline">Mantenme en la conversación por correo</span>
+        </div>
+
+        <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
+          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+            Nov 15 a las 04:00 PM
+          </div>
+          <div class="md:col-span-9 mb-4 md:mb-0">
+            <div class="px-2 py-1">
+              <p class="font-semibold">Jorge Medina</p>
+              <p>Muy buen auto. Dificil encontrar otro igual</p>
+              <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+              <span class="align-middle">0</span>
+            </div>
+          </div>
+
+          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+            Nov 15 a las 03:38 PM
+          </div>
+          <div class="md:col-span-9 mb-4 md:mb-0">
+            <div class="px-2 py-1 rounded-lg bg-gray1">
+              <p class="font-semibold">John Smith (Vendedor)</p>
+              <p>19,914 km</p>
+              <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+              <span class="align-middle">2</span>
+            </div>
+          </div>
+
+          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+            Nov 15 a las 02:54 PM
+          </div>
+          <div class="md:col-span-9 mb-4 md:mb-0">
+            <div class="px-2 py-1">
+              <p class="font-semibold">Andrés Gallardo</p>
+              <p>¿Qué kilometraje tiene el auto?</p>
+              <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+              <span class="align-middle">0</span>
+            </div>
+          </div>
+
+          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+            Nov 15 a las 02:38 PM
+          </div>
+          <div class="md:col-span-9 mb-4 md:mb-0">
+            <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
+              Nueva puja de $215,000 por Adam Smith
+            </div>
+          </div>
+
+          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+            Nov 15 a las 11:43 AM
+          </div>
+          <div class="md:col-span-9 mb-4 md:mb-0">
+            <div class="px-2 py-1">
+              <p class="font-semibold">Andrés Gallardo</p>
+              <p>El color es magnifico</p>
+              <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+              <span class="align-middle">0</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-12">
+        <h2 class="text-xl font-bold mt-8 mb-6">Subastas finalizadas recientemente</h2>
+        <swiper-container init="false" #auctionsEnded>
+          @for (item of [].constructor(6); track $index) {
+          <swiper-slide class="pb-12">
+            <img src="assets/img/home/carousel/banner.png" alt="">
+          </swiper-slide>
+          }
+        </swiper-container>
+      </section>
     </div>
     <div class="col-span-12 md:col-span-5">
-      <div class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+      <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
         <h3 class="font-semibold mb-2">Información adicional</h3>
 
         <ul class="list-inside list-disc text-gray4">
@@ -198,15 +440,15 @@
         </ul>
 
         <button classes="font-optima font-semibold" sharedPrimaryButton>HACER UNA OFERTA</button>
-      </div>
+      </section>
 
-      <div class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+      <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
         <h3 class="font-semibold mb-6">¿Tienes un auto y quieres venderlo?</h3>
 
         <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
-      </div>
+      </section>
 
-      <div class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+      <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
         <div class="xl:flex items-center justify-between">
           <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
           <button classes="font-optima font-semibold text-sm" width="w-fit" px="px-6" sharedPrimaryButton>
@@ -253,9 +495,9 @@
           </div>
           }
         </div>
-      </div>
+      </section>
 
-      <div class="mt-8 max-w-[22rem] xl:max-w-md ml-auto">
+      <section class="mt-8 max-w-[22rem] xl:max-w-md ml-auto">
         <h3 class="text-2xl font-semibold mb-4">Subastas del momento</h3>
 
         <div class="space-y-6">
@@ -287,7 +529,7 @@
             <p class="font-optima text-lg mt-2 font-bold">2017 Ford GT Heritage Edition</p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>
