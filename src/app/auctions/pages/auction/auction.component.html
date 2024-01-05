@@ -301,7 +301,9 @@
           <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
             Tiempo restante:
           </div>
-          <span class="col-span-8 lg:col-span-9 font-semibold text-red2">02 horas, 58 minutos, 04 segundos</span>
+          <span class="col-span-8 lg:col-span-9 font-semibold text-red2">{{formatNumber(hours())}} horas,
+            {{formatNumber(minutes())}} minutos, {{formatNumber(seconds())}}
+            segundos</span>
         </div>
 
         <hr class="my-4">
@@ -350,7 +352,7 @@
         <div class="lg:flex lg:justify-between">
           <div class="md:flex md:items-center md:space-x-4 md:divide-x md:divide-gray3">
             <div class="underline">¿Cómo funciona?</div>
-            <div class="md:pl-4 text-sm text-gray4">
+            <div class="mt-2 md:mt-0 md:pl-4 text-sm text-gray4">
               <img class="inline mr-2" src="assets/img/icons/eye-outline.svg">
               1,235 visualizaciones
             </div>
