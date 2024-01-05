@@ -1,4 +1,4 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild, WritableSignal, signal } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, WritableSignal, signal } from '@angular/core';
 import { Fancybox } from "@fancyapps/ui";
 import { register } from 'swiper/element/bundle';
 
@@ -8,6 +8,8 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { InputDirective } from '@shared/directives/input.directive';
 import { MakeAnOfferModalComponent } from '../modals/make-an-offer-modal/make-an-offer-modal.component';
+import { Subscription, interval } from 'rxjs';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-auction',
@@ -17,15 +19,21 @@ import { MakeAnOfferModalComponent } from '../modals/make-an-offer-modal/make-an
     MakeAnOfferModalComponent,
     PrimaryButtonDirective,
     StarComponent,
+    SlicePipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
   styleUrl: './auction.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionComponent implements AfterViewInit {
+export class AuctionComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('videoGallery') videoGallery!: ElementRef;
   @ViewChild('auctionsEnded') auctionsEnded!: ElementRef;
+
+  hours: WritableSignal<number> = signal(2);
+  minutes: WritableSignal<number> = signal(58);
+  seconds: WritableSignal<number> = signal(4);
+  private timerSubscription?: Subscription;
 
   externalPhotoGalleryLength: number = 7;
   internalPhotoGalleryLength: number = 7;
@@ -71,6 +79,19 @@ export class AuctionComponent implements AfterViewInit {
     }
   };
 
+  ngOnInit() {
+    const timer = interval(1000);
+    this.timerSubscription = timer.subscribe(() => {
+      this.updateTimer();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+  }
+
   ngAfterViewInit(): void {
     this.initSwiperCarousel(this.videoGallery, this.swiperParams);
     this.initSwiperCarousel(this.auctionsEnded, this.swiperParams);
@@ -81,6 +102,31 @@ export class AuctionComponent implements AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery4']");
     Fancybox.bind("[data-fancybox='gallery5']");
     Fancybox.bind("[data-fancybox='gallery6']");
+  }
+
+  private updateTimer() {
+    if (this.seconds() > 0) {
+      this.seconds.set(this.seconds() - 1);
+    } else {
+      if (this.minutes() > 0) {
+        this.minutes.set(this.minutes() - 1);
+        this.seconds.set(59);
+      } else {
+        if (this.hours() > 0) {
+          this.hours.set(this.hours() - 1);
+          this.minutes.set(59);
+          this.seconds.set(59);
+        } else {
+          // El contador ha llegado a cero, puedes tomar acciones adicionales aquí.
+          this.timerSubscription?.unsubscribe(); // Detener el contador
+        }
+      }
+    }
+  }
+
+  // Función para formatear números con ceros a la izquierda
+  formatNumber(value: number): string {
+    return value < 10 ? `0${value}` : value.toString();
   }
 
   openMakeAnOfferModal(): void {
