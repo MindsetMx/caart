@@ -101,8 +101,24 @@ export class AuthService {
     return this.#http.post<RegisterResponse>(`${this.#baseUrl}/users/register`, formData, { headers });
   }
 
-  toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {
+  completeRegister$(completeRegisterForm: FormGroup): Observable<any> {
+    const trimmedCompleteRegisterForm = this.#appService.trimObjectValues(completeRegisterForm.value);
+    const formData = this.#appService.transformObjectToFormData(trimmedCompleteRegisterForm);
 
+    const userId = this.#currentUser()?.id;
+
+    const token = localStorage.getItem('token');
+
+    if (!token) throw new Error('No token found');
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.#http.post<any>(`${this.#baseUrl}/users/complete-register/${userId}`, formData, { headers });
+  }
+
+  toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {
     this.changeInputType(element);
 
     if (element2) {

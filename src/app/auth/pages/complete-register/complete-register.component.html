@@ -1,0 +1,165 @@
+<section class="container mt-16">
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md mb-32">
+
+    <h1 class="font-optima font-bold text-4xl mb-6">COMPLETA TUS DATOS</h1>
+
+    <p class="mb-8">
+      Completa los siguientes datos para que puedas hacer ofertas en las subastas o para registrar un auto u obre de
+      arte para subastar.
+    </p>
+
+    <form [formGroup]="completeRegisterForm" (ngSubmit)="completeRegister()" class="mt-2">
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <div class="col-span-2">
+          <label for="taxId" class="block mb-1">RFC</label>
+          <input id="taxId" formControlName="taxId" autocomplete="tax-id" type="text" placeholder="RFC" sharedInput>
+          @if (hasError('taxId')) {
+          <shared-input-error [message]="getError('taxId')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2 font-bold">
+          Datos bancarios
+        </div>
+
+        <div class="col-span-2">
+          <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
+            <ngx-stripe-card [options]="cardOptions" />
+          </ngx-stripe-elements>
+
+          @if(hasError('stripeToken')) {
+          <shared-input-error [message]="getError('stripeToken')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2 font-bold">
+          Dirección
+        </div>
+
+        <div class="col-span-2">
+          <label for="street" class="block mb-1">Calle y número</label>
+          <input id="street" formControlName="streetAndNumber" autocomplete="street-address" type="text"
+            placeholder="Calle y número interno y externo" sharedInput>
+          @if (hasError('streetAndNumber')) {
+          <shared-input-error [message]="getError('streetAndNumber')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2">
+          <label for="postalCode" class="block mb-1">Código Postal</label>
+          <input id="postalCode" formControlName="postalCode" autocomplete="postal-code" type="text" placeholder="C.P."
+            sharedInput>
+          @if (hasError('postalCode')) {
+          <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+          }
+        </div>
+
+        <fieldset class="col-span-2 mt-4">
+          <legend class="sr-only">Tipo de identificación</legend>
+          <div class="space-y-2">
+            <div class="flex items-center">
+              <input id="ine" formControlName="validationType" [value]="idTypes.ine" type="radio" class="h-4 w-4">
+              <label for="ine" class="ml-3 block leading-6">INE</label>
+            </div>
+            <div class="flex items-center">
+              <input id="passport" formControlName="validationType" [value]="idTypes.pasaporte" type="radio"
+                class="h-4 w-4">
+              <label for="passport" class="ml-3 block leading-6">Pasaporte</label>
+            </div>
+          </div>
+        </fieldset>
+
+        @switch (validationType.value) {
+        @case (idTypes.ine) {
+        <div class="col-span-2">
+          <div class="grid grid-cols-2 gap-x-4">
+            <div>
+              <label for="frontal" class="text-sm cursor-pointer">
+                INE frontal
+                @if(validationImgFormArray.at(0).value) {
+                <img src="{{previewImages()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+                  alt="foto frontal de la INE">
+                <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
+                }@else {
+                <div
+                  class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
+                  <div>
+                    <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                    <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                  </div>
+                  <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
+                </div>
+                }
+              </label>
+
+              @if (formArrayHasError(0)) {
+              <shared-input-error [message]="getErrorFromFormArray(0)"></shared-input-error>
+              }
+            </div>
+            <div>
+              <label for="posterior" class="text-sm cursor-pointer">
+                INE posterior
+                @if (validationImgFormArray.at(1).value) {
+                <img src="{{previewImages()[1]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+                  alt="foto posterior de la INE">
+                <input (change)="selectFile($event, 1)" id="posterior" type="file" class="sr-only">
+                } @else {
+                <div
+                  class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
+                  <div>
+                    <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                    <p class="text-center text-gray4 text-sm">Subir imagen</p>
+                  </div>
+                  <input (change)="selectFile($event, 1)" id="posterior" type="file" class="sr-only">
+                </div>
+                }
+              </label>
+
+              @if (formArrayHasError(1)) {
+              <shared-input-error [message]="getErrorFromFormArray(1)"></shared-input-error>
+              }
+            </div>
+          </div>
+        </div>
+        }
+        @case (idTypes.pasaporte) {
+        <div>
+          <label for="passportImg" class="text-sm cursor-pointer">
+            Foto Pasaporte
+            @if (validationImgFormArray.at(0).value) {
+            <img src="{{previewImages()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2" alt="foto del pasaporte">
+            <input (change)="selectFile($event, 0)" id="passportImg" type="file" class="sr-only">
+            } @else {
+            <div
+              class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
+              <div>
+                <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
+                <p class="text-center text-gray4 text-sm">Subir imagen</p>
+              </div>
+              <input (change)="selectFile($event, 0)" id="passportImg" type="file" class="sr-only">
+            </div>
+            }
+          </label>
+
+          @if (formArrayHasError(0)) {
+          <shared-input-error [message]="getErrorFromFormArray(0)"></shared-input-error>
+          }
+        </div>
+        }
+        }
+      </div>
+
+      <div class="col-span-2 mt-8">
+        <button class="inline-flex justify-center items-center" type="submit" [disabled]="isButtonSubmitDisabled()"
+          [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+          @if (isButtonSubmitDisabled()) {
+          <shared-spinner></shared-spinner>
+          } @else {
+          Completar registro
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+
+</section>

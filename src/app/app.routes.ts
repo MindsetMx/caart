@@ -17,7 +17,13 @@ export const routes: Routes = [
       },
       {
         path: 'registrarse',
-        loadComponent: () => import('./auth/components/register/register.component').then((m) => m.RegisterComponent),
+        canActivate: [GuestGuard],
+        loadComponent: () => import('./auth/pages/register/register.component').then((m) => m.RegisterComponent),
+      },
+      {
+        path: 'completar-registro',
+        canActivate: [AuthGuard],
+        loadComponent: () => import('./auth/pages/complete-register/complete-register.component').then((m) => m.CompleteRegisterComponent),
       },
       {
         path: 'registrar-vehiculo',

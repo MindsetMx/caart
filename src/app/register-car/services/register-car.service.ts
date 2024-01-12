@@ -16,7 +16,8 @@ export class RegisterCarService {
   #appService = inject(AppService);
 
   registerCar$(registerCar: FormGroup): Observable<any> {
-    let trimmedRegisterCar = this.#appService.trimObjectValues(registerCar.value);
+    const trimmedRegisterCar = this.#appService.trimObjectValues(registerCar.value);
+    const formData = this.#appService.transformObjectToFormData(trimmedRegisterCar);
 
     const token = localStorage.getItem('token');
 
@@ -26,7 +27,6 @@ export class RegisterCarService {
       'Authorization': `Bearer ${token}`
     });
 
-    const formData = this.#appService.transformObjectToFormData(trimmedRegisterCar);
 
     return this.#http.post<any>(`${this.#baseUrl}/auction-items/register`, formData, { headers });
   }
