@@ -6,7 +6,7 @@ import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
 import { saveCurrentUrlInLocalStorage } from '@shared/common/saveCurrentUrlInLocalStorage';
 
-export const verifiedGuard: CanActivateFn = (route, state) => {
+export const VerifiedGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 

@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
-import { AuthGuard, GuestGuard, unverifiedGuard, verifiedGuard } from '@auth/guards';
+import { AuthGuard, GuestGuard, UnverifiedGuard, VerifiedGuard, CompleteAccountGuard } from '@auth/guards';
+import { IncompleteAccountGuard } from '@auth/guards/incomplete-account.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    canActivateChild: [verifiedGuard],
+    canActivateChild: [VerifiedGuard],
     children: [
       {
         path: '',
@@ -22,12 +23,12 @@ export const routes: Routes = [
       },
       {
         path: 'completar-registro',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, IncompleteAccountGuard],
         loadComponent: () => import('./auth/pages/complete-register/complete-register.component').then((m) => m.CompleteRegisterComponent),
       },
       {
         path: 'registrar-vehiculo',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, CompleteAccountGuard],
         loadComponent: () => import('./register-car/pages/register-car/register-car.component').then((m) => m.RegisterCarComponent),
       },
       {
@@ -52,7 +53,7 @@ export const routes: Routes = [
   },
   {
     path: 'confirmacion',
-    canActivate: [unverifiedGuard],
+    canActivate: [UnverifiedGuard],
     loadComponent: () => import('./auth/components/confirmation/confirmation.component').then((m) => m.ConfirmationComponent),
   },
   { path: '**', redirectTo: '' },
