@@ -29,6 +29,10 @@
         @if (hasError('password')) {
         <shared-input-error [message]="getError('password')"></shared-input-error>
         }
+
+        @if (errorMessage() && !hasError('password')) {
+        <shared-input-error [message]="errorMessage()"></shared-input-error>
+        }
         <p class=" text-lg mt-2 underline">¿Ólvidaste tu contraseña?</p>
       </div>
 

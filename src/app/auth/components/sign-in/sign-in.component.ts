@@ -36,6 +36,7 @@ export class SignInComponent {
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   showPassword: WritableSignal<boolean> = signal(false);
+  errorMessage: WritableSignal<string> = signal('');
 
   get loginForm(): FormGroup {
     return this.#authService.loginForm;
@@ -54,6 +55,7 @@ export class SignInComponent {
     this.#authService.login$(this.loginForm).subscribe({
       next: () => {
         this.loginForm.reset();
+        this.errorMessage.set('');
 
         this.redirectToPreviousUrlIfExistOrHome();
         localStorage.removeItem('url');
@@ -68,6 +70,7 @@ export class SignInComponent {
       },
       error: (error) => {
         console.error({ error });
+        this.errorMessage.set(error);
       }
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);

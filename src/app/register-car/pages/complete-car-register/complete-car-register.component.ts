@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CompleteCarRegistrationService } from '../../complete-car-registration.service';
+import { CompleteCarRegistrationService } from '../../services/complete-car-registration.service';
 import { CompleteCartRegistrationMenuComponent } from '@app/register-car/components/complete-cart-registration-menu/complete-cart-registration-menu.component';
 
 @Component({

@@ -43,51 +43,76 @@
     <p class="mb-8">Para continuar <span class="underline">Inicia sesión</span> o <span
         class="underline">regístrate</span></p>
 
-    <form class="grid grid-cols-2 gap-4">
+    <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" class="grid grid-cols-2 gap-4">
       <div>
-        <label for="marca" class="sr-only">Marca</label>
-        <select id="marca" sharedInput>
-          <option value="" disabled selected>Marca</option>
+        <label for="brand" class="block mb-1 text-sm">Marca</label>
+        <select formControlName="brand" id="brand" sharedInput>
+          @for (brand of brands(); track $index) {
+          <option [value]="brand">{{brand}}</option>
+          }
         </select>
+        @if (hasError('brand')) {
+        <shared-input-error [message]="getError('brand')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="año" class="sr-only">Año</label>
-        <select id="año" sharedInput>
-          <option value="" disabled selected>Año</option>
-        </select>
+        <label for="year" class="block mb-1 text-sm">Año</label>
+        <input formControlName="year" min="1930" [max]="currentYear" id="year" type="number" sharedInput>
+        @if (hasError('year')) {
+        <shared-input-error [message]="getError('year')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
-        <label for="modelo" class="sr-only">Modelo</label>
-        <input id="modelo" type="text" placeholder="Modelo" sharedInput>
+        <label for="carModel" class="block mb-1 text-sm">Modelo</label>
+        <input formControlName="carModel" id="carModel" type="text" sharedInput>
+        @if (hasError('carModel')) {
+        <shared-input-error [message]="getError('carModel')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="color_exterior" class="sr-only">Color exterior</label>
-        <input id="color_exterior" type="text" placeholder="Color exterior" sharedInput>
+        <label for="exteriorColor" class="block mb-1 text-sm">Color exterior</label>
+        <input formControlName="exteriorColor" id="exteriorColor" type="text" sharedInput>
+        @if (hasError('exteriorColor')) {
+        <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="color_interior" class="sr-only">Color interior</label>
-        <input id="color_interior" type="text" placeholder="Color interior" sharedInput>
+        <label for="interiorColor" class="block mb-1 text-sm">Color interior</label>
+        <input formControlName="interiorColor" id="interiorColor" type="text" sharedInput>
+        @if (hasError('interiorColor')) {
+        <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="ciudad" class="sr-only">Ciudad</label>
-        <input id="ciudad" type="text" placeholder="Ciudad" sharedInput>
+        <label for="city" class="block mb-1 text-sm">Ciudad</label>
+        <input formControlName="city" id="city" type="text" sharedInput>
+        @if (hasError('city')) {
+        <shared-input-error [message]="getError('city')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="cp" class="sr-only">Código Postal</label>
-        <input id="cp" type="text" placeholder="Código Postal" sharedInput>
+        <label for="postalCode" class="block mb-1 text-sm">Código Postal</label>
+        <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
+        @if (hasError('postalCode')) {
+        <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="reserva" class="sr-only">Reserva</label>
-        <select id="reserva" sharedInput>
-          <option value="" disabled selected>Sin reserva</option>
+        <label for="reserve" class="block mb-1 text-sm">Reserva</label>
+        <select formControlName="reserve" id="reserve" sharedInput>
+          <option value="true">Sí</option>
+          <option value="false">No</option>
         </select>
+        @if (hasError('reserve')) {
+        <shared-input-error [message]="getError('reserve')"></shared-input-error>
+        }
 
         <div class="flex items-center mt-2">
           <span class="text-gray4 text-xs">¿Qué significa la Reserva?</span>
@@ -95,90 +120,152 @@
         </div>
       </div>
 
+      <!-- Si reserva es igual a 1 se muestra un input para ingresar el reserveAmount -->
+      @if (carRegisterForm.get('reserve')?.value === "true") {
+      <div>
+        <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva</label>
+        <input formControlName="reserveAmount" id="reserveAmount" type="text" sharedInput>
+        @if (hasError('reserveAmount')) {
+        <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
+        }
+      </div>
+      }
+
       <div class="col-start-1">
-        <label for="kilometraje" class="sr-only">Kilometraje</label>
-        <select id="kilometraje" sharedInput>
-          <option value="" disabled selected>Kilometraje</option>
+        <label for="kmType" class="block mb-1 text-sm">Tipo de kilometraje</label>
+        <select formControlName="kmType" id="kmType" sharedInput>
+          <option value="KM">Kilómetros</option>
+          <option value="MI">Millas</option>
         </select>
+        @if (hasError('kmType')) {
+        <shared-input-error [message]="getError('kmType')"></shared-input-error>
+        }
       </div>
 
       <div>
-        <label for="kilometraje" class="sr-only">Kilometraje</label>
-        <input id="kilometraje" type="text" placeholder="Kilometraje" sharedInput>
+        <label for="kmInput" class="block mb-1 text-sm">Kilometraje</label>
+        <input formControlName="kmInput" id="kmInput" type="text" sharedInput>
+        @if (hasError('kmInput')) {
+        <shared-input-error [message]="getError('kmInput')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
-        <label for="como_te_enteraste" class="sr-only">¿Cómo te enteraste de la plataforma?</label>
-        <input id="como_te_enteraste" type="text" placeholder="¿Cómo te enteraste de la plataforma?" sharedInput>
-      </div>
-
-      <div class="col-span-2">
-        <label for="cp" class="block mb-1">Código Postal</label>
-        <input id="cp" type="text" placeholder="C.P." sharedInput>
+        <label for="howDidYouHearAboutUs" class="block mb-1 text-sm">¿Cómo te enteraste de la plataforma?</label>
+        <input formControlName="howDidYouHearAboutUs" id="howDidYouHearAboutUs" type="text" sharedInput>
+        @if (hasError('howDidYouHearAboutUs')) {
+        <shared-input-error [message]="getError('howDidYouHearAboutUs')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2">
         <p class="text-xl font-bold mb-2">Subir fotos/videos del auto</p>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <label for="frontal" class="text-sm">
-            <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8">
-              <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
-              <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
-              <input id="frontal" type="file" class="sr-only">
-            </div>
-          </label>
+          <div>
+            <label for="photo1" class="text-sm">
+              @if(photosFormArray.at(0).value) {
+              <img src="{{previewImages()[0]}}" class="w-full h-32 rounded-lg object-cover" alt="foto del auto">
+              <input (change)="selectFile($event, 0)" id="photo1" type="file" class="sr-only">
+              }@else {
+              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 h-32">
+                <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
+                <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
+                <input (change)="selectFile($event, 0)" id="photo1" type="file" class="sr-only">
+              </div>
+              }
+            </label>
+            @if (formArrayHasError(0)) {
+            <shared-input-error [message]="getErrorFromFormArray(0)"></shared-input-error>
+            }
+          </div>
 
-          <label for="posterior" class="text-sm">
-            <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8">
-              <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
-              <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
-              <input id="posterior" type="file" class="sr-only">
-            </div>
-          </label>
+          <div>
+            <label for="photo2" class="text-sm">
+              @if(photosFormArray.at(1).value) {
+              <img src="{{previewImages()[1]}}" class="w-full h-32 rounded-lg object-cover" alt="foto del auto">
+              <input (change)="selectFile($event, 1)" id="photo2" type="file" class="sr-only">
+              }@else {
+              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 h-32">
+                <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
+                <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
+                <input (change)="selectFile($event, 1)" id="photo2" type="file" class="sr-only">
+              </div>
+              }
+            </label>
+            @if (formArrayHasError(1)) {
+            <shared-input-error [message]="getErrorFromFormArray(1)"></shared-input-error>
+            }
+          </div>
 
-          <label for="posterior" class="text-sm">
-            <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8">
-              <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
-              <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
-              <input id="posterior" type="file" class="sr-only">
-            </div>
-          </label>
+          <div>
+            <label for="photo3" class="text-sm">
+              @if(photosFormArray.at(2).value) {
+              <img src="{{previewImages()[2]}}" class="w-full h-32 rounded-lg object-cover" alt="foto del auto">
+              <input (change)="selectFile($event, 2)" id="photo3" type="file" class="sr-only">
+              }@else {
+              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 h-32">
+                <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
+                <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
+                <input (change)="selectFile($event, 2)" id="photo3" type="file" class="sr-only">
+              </div>
+              }
+            </label>
+            @if (formArrayHasError(2)) {
+            <shared-input-error [message]="getErrorFromFormArray(2)"></shared-input-error>
+            }
+          </div>
         </div>
       </div>
 
       <div class="col-span-2 mt-4">
         <p class="text-xl font-bold mb-4">¿En qué estas interesado?</p>
         <fieldset>
-          <legend class="sr-only">Notification method</legend>
+          <legend class="sr-only">¿En qué estas interesado?</legend>
           <div class="space-y-2">
             <div class="flex items-center">
-              <input id="ine" name="notification-method" type="radio" checked class="h-4 w-4">
-              <label for="ine" class="ml-3 block leading-6">Enlistar tu auto en el marketplace</label>
+              <input formControlName="interest" value="ListInMarketplace" id="listInMarketplace" type="radio" checked
+                class="h-4 w-4">
+              <label for="listInMarketplace" class="ml-3 block leading-6">Enlistar tu auto en el marketplace</label>
             </div>
             <div class="flex items-center">
-              <input id="pasaporte" name="notification-method" type="radio" class="h-4 w-4">
-              <label for="pasaporte" class="ml-3 block leading-6">
+              <input formControlName="interest" value="ListInMarketplacePlusPhotoshoot"
+                id="listInMarketplacePlusPhotoshoot" type="radio" class="h-4 w-4">
+              <label for="listInMarketplacePlusPhotoshoot" class="ml-3 block leading-6">
                 Enlistar tu auto en el marketplace + sesión fotográfica
               </label>
             </div>
           </div>
         </fieldset>
+
+        @if (hasError('interest')) {
+        <shared-input-error [message]="getError('interest')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2 mt-8">
-        <!-- checkbox terminos y condiciones -->
         <div class="flex items-center text-xs">
-          <input id="terminos" name="terminos" type="checkbox" class="h-4 w-4">
-          <label for="terminos" class="ml-3 block leading-6">
+          <input formControlName="acceptTerms" id="acceptTerms" type="checkbox" class="h-4 w-4">
+          <label for="acceptTerms" class="ml-3 block leading-6">
             Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
             <a class="underline">Acuerdos de usuarios.</a>
           </label>
         </div>
+
+        @if (hasError('acceptTerms')) {
+        <shared-input-error [message]="getError('acceptTerms')"></shared-input-error>
+        }
       </div>
 
-      <button class="col-span-2" sharedPrimaryButton>
-        Enviar solicitud a revisión
-      </button>
+      <div class="col-span-2">
+        <button type="submit" class="inline-flex justify-center items-center" [disabled]="isButtonSubmitDisabled()"
+          [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+          @if (isButtonSubmitDisabled()) {
+          <shared-spinner></shared-spinner>
+          } @else {
+          Enviar solicitud a revisión
+          }
+        </button>
+      </div>
     </form>
   </div>
   }
