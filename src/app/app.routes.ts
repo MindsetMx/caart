@@ -37,7 +37,7 @@ export const routes: Routes = [
         loadComponent: () => import('./register-car/pages/successful-register-request/successful-register-request.component').then((m) => m.SuccessfulRegisterRequestComponent),
       },
       {
-        path: 'completar-registro-vehiculo',
+        path: 'completar-registro-vehiculo/:id',
         canActivate: [AuthGuard],
         loadComponent: () => import('./register-car/pages/complete-car-register/complete-car-register.component').then((m) => m.CompleteCarRegisterComponent),
       },
@@ -48,6 +48,11 @@ export const routes: Routes = [
       }, {
         path: 'subasta',
         loadComponent: () => import('./auctions/pages/auction/auction.component').then((m) => m.AuctionComponent),
+      },
+      {
+        path: 'publicaciones',
+        canActivate: [AuthGuard],
+        loadComponent: () => import('./auctions/pages/auction-car-publications/auction-car-publications.component').then((m) => m.AuctionCarPublishesComponent),
       }
     ]
   },

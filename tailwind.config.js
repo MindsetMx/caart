@@ -26,7 +26,8 @@ module.exports = {
         gray6: "#b2b2b2",
         green1: "#63b546",
         red2: "#ff0000",
-        red3: "#ff2e2e"
+        red3: "#ff2e2e",
+        reddishOrange: "#e39115"
       },
       width: {
         'fill': '-webkit-fill-available',
