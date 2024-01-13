@@ -11,8 +11,9 @@ import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
 import { Router } from '@angular/router';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { StripeCardElementOptions, StripeElementsOptions } from '@stripe/stripe-js';
+import { StripeCardElementOptions, StripeElementsOptions, TokenResult } from '@stripe/stripe-js';
 import { idTypes } from '@auth/enums';
+import { Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-complete-register',
@@ -71,8 +72,6 @@ export class CompleteRegisterComponent {
       taxId: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(13)]],
       stripeToken: ['', [Validators.required]],
       streetAndNumber: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      city: ['', [Validators.required]],
       postalCode: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       validationType: [idTypes.ine, [Validators.required]],
       validationImg: this.#fb.array([
@@ -97,27 +96,76 @@ export class CompleteRegisterComponent {
   completeRegister(): void {
     this.isButtonSubmitDisabled.set(true);
 
-    const isValid = this.#validatorsService.isValidForm(this.completeRegisterForm);
+    this.createToken().pipe(
+      switchMap((result) => {
+        if (result.token) {
+          this.completeRegisterForm?.get('stripeToken')?.setValue(result.token.id);
+          this.completeRegisterForm?.get('stripeToken')?.setErrors(null);
+        } else
+          if (result.error && result.error.message) {
+            this.#validatorsService.addServerErrorsToForm(this.completeRegisterForm, 'stripeToken', result.error.message);
+            this.isButtonSubmitDisabled.set(false);
+            return of();
+          }
 
-    if (!isValid) {
-      this.isButtonSubmitDisabled.set(false);
-      return;
-    }
+        const isValid = this.#validatorsService.isValidForm(this.completeRegisterForm);
 
-    this.#authService.completeRegister$(this.completeRegisterForm).subscribe({
-      next: (response) => {
-        console.log({ response });
+        if (isValid)
+          return this.#authService.completeRegister$(this.completeRegisterForm);
 
-        this.toastSuccess('Registro completado con éxito');
+        return of();
+      })).subscribe({
+        next: (response) => {
+          console.log({ response });
 
-        this.completeRegisterForm.reset();
-      },
-      error: (error) => {
-        console.error({ error });
-      }
-    }).add(() => {
-      this.isButtonSubmitDisabled.set(false);
-    });
+          this.toastSuccess('Registro completado con éxito');
+
+          this.completeRegisterForm.reset();
+
+          this.redirectToPreviousUrlIfExistOrHome();
+        },
+        error: (error) => {
+          console.error({ error });
+        }
+      }).add(() => {
+        this.isButtonSubmitDisabled.set(false);
+      });
+
+    // const isValid = this.#validatorsService.isValidForm(this.completeRegisterForm);
+
+    // if (!isValid) {
+    //   this.isButtonSubmitDisabled.set(false);
+    //   return;
+    // }
+
+    // this.#authService.completeRegister$(this.completeRegisterForm).subscribe({
+    //   next: (response) => {
+    //     console.log({ response });
+
+    //     this.toastSuccess('Registro completado con éxito');
+
+    //     this.completeRegisterForm.reset();
+    //   },
+    //   error: (error) => {
+    //     console.error({ error });
+    //   }
+    // }).add(() => {
+    //   this.isButtonSubmitDisabled.set(false);
+    // });
+  }
+
+  redirectToPreviousUrlIfExistOrHome(): void {
+    const url = localStorage.getItem('url');
+
+    url ? this.#router.navigate([url]) : this.#router.navigate(['/']);
+  }
+
+  createToken(): Observable<TokenResult> {
+    if (!this.card) return of({} as TokenResult);
+
+    const name = this.completeRegisterForm?.get('firstName')?.value + ' ' + this.completeRegisterForm?.get('lastName')?.value;
+    return this.stripe
+      .createToken(this.card.element, { name });
   }
 
   selectFile(event: Event, indice: number): void {

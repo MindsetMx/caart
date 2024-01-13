@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, inject, sig
 import { RouterLink } from '@angular/router';
 import { AuctionCarPublicationsData } from '@app/auctions/interfaces/auction-car-publishes';
 import { AuctionService } from '@app/auctions/services/auction.service';
+import { environments } from '@env/environments';
 
 @Component({
   standalone: true,
@@ -13,6 +14,8 @@ import { AuctionService } from '@app/auctions/services/auction.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionCarPublishesComponent implements OnInit {
+  readonly baseUrl = environments.baseUrl;
+
   #auctionService = inject(AuctionService);
   auctionCarPublishes: WritableSignal<AuctionCarPublicationsData[]> = signal([]);
 
@@ -22,7 +25,7 @@ export class AuctionCarPublishesComponent implements OnInit {
 
   getAuctionCarPublishes(): void {
     this.#auctionService.auctionCarPublications$().subscribe((auctionCarPublishes) => {
-
+      console.log({ auctionCarPublishes });
       this.auctionCarPublishes.set(auctionCarPublishes.data);
     });
   }

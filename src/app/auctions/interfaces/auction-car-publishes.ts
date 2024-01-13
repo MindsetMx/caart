@@ -10,5 +10,7 @@ export interface AuctionCarPublicationsData {
 
 export interface Attributes {
   status: string;
+  brand: string;
+  year: number;
+  photo: string;
 }
-
