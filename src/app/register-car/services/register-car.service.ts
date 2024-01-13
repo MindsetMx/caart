@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { Brands } from '../interfaces/brands';
+import { Brands } from '../interfaces/brands.interface';
 
 @Injectable({
   providedIn: 'root'
