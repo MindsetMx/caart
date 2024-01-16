@@ -11,7 +11,21 @@ export interface Data {
 export interface Attributes {
   hasGeneralInfo: boolean;
   message: string;
+  taxId: string;
   hasStripeId: boolean;
-  paymentMethods: any[];
+  streetAndNumber: string;
+  postalCode: string;
+  paymentMethods: PaymentMethod[];
 }
 
+export interface PaymentMethod {
+  id: string;
+  card: Card;
+}
+
+export interface Card {
+  brand: string;
+  last4: string;
+  expMonth: number;
+  expYear: number;
+}

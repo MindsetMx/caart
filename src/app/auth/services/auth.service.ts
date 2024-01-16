@@ -5,7 +5,7 @@ import { Observable, catchError, map, of, throwError } from 'rxjs';
 
 import { AppService } from '@app/app.service';
 import { AuthStatus } from '@auth/enums';
-import { CheckTokenResponse, Data, RegisterResponse, loginResponse } from '@auth/interfaces';
+import { CheckTokenResponse, UserData, RegisterResponse, loginResponse } from '@auth/interfaces';
 import { environments } from '@env/environments';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class AuthService {
   #http = inject(HttpClient);
   #fb = inject(FormBuilder);
 
-  #currentUser = signal<Data | null>(null);
+  #currentUser = signal<UserData | null>(null);
   #authStatus = signal<AuthStatus>(AuthStatus.checking);
 
   currentUser = computed(() => this.#currentUser());
@@ -80,7 +80,7 @@ export class AuthService {
 
   }
 
-  private setAuthentication$(user: Data, token: string): boolean {
+  private setAuthentication$(user: UserData, token: string): boolean {
     this.#currentUser.set(user);
     this.#authStatus.set(AuthStatus.authenticated);
     localStorage.setItem('token', token);

@@ -6,36 +6,32 @@
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md mb-32">
     <form [formGroup]="registerForm" (ngSubmit)="register()" class="grid grid-cols-2 gap-4">
       <div>
-        <label for="firstName" class="sr-only">Nombre/s</label>
-        <input id="firstName" formControlName="firstName" autocomplete="given-name" type="text" placeholder="Nombre/s"
-          sharedInput>
+        <label for="firstName" class="block mb-1 text-sm">Nombre/s</label>
+        <input id="firstName" formControlName="firstName" autocomplete="given-name" type="text" sharedInput>
         @if (hasError('firstName')) {
         <shared-input-error [message]="getError('firstName')"></shared-input-error>
         }
       </div>
 
       <div>
-        <label for="lastName" class="sr-only">Apellido/s</label>
-        <input id="lastName" formControlName="lastName" autocomplete="family-name" type="text" placeholder="Apellido/s"
-          sharedInput>
+        <label for="lastName" class="block mb-1 text-sm">Apellido/s</label>
+        <input id="lastName" formControlName="lastName" autocomplete="family-name" type="text" sharedInput>
         @if (hasError('lastName')) {
         <shared-input-error [message]="getError('lastName')"></shared-input-error>
         }
       </div>
 
       <div class="col-span-2">
-        <label for="username" class="sr-only">Nombre de usuario</label>
-        <input id="username" formControlName="username" autocomplete="username" type="text"
-          placeholder="Nombre de usuario" sharedInput>
+        <label for="username" class="block mb-1 text-sm">Nombre de usuario</label>
+        <input id="username" formControlName="username" autocomplete="username" type="text" sharedInput>
         @if (hasError('username')) {
         <shared-input-error [message]="getError('username')"></shared-input-error>
         }
       </div>
 
       <div class="col-span-2">
-        <label for="country" class="sr-only">País</label>
+        <label for="country" class="block mb-1 text-sm">País</label>
         <select id="country" formControlName="country" autocomplete="country" sharedInput>
-          <option value disabled selected>País</option>
           @for (country of countries; track $index) {
           <option value="{{country}}">{{country}}</option>
           }
@@ -46,52 +42,47 @@
       </div>
 
       <div>
-        <label for="state" class="sr-only">Estado</label>
-        <input id="state" formControlName="state" autocomplete="address-level1" type="text" placeholder="Estado"
-          sharedInput>
+        <label for="state" class="block mb-1 text-sm">Estado</label>
+        <input id="state" formControlName="state" autocomplete="address-level1" type="text" sharedInput>
         @if (hasError('state')) {
         <shared-input-error [message]="getError('state')"></shared-input-error>
         }
       </div>
 
       <div>
-        <label for="city" class="sr-only">Ciudad</label>
-        <input id="city" formControlName="city" autocomplete="address-level1" type="text" placeholder="Ciudad"
-          sharedInput>
+        <label for="city" class="block mb-1 text-sm">Ciudad</label>
+        <input id="city" formControlName="city" autocomplete="address-level1" type="text" sharedInput>
         @if (hasError('city')) {
         <shared-input-error [message]="getError('city')"></shared-input-error>
         }
       </div>
 
       <div class="col-span-2">
-        <label for="phoneNumber" class="sr-only">Celular</label>
-        <input id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel" placeholder="Celular"
-          sharedInput>
+        <label for="phoneNumber" class="block mb-1 text-sm">Celular</label>
+        <input id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel" sharedInput>
         @if (hasError('phoneNumber')) {
         <shared-input-error [message]="getError('phoneNumber')"></shared-input-error>
         }
       </div>
 
       <div class="col-span-2">
-        <label for="email" class="sr-only">Correo electrónico</label>
-        <input id="email" formControlName="email" autocomplete="email" type="email" placeholder="Correo electrónico"
-          sharedInput>
+        <label for="email" class="block mb-1 text-sm">Correo electrónico</label>
+        <input id="email" formControlName="email" autocomplete="email" type="email" sharedInput>
         @if (hasError('email')) {
         <shared-input-error [message]="getError('email')"></shared-input-error>
         }
       </div>
 
       <div class="col-span-2">
-        <label for="password" class="sr-only">Contraseña</label>
-        <input id="password" formControlName="password" autocomplete="new-password" type="password"
-          placeholder="Contraseña" sharedInput>
+        <label for="password" class="block mb-1 text-sm">Contraseña</label>
+        <input id="password" formControlName="password" autocomplete="new-password" type="password" sharedInput>
         @if (hasError('password')) {
         <shared-input-error [message]="getError('password')"></shared-input-error>
         }
       </div>
 
       <div class="col-span-2">
-        <label for="password2" class="sr-only">Confirmar contraseña</label>
+        <label for="password2" class="block mb-1 text-sm">Confirmar contraseña</label>
         <input id="password2" formControlName="password2" autocomplete="new-password" type="password"
           placeholder="Confirmar contraseña" sharedInput>
         @if (hasError('password2')) {
@@ -128,16 +119,6 @@
 
             <div class="col-span-2 font-bold">
               Datos bancarios
-            </div>
-
-            <div class="col-span-2">
-              <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
-                <ngx-stripe-card [options]="cardOptions" />
-              </ngx-stripe-elements>
-
-              @if(hasError('stripeToken')) {
-              <shared-input-error [message]="getError('stripeToken')"></shared-input-error>
-              }
             </div>
 
             <!-- <div class="col-span-2">
@@ -281,7 +262,7 @@
         }
       </dl>
 
-      <div class="col-span-2 mt-8">
+      <div class="col-span-2 mt-4">
         <div class="flex items-center text-xs">
           <input id="acceptTermsAndConditions" formControlName="acceptTermsAndConditions" type="checkbox"
             class="h-4 w-4">

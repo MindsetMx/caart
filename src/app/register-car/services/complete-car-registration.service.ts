@@ -10,6 +10,7 @@ import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-th
 import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
 import { Observable } from 'rxjs';
 import { WizardSteps } from '../interfaces';
+import { AuctionTypes } from '../interfaces/auctionTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,18 @@ export class CompleteCarRegistrationService {
   ];
 
   indexCurrentStep: WritableSignal<number> = signal(0);
+
+  getAuctionTypes$(): Observable<AuctionTypes> {
+    const url = `${this.#baseurl}/auction-types`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.get<AuctionTypes>(url, { headers });
+  }
 
   changeStep(step: number) {
     if (step < 0 || step >= this.steps.length) return;

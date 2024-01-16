@@ -8,7 +8,7 @@ export const CompleteAccountGuard: CanActivateFn = (route, state) => {
   const generalInfoService = inject(GeneralInfoService);
   const router = inject(Router);
 
-  return generalInfoService.generalInfo$().pipe(
+  return generalInfoService.getGeneralInfo$().pipe(
     map((response) => {
       console.log(response);
 

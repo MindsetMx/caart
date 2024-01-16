@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AuthService } from '@auth/services/auth.service';
-import { Data, ResendCode, VerifiedAccount } from '@auth/interfaces';
+import { UserData, ResendCode, VerifiedAccount } from '@auth/interfaces';
 import { environments } from '@env/environments';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class VerificationService {
   #authService = inject(AuthService);
   #http = inject(HttpClient);
 
-  get currentUser(): Data | null {
+  get currentUser(): UserData | null {
     return this.#authService.currentUser();
   }
 

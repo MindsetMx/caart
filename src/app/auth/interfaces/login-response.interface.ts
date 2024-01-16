@@ -1,9 +1,9 @@
 export interface loginResponse {
-  data: Data;
+  data: UserData;
   meta: Meta;
 }
 
-export interface Data {
+export interface UserData {
   type: string;
   id: string;
   attributes: User;

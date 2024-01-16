@@ -13,7 +13,7 @@ export class GeneralInfoService {
 
   #http = inject(HttpClient);
 
-  generalInfo$(): Observable<GeneralInfo> {
+  getGeneralInfo$(): Observable<GeneralInfo> {
     const url = `${this.#baseUrl}/users/profile/general-info`;
 
     const token = localStorage.getItem('token');

@@ -8,7 +8,7 @@ export class PrimaryButtonDirective {
   @Input() px: string = 'px-8';
   @Input() py: string = 'py-3.5';
   @Input() rounded: string = 'rounded-lg';
-  @Input() classes: string = 'font-lato';
+  @Input() classes: string = '';
   @Input() width: string = 'w-full';
 
   #element = inject(ElementRef<HTMLElement>);

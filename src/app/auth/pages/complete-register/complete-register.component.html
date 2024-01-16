@@ -22,16 +22,6 @@
           Datos bancarios
         </div>
 
-        <div class="col-span-2">
-          <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
-            <ngx-stripe-card [options]="cardOptions" />
-          </ngx-stripe-elements>
-
-          @if(hasError('stripeToken')) {
-          <shared-input-error [message]="getError('stripeToken')"></shared-input-error>
-          }
-        </div>
-
         <div class="col-span-2 font-bold">
           Dirección
         </div>
