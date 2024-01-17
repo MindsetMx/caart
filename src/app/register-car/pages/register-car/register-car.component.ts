@@ -39,7 +39,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   #registerCarService = inject(RegisterCarService);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
-  appComponent = inject(AppComponent);
+  #appComponent = inject(AppComponent);
 
   tabs: TabWithIcon[];
   currentTab: WritableSignal<TabWithIcon> = signal<TabWithIcon>({} as TabWithIcon);
@@ -129,7 +129,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   }
 
   openSignInModal(): void {
-    this.appComponent.openSignInModal();
+    this.#appComponent.openSignInModal();
   }
 
   ngOnDestroy(): void {

@@ -1,12 +1,12 @@
 import { AuthService } from '@auth/services/auth.service';
-import { Component, ViewChild, effect, inject } from '@angular/core';
+import { Component, WritableSignal, effect, inject, signal } from '@angular/core';
 import { Router, RouterOutlet, } from '@angular/router';
 
-import { FooterComponent } from '@shared/components/footer/footer.component';
-import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { AuthStatus } from '@auth/enums';
-import { SignInComponent } from '@auth/components/sign-in/sign-in.component';
+import { FooterComponent } from '@shared/components/footer/footer.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
+import { NavbarComponent } from '@shared/components/navbar/navbar.component';
+import { SignInComponent } from '@auth/components/sign-in/sign-in.component';
 
 @Component({
   selector: 'app-root',
@@ -22,11 +22,12 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  @ViewChild('navbar') navbar?: NavbarComponent;
   title = 'caart';
 
   #authService = inject(AuthService);
   #router = inject(Router);
+
+  modalSignInIsOpen: WritableSignal<boolean> = signal(false);
 
   authStatusChangedEffect = effect(() => {
     switch (this.#authService.authStatus()) {
@@ -41,11 +42,7 @@ export class AppComponent {
     }
   });
 
-  constructor() {
-    this.#authService.checkAuthStatus$().subscribe();
-  }
-
   openSignInModal(): void {
-    this.navbar?.openSignInModal();
+    this.modalSignInIsOpen.set(true);
   }
 }

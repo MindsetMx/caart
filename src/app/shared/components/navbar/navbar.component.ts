@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, WritableSignal, inject, signal } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
 import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 import { DropdownComponent } from '@shared/components/dropdown/dropdown.component';
 import { DropdownLink } from '@shared/interfaces/DropdownLink';
-import { Router, RouterModule } from '@angular/router';
 import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.component';
 
 @Component({
@@ -22,11 +22,12 @@ import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.c
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
+  @Input() modalSignInIsOpen: WritableSignal<boolean> = signal(false);
+
   private authService = inject(AuthService);
   private router = inject(Router);
 
   menuIsOpen: WritableSignal<boolean> = signal(false);
-  modalSignInIsOpen: WritableSignal<boolean> = signal(false);
   categoriesDropdownIsOpen: WritableSignal<boolean> = signal(false);
   userDropdownIsOpen: WritableSignal<boolean> = signal(false);
 
