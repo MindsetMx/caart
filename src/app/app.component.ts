@@ -1,5 +1,5 @@
 import { AuthService } from '@auth/services/auth.service';
-import { Component, effect, inject } from '@angular/core';
+import { Component, ViewChild, effect, inject } from '@angular/core';
 import { Router, RouterOutlet, } from '@angular/router';
 
 import { FooterComponent } from '@shared/components/footer/footer.component';
@@ -22,6 +22,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  @ViewChild('navbar') navbar?: NavbarComponent;
   title = 'caart';
 
   #authService = inject(AuthService);
@@ -42,5 +43,9 @@ export class AppComponent {
 
   constructor() {
     this.#authService.checkAuthStatus$().subscribe();
+  }
+
+  openSignInModal(): void {
+    this.navbar?.openSignInModal();
   }
 }

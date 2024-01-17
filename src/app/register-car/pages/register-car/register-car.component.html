@@ -41,7 +41,7 @@
     </div>
 
     @if (!user) {
-    <p class="mb-8">Para continuar <span class="underline">Inicia sesión</span> o <span
+    <p class="mb-8">Para continuar <button (click)="openSignInModal()" class="underline">Inicia sesión</button> o <span
         class="underline">regístrate</span></p>
     }
 

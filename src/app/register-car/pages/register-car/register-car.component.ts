@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
 import { UserData } from '@auth/interfaces';
+import { AppComponent } from '../../../app.component';
 
 @Component({
   selector: 'register-car',
@@ -38,6 +39,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   #registerCarService = inject(RegisterCarService);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
+  appComponent = inject(AppComponent);
 
   tabs: TabWithIcon[];
   currentTab: WritableSignal<TabWithIcon> = signal<TabWithIcon>({} as TabWithIcon);
@@ -124,6 +126,10 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
 
       this.carRegisterForm.updateValueAndValidity();
     });
+  }
+
+  openSignInModal(): void {
+    this.appComponent.openSignInModal();
   }
 
   ngOnDestroy(): void {
