@@ -207,5 +207,6 @@
   <div class="h-1 w-full custom-border rotate-180 -z-10"></div>
 </div>
 
-<auth-sign-in-modal [isOpen]="signInModalIsOpen"></auth-sign-in-modal>
+<auth-sign-in-modal (registerModalIsOpenChange)="registerModalIsOpen.set($event)"
+  [isOpen]="signInModalIsOpen"></auth-sign-in-modal>
 <register-modal [isOpen]="registerModalIsOpen"></register-modal>

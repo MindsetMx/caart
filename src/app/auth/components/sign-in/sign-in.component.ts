@@ -24,7 +24,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent {
-  @Output() isOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() signInModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
 
   @Input() mt: string = 'mt-16';
@@ -66,7 +67,7 @@ export class SignInComponent {
         if (currentUrl === '/' && currentUser?.attributes?.accountVerified === false)
           this.#router.navigate(['/confirmacion']);
 
-        this.isOpenChange.emit(false);
+        this.signInModalIsOpenChange.emit(false);
       },
       error: (error) => {
         console.error({ error });
@@ -77,9 +78,9 @@ export class SignInComponent {
     });
   }
 
-  goToRegisterPage(): void {
-    this.#router.navigate(['/registrarse']);
-    this.isOpenChange.emit(false);
+  openRegisterModal(): void {
+    this.signInModalIsOpenChange.emit(false);
+    this.registerModalIsOpenChange.emit(true);
   }
 
   redirectToPreviousUrlIfExistOrHome(): void {

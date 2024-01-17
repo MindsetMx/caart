@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, WritableSignal, signal } from '@angular/core';
 import { SignInComponent } from '@auth/components/sign-in/sign-in.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 
@@ -15,4 +15,9 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 })
 export class SignInModalComponent {
   @Input() isOpen: WritableSignal<boolean> = signal(false);
+  @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  emitRegisterModalIsOpenChange(isOpen: boolean): void {
+    this.registerModalIsOpenChange.emit(isOpen);
+  }
 }
