@@ -1,12 +1,14 @@
 import { animate, query, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, WritableSignal, signal } from '@angular/core';
+import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 
 @Component({
   selector: 'shared-modal',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    ClickOutsideDirective
   ],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',

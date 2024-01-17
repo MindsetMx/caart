@@ -41,8 +41,9 @@
     </div>
 
     @if (!user) {
-    <p class="mb-8">Para continuar <button (click)="openSignInModal()" class="underline">Inicia sesión</button> o <span
-        class="underline">regístrate</span></p>
+    <p class="mb-8">Para continuar <button (click)="openSignInModal()" class="underline">Inicia sesión</button> o
+      <button (click)="openRegisterModal()" class="underline">regístrate</button>
+    </p>
     }
 
     <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" class="grid grid-cols-2 gap-4">

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
@@ -14,7 +14,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-register',
+  selector: 'register',
   standalone: true,
   imports: [
     InputDirective,
@@ -29,6 +29,9 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
+  @Output() isOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() mb: string = 'mb-32';
+
   #appService = inject(AppService);
   #authService = inject(AuthService);
   #fb = inject(FormBuilder);
@@ -91,6 +94,8 @@ export class RegisterComponent {
         this.registerForm?.reset();
 
         this.login(loginForm);
+
+        this.isOpenChange.emit(false);
       },
       error: (err) => {
         console.error(err);

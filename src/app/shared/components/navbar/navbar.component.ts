@@ -7,6 +7,7 @@ import { ClickOutsideDirective } from '@shared/directives/click-outside.directiv
 import { DropdownComponent } from '@shared/components/dropdown/dropdown.component';
 import { DropdownLink } from '@shared/interfaces/DropdownLink';
 import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.component';
+import { RegisterModalComponent } from '@auth/modals/register-modal/register-modal.component';
 
 @Component({
   selector: 'shared-navbar',
@@ -16,13 +17,15 @@ import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.c
     DropdownComponent,
     RouterModule,
     SignInModalComponent,
+    RegisterModalComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
-  @Input() modalSignInIsOpen: WritableSignal<boolean> = signal(false);
+  @Input() signInModalIsOpen: WritableSignal<boolean> = signal(false);
+  @Input() registerModalIsOpen: WritableSignal<boolean> = signal(false);
 
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -59,7 +62,7 @@ export class NavbarComponent {
   }
 
   openSignInModal(): void {
-    this.modalSignInIsOpen.set(true);
+    this.signInModalIsOpen.set(true);
   }
 
   logout() {

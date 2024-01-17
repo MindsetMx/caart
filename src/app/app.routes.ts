@@ -16,11 +16,11 @@ export const routes: Routes = [
         canActivate: [GuestGuard],
         loadComponent: () => import('./auth/components/sign-in/sign-in.component').then((m) => m.SignInComponent),
       },
-      {
-        path: 'registrarse',
-        canActivate: [GuestGuard],
-        loadComponent: () => import('./auth/pages/register/register.component').then((m) => m.RegisterComponent),
-      },
+      // {
+      //   path: 'registrarse',
+      //   canActivate: [GuestGuard],
+      //   loadComponent: () => import('./auth/pages/register/register.component').then((m) => m.RegisterComponent),
+      // },
       {
         path: 'completar-registro',
         canActivate: [AuthGuard, IncompleteAccountGuard],

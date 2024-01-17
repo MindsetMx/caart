@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { InputDirective } from '@shared/directives/input.directive';
@@ -130,6 +130,10 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
 
   openSignInModal(): void {
     this.#appComponent.openSignInModal();
+  }
+
+  openRegisterModal(): void {
+    this.#appComponent.openRegisterModal();
   }
 
   ngOnDestroy(): void {

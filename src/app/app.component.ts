@@ -27,7 +27,8 @@ export class AppComponent {
   #authService = inject(AuthService);
   #router = inject(Router);
 
-  modalSignInIsOpen: WritableSignal<boolean> = signal(false);
+  signInModalIsOpen: WritableSignal<boolean> = signal(false);
+  registerModalIsOpen: WritableSignal<boolean> = signal(false);
 
   authStatusChangedEffect = effect(() => {
     switch (this.#authService.authStatus()) {
@@ -43,6 +44,10 @@ export class AppComponent {
   });
 
   openSignInModal(): void {
-    this.modalSignInIsOpen.set(true);
+    this.signInModalIsOpen.set(true);
+  }
+
+  openRegisterModal(): void {
+    this.registerModalIsOpen.set(true);
   }
 }
