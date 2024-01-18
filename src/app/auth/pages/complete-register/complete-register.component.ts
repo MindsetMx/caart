@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -12,6 +12,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
+  selector: 'complete-register',
   standalone: true,
   imports: [
     InputDirective,
@@ -25,6 +26,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompleteRegisterComponent {
+  @Input() mb: string = 'mb-32';
+
   #appService = inject(AppService);
   #authService = inject(AuthService);
   #fb = inject(FormBuilder);
@@ -78,7 +81,7 @@ export class CompleteRegisterComponent {
 
         this.completeRegisterForm.reset();
 
-        this.redirectToPreviousUrlIfExistOrHome();
+        this.redirectToPreviousUrlIfExists();
       },
       error: (error) => {
         console.error({ error });
@@ -88,10 +91,10 @@ export class CompleteRegisterComponent {
     });
   }
 
-  redirectToPreviousUrlIfExistOrHome(): void {
+  redirectToPreviousUrlIfExists(): void {
     const url = localStorage.getItem('url');
 
-    url ? this.#router.navigate([url]) : this.#router.navigate(['/']);
+    if (url) { this.#router.navigate([url]) };
   }
 
   selectFile(event: Event, indice: number): void {

@@ -58,7 +58,7 @@ export class SignInComponent {
         this.loginForm.reset();
         this.errorMessage.set('');
 
-        this.redirectToPreviousUrlIfExistOrHome();
+        this.redirectToPreviousUrlIfExists();
         localStorage.removeItem('url');
 
         const currentUrl = this.#router.url;
@@ -83,10 +83,10 @@ export class SignInComponent {
     this.registerModalIsOpenChange.emit(true);
   }
 
-  redirectToPreviousUrlIfExistOrHome(): void {
+  redirectToPreviousUrlIfExists(): void {
     const url = localStorage.getItem('url');
 
-    url ? this.#router.navigate([url]) : this.#router.navigate(['/']);
+    if (url) { this.#router.navigate([url]) };
   }
 
   togglePassword(): void {

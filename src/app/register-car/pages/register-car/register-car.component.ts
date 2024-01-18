@@ -11,11 +11,15 @@ import { SubastaAutomovilesTypes } from '@app/register-car/enums/subastaAutomovi
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { Subscription } from 'rxjs';
+import { EMPTY, Observable, Subscription, catchError, map, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
 import { UserData } from '@auth/interfaces';
 import { AppComponent } from '../../../app.component';
+import { CommonModule } from '@angular/common';
+import { AuthStatus } from '@auth/enums';
+import { GeneralInfoService } from '@auth/services/general-info.service';
+import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-modal/complete-register-modal.component';
 
 @Component({
   selector: 'register-car',
@@ -28,18 +32,21 @@ import { AppComponent } from '../../../app.component';
     SecondaryButtonDirective,
     SpinnerComponent,
     TabsWithIconsComponent,
+    CommonModule,
+    CompleteRegisterModalComponent
   ],
   templateUrl: './register-car.component.html',
   styleUrl: './register-car.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterCarComponent implements OnInit, OnDestroy {
+  #appComponent = inject(AppComponent);
   #authService = inject(AuthService);
   #fb = inject(FormBuilder);
+  #generalInfoService = inject(GeneralInfoService);
   #registerCarService = inject(RegisterCarService);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
-  #appComponent = inject(AppComponent);
 
   tabs: TabWithIcon[];
   currentTab: WritableSignal<TabWithIcon> = signal<TabWithIcon>({} as TabWithIcon);
@@ -50,9 +57,14 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   currentYear = new Date().getFullYear();
   carRegisterForm: FormGroup;
   reserveValueChangesSubscription?: Subscription;
+  completeRegisterModalIsOpen: WritableSignal<boolean> = signal(false);
 
   get user(): UserData | null {
     return this.#authService.currentUser();
+  }
+
+  get authStatus(): AuthStatus {
+    return this.#authService.authStatus();
   }
 
   get subastaAutomovilesType(): typeof SubastaAutomovilesTypes {
@@ -69,6 +81,10 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
 
   get reserveAmountControl(): FormControl {
     return this.carRegisterForm.get('reserveAmount') as FormControl;
+  }
+
+  get userIsNotAuthenticated(): boolean {
+    return this.authStatus === AuthStatus.notAuthenticated;
   }
 
   constructor() {
@@ -166,6 +182,38 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
     });
 
   }
+
+  showModalBasedOnUserStatus(): void {
+    if (this.userIsNotAuthenticated) {
+      this.#appComponent.openSignInModal();
+      return;
+    }
+
+
+    this.#generalInfoService.getGeneralInfo$().subscribe({
+      next: (response) => {
+        const hasGeneralInfo = response.data.attributes.hasGeneralInfo;
+
+        if (!hasGeneralInfo) {
+          this.completeRegisterModalIsOpen.set(true);
+        }
+      },
+      error: (error) => {
+        console.error({ error });
+      }
+    });
+  }
+
+  hasGeneralInfo$ = this.#generalInfoService.getGeneralInfo$().pipe(
+    map(response => {
+      return response.data.attributes.hasGeneralInfo;
+    }),
+    catchError((error) => {
+      console.error({ error });
+
+      return EMPTY;
+    })
+  );
 
   getBrands(): void {
     this.#registerCarService.getBrands$().subscribe({

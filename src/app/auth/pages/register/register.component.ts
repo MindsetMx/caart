@@ -29,7 +29,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
-  @Output() isOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() mb: string = 'mb-32';
 
   #appService = inject(AppService);
@@ -95,7 +95,7 @@ export class RegisterComponent {
 
         this.login(loginForm);
 
-        this.isOpenChange.emit(false);
+        this.registerModalIsOpenChange.emit(false);
       },
       error: (err) => {
         console.error(err);
