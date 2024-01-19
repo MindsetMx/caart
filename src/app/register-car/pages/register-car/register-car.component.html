@@ -165,62 +165,13 @@
       </div>
 
       <div class="col-span-2" [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <p class="text-xl font-bold mb-2">Subir fotos/videos del auto</p>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div>
-            <label for="photo1" class="text-sm">
-              @if(photosFormArray.at(0).value) {
-              <img src="{{previewImages()[0]}}" class="w-full h-32 rounded-lg object-cover" alt="foto del auto">
-              <input (change)="selectFile($event, 0)" id="photo1" type="file" class="sr-only">
-              }@else {
-              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 h-32">
-                <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
-                <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
-                <input (change)="selectFile($event, 0)" id="photo1" type="file" class="sr-only">
-              </div>
-              }
-            </label>
-            @if (formArrayHasError(0)) {
-            <shared-input-error [message]="getErrorFromFormArray(0)"></shared-input-error>
-            }
-          </div>
+        <p class="text-xl font-bold mb-2">Subir fotos del auto</p>
 
-          <div>
-            <label for="photo2" class="text-sm">
-              @if(photosFormArray.at(1).value) {
-              <img src="{{previewImages()[1]}}" class="w-full h-32 rounded-lg object-cover" alt="foto del auto">
-              <input (change)="selectFile($event, 1)" id="photo2" type="file" class="sr-only">
-              }@else {
-              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 h-32">
-                <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
-                <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
-                <input (change)="selectFile($event, 1)" id="photo2" type="file" class="sr-only">
-              </div>
-              }
-            </label>
-            @if (formArrayHasError(1)) {
-            <shared-input-error [message]="getErrorFromFormArray(1)"></shared-input-error>
-            }
-          </div>
+        <div #uppyDashboard></div>
 
-          <div>
-            <label for="photo3" class="text-sm">
-              @if(photosFormArray.at(2).value) {
-              <img src="{{previewImages()[2]}}" class="w-full h-32 rounded-lg object-cover" alt="foto del auto">
-              <input (change)="selectFile($event, 2)" id="photo3" type="file" class="sr-only">
-              }@else {
-              <div class="bg-gray1 border border-dashed rounded-md border-gray4 w-full py-8 h-32">
-                <div class="flex justify-center h-10 w-full"><img src="assets/img/register/cloud.svg" alt=""></div>
-                <p class="text-center text-gray4 text-sm mt-2">Subir imagen</p>
-                <input (change)="selectFile($event, 2)" id="photo3" type="file" class="sr-only">
-              </div>
-              }
-            </label>
-            @if (formArrayHasError(2)) {
-            <shared-input-error [message]="getErrorFromFormArray(2)"></shared-input-error>
-            }
-          </div>
-        </div>
+        @if (hasError('photos')) {
+        <shared-input-error [message]="getError('photos')"></shared-input-error>
+        }
       </div>
 
       <div class="col-span-2 mt-4"

@@ -17,7 +17,6 @@ export class RegisterCarService {
 
   registerCar$(registerCar: FormGroup): Observable<any> {
     const trimmedRegisterCar = this.#appService.trimObjectValues(registerCar.value);
-    const formData = this.#appService.transformObjectToFormData(trimmedRegisterCar);
 
     const token = localStorage.getItem('token');
 
@@ -28,7 +27,7 @@ export class RegisterCarService {
     });
 
 
-    return this.#http.post<any>(`${this.#baseUrl}/auction-items/register`, formData, { headers });
+    return this.#http.post<any>(`${this.#baseUrl}/auction-items/register`, trimmedRegisterCar, { headers });
   }
 
   getBrands$(): Observable<Brands> {

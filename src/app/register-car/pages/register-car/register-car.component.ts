@@ -1,6 +1,19 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, WritableSignal, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, WritableSignal, inject, signal, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { EMPTY, Subscription, catchError, map } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Uppy } from '@uppy/core';
+import { UppyAngularDashboardModule, UppyAngularDragDropModule } from '@uppy/angular';
+import Dashboard from '@uppy/dashboard';
+import Spanish from '@uppy/locales/lib/es_ES';
+import XHRUpload from '@uppy/xhr-upload';
 
+import { AppComponent } from '@app/app.component';
+import { AuthService } from '@auth/services/auth.service';
+import { AuthStatus } from '@auth/enums';
+import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-modal/complete-register-modal.component';
+import { GeneralInfoService } from '@auth/services/general-info.service';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
@@ -10,21 +23,15 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { SubastaAutomovilesTypes } from '@app/register-car/enums/subastaAutomovilesTypes.enum';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
-import { ValidatorsService } from '@shared/services/validators.service';
-import { EMPTY, Observable, Subscription, catchError, map, of } from 'rxjs';
-import { Router } from '@angular/router';
-import { AuthService } from '@auth/services/auth.service';
 import { UserData } from '@auth/interfaces';
-import { AppComponent } from '../../../app.component';
-import { CommonModule } from '@angular/common';
-import { AuthStatus } from '@auth/enums';
-import { GeneralInfoService } from '@auth/services/general-info.service';
-import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-modal/complete-register-modal.component';
+import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
   selector: 'register-car',
   standalone: true,
   imports: [
+    CommonModule,
+    CompleteRegisterModalComponent,
     InputDirective,
     InputErrorComponent,
     PrimaryButtonDirective,
@@ -32,14 +39,16 @@ import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-m
     SecondaryButtonDirective,
     SpinnerComponent,
     TabsWithIconsComponent,
-    CommonModule,
-    CompleteRegisterModalComponent
+    UppyAngularDashboardModule,
+    UppyAngularDragDropModule,
   ],
   templateUrl: './register-car.component.html',
   styleUrl: './register-car.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterCarComponent implements OnInit, OnDestroy {
+export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('uppyDashboard') uppyDashboard!: ElementRef;
+
   #appComponent = inject(AppComponent);
   #authService = inject(AuthService);
   #fb = inject(FormBuilder);
@@ -53,11 +62,12 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   currentSubastaAutomovilesType: WritableSignal<SubastaAutomovilesTypes> = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   brands: WritableSignal<string[]> = signal([]);
-  previewImages: WritableSignal<string[]> = signal(['', '', '']);
   currentYear = new Date().getFullYear();
   carRegisterForm: FormGroup;
   reserveValueChangesSubscription?: Subscription;
   completeRegisterModalIsOpen: WritableSignal<boolean> = signal(false);
+
+  uppy?: Uppy;
 
   get user(): UserData | null {
     return this.#authService.currentUser();
@@ -71,10 +81,6 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
     return SubastaAutomovilesTypes;
   }
 
-  get photosFormArray(): FormArray {
-    return this.carRegisterForm.get('photos') as FormArray;
-  }
-
   get reserveControl(): FormControl {
     return this.carRegisterForm.get('reserve') as FormControl;
   }
@@ -85,6 +91,10 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
 
   get userIsNotAuthenticated(): boolean {
     return this.authStatus === AuthStatus.notAuthenticated;
+  }
+
+  get photosControl(): FormControl {
+    return this.carRegisterForm.get('photos') as FormControl;
   }
 
   constructor() {
@@ -104,11 +114,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       howDidYouHearAboutUs: ['', Validators.required],
       interest: ['', Validators.required],
       acceptTerms: ['', Validators.required],
-      photos: this.#fb.array([
-        this.#fb.control(null, Validators.required),
-        this.#fb.control(null, Validators.required),
-        this.#fb.control(null, Validators.required),
-      ])
+      photos: [[], Validators.required],
     });
 
     this.tabs =
@@ -128,6 +134,61 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       ];
 
     this.currentTab.set(this.tabs[0]);
+  }
+  ngAfterViewInit(): void {
+    this.uppy = new Uppy({
+      debug: true,
+      autoProceed: true,
+      locale: Spanish,
+      meta: { // Metadatos globales para todos los archivos
+        upload_preset: 'if8y72iv', // Asegúrate de poner aquí tu upload preset real
+        api_key: '218199524155838', // Asegúrate de poner aquí tu api key real
+      }
+    }).use(Dashboard,
+      {
+        // theme: 'dark',
+        height: 300,
+        hideUploadButton: true,
+        hideCancelButton: true,
+        showRemoveButtonAfterComplete: true,
+        inline: true,
+        // showProgressDetails: false,
+        hideProgressAfterFinish: true,
+        target: this.uppyDashboard.nativeElement,
+        proudlyDisplayPoweredByUppy: true,
+        locale: {
+          strings: {
+            dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
+          }
+        }
+      })
+      .use(XHRUpload, {
+        endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/image/upload',
+        formData: true,
+        fieldName: 'file',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        allowedMetaFields: ['upload_preset', 'api_key'], // Añadir campos meta aquí
+      })
+      .on('complete', (result) => {
+        console.log({ result });
+        result.successful.forEach(file => {
+          const url = file.uploadURL; // Asumiendo que la respuesta incluye la URL de la imagen cargada
+          //Agregar la url al photosControl de fotos sin eliminar las fotos anteriores
+          this.photosControl.setValue([...this.photosControl.value, url]);
+
+          this.uppyDashboard.nativeElement.click();
+
+          file.meta['uploadURL'] = url; // Almacena la URL en los metadatos del archivo en Uppy para referencia futura
+        });
+      }).on('file-removed', (file, reason) => {
+        console.log(`File removed: ${file.id}`);
+        console.log(`Reason: ${reason}`);
+        const urlToRemove = file.meta['uploadURL']; // Obtiene la URL del archivo eliminado de sus metadatos
+        // Elimina la URL del formArray de fotos
+        this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
+      });
   }
 
   ngOnInit(): void {
@@ -165,6 +226,8 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       this.isButtonSubmitDisabled.set(false);
       return;
     }
+
+    console.log({ carRegisterForm: this.carRegisterForm.value });
 
     this.#registerCarService.registerCar$(this.carRegisterForm).subscribe({
       next: (response) => {
@@ -226,30 +289,6 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectFile(event: Event, indice: number): void {
-    const inputElement = event.target as HTMLInputElement;
-
-    if (!inputElement.files?.length) return;
-
-    const file = inputElement.files[0];
-    this.photosFormArray.at(indice).setValue(file);
-
-    this.showPreview(file, indice);
-  }
-
-  showPreview(archivo: File, indice: number): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.previewImages.set(
-        this.previewImages().map((image, index) => {
-          if (index === indice) return reader.result as string;
-          return image;
-        })
-      );
-    }
-    reader.readAsDataURL(archivo);
-  }
-
   setSubastaAutomovilesType(type: SubastaAutomovilesTypes): void {
     this.currentSubastaAutomovilesType.set(type);
   }
@@ -266,17 +305,5 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
     if (!this.carRegisterForm) return undefined;
 
     return this.#validatorsService.getError(this.carRegisterForm, field);
-  }
-
-  formArrayHasError(index: number): boolean {
-    if (!this.carRegisterForm) return false;
-
-    return this.#validatorsService.formArrayHasError(this.photosFormArray, index);
-  }
-
-  getErrorFromFormArray(index: number): string | undefined {
-    if (!this.carRegisterForm) return undefined;
-
-    return this.#validatorsService.getErrorFromFormArray(this.photosFormArray, index);
   }
 }
