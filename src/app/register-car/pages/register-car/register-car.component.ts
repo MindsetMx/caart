@@ -146,16 +146,15 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }).use(Dashboard,
       {
-        // theme: 'dark',
         height: 300,
         hideUploadButton: true,
         hideCancelButton: true,
         showRemoveButtonAfterComplete: true,
+        showProgressDetails: true,
         inline: true,
-        // showProgressDetails: false,
         hideProgressAfterFinish: true,
         target: this.uppyDashboard.nativeElement,
-        proudlyDisplayPoweredByUppy: true,
+        proudlyDisplayPoweredByUppy: false,
         locale: {
           strings: {
             dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
