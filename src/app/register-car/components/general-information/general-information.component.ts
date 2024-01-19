@@ -90,7 +90,6 @@ export class GeneralInformationComponent implements OnInit {
 
   constructor() {
     this.generalInformationForm = this.#fb.group({
-      taxId: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(13)]],
       paymentMethodId: ['', [Validators.required]],
       auctionCarPublishId: ['', [Validators.required]],
       auctionTypeId: ['', [Validators.required]],
@@ -141,10 +140,6 @@ export class GeneralInformationComponent implements OnInit {
 
   getGeneralInfo(): void {
     this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
-      this.generalInformationForm.patchValue({
-        taxId: generalInfo.data.attributes.taxId,
-      });
-
       this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
 
       console.log({ paymentMethods: this.paymentMethods() });
