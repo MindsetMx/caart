@@ -30,6 +30,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 })
 export class RegisterComponent {
   @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() signInModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() mb: string = 'mb-32';
 
   #appService = inject(AppService);
@@ -168,6 +169,11 @@ export class RegisterComponent {
         console.error({ error });
       }
     });
+  }
+
+  singInModalIsOpenChange(): void {
+    this.registerModalIsOpenChange.emit(false);
+    this.signInModalIsOpenChange.emit(true);
   }
 
   setValidationType(type: idTypes): void {

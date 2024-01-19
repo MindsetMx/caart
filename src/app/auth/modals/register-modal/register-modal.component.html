@@ -5,5 +5,6 @@
     <hr class="absolute w-full -bottom-4">
   </div>
 
-  <register mb="mb-0" (registerModalIsOpenChange)="isOpen.set(false)"></register>
+  <register mb="mb-0" (signInModalIsOpenChange)="emitSignInModalIsOpenChange($event)"
+    (registerModalIsOpenChange)="isOpen.set(false)"></register>
 </shared-modal>

@@ -209,4 +209,5 @@
 
 <auth-sign-in-modal (registerModalIsOpenChange)="registerModalIsOpen.set($event)"
   [isOpen]="signInModalIsOpen"></auth-sign-in-modal>
-<register-modal [isOpen]="registerModalIsOpen"></register-modal>
+<register-modal (signInModalIsOpenChange)="signInModalIsOpen.set($event)"
+  [isOpen]="registerModalIsOpen"></register-modal>
