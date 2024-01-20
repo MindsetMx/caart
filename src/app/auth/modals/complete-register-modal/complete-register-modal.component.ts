@@ -16,5 +16,10 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 })
 export class CompleteRegisterModalComponent {
   @Input() isOpen: WritableSignal<boolean> = signal(false);
-  @Output() isOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() getHasGeneralInfo: EventEmitter<void> = new EventEmitter<void>();
+
+  completeRegisterModalIsOpenChange(isOpen: boolean): void {
+    this.isOpen.set(isOpen);
+    this.getHasGeneralInfo.emit();
+  }
 }

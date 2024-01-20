@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
@@ -25,8 +26,9 @@ import { ValidatorsService } from '@shared/services/validators.service';
   styleUrl: './complete-register.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CompleteRegisterComponent {
+export class CompleteRegisterComponent implements OnInit, OnDestroy {
   @Input() mb: string = 'mb-32';
+  @Output() completeRegisterModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   #appService = inject(AppService);
   #authService = inject(AuthService);
@@ -37,6 +39,8 @@ export class CompleteRegisterComponent {
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   previewImages: WritableSignal<string[]> = signal(['', '']);
   completeRegisterForm: FormGroup;
+
+  validationTypeSubscription?: Subscription;
 
   constructor() {
     this.completeRegisterForm = this.#fb.group({
@@ -63,6 +67,17 @@ export class CompleteRegisterComponent {
     return this.completeRegisterForm.get('validationImg') as FormArray;
   }
 
+  ngOnInit(): void {
+    this.validationTypeSubscription = this.validationType.valueChanges.subscribe((value) => {
+      this.setValidationType(value);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.validationTypeSubscription)
+      this.validationTypeSubscription.unsubscribe();
+  }
+
   completeRegister(): void {
     this.isButtonSubmitDisabled.set(true);
 
@@ -82,6 +97,8 @@ export class CompleteRegisterComponent {
         this.completeRegisterForm.reset();
 
         this.redirectToPreviousUrlIfExists();
+
+        this.completeRegisterModalIsOpenChange.emit(false);
       },
       error: (error) => {
         console.error({ error });
@@ -89,6 +106,24 @@ export class CompleteRegisterComponent {
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
     });
+  }
+
+  setValidationType(type: idTypes): void {
+    switch (type) {
+      case idTypes.ine:
+        this.completeRegisterForm?.setControl('validationImg', new FormArray([
+          new FormControl(null, Validators.required),
+          new FormControl(null, Validators.required),
+        ]));
+
+        break;
+      case idTypes.pasaporte:
+        this.completeRegisterForm?.setControl('validationImg', new FormArray([
+          new FormControl(null, Validators.required),
+        ]));
+
+        break;
+    }
   }
 
   redirectToPreviousUrlIfExists(): void {

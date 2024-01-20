@@ -46,184 +46,182 @@
     </p>
     }
 
-    <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" class="grid grid-cols-2 gap-4"
-      (click)="showModalBasedOnUserStatus()">
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="brand" class="block mb-1 text-sm">Marca</label>
-        <select formControlName="brand" id="brand" sharedInput>
-          @for (brand of brands(); track $index) {
-          <option [value]="brand">{{brand}}</option>
+    <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" (click)="showModalBasedOnUserStatus()">
+      <div class="grid grid-cols-2 gap-4"
+        [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
+        <div>
+          <label for="brand" class="block mb-1 text-sm">Marca</label>
+          <select formControlName="brand" id="brand" sharedInput>
+            @for (brand of brands(); track $index) {
+            <option [value]="brand">{{brand}}</option>
+            }
+          </select>
+          @if (hasError('brand')) {
+          <shared-input-error [message]="getError('brand')"></shared-input-error>
           }
-        </select>
-        @if (hasError('brand')) {
-        <shared-input-error [message]="getError('brand')"></shared-input-error>
-        }
-      </div>
-
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="year" class="block mb-1 text-sm">Año</label>
-        <input formControlName="year" min="1930" [max]="currentYear" id="year" type="number" sharedInput>
-        @if (hasError('year')) {
-        <shared-input-error [message]="getError('year')"></shared-input-error>
-        }
-      </div>
-
-      <div class="col-span-2" [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="carModel" class="block mb-1 text-sm">Modelo</label>
-        <input formControlName="carModel" id="carModel" type="text" sharedInput>
-        @if (hasError('carModel')) {
-        <shared-input-error [message]="getError('carModel')"></shared-input-error>
-        }
-      </div>
-
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="exteriorColor" class="block mb-1 text-sm">Color exterior</label>
-        <input formControlName="exteriorColor" id="exteriorColor" type="text" sharedInput>
-        @if (hasError('exteriorColor')) {
-        <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
-        }
-      </div>
-
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="interiorColor" class="block mb-1 text-sm">Color interior</label>
-        <input formControlName="interiorColor" id="interiorColor" type="text" sharedInput>
-        @if (hasError('interiorColor')) {
-        <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
-        }
-      </div>
-
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="city" class="block mb-1 text-sm">Ciudad</label>
-        <input formControlName="city" id="city" type="text" sharedInput>
-        @if (hasError('city')) {
-        <shared-input-error [message]="getError('city')"></shared-input-error>
-        }
-      </div>
-
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="postalCode" class="block mb-1 text-sm">Código Postal</label>
-        <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
-        @if (hasError('postalCode')) {
-        <shared-input-error [message]="getError('postalCode')"></shared-input-error>
-        }
-      </div>
-
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="reserve" class="block mb-1 text-sm">Reserva</label>
-        <select formControlName="reserve" id="reserve" sharedInput>
-          <option value="true">Sí</option>
-          <option value="false">No</option>
-        </select>
-        @if (hasError('reserve')) {
-        <shared-input-error [message]="getError('reserve')"></shared-input-error>
-        }
-
-        <div class="flex items-center mt-2"
-          [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-          <span class="text-gray4 text-xs">¿Qué significa la Reserva?</span>
-          <img class="ml-2" src="assets/img/registrar auto/help-circle-outline.svg" alt="ícono de ayuda">
         </div>
-      </div>
 
-      <!-- Si reserva es igual a 1 se muestra un input para ingresar el reserveAmount -->
-      @if (carRegisterForm.get('reserve')?.value === "true") {
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva</label>
-        <input formControlName="reserveAmount" id="reserveAmount" type="text" sharedInput>
-        @if (hasError('reserveAmount')) {
-        <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
-        }
-      </div>
-      }
+        <div>
+          <label for="year" class="block mb-1 text-sm">Año</label>
+          <input formControlName="year" min="1930" [max]="currentYear" id="year" type="number" sharedInput>
+          @if (hasError('year')) {
+          <shared-input-error [message]="getError('year')"></shared-input-error>
+          }
+        </div>
 
-      <div class="col-start-1"
-        [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="kmType" class="block mb-1 text-sm">Tipo de kilometraje</label>
-        <select formControlName="kmType" id="kmType" sharedInput>
-          <option value="KM">Kilómetros</option>
-          <option value="MI">Millas</option>
-        </select>
-        @if (hasError('kmType')) {
-        <shared-input-error [message]="getError('kmType')"></shared-input-error>
-        }
-      </div>
+        <div class="col-span-2">
+          <label for="carModel" class="block mb-1 text-sm">Modelo</label>
+          <input formControlName="carModel" id="carModel" type="text" sharedInput>
+          @if (hasError('carModel')) {
+          <shared-input-error [message]="getError('carModel')"></shared-input-error>
+          }
+        </div>
 
-      <div [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="kmInput" class="block mb-1 text-sm">Kilometraje</label>
-        <input formControlName="kmInput" id="kmInput" type="text" sharedInput>
-        @if (hasError('kmInput')) {
-        <shared-input-error [message]="getError('kmInput')"></shared-input-error>
-        }
-      </div>
+        <div>
+          <label for="exteriorColor" class="block mb-1 text-sm">Color exterior</label>
+          <input formControlName="exteriorColor" id="exteriorColor" type="text" sharedInput>
+          @if (hasError('exteriorColor')) {
+          <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
+          }
+        </div>
 
-      <div class="col-span-2" [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <label for="howDidYouHearAboutUs" class="block mb-1 text-sm">¿Cómo te enteraste de la plataforma?</label>
-        <input formControlName="howDidYouHearAboutUs" id="howDidYouHearAboutUs" type="text" sharedInput>
-        @if (hasError('howDidYouHearAboutUs')) {
-        <shared-input-error [message]="getError('howDidYouHearAboutUs')"></shared-input-error>
-        }
-      </div>
+        <div>
+          <label for="interiorColor" class="block mb-1 text-sm">Color interior</label>
+          <input formControlName="interiorColor" id="interiorColor" type="text" sharedInput>
+          @if (hasError('interiorColor')) {
+          <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
+          }
+        </div>
 
-      <div class="col-span-2" [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <p class="text-xl font-bold mb-2">Subir fotos del auto</p>
+        <div>
+          <label for="city" class="block mb-1 text-sm">Ciudad</label>
+          <input formControlName="city" id="city" type="text" sharedInput>
+          @if (hasError('city')) {
+          <shared-input-error [message]="getError('city')"></shared-input-error>
+          }
+        </div>
 
-        <div #uppyDashboard></div>
+        <div>
+          <label for="postalCode" class="block mb-1 text-sm">Código Postal</label>
+          <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
+          @if (hasError('postalCode')) {
+          <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+          }
+        </div>
 
-        @if (hasError('photos')) {
-        <shared-input-error [message]="getError('photos')"></shared-input-error>
-        }
-      </div>
+        <div>
+          <label for="reserve" class="block mb-1 text-sm">Reserva</label>
+          <select formControlName="reserve" id="reserve" sharedInput>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+          </select>
+          @if (hasError('reserve')) {
+          <shared-input-error [message]="getError('reserve')"></shared-input-error>
+          }
 
-      <div class="col-span-2 mt-4"
-        [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <p class="text-xl font-bold mb-4">¿En qué estas interesado?</p>
-        <fieldset>
-          <legend class="sr-only">¿En qué estas interesado?</legend>
-          <div class="space-y-2">
-            <div class="flex items-center">
-              <input formControlName="interest" value="ListInMarketplace" id="listInMarketplace" type="radio" checked
-                class="h-4 w-4">
-              <label for="listInMarketplace" class="ml-3 block leading-6">Enlistar tu auto en el marketplace</label>
-            </div>
-            <div class="flex items-center">
-              <input formControlName="interest" value="ListInMarketplacePlusPhotoshoot"
-                id="listInMarketplacePlusPhotoshoot" type="radio" class="h-4 w-4">
-              <label for="listInMarketplacePlusPhotoshoot" class="ml-3 block leading-6">
-                Enlistar tu auto en el marketplace + sesión fotográfica
-              </label>
-            </div>
+          <div class="flex items-center mt-2">
+            <span class="text-gray4 text-xs">¿Qué significa la Reserva?</span>
+            <img class="ml-2" src="assets/img/registrar auto/help-circle-outline.svg" alt="ícono de ayuda">
           </div>
-        </fieldset>
-
-        @if (hasError('interest')) {
-        <shared-input-error [message]="getError('interest')"></shared-input-error>
-        }
-      </div>
-
-      <div class="col-span-2 mt-8"
-        [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <div class="flex items-center text-xs">
-          <input formControlName="acceptTerms" id="acceptTerms" type="checkbox" class="h-4 w-4">
-          <label for="acceptTerms" class="ml-3 block leading-6">
-            Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
-            <a class="underline">Acuerdos de usuarios.</a>
-          </label>
         </div>
 
-        @if (hasError('acceptTerms')) {
-        <shared-input-error [message]="getError('acceptTerms')"></shared-input-error>
-        }
-      </div>
-
-      <div class="col-span-2" [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
-        <button type="submit" class="inline-flex justify-center items-center" [disabled]="isButtonSubmitDisabled()"
-          [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
-          @if (isButtonSubmitDisabled()) {
-          <shared-spinner></shared-spinner>
-          } @else {
-          Enviar solicitud a revisión
+        <!-- Si reserva es igual a 1 se muestra un input para ingresar el reserveAmount -->
+        @if (carRegisterForm.get('reserve')?.value === "true") {
+        <div>
+          <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva</label>
+          <input formControlName="reserveAmount" id="reserveAmount" type="text" sharedInput>
+          @if (hasError('reserveAmount')) {
+          <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
           }
-        </button>
+        </div>
+        }
+
+        <div class="col-start-1">
+          <label for="kmType" class="block mb-1 text-sm">Tipo de kilometraje</label>
+          <select formControlName="kmType" id="kmType" sharedInput>
+            <option value="KM">Kilómetros</option>
+            <option value="MI">Millas</option>
+          </select>
+          @if (hasError('kmType')) {
+          <shared-input-error [message]="getError('kmType')"></shared-input-error>
+          }
+        </div>
+
+        <div>
+          <label for="kmInput" class="block mb-1 text-sm">Kilometraje</label>
+          <input formControlName="kmInput" id="kmInput" type="text" sharedInput>
+          @if (hasError('kmInput')) {
+          <shared-input-error [message]="getError('kmInput')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2">
+          <label for="howDidYouHearAboutUs" class="block mb-1 text-sm">¿Cómo te enteraste de la plataforma?</label>
+          <input formControlName="howDidYouHearAboutUs" id="howDidYouHearAboutUs" type="text" sharedInput>
+          @if (hasError('howDidYouHearAboutUs')) {
+          <shared-input-error [message]="getError('howDidYouHearAboutUs')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2">
+          <p class="text-xl font-bold mb-2">Subir fotos del auto</p>
+
+          <div #uppyDashboard></div>
+
+          @if (hasError('photos')) {
+          <shared-input-error [message]="getError('photos')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2 mt-4">
+          <p class="text-xl font-bold mb-4">¿En qué estas interesado?</p>
+          <fieldset>
+            <legend class="sr-only">¿En qué estas interesado?</legend>
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <input formControlName="interest" value="ListInMarketplace" id="listInMarketplace" type="radio" checked
+                  class="h-4 w-4">
+                <label for="listInMarketplace" class="ml-3 block leading-6">Enlistar tu auto en el marketplace</label>
+              </div>
+              <div class="flex items-center">
+                <input formControlName="interest" value="ListInMarketplacePlusPhotoshoot"
+                  id="listInMarketplacePlusPhotoshoot" type="radio" class="h-4 w-4">
+                <label for="listInMarketplacePlusPhotoshoot" class="ml-3 block leading-6">
+                  Enlistar tu auto en el marketplace + sesión fotográfica
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+          @if (hasError('interest')) {
+          <shared-input-error [message]="getError('interest')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2 mt-8">
+          <div class="flex items-center text-xs">
+            <input formControlName="acceptTerms" id="acceptTerms" type="checkbox" class="h-4 w-4">
+            <label for="acceptTerms" class="ml-3 block leading-6">
+              Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
+              <a class="underline">Acuerdos de usuarios.</a>
+            </label>
+          </div>
+
+          @if (hasError('acceptTerms')) {
+          <shared-input-error [message]="getError('acceptTerms')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2">
+          <button type="submit" class="inline-flex justify-center items-center" [disabled]="isButtonSubmitDisabled()"
+            [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+            @if (isButtonSubmitDisabled()) {
+            <shared-spinner></shared-spinner>
+            } @else {
+            Enviar solicitud a revisión
+            }
+          </button>
+        </div>
       </div>
     </form>
   </div>
@@ -234,4 +232,5 @@
   }
 </section>
 
-<complete-register-modal [isOpen]="completeRegisterModalIsOpen"></complete-register-modal>
+<complete-register-modal (getHasGeneralInfo)="getHasGeneralInfo()"
+  [isOpen]="completeRegisterModalIsOpen"></complete-register-modal>

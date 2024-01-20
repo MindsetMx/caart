@@ -11,6 +11,8 @@ import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.c
 import { Observable } from 'rxjs';
 import { WizardSteps } from '../interfaces';
 import { AuctionTypes } from '../interfaces/auctionTypes';
+import { FormGroup } from '@angular/forms';
+import { AppService } from '../../app.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,7 @@ export class CompleteCarRegistrationService {
   readonly #baseurl = environments.baseUrl;
 
   #http = inject(HttpClient);
+  #appService = inject(AppService);
 
   steps = [
     GeneralInformationComponent,
@@ -31,6 +34,21 @@ export class CompleteCarRegistrationService {
 
   indexCurrentStep: WritableSignal<number> = signal(0);
 
+
+  saveGeneralInformation$(generalInformation: FormGroup): Observable<any> {
+    const trimmedGeneralInformation = this.#appService.trimObjectValues(generalInformation.value);
+
+    const url = `${this.#baseurl}/users/complete-registration-with-payment`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.patch<any>(url, trimmedGeneralInformation, { headers });
+  }
+
   getAuctionTypes$(): Observable<AuctionTypes> {
     const url = `${this.#baseurl}/auction-types`;
 
@@ -41,6 +59,18 @@ export class CompleteCarRegistrationService {
     });
 
     return this.#http.get<AuctionTypes>(url, { headers });
+  }
+
+  addPaymentMethod(stripeToken: string): Observable<any> {
+    const url = `${this.#baseurl}/users/add-payment-method`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.patch<any>(url, { stripeToken }, { headers });
   }
 
   changeStep(step: number) {

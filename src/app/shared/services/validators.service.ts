@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Injectable } from '@angular/core';
 
 import { VALIDATION_MESSAGES } from '@shared/validation-messages';
@@ -58,6 +58,10 @@ export class ValidatorsService {
     formArray.at(formArray.length - 1)?.setErrors(errors);
   }
 
+  controlHasError(control: FormControl): boolean {
+    return control.invalid && control.touched;
+  }
+
   hasError(form: FormGroup, field: string): boolean {
     return form.controls[field].touched && form.controls[field].errors !== null;
   }
@@ -85,6 +89,18 @@ export class ValidatorsService {
 
   getError(form: FormGroup, field: string): string | undefined {
     const errors = this.getControlErrors(form, field);
+
+    if (!errors) {
+      return undefined;
+    }
+
+    const errorKey = Object.keys(errors).find(key => VALIDATION_MESSAGES[key]?.(errors[key]));
+
+    return errorKey && VALIDATION_MESSAGES[errorKey]?.(errors[errorKey]);
+  }
+
+  getErrorFromControl(control: FormControl): string | undefined {
+    const errors = control.errors;
 
     if (!errors) {
       return undefined;

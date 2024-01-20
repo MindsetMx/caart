@@ -43,7 +43,8 @@
   <div>
     <h2 class="text-xl font-bold mb-5">Método de pago</h2>
 
-    <fieldset>
+    @if (paymentMethods().length>0) {
+    <fieldset class="mb-8">
       <legend class="sr-only">Método de pago</legend>
       <div class="space-y-6">
         @for (paymentMethod of paymentMethods(); track $index) {
@@ -56,7 +57,6 @@
             <img src="assets/img/icons/visa.svg" alt="Visa">
             }
             }
-
             <p class="font-bold mt-2">
               <span>{{paymentMethod.card.brand | titlecase}}</span> que termina en {{paymentMethod.card.last4}}
             </p>
@@ -64,61 +64,37 @@
           </label>
         </div>
         }
+        @if(hasError(generalInformationForm, 'paymentMethodId')) {
+        <shared-input-error [message]="getError(generalInformationForm, 'paymentMethodId')"></shared-input-error>
+        }
       </div>
     </fieldset>
-  </div>
-</form>
 
-<div>
-  <button (click)="addPaymentMethod.set(!addPaymentMethod())" type="button" class="block ml-auto" width="w-fit"
-    sharedTertiaryButton>
-    Agregar nuevo
-  </button>
-</div>
-
-@if (addPaymentMethod() && addPaymentMethodForm) {
-<form [formGroup]="addPaymentMethodForm" (ngSubmit)="addPaymentMethodFormSubmit()">
-  @if (paymentMethods().length === 0 || addPaymentMethod()) {
-  <div>
-    <h2 class="text-xl font-bold mb-5">Añade tus datos bancarios</h2>
-
-    <div class="mb-6">
-      <label for="cardholderName" class="block mb-1 text-sm">Nombre del titular</label>
-      <input formControlName="cardholderName" id="cardholderName" class="max-w-lg" type="text"
-        placeholder="Escribe el nombre del titular" sharedInput>
-      @if (hasError(addPaymentMethodForm, 'cardholderName')) {
-      <shared-input-error [message]="getError(addPaymentMethodForm, 'cardholderName')"></shared-input-error>
-      }
+    <div class="mt-6">
+      <button (click)="paymentMethodModalIsOpen.set(true)" type="button" class="block ml-auto" width="w-fit"
+        sharedTertiaryButton>
+        Agregar método de pago
+      </button>
     </div>
-
-    <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
-      <ngx-stripe-card [options]="cardOptions" />
-    </ngx-stripe-elements>
+    } @else {
+    Agrega tu método de pago <button (click)="paymentMethodModalIsOpen.set(true)" type="button"
+      class="underline font-semibold">aquí</button>
 
     @if(hasError(generalInformationForm, 'paymentMethodId')) {
     <shared-input-error [message]="getError(generalInformationForm, 'paymentMethodId')"></shared-input-error>
     }
+    }
   </div>
-
-  <div class="mt-6">
-    <button class="block ml-auto" width="w-fit" [disabled]="isButtonSubmitDisabled2()"
-      [class.opacity-50]="isButtonSubmitDisabled2()" sharedTertiaryButton>
-      @if (isButtonSubmitDisabled2()) {
-      <shared-spinner></shared-spinner>
-      } @else {
-      Agregar método de pago
-      }
-    </button>
-  </div>
-  }
 </form>
-}
 
-<button form="generalInformationForm" class="mt-8" type="submit" [disabled]="isButtonSubmitDisabled()"
-  [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+<button form="generalInformationForm" class="flex justify-center mt-8" type="submit"
+  [disabled]="isButtonSubmitDisabled()" [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
   @if (isButtonSubmitDisabled()) {
   <shared-spinner></shared-spinner>
   } @else {
   Pagar y continuar
   }
 </button>
+
+<payment-method-modal (paymentMethodAdded)="refreshPaymentMethods()"
+  [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, WritableSignal, inject, signal, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, WritableSignal, inject, signal, ViewChild, ElementRef, AfterViewInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EMPTY, Subscription, catchError, map } from 'rxjs';
+import { EMPTY, Observable, Subscription, catchError, map } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Uppy } from '@uppy/core';
@@ -57,15 +57,17 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
 
-  tabs: TabWithIcon[];
-  currentTab: WritableSignal<TabWithIcon> = signal<TabWithIcon>({} as TabWithIcon);
-  currentSubastaAutomovilesType: WritableSignal<SubastaAutomovilesTypes> = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
-  isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   brands: WritableSignal<string[]> = signal([]);
-  currentYear = new Date().getFullYear();
   carRegisterForm: FormGroup;
-  reserveValueChangesSubscription?: Subscription;
   completeRegisterModalIsOpen: WritableSignal<boolean> = signal(false);
+  currentSubastaAutomovilesType: WritableSignal<SubastaAutomovilesTypes> = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
+  currentTab: WritableSignal<TabWithIcon> = signal<TabWithIcon>({} as TabWithIcon);
+  currentYear = new Date().getFullYear();
+  isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
+  reserveValueChangesSubscription?: Subscription;
+  tabs: TabWithIcon[];
+
+  hasGeneralInfo$: Observable<boolean> | undefined;
 
   uppy?: Uppy;
 
@@ -97,6 +99,16 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.carRegisterForm.get('photos') as FormControl;
   }
 
+  get videosControl(): FormControl {
+    return this.carRegisterForm.get('videos') as FormControl;
+  }
+
+  authStatusChangeEffect = effect(() => {
+    if (this.authStatus === AuthStatus.authenticated) {
+      this.getHasGeneralInfo();
+    }
+  });
+
   constructor() {
     this.carRegisterForm = this.#fb.group({
       type: ['automobile', Validators.required],
@@ -115,6 +127,7 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
       interest: ['', Validators.required],
       acceptTerms: ['', Validators.required],
       photos: [[], Validators.required],
+      videos: [[]],
     });
 
     this.tabs =
@@ -135,15 +148,22 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.currentTab.set(this.tabs[0]);
   }
+
   ngAfterViewInit(): void {
     this.uppy = new Uppy({
       debug: true,
       autoProceed: true,
       locale: Spanish,
-      meta: { // Metadatos globales para todos los archivos
-        upload_preset: 'if8y72iv', // Asegúrate de poner aquí tu upload preset real
-        api_key: '218199524155838', // Asegúrate de poner aquí tu api key real
-      }
+      meta: {
+        upload_preset: 'if8y72iv',
+        api_key: '218199524155838',
+      },
+      restrictions: {
+        // maxFileSize: 1000000,
+        // maxNumberOfFiles: 20,
+        minNumberOfFiles: 1,
+        allowedFileTypes: ['image/*', 'video/*'],
+      },
     }).use(Dashboard,
       {
         height: 300,
@@ -162,21 +182,25 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       })
       .use(XHRUpload, {
-        endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/image/upload',
+        endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/upload',
         formData: true,
         fieldName: 'file',
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
         },
-        allowedMetaFields: ['upload_preset', 'api_key'], // Añadir campos meta aquí
+        allowedMetaFields: ['upload_preset', 'api_key'],
       })
       .on('complete', (result) => {
         console.log({ result });
         result.successful.forEach(file => {
-          const url = file.uploadURL; // Asumiendo que la respuesta incluye la URL de la imagen cargada
-          //Agregar la url al photosControl de fotos sin eliminar las fotos anteriores
-          this.photosControl.setValue([...this.photosControl.value, url]);
+          console.log({ file });
+          const url = file.uploadURL;
 
+          if (file?.type?.includes('image')) {
+            this.photosControl.setValue([...this.photosControl.value, url]);
+          } else if (file?.type?.includes('video')) {
+            this.videosControl.setValue([...this.videosControl.value, url]);
+          }
           this.uppyDashboard.nativeElement.click();
 
           file.meta['uploadURL'] = url; // Almacena la URL en los metadatos del archivo en Uppy para referencia futura
@@ -185,8 +209,12 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(`File removed: ${file.id}`);
         console.log(`Reason: ${reason}`);
         const urlToRemove = file.meta['uploadURL']; // Obtiene la URL del archivo eliminado de sus metadatos
-        // Elimina la URL del formArray de fotos
-        this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
+
+        if (file?.type?.includes('image')) {
+          this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
+        } else if (file?.type?.includes('video')) {
+          this.videosControl.setValue(this.videosControl.value.filter((url: string) => url !== urlToRemove));
+        }
       });
   }
 
@@ -202,6 +230,19 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.carRegisterForm.updateValueAndValidity();
     });
+  }
+
+  getHasGeneralInfo(): void {
+    this.hasGeneralInfo$ = this.#generalInfoService.getGeneralInfo$().pipe(
+      map(response => {
+        return response.data.attributes.hasGeneralInfo;
+      }),
+      catchError((error) => {
+        console.error({ error });
+
+        return EMPTY;
+      })
+    );
   }
 
   openSignInModal(): void {
@@ -251,7 +292,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-
     this.#generalInfoService.getGeneralInfo$().subscribe({
       next: (response) => {
         const hasGeneralInfo = response.data.attributes.hasGeneralInfo;
@@ -265,17 +305,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
-  hasGeneralInfo$ = this.#generalInfoService.getGeneralInfo$().pipe(
-    map(response => {
-      return response.data.attributes.hasGeneralInfo;
-    }),
-    catchError((error) => {
-      console.error({ error });
-
-      return EMPTY;
-    })
-  );
 
   getBrands(): void {
     this.#registerCarService.getBrands$().subscribe({

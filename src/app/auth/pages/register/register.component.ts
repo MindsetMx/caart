@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
@@ -28,7 +28,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   styleUrl: './register.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() signInModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() mb: string = 'mb-32';
@@ -71,6 +71,11 @@ export class RegisterComponent {
     }, {
       validators: [this.#validatorsService.samePasswords('password', 'password2')]
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.validationTypeSubscription)
+      this.validationTypeSubscription.unsubscribe();
   }
 
   register(): void {

@@ -1,0 +1,38 @@
+<shared-modal [isOpen]="isOpen" [verticalCenter]="true">
+  <div class="container">
+    <h2 class="text-xl font-bold mb-5">Método de pago</h2>
+
+    @if (addPaymentMethodForm) {
+    <form [formGroup]="addPaymentMethodForm" (ngSubmit)="addPaymentMethodFormSubmit()">
+      <div>
+        <h2 class="text-xl font-bold mb-5">Añade tus datos bancarios</h2>
+        <div class="mb-6">
+          <label for="cardholderName" class="block mb-1 text-sm">Nombre del titular</label>
+          <input formControlName="cardholderName" id="cardholderName" class="max-w-lg" type="text"
+            placeholder="Escribe el nombre del titular" sharedInput>
+          @if (hasError('cardholderName')) {
+          <shared-input-error [message]="getError('cardholderName')"></shared-input-error>
+          }
+        </div>
+        <ngx-stripe-elements class="bg-gray1" [stripe]="stripe" [elementsOptions]="elementsOptions">
+          <ngx-stripe-card [options]="cardOptions" />
+        </ngx-stripe-elements>
+
+        @if (error()) {
+        <shared-input-error [message]="error()"></shared-input-error>
+        }
+      </div>
+      <div class="mt-8">
+        <button class="flex justify-center w-full" width="w-fit" [disabled]="isButtonSubmitDisabled()"
+          [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+          @if (isButtonSubmitDisabled()) {
+          <shared-spinner></shared-spinner>
+          } @else {
+          Agregar método de pago
+          }
+        </button>
+      </div>
+    </form>
+    }
+  </div>
+</shared-modal>
