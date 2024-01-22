@@ -171,7 +171,7 @@ export class RegisterComponent implements OnDestroy {
         this.#router.navigate(['/confirmacion']);
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
       }
     });
   }

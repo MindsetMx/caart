@@ -1,11 +1,15 @@
 <shared-modal [isOpen]="isOpen" [verticalCenter]="true">
+  <div class="relative">
+    <h3 class="container text-center font-bold text-lg mb-12">Añade tus datos bancarios</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
   <div class="container">
-    <h2 class="text-xl font-bold mb-5">Método de pago</h2>
 
     @if (addPaymentMethodForm) {
     <form [formGroup]="addPaymentMethodForm" (ngSubmit)="addPaymentMethodFormSubmit()">
       <div>
-        <h2 class="text-xl font-bold mb-5">Añade tus datos bancarios</h2>
         <div class="mb-6">
           <label for="cardholderName" class="block mb-1 text-sm">Nombre del titular</label>
           <input formControlName="cardholderName" id="cardholderName" class="max-w-lg" type="text"
@@ -14,9 +18,15 @@
           <shared-input-error [message]="getError('cardholderName')"></shared-input-error>
           }
         </div>
-        <ngx-stripe-elements class="bg-gray1" [stripe]="stripe" [elementsOptions]="elementsOptions">
+
+        <label for="cardNumber" class="block mb-1 text-sm">Número de tarjeta</label>
+        <ngx-stripe-elements id="cardNumber" class="bg-gray1" [stripe]="stripe" [elementsOptions]="elementsOptions">
           <ngx-stripe-card [options]="cardOptions" />
         </ngx-stripe-elements>
+
+        @if (hasError('token') && !error()) {
+        <shared-input-error [message]="getError('token')"></shared-input-error>
+        }
 
         @if (error()) {
         <shared-input-error [message]="error()"></shared-input-error>

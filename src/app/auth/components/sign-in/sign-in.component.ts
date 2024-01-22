@@ -70,7 +70,7 @@ export class SignInComponent {
         this.signInModalIsOpenChange.emit(false);
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
         this.errorMessage.set(error);
       }
     }).add(() => {

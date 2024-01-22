@@ -68,7 +68,6 @@ export class NavbarComponent {
   logout() {
     this.authService.logout();
     this.userDropdownIsOpen.set(false);
-    this.router.navigate(['/']);
   }
 
   toggleMenu(): void {

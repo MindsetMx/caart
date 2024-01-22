@@ -61,7 +61,7 @@ export class ConfirmationComponent {
         this.toastSuccess('El código de verificación ha sido enviado a tu correo');
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
 
         this.toastError(error.error.error);
       }
@@ -74,7 +74,7 @@ export class ConfirmationComponent {
         this.toastSuccess('El código de verificación ha sido enviado vía WhatsApp');
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
 
         this.toastError(error.error.error);
       }
@@ -99,7 +99,7 @@ export class ConfirmationComponent {
         this.#router.navigate(['/']);
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
 
         this.#validatorsService.addServerErrorsToFormArray(this.digitsArray, error.error.error);
       }

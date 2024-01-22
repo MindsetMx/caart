@@ -191,9 +191,7 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
         allowedMetaFields: ['upload_preset', 'api_key'],
       })
       .on('complete', (result) => {
-        console.log({ result });
         result.successful.forEach(file => {
-          console.log({ file });
           const url = file.uploadURL;
 
           if (file?.type?.includes('image')) {
@@ -203,12 +201,10 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.uppyDashboard.nativeElement.click();
 
-          file.meta['uploadURL'] = url; // Almacena la URL en los metadatos del archivo en Uppy para referencia futura
+          file.meta['uploadURL'] = url;
         });
-      }).on('file-removed', (file, reason) => {
-        console.log(`File removed: ${file.id}`);
-        console.log(`Reason: ${reason}`);
-        const urlToRemove = file.meta['uploadURL']; // Obtiene la URL del archivo eliminado de sus metadatos
+      }).on('file-removed', (file) => {
+        const urlToRemove = file.meta['uploadURL'];
 
         if (file?.type?.includes('image')) {
           this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
@@ -238,7 +234,7 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
         return response.data.attributes.hasGeneralInfo;
       }),
       catchError((error) => {
-        console.error({ error });
+        console.error(error);
 
         return EMPTY;
       })
@@ -267,18 +263,14 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    console.log({ carRegisterForm: this.carRegisterForm.value });
-
     this.#registerCarService.registerCar$(this.carRegisterForm).subscribe({
-      next: (response) => {
-        console.log({ response });
-
+      next: () => {
         this.carRegisterForm.reset();
 
         this.#router.navigate(['/registro-exitoso']);
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
       }
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
@@ -301,7 +293,7 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
       }
     });
   }
@@ -312,7 +304,7 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.brands.set(response.data);
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
       }
     });
   }

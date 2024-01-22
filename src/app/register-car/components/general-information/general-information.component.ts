@@ -1,19 +1,19 @@
+import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { AuctionTypes } from '@app/register-car/interfaces/auctionTypes';
+import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
+import { GeneralInfoService } from '@auth/services/general-info.service';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { PaymentMethod } from '@auth/interfaces/general-info';
+import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { ValidatorsService } from '@shared/services/validators.service';
-import { CompleteCarRegistrationService } from '../../services/complete-car-registration.service';
-import { AuctionTypes } from '@app/register-car/interfaces/auctionTypes';
-import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { TertiaryButtonDirective } from '@shared/directives/tertiary-button.directive';
-import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
-import { PaymentMethod } from '@auth/interfaces/general-info';
-import { GeneralInfoService } from '@auth/services/general-info.service';
-import { ActivatedRoute } from '@angular/router';
+import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
   selector: 'register-car-general-information',
@@ -67,8 +67,6 @@ export class GeneralInformationComponent implements OnInit {
 
     const isValid = this.#validatorsService.isValidForm(this.generalInformationForm);
 
-    console.log({ isValid });
-
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);
       return;
@@ -76,12 +74,11 @@ export class GeneralInformationComponent implements OnInit {
 
     this.#completeCarRegistrationService.saveGeneralInformation$(this.generalInformationForm)
       .subscribe({
-        next: (response) => {
-          console.log({ response });
+        next: () => {
           this.#completeCarRegistrationService.indexCurrentStep.set(1);
         },
         error: (error) => {
-          console.log(error);
+          console.error(error);
         },
       }).add(() => {
         this.isButtonSubmitDisabled.set(false);
@@ -94,10 +91,7 @@ export class GeneralInformationComponent implements OnInit {
 
   getGeneralInfo(): void {
     this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
-      console.log({ generalInfo: generalInfo });
       this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
-
-      console.log({ paymentMethods: this.paymentMethods() });
     });
   }
 

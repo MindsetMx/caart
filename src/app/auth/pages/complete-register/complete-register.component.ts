@@ -89,9 +89,7 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
     }
 
     this.#authService.completeRegister$(this.completeRegisterForm).subscribe({
-      next: (response) => {
-        console.log({ response });
-
+      next: () => {
         this.toastSuccess('Registro completado con éxito');
 
         this.completeRegisterForm.reset();
@@ -101,7 +99,7 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
         this.completeRegisterModalIsOpenChange.emit(false);
       },
       error: (error) => {
-        console.error({ error });
+        console.error(error);
       }
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);

@@ -10,8 +10,6 @@ export const CompleteAccountGuard: CanActivateFn = (route, state) => {
 
   return generalInfoService.getGeneralInfo$().pipe(
     map((response) => {
-      console.log(response);
-
       if (response.data.attributes.hasGeneralInfo) {
         return true;
       }

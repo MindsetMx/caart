@@ -10,9 +10,9 @@ import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-th
 import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
 import { Observable } from 'rxjs';
 import { WizardSteps } from '../interfaces';
-import { AuctionTypes } from '../interfaces/auctionTypes';
 import { FormGroup } from '@angular/forms';
-import { AppService } from '../../app.service';
+import { AppService } from '@app/app.service';
+import { AuctionTypes } from '@app/register-car/interfaces/auctionTypes';
 
 @Injectable({
   providedIn: 'root'

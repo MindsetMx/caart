@@ -34,7 +34,8 @@ export class CompleteCartRegistrationMenuComponent implements OnInit {
   }
 
   getWizardSteps(): void {
-    this.#completeCarRegistrationService.wizardSteps$(this.publicationId!).subscribe((wizardSteps) => {
+    this.#completeCarRegistrationService.wizardSteps$(this.publicationId).subscribe((wizardSteps) => {
+      console.log(wizardSteps.data.attributes.currentStep);
       this.currentStep = wizardSteps.data.attributes.currentStep;
     });
   }
