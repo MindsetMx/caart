@@ -11,15 +11,26 @@
         <p class=" font-optima font-semibold text-3xl">
           {{ publication.attributes.year }} {{ publication.attributes.brand }}
         </p>
-        <span class="block bg-reddishOrange text-white px-4 py-2 rounded-lg mt-4 w-fit">
+        <span class="block bg-reddishOrange text-white px-4 py-2 rounded-lg mt-4 w-fit mb-4">
           {{ publication.attributes.status }}
         </span>
-        <button [routerLink]="['/completar-registro-vehiculo', publication.id]"
-          class="underline font-semibold text-lg mt-4">
+
+        @if (hasGeneralInfo$ | async) {
+        <button [routerLink]="['/completar-registro-vehiculo', publication.id]" class="underline font-semibold text-lg">
           Completar información
         </button>
+        }@else {
+        <span (click)="openCompleteRegisterModal()">
+          Necesitas completar tu perfil para poder completar la información
+        </span>
+        }
       </div>
     </div>
+    } @empty {
+    No hay publicaciones
     }
   </div>
 </section>
+
+<complete-register-modal (getHasGeneralInfo)="getHasGeneralInfo()"
+  [isOpen]="completeRegisterModalIsOpen"></complete-register-modal>

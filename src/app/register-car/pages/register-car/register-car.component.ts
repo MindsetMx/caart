@@ -50,16 +50,15 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('uppyDashboard') uppyDashboard!: ElementRef;
 
   #appComponent = inject(AppComponent);
-  #authService = inject(AuthService);
   #fb = inject(FormBuilder);
   #generalInfoService = inject(GeneralInfoService);
   #registerCarService = inject(RegisterCarService);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
+  #authService = inject(AuthService);
 
   brands: WritableSignal<string[]> = signal([]);
   carRegisterForm: FormGroup;
-  completeRegisterModalIsOpen: WritableSignal<boolean> = signal(false);
   currentSubastaAutomovilesType: WritableSignal<SubastaAutomovilesTypes> = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
   currentTab: WritableSignal<TabWithIcon> = signal<TabWithIcon>({} as TabWithIcon);
   currentYear = new Date().getFullYear();
@@ -67,17 +66,7 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
   reserveValueChangesSubscription?: Subscription;
   tabs: TabWithIcon[];
 
-  hasGeneralInfo$: Observable<boolean> | undefined;
-
   uppy?: Uppy;
-
-  get user(): UserData | null {
-    return this.#authService.currentUser();
-  }
-
-  get authStatus(): AuthStatus {
-    return this.#authService.authStatus();
-  }
 
   get subastaAutomovilesType(): typeof SubastaAutomovilesTypes {
     return SubastaAutomovilesTypes;
@@ -91,6 +80,10 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.carRegisterForm.get('reserveAmount') as FormControl;
   }
 
+  get authStatus(): AuthStatus {
+    return this.#authService.authStatus();
+  }
+
   get userIsNotAuthenticated(): boolean {
     return this.authStatus === AuthStatus.notAuthenticated;
   }
@@ -102,12 +95,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
   get videosControl(): FormControl {
     return this.carRegisterForm.get('videos') as FormControl;
   }
-
-  authStatusChangeEffect = effect(() => {
-    if (this.authStatus === AuthStatus.authenticated) {
-      this.getHasGeneralInfo();
-    }
-  });
 
   constructor() {
     this.carRegisterForm = this.#fb.group({
@@ -228,19 +215,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  getHasGeneralInfo(): void {
-    this.hasGeneralInfo$ = this.#generalInfoService.getGeneralInfo$().pipe(
-      map(response => {
-        return response.data.attributes.hasGeneralInfo;
-      }),
-      catchError((error) => {
-        console.error(error);
-
-        return EMPTY;
-      })
-    );
-  }
-
   openSignInModal(): void {
     this.#appComponent.openSignInModal();
   }
@@ -283,19 +257,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.#appComponent.openSignInModal();
       return;
     }
-
-    this.#generalInfoService.getGeneralInfo$().subscribe({
-      next: (response) => {
-        const hasGeneralInfo = response.data.attributes.hasGeneralInfo;
-
-        if (!hasGeneralInfo) {
-          this.completeRegisterModalIsOpen.set(true);
-        }
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
   }
 
   getBrands(): void {

@@ -47,8 +47,7 @@
     }
 
     <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" (click)="showModalBasedOnUserStatus()">
-      <div class="grid grid-cols-2 gap-4"
-        [ngClass]="{'pointer-events-none': userIsNotAuthenticated || !(hasGeneralInfo$ | async)}">
+      <div class="grid grid-cols-2 gap-4" [ngClass]="{'pointer-events-none': userIsNotAuthenticated}">
         <div>
           <label for="brand" class="block mb-1 text-sm">Marca</label>
           <select formControlName="brand" id="brand" sharedInput>
@@ -231,6 +230,3 @@
   }
   }
 </section>
-
-<complete-register-modal (getHasGeneralInfo)="getHasGeneralInfo()"
-  [isOpen]="completeRegisterModalIsOpen"></complete-register-modal>
