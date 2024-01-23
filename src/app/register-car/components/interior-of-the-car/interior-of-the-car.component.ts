@@ -157,7 +157,8 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
 
     this.#completeCarRegistrationService.saveInteriorOfTheCar$(this.interiorOfTheCarForm).subscribe({
       next: () => {
-        this.#completeCarRegistrationService.changeStep(3);
+        this.#completeCarRegistrationService.indexTargetStep.set(3);
+        this.#completeCarRegistrationService.indexCurrentStep.set(3);
       },
       error: (error) => {
         console.error(error);

@@ -168,6 +168,7 @@ export class MechanicsComponent implements AfterViewInit {
 
     this.#completeCarRegistrationService.saveMechanics$(this.mechanicsForm).subscribe({
       next: () => {
+        this.#completeCarRegistrationService.indexTargetStep.set(4);
         this.#completeCarRegistrationService.indexCurrentStep.set(4);
       },
       error: (error) => {

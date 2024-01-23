@@ -32,6 +32,8 @@ export class CompleteCarRegistrationService {
   ];
 
   indexCurrentStep: WritableSignal<number> = signal(0);
+  indexTargetStep: WritableSignal<number> = signal(0);
+
   originalAuctionCarId: WritableSignal<string> = signal('');
 
   saveGeneralInformation$(generalInformation: FormGroup): Observable<any> {
@@ -131,7 +133,7 @@ export class CompleteCarRegistrationService {
   changeStep(step: number) {
     if (step < 0 || step >= this.steps.length) return;
 
-    this.indexCurrentStep.set(step);
+    this.indexTargetStep.set(step);
   }
 
   getBrands$(): Observable<Brands> {

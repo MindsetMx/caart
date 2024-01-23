@@ -251,6 +251,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
     this.#completeCarRegistrationService.saveGeneralDetailsAndExteriorOfTheCar$(this.exteriorOfTheCarForm)
       .subscribe({
         next: () => {
+          this.#completeCarRegistrationService.indexTargetStep.set(2);
           this.#completeCarRegistrationService.indexCurrentStep.set(2);
         },
         error: (error) => {

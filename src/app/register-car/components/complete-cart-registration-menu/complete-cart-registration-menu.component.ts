@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 import { ActivatedRoute } from '@angular/router';
-import { CarDetails, WizardSteps } from '@app/register-car/interfaces';
+import { CarDetails } from '@app/register-car/interfaces';
 
 @Component({
   selector: 'complete-cart-registration-menu',
@@ -22,12 +22,20 @@ export class CompleteCartRegistrationMenuComponent implements OnInit {
   publicationId: string = this.#route.snapshot.params['id'];
   carDetails: WritableSignal<CarDetails> = signal({} as CarDetails);
 
-  get currentStep(): WritableSignal<number> {
+  get indexCurrentStep(): WritableSignal<number> {
     return this.#completeCarRegistrationService.indexCurrentStep;
   }
 
-  set currentStep(step: number) {
+  set indexCurrentStep(step: number) {
     this.#completeCarRegistrationService.indexCurrentStep.set(step);
+  }
+
+  get indexTargetStep(): WritableSignal<number> {
+    return this.#completeCarRegistrationService.indexTargetStep;
+  }
+
+  set indexTargetStep(step: number) {
+    this.#completeCarRegistrationService.indexTargetStep.set(step);
   }
 
   get originalAuctionCarId(): WritableSignal<string> {
@@ -46,21 +54,23 @@ export class CompleteCartRegistrationMenuComponent implements OnInit {
     this.#completeCarRegistrationService.wizardSteps$(this.publicationId).subscribe((wizardSteps) => {
       console.log({ wizardSteps });
       console.log({ carDetails: wizardSteps.data.attributes.carDetails });
-      this.currentStep = wizardSteps.data.attributes.currentStep;
+      this.indexCurrentStep = wizardSteps.data.attributes.currentStep;
+      this.indexTargetStep = wizardSteps.data.attributes.currentStep;
+      console.log({ currentStep: this.indexCurrentStep() });
       this.originalAuctionCarId = wizardSteps.data.attributes.originalAuctionCarId;
       this.carDetails.set(wizardSteps.data.attributes.carDetails);
     });
   }
 
   changeStep(step: number) {
-    if (step !== this.currentStep())
+    if (step > this.indexCurrentStep() || step === 0)
       return;
 
     this.#completeCarRegistrationService.changeStep(step);
   }
 
   isCurrentStep(step: number) {
-    return this.#completeCarRegistrationService.indexCurrentStep() === step;
+    return this.#completeCarRegistrationService.indexTargetStep() === step;
   }
 }
 

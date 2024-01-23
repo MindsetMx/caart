@@ -22,7 +22,7 @@ export class CompleteCarRegisterComponent {
     return this.#completeCarRegistrationService.steps;
   }
 
-  get indexCurrentStep(): WritableSignal<number> {
-    return this.#completeCarRegistrationService.indexCurrentStep;
+  get indexTargetStep(): WritableSignal<number> {
+    return this.#completeCarRegistrationService.indexTargetStep;
   }
 }

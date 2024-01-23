@@ -75,6 +75,7 @@ export class GeneralInformationComponent implements OnInit {
     this.#completeCarRegistrationService.saveGeneralInformation$(this.generalInformationForm)
       .subscribe({
         next: () => {
+          this.#completeCarRegistrationService.indexTargetStep.set(1);
           this.#completeCarRegistrationService.indexCurrentStep.set(1);
         },
         error: (error) => {
