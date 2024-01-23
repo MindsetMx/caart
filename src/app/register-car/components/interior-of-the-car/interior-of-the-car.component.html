@@ -8,7 +8,9 @@
   <div>
     <label for="color" class="block mb-1 text-sm">Color</label>
     <select id="color" formControlName="color" sharedInput>
-      <!-- <option value disabled selected>Color</option> -->
+      @for (color of colors(); track $index) {
+      <option [value]="color.name">{{color.name}}</option>
+      }
     </select>
     @if (hasError('color')) {
     <shared-input-error [message]="getError('color')"></shared-input-error>
@@ -19,7 +21,10 @@
   <div>
     <label for="material" class="block mb-1 text-sm">Material</label>
     <select id="material" formControlName="material" sharedInput>
-      <!-- <option value disabled selected>Material</option> -->
+      <option value="leather">Piel</option>
+      <option value="cloth">Tela</option>
+      <option value="vinyl">Vinil</option>
+      <option value="other">Otro</option>
     </select>
     @if (hasError('material')) {
     <shared-input-error [message]="getError('material')"></shared-input-error>
@@ -43,65 +48,52 @@
 
   <!-- ¿Ha tenido modificaciones en el interior? select -->
   <div class="col-span-2">
-    <label for="hasInteriorModification" class="block mb-1 text-sm">¿Ha tenido modificaciones en el
+    <label for="interiorModifications" class="block mb-1 text-sm">¿Ha tenido modificaciones en el
       interior?</label>
-    <select id="hasInteriorModification" formControlName="hasInteriorModification" sharedInput>
+    <select id="interiorModifications" formControlName="interiorModifications" sharedInput>
       <!-- <option value disabled selected>¿Ha tenido modificaciones en el interior?</option> -->
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
-    @if (hasError('hasInteriorModification')) {
-    <shared-input-error [message]="getError('hasInteriorModification')"></shared-input-error>
+    @if (hasError('interiorModifications')) {
+    <shared-input-error [message]="getError('interiorModifications')"></shared-input-error>
     }
   </div>
 
   <!-- ¿Los accesorios y electrónicos funcionan? input-->
   <div class="col-span-2">
-    <label for="accessoriesAndElectronicsWork" class="block mb-1 text-sm">¿Los accesorios y electrónicos
+    <label for="accessoriesFunctioning" class="block mb-1 text-sm">¿Los accesorios y electrónicos
       funcionan?</label>
-    <input id="accessoriesAndElectronicsWork" formControlName="accessoriesAndElectronicsWork" type="text" sharedInput>
-    @if (hasError('accessoriesAndElectronicsWork')) {
-    <shared-input-error [message]="getError('accessoriesAndElectronicsWork')"></shared-input-error>
+    <input id="accessoriesFunctioning" formControlName="accessoriesFunctioning" type="text" sharedInput>
+    @if (hasError('accessoriesFunctioning')) {
+    <shared-input-error [message]="getError('accessoriesFunctioning')"></shared-input-error>
     }
   </div>
 
   <!-- Comentarios sobre detalles textarea -->
   <div class="col-span-2">
-    <label for="detailsComments" class="block mb-1 text-sm">Comentarios sobre detalles</label>
-    <textarea id="detailsComments" formControlName="detailsComments" rows="6" sharedInput
-      sharedAutoResizeTextarea></textarea>
-    @if (hasError('detailsComments')) {
-    <shared-input-error [message]="getError('detailsComments')"></shared-input-error>
+    <label for="comments" class="block mb-1 text-sm">Comentarios sobre detalles</label>
+    <textarea id="comments" formControlName="comments" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('comments')) {
+    <shared-input-error [message]="getError('comments')"></shared-input-error>
     }
   </div>
 
   <!-- Fotos/vídeos del interior del auto -->
   <div class="col-span-2">
-    <label for="interiorImagesOrVideos" class="text-sm cursor-pointer">
+    <label id="uppyDashboard" for="interiorImagesOrVideos" class="text-sm cursor-pointer">
       Fotos/vídeos del exterior del auto
-      @if(photosOrVideosInteriorOfTheCarFormArray.at(0).value) {
-      <img src="{{previewImagesCarInterior()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
-        alt="foto frontal de la INE">
-      <input (change)="selectFile($event, 1)" id="frontal" type="file" class="sr-only">
-      } @else {
-      <div
-        class="bg-gray1 border border-dashed rounded-md border-gray4 w-64 h-44 mt-2 flex items-center justify-center">
-        <div>
-          <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
-          <p class="text-center text-gray4 text-sm">Subir imagen</p>
-        </div>
-        <input (change)="selectFile($event, 1)" id="interiorImagesOrVideos" type="file" class="sr-only">
-      </div>
-      }
     </label>
 
-    @if (hasError('interiorImagesOrVideos')) {
-    <shared-input-error [message]="getError('interiorImagesOrVideos')"></shared-input-error>
+    <div id="uppyDashboard" #uppyDashboard></div>
+
+    @if (hasError('interiorPhotos')) {
+    <shared-input-error [message]="getError('interiorPhotos')"></shared-input-error>
     }
   </div>
 
   <div class="col-span-2">
-    <button class="mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
+    <button class="flex justify-center mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
       [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
       @if (isButtonSubmitDisabled()) {
       <shared-spinner></shared-spinner>

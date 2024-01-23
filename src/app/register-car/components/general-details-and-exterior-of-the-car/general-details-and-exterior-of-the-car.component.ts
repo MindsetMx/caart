@@ -14,7 +14,6 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-general-details-and-exterior-of-the-car',

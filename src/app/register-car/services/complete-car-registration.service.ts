@@ -64,6 +64,20 @@ export class CompleteCarRegistrationService {
     return this.#http.post<any>(url, trimmedGeneralDetailsAndExteriorOfTheCar, { headers });
   }
 
+  saveInteriorOfTheCar$(interiorOfTheCar: FormGroup): Observable<any> {
+    const trimmedInteriorOfTheCar = this.#appService.trimObjectValues(interiorOfTheCar.value);
+
+    const url = `${this.#baseUrl}/interior-detail-cars`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.post<any>(url, trimmedInteriorOfTheCar, { headers });
+  }
+
   getAuctionTypes$(): Observable<AuctionTypes> {
     const url = `${this.#baseUrl}/auction-types`;
 
