@@ -2,6 +2,12 @@
   <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:relative">
     <div class="md:col-span-4 lg:col-span-3">
       <div class="sticky md:top-14 mb-1">
+
+        <div class="md:px-6 py-2 border rounded-xl font-semibold mb-8">
+          <span>{{carDetails().brand}}</span> &nbsp; <span>{{carDetails().carModel}}</span> &nbsp;
+          <span>{{carDetails().year}}</span> &nbsp; <span>{{carDetails().exteriorColor}}</span>
+        </div>
+
         <ul>
           <li class="font-semibold text-sm lg:text-base md:px-4 py-2 cursor-pointer flex items-center"
             (click)="changeStep(0)" [ngClass]="{'text-gray6': !isCurrentStep(0)}">

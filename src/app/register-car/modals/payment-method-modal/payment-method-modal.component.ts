@@ -89,8 +89,6 @@ export class PaymentMethodModalComponent {
             return of();
           }
 
-          console.log({ token: result.token.id });
-
           this.addPaymentMethodForm.get('token')?.setValue(result.token.id);
 
           const isValid = this.#validatorsService.isValidForm(this.addPaymentMethodForm!);

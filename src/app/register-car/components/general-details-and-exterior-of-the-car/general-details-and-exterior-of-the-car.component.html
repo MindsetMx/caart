@@ -6,6 +6,9 @@
   <div>
     <label for="brand" class="block mb-1 text-sm">Marca</label>
     <select id="brand" formControlName="brand" sharedInput>
+      @for (brand of brands(); track $index) {
+      <option [value]="brand">{{brand}}</option>
+      }
     </select>
     @if (hasError('brand')) {
     <shared-input-error [message]="getError('brand')"></shared-input-error>
@@ -21,10 +24,10 @@
   </div>
 
   <div class="col-span-2">
-    <label for="model" class="block mb-1 text-sm">Modelo</label>
-    <input id="model" formControlName="model" type="text" sharedInput>
-    @if (hasError('model')) {
-    <shared-input-error [message]="getError('model')"></shared-input-error>
+    <label for="carModel" class="block mb-1 text-sm">Modelo</label>
+    <input id="carModel" formControlName="carModel" type="text" sharedInput>
+    @if (hasError('carModel')) {
+    <shared-input-error [message]="getError('carModel')"></shared-input-error>
     }
   </div>
 
@@ -37,25 +40,25 @@
   </div>
 
   <div>
-    <label for="isOdometerAccurate" class="block mb-1 text-sm">¿El odómetro es acertado?</label>
-    <select id="isOdometerAccurate" formControlName="isOdometerAccurate" sharedInput>
+    <label for="odometerVerified" class="block mb-1 text-sm">¿El odómetro es acertado?</label>
+    <select id="odometerVerified" formControlName="odometerVerified" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
-    @if (hasError('isOdometerAccurate')) {
-    <shared-input-error [message]="getError('isOdometerAccurate')"></shared-input-error>
+    @if (hasError('odometerVerified')) {
+    <shared-input-error [message]="getError('odometerVerified')"></shared-input-error>
     }
   </div>
 
   <!-- transmision select -->
   <div>
-    <label for="transmission" class="block mb-1 text-sm">Transmisión</label>
-    <select id="transmission" formControlName="transmission" sharedInput>
+    <label for="transmissionType" class="block mb-1 text-sm">Transmisión</label>
+    <select id="transmissionType" formControlName="transmissionType" sharedInput>
       <option value="manual">Manual</option>
       <option value="automatic">Automática</option>
     </select>
-    @if (hasError('transmission')) {
-    <shared-input-error [message]="getError('transmission')"></shared-input-error>
+    @if (hasError('transmissionType')) {
+    <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
     }
   </div>
 
@@ -73,36 +76,40 @@
 
   <!-- Garantías del auto select -->
   <div class="col-span-2">
-    <label for="carWarranties" class="block mb-1 text-sm">Garantías del auto</label>
-    <select id="carWarranties" formControlName="carWarranties" sharedInput>
+    <label for="warranties" class="block mb-1 text-sm">Garantías del auto</label>
+    <select id="warranties" formControlName="warranties" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
-    @if (hasError('carWarranties')) {
-    <shared-input-error [message]="getError('carWarranties')"></shared-input-error>
+    @if (hasError('warranties')) {
+    <shared-input-error [message]="getError('warranties')"></shared-input-error>
     }
   </div>
 
   <!-- Factura / Pedimento select -->
   <div class="col-span-2">
-    <label for="invoiceOrPermit" class="block mb-1 text-sm">Factura / Pedimento</label>
-    <select id="invoiceOrPermit" formControlName="invoiceOrPermit" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
+    <label for="invoiceType" class="block mb-1 text-sm">Factura / Pedimento</label>
+    <select id="invoiceType" formControlName="invoiceType" sharedInput>
+      <!-- <option value="true">Sí</option>
+      <option value="false">No</option> -->
+      <!-- invoice -->
+      <option value="invoice">Factura</option>
+      <option value="pediment">Pedimento</option>
+      <option value="other">Otro</option>
     </select>
-    @if (hasError('invoiceOrPermit')) {
-    <shared-input-error [message]="getError('invoiceOrPermit')"></shared-input-error>
+    @if (hasError('invoiceType')) {
+    <shared-input-error [message]="getError('invoiceType')"></shared-input-error>
     }
   </div>
 
   <!-- Explica los detalles de Factura / Pedimiento / Otro textarea -->
   <div class="col-span-2">
-    <label for="invoiceOrPermitDetails" class="block mb-1 text-sm">Explica los detalles de Factura / Pedimiento /
+    <label for="invoiceDetails" class="block mb-1 text-sm">Explica los detalles de Factura / Pedimiento /
       Otro</label>
-    <textarea id="invoiceOrPermitDetails" formControlName="invoiceOrPermitDetails" rows="4" sharedInput
+    <textarea id="invoiceDetails" formControlName="invoiceDetails" rows="4" sharedInput
       sharedAutoResizeTextarea></textarea>
-    @if (hasError('invoiceOrPermitDetails')) {
-    <shared-input-error [message]="getError('invoiceOrPermitDetails')"></shared-input-error>
+    @if (hasError('invoiceDetails')) {
+    <shared-input-error [message]="getError('invoiceDetails')"></shared-input-error>
     }
   </div>
 
@@ -123,6 +130,9 @@
   <div>
     <label for="exteriorColor" class="block mb-1 text-sm">Color exterior</label>
     <select id="exteriorColor" formControlName="exteriorColor" sharedInput>
+      @for (color of colors(); track $index) {
+      <option [value]="color.name">{{color.name}}</option>
+      }
     </select>
     @if (hasError('exteriorColor')) {
     <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
@@ -140,61 +150,61 @@
 
   <!-- Ha estado involucrado en un accidente select -->
   <div class="col-span-2">
-    <label for="hasBeenInAccident" class="block mb-1 text-sm">¿Ha estado involucrado en un accidente?</label>
-    <select id="hasBeenInAccident" formControlName="hasBeenInAccident" sharedInput>
+    <label for="accident" class="block mb-1 text-sm">¿Ha estado involucrado en un accidente?</label>
+    <select id="accident" formControlName="accident" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
-    @if (hasError('hasBeenInAccident')) {
-    <shared-input-error [message]="getError('hasBeenInAccident')"></shared-input-error>
+    @if (hasError('accident')) {
+    <shared-input-error [message]="getError('accident')"></shared-input-error>
     }
   </div>
 
   <!-- El auto se ha corrido en pista / autodromo select -->
   <div class="col-span-2">
-    <label for="hasBeenOnTrack" class="block mb-1 text-sm">¿El auto se ha corrido en pista / autodromo?</label>
-    <select id="hasBeenOnTrack" formControlName="hasBeenOnTrack" sharedInput>
+    <label for="raced" class="block mb-1 text-sm">¿El auto se ha corrido en pista / autodromo?</label>
+    <select id="raced" formControlName="raced" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
-    @if (hasError('hasBeenOnTrack')) {
-    <shared-input-error [message]="getError('hasBeenOnTrack')"></shared-input-error>
+    @if (hasError('raced')) {
+    <shared-input-error [message]="getError('raced')"></shared-input-error>
     }
   </div>
 
   <!-- Pintura original select -->
   <div>
-    <label for="isPaintOriginal" class="block mb-1 text-sm">¿Pintura original?</label>
-    <select id="isPaintOriginal" formControlName="isPaintOriginal" sharedInput>
+    <label for="originalPaint" class="block mb-1 text-sm">¿Pintura original?</label>
+    <select id="originalPaint" formControlName="originalPaint" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
-    @if (hasError('isPaintOriginal')) {
-    <shared-input-error [message]="getError('isPaintOriginal')"></shared-input-error>
+    @if (hasError('originalPaint')) {
+    <shared-input-error [message]="getError('originalPaint')"></shared-input-error>
     }
   </div>
 
   <!-- Cuentas con medidor de pintura select -->
   <div>
-    <label for="hasPaintMeter" class="block mb-1 text-sm">¿Cuentas con medidor de pintura?</label>
-    <select id="hasPaintMeter" formControlName="hasPaintMeter" sharedInput>
+    <label for="paintMeter" class="block mb-1 text-sm">¿Cuentas con medidor de pintura?</label>
+    <select id="paintMeter" formControlName="paintMeter" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
-    @if (hasError('hasPaintMeter')) {
-    <shared-input-error [message]="getError('hasPaintMeter')"></shared-input-error>
+    @if (hasError('paintMeter')) {
+    <shared-input-error [message]="getError('paintMeter')"></shared-input-error>
     }
   </div>
 
   <!-- Se le ha modificado el exterior select -->
   <div>
-    <label for="hasExteriorModification" class="block mb-1 text-sm">¿Se le ha modificado el exterior?</label>
-    <select id="hasExteriorModification" formControlName="hasExteriorModification" sharedInput>
+    <label for="exteriorModified" class="block mb-1 text-sm">¿Se le ha modificado el exterior?</label>
+    <select id="exteriorModified" formControlName="exteriorModified" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
     </select>
-    @if (hasError('hasExteriorModification')) {
-    <shared-input-error [message]="getError('hasExteriorModification')"></shared-input-error>
+    @if (hasError('exteriorModified')) {
+    <shared-input-error [message]="getError('exteriorModified')"></shared-input-error>
     }
   </div>
 
@@ -214,36 +224,24 @@
 
   <!-- Comentarios sobre detalles textarea -->
   <div class="col-span-2">
-    <label for="detailsComments" class="block mb-1 text-sm">Comentarios sobre detalles</label>
-    <textarea id="detailsComments" formControlName="detailsComments" rows="6" sharedInput
+    <label for="detailComments" class="block mb-1 text-sm">Comentarios sobre detalles</label>
+    <textarea id="detailComments" formControlName="detailComments" rows="6" sharedInput
       sharedAutoResizeTextarea></textarea>
-    @if (hasError('detailsComments')) {
-    <shared-input-error [message]="getError('detailsComments')"></shared-input-error>
+    @if (hasError('detailComments')) {
+    <shared-input-error [message]="getError('detailComments')"></shared-input-error>
     }
   </div>
 
   <!-- Fotos/vídeos de detalles -->
   <div class="col-span-2">
-    <label for="detailsImagesOrVideos" class="text-sm cursor-pointer">
+    <label for="uppyDashboard1" class="text-sm cursor-pointer">
       Fotos/vídeos de detalles <span class="text-gray4">(Opcional)</span>
-      @if(detailsImagesOrVideosFormArray.at(0).value) {
-      <img src="{{previewImagesCarDetails()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
-        alt="foto frontal de la INE">
-      <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
-      } @else {
-      <div
-        class="bg-gray1 border border-dashed rounded-md border-gray4 w-64 h-44 mt-2 flex items-center justify-center">
-        <div>
-          <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
-          <p class="text-center text-gray4 text-sm">Subir imagen</p>
-        </div>
-        <input (change)="selectFile($event, 0)" id="detailsImagesOrVideos" type="file" class="sr-only">
-      </div>
-      }
     </label>
 
-    @if (hasError('detailsImagesOrVideos')) {
-    <shared-input-error [message]="getError('detailsImagesOrVideos')"></shared-input-error>
+    <div id="uppyDashboard1" #uppyDashboard1></div>
+
+    @if (hasError('detailPhotos')) {
+    <shared-input-error [message]="getError('detailPhotos')"></shared-input-error>
     }
   </div>
 
@@ -251,29 +249,18 @@
   <div class="col-span-2">
     <label for="exteriorImagesOrVideos" class="text-sm cursor-pointer">
       Fotos/vídeos del exterior del auto
-      @if(exteriorImagesOrVideosFormArray.at(0).value) {
-      <img src="{{previewImagesCarExterior()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
-        alt="foto frontal de la INE">
-      <input (change)="selectFile($event, 1)" id="frontal" type="file" class="sr-only">
-      } @else {
-      <div
-        class="bg-gray1 border border-dashed rounded-md border-gray4 w-64 h-44 mt-2 flex items-center justify-center">
-        <div>
-          <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
-          <p class="text-center text-gray4 text-sm">Subir imagen</p>
-        </div>
-        <input (change)="selectFile($event, 1)" id="exteriorImagesOrVideos" type="file" class="sr-only">
-      </div>
-      }
     </label>
 
-    @if (hasError('exteriorImagesOrVideos')) {
-    <shared-input-error [message]="getError('exteriorImagesOrVideos')"></shared-input-error>
+    <div id="uppyDashboard2" #uppyDashboard2></div>
+
+    @if (hasError('exteriorPhotos')) {
+    <shared-input-error [message]="getError('exteriorPhotos')"></shared-input-error>
     }
+
   </div>
 
   <div class="col-span-2">
-    <button class="mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
+    <button class="flex justify-center mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
       [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
       @if (isButtonSubmitDisabled()) {
       <shared-spinner></shared-spinner>

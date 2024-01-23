@@ -9,16 +9,17 @@ import { GeneralInformationComponent } from '@registerCarComponents/general-info
 import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-the-car/interior-of-the-car.component';
 import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
 import { Observable } from 'rxjs';
-import { WizardSteps } from '../interfaces';
+import { Brands, WizardSteps } from '../interfaces';
 import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
 import { AuctionTypes } from '@app/register-car/interfaces/auctionTypes';
+import { Colors } from '../interfaces/colors';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompleteCarRegistrationService {
-  readonly #baseurl = environments.baseUrl;
+  readonly #baseUrl = environments.baseUrl;
 
   #http = inject(HttpClient);
   #appService = inject(AppService);
@@ -33,12 +34,12 @@ export class CompleteCarRegistrationService {
   ];
 
   indexCurrentStep: WritableSignal<number> = signal(0);
-
+  originalAuctionCarId: WritableSignal<string> = signal('');
 
   saveGeneralInformation$(generalInformation: FormGroup): Observable<any> {
     const trimmedGeneralInformation = this.#appService.trimObjectValues(generalInformation.value);
 
-    const url = `${this.#baseurl}/users/complete-registration-with-payment`;
+    const url = `${this.#baseUrl}/users/complete-registration-with-payment`;
 
     const token = localStorage.getItem('token');
 
@@ -49,8 +50,22 @@ export class CompleteCarRegistrationService {
     return this.#http.patch<any>(url, trimmedGeneralInformation, { headers });
   }
 
+  saveGeneralDetailsAndExteriorOfTheCar$(generalDetailsAndExteriorOfTheCar: FormGroup): Observable<any> {
+    const trimmedGeneralDetailsAndExteriorOfTheCar = this.#appService.trimObjectValues(generalDetailsAndExteriorOfTheCar.value);
+
+    const url = `${this.#baseUrl}/exterior-detail-cars`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.post<any>(url, trimmedGeneralDetailsAndExteriorOfTheCar, { headers });
+  }
+
   getAuctionTypes$(): Observable<AuctionTypes> {
-    const url = `${this.#baseurl}/auction-types`;
+    const url = `${this.#baseUrl}/auction-types`;
 
     const token = localStorage.getItem('token');
 
@@ -62,7 +77,7 @@ export class CompleteCarRegistrationService {
   }
 
   addPaymentMethod(stripeToken: string): Observable<any> {
-    const url = `${this.#baseurl}/users/add-payment-method`;
+    const url = `${this.#baseUrl}/users/add-payment-method`;
 
     const token = localStorage.getItem('token');
 
@@ -79,8 +94,16 @@ export class CompleteCarRegistrationService {
     this.indexCurrentStep.set(step);
   }
 
+  getBrands$(): Observable<Brands> {
+    return this.#http.get<Brands>(`${this.#baseUrl}/car-brands`);
+  }
+
+  getColors$(): Observable<Colors[]> {
+    return this.#http.get<Colors[]>(`${this.#baseUrl}/car-colors`);
+  }
+
   wizardSteps$(publicationId: string): Observable<WizardSteps> {
-    const url = `${this.#baseurl}/auction-items/auction-car-publish/${publicationId}/wizard-steps`;
+    const url = `${this.#baseUrl}/auction-items/auction-car-publish/${publicationId}/wizard-steps`;
 
     const token = localStorage.getItem('token');
 

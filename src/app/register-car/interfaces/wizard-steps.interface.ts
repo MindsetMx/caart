@@ -11,6 +11,8 @@ export interface WizardStepsData {
 export interface Attributes {
   steps: Steps;
   currentStep: number;
+  originalAuctionCarId: string;
+  carDetails: CarDetails;
 }
 
 export interface Steps {
@@ -20,4 +22,24 @@ export interface Steps {
   mechanics: boolean;
   extras: boolean;
   confirmation: boolean;
+}
+
+export interface CarDetails {
+  type: string;
+  brand: string;
+  year: number;
+  carModel: string;
+  exteriorColor: string;
+  interiorColor: string;
+  city: string;
+  postalCode: string;
+  reserve: boolean;
+  reserveAmount: null;
+  kmType: string;
+  kmInput: number;
+  howDidYouHearAboutUs: string;
+  photos: string[];
+  interest: string;
+  acceptTerms: boolean;
+  status: string;
 }

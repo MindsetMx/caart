@@ -70,3 +70,7 @@ select {
 .uppy-Dashboard-AddFiles-title {
   position: absolute;
 }
+
+.uppy-size--md .uppy-Dashboard-inner {
+  width: 100% !important;
+}

@@ -22,8 +22,8 @@
       </div>
 
       <div class="col-span-2">
-        <label for="username" class="block mb-1 text-sm">Nombre de usuario</label>
-        <input id="username" formControlName="username" autocomplete="username" type="text" sharedInput>
+        <label for="_username" class="block mb-1 text-sm">Nombre de usuario</label>
+        <input id="_username" formControlName="username" type="text" sharedInput>
         @if (hasError('username')) {
         <shared-input-error [message]="getError('username')"></shared-input-error>
         }

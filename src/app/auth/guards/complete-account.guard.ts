@@ -5,8 +5,6 @@ import { map } from 'rxjs';
 import { saveCurrentUrlInLocalStorage } from '@shared/common/saveCurrentUrlInLocalStorage';
 
 export const CompleteAccountGuard: CanActivateFn = (route, state) => {
-  console.log('CompleteAccountGuard');
-
   const generalInfoService = inject(GeneralInfoService);
   const router = inject(Router);
 

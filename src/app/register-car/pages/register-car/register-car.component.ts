@@ -4,7 +4,7 @@ import { EMPTY, Observable, Subscription, catchError, map } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Uppy } from '@uppy/core';
-import { UppyAngularDashboardModule, UppyAngularDragDropModule } from '@uppy/angular';
+import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
@@ -40,7 +40,6 @@ import { ValidatorsService } from '@shared/services/validators.service';
     SpinnerComponent,
     TabsWithIconsComponent,
     UppyAngularDashboardModule,
-    UppyAngularDragDropModule,
   ],
   templateUrl: './register-car.component.html',
   styleUrl: './register-car.component.css',
