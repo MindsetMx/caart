@@ -7,6 +7,8 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-car-extras',
@@ -26,6 +28,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
 export class CarExtrasComponent {
   #validatorsService = inject(ValidatorsService);
   #fb = inject(FormBuilder);
+  #completeCarRegistrationService = inject(CompleteCarRegistrationService);
+  #router = inject(Router);
 
   carExtrasForm: FormGroup;
 
@@ -35,27 +39,47 @@ export class CarExtrasComponent {
 
   constructor() {
     this.carExtrasForm = this.#fb.group({
-      hasServiceHistory: [false, Validators.required],
-      hasManuals: [false, Validators.required],
-      hasToolBox: [false, Validators.required],
-      hasSpareTire: [false, Validators.required],
-      hasCarCover: [false, Validators.required],
-      hasTireInflator: [false, Validators.required],
+      serviceHistory: ['', Validators.required],
+      toolBox: ['', Validators.required],
+      carCover: ['', Validators.required],
+      batteryCharger: ['', Validators.required],
+      manuals: ['', Validators.required],
+      spareTire: ['', Validators.required],
+      tireInflator: ['', Validators.required],
       numberOfKeys: ['', Validators.required],
-      other: ['', Validators.required],
-      additionalCharges: ['', Validators.required],
-      amountOfCharge: ['', Validators.required],
-      additionalComments: ['', Validators.required],
-      acceptTermsAndConditions: [false, Validators.required],
+      others: ['', Validators.required],
+      additionalCharges: this.#fb.array(
+        [
+          this.#fb.group({
+            chargeType: ['', Validators.required],
+            amount: ['', Validators.required],
+          },
+            {
+              validators: Validators.required,
+            }
+          )
+        ]
+        ,
+        {
+          validators: Validators.required,
+        }
+      ),
+      comments: ['', Validators.required],
+      termsConditionsAccepted: ['', Validators.required],
+      originalAuctionCarId: [this.originalAuctionCarId, Validators.required],
     });
   }
 
-  get detailsImagesOrVideosFormArray(): FormArray {
-    return this.carExtrasForm.get('detailsImagesOrVideos') as FormArray;
+  get originalAuctionCarId(): string {
+    return this.#completeCarRegistrationService.originalAuctionCarId();
   }
 
-  get exteriorImagesOrVideosFormArray(): FormArray {
-    return this.carExtrasForm.get('exteriorImagesOrVideos') as FormArray;
+  get additionalChargesFormArray(): FormArray {
+    return this.carExtrasForm.get('additionalCharges') as FormArray;
+  }
+
+  get additionalChargesFormArrayControls(): FormGroup[] {
+    return this.additionalChargesFormArray.controls as FormGroup[];
   }
 
   carExtrasFormSubmit(): void {
@@ -63,43 +87,40 @@ export class CarExtrasComponent {
 
     const isValid = this.#validatorsService.isValidForm(this.carExtrasForm);
 
+    console.log({ isValid });
+    console.log({ carExtrasForm: this.carExtrasForm.value });
+
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);
       return;
     }
+
+    this.#completeCarRegistrationService.saveCarExtras$(this.carExtrasForm).subscribe({
+      next: () => {
+        this.#router.navigate(['/registro-exitoso-auto']);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    }).add(() => {
+      this.isButtonSubmitDisabled.set(false);
+    });
   }
 
-  selectFile(event: Event, indice: number): void {
-    const inputElement = event.target as HTMLInputElement;
+  addAdditionalCharge(): void {
+    const nuevoCredito = this.#fb.group({
+      chargeType: ['', Validators.required],
+      amount: ['', Validators.required],
+    });
 
-    if (!inputElement.files?.length) return;
-
-    const file = inputElement.files[0];
-    this.detailsImagesOrVideosFormArray.at(indice).setValue(file);
-
-    this.showPreview(file, indice);
+    this.additionalChargesFormArray.push(nuevoCredito);
   }
 
-  showPreview(archivo: File, indice: number): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.previewImagesCarDetails.set(
-        this.previewImagesCarDetails().map((image, index) => {
-          if (index === indice) return reader.result as string;
-          return image;
-        })
-      );
-    }
-    reader.readAsDataURL(archivo);
+  hasError(field: string, formGroup: FormGroup = this.carExtrasForm): boolean {
+    return this.#validatorsService.hasError(formGroup, field);
   }
 
-  hasError(field: string): boolean {
-    return this.#validatorsService.hasError(this.carExtrasForm, field);
-  }
-
-  getError(field: string): string | undefined {
-    if (!this.carExtrasForm) return undefined;
-
-    return this.#validatorsService.getError(this.carExtrasForm, field);
+  getError(field: string, formGroup: FormGroup = this.carExtrasForm): string | undefined {
+    return this.#validatorsService.getError(formGroup, field);
   }
 }

@@ -7,21 +7,21 @@
       <legend class="block text-sm mb-1">Historial de servicios</legend>
       <div class="flex">
         <div class="flex">
-          <input id="hasServiceHistory" value="true" name="hasServiceHistory" type="radio" checked class="h-6 w-6">
-          <label for="hasServiceHistory" class="ml-3 block font-bold">
+          <input formControlName="serviceHistory" id="serviceHistory" value="true" type="radio" class="h-6 w-6">
+          <label for="serviceHistory" class="ml-3 block font-bold">
             Sí
           </label>
         </div>
         <div class="flex ml-6 xxs:ml-8 md:ml-16">
-          <input id="hasNoServiceHistory" value="false" name="hasServiceHistory" type="radio" class="h-6 w-6">
+          <input formControlName="serviceHistory" id="hasNoServiceHistory" value="false" type="radio" class="h-6 w-6">
           <label for="hasNoServiceHistory" class="ml-3 block font-bold">
             No
           </label>
         </div>
       </div>
     </fieldset>
-    @if (hasError('hasServiceHistory')) {
-    <shared-input-error [message]="getError('hasServiceHistory')"></shared-input-error>
+    @if (hasError('serviceHistory')) {
+    <shared-input-error [message]="getError('serviceHistory')"></shared-input-error>
     }
   </div>
 
@@ -31,21 +31,21 @@
       <legend class="block text-sm mb-1">Manuales</legend>
       <div class="flex">
         <div class="flex">
-          <input id="hasManuals" value="true" name="hasManuals" type="radio" checked class="h-6 w-6">
-          <label for="hasManuals" class="ml-3 block font-bold">
+          <input formControlName="manuals" id="manuals" value="true" type="radio" class="h-6 w-6">
+          <label for="manuals" class="ml-3 block font-bold">
             Sí
           </label>
         </div>
         <div class="flex ml-6 xxs:ml-8 md:ml-16">
-          <input id="hasNoManuals" value="false" name="hasManuals" type="radio" class="h-6 w-6">
+          <input formControlName="manuals" id="hasNoManuals" value="false" type="radio" class="h-6 w-6">
           <label for="hasNoManuals" class="ml-3 block font-bold">
             No
           </label>
         </div>
       </div>
     </fieldset>
-    @if (hasError('hasManuals')) {
-    <shared-input-error [message]="getError('hasManuals')"></shared-input-error>
+    @if (hasError('manuals')) {
+    <shared-input-error [message]="getError('manuals')"></shared-input-error>
     }
   </div>
 
@@ -55,21 +55,21 @@
       <legend class="block text-sm mb-1">Caja de herramientas</legend>
       <div class="flex">
         <div class="flex">
-          <input id="hasToolBox" value="true" name="hasToolBox" type="radio" checked class="h-6 w-6">
-          <label for="hasToolBox" class="ml-3 block font-bold">
+          <input formControlName="toolBox" id="toolBox" value="true" type="radio" class="h-6 w-6">
+          <label for="toolBox" class="ml-3 block font-bold">
             Sí
           </label>
         </div>
         <div class="flex ml-6 xxs:ml-8 md:ml-16">
-          <input id="hasNoToolBox" value="false" name="hasToolBox" type="radio" class="h-6 w-6">
+          <input formControlName="toolBox" id="hasNoToolBox" value="false" type="radio" class="h-6 w-6">
           <label for="hasNoToolBox" class="ml-3 block font-bold">
             No
           </label>
         </div>
       </div>
     </fieldset>
-    @if (hasError('hasToolBox')) {
-    <shared-input-error [message]="getError('hasToolBox')"></shared-input-error>
+    @if (hasError('toolBox')) {
+    <shared-input-error [message]="getError('toolBox')"></shared-input-error>
     }
   </div>
 
@@ -79,21 +79,21 @@
       <legend class="block text-sm mb-1">Llanta de refacción</legend>
       <div class="flex">
         <div class="flex">
-          <input id="hasSpareTire" value="true" name="hasSpareTire" type="radio" checked class="h-6 w-6">
-          <label for="hasSpareTire" class="ml-3 block font-bold">
+          <input formControlName="spareTire" id="spareTire" value="true" type="radio" checked class="h-6 w-6">
+          <label for="spareTire" class="ml-3 block font-bold">
             Sí
           </label>
         </div>
         <div class="flex ml-6 xxs:ml-8 md:ml-16">
-          <input id="hasSpareTire" value="false" name="hasSpareTire" type="radio" class="h-6 w-6">
-          <label for="hasSpareTire" class="ml-3 block font-bold">
+          <input formControlName="spareTire" id="hasNoSpareTire" value="false" type="radio" class="h-6 w-6">
+          <label for="hasNoSpareTire" class="ml-3 block font-bold">
             No
           </label>
         </div>
       </div>
     </fieldset>
-    @if (hasError('hasSpareTire')) {
-    <shared-input-error [message]="getError('hasSpareTire')"></shared-input-error>
+    @if (hasError('spareTire')) {
+    <shared-input-error [message]="getError('spareTire')"></shared-input-error>
     }
   </div>
 
@@ -103,21 +103,21 @@
       <legend class="block text-sm mb-1">Cubierta de auto</legend>
       <div class="flex">
         <div class="flex">
-          <input id="hasCarCover" value="true" name="hasCarCover" type="radio" checked class="h-6 w-6">
-          <label for="hasCarCover" class="ml-3 block font-bold">
+          <input formControlName="carCover" id="carCover" value="true" type="radio" checked class="h-6 w-6">
+          <label for="carCover" class="ml-3 block font-bold">
             Sí
           </label>
         </div>
         <div class="flex ml-6 xxs:ml-8 md:ml-16">
-          <input id="hasNoCarCover" value="false" name="hasCarCover" type="radio" class="h-6 w-6">
+          <input formControlName="carCover" id="hasNoCarCover" value="false" type="radio" class="h-6 w-6">
           <label for="hasNoCarCover" class="ml-3 block font-bold">
             No
           </label>
         </div>
       </div>
     </fieldset>
-    @if (hasError('hasCarCover')) {
-    <shared-input-error [message]="getError('hasCarCover')"></shared-input-error>
+    @if (hasError('carCover')) {
+    <shared-input-error [message]="getError('carCover')"></shared-input-error>
     }
   </div>
 
@@ -127,21 +127,21 @@
       <legend class="block text-sm mb-1">Máquina para inflar llanta</legend>
       <div class="flex">
         <div class="flex">
-          <input id="hasTireInflator" value="true" name="hasTireInflator" type="radio" checked class="h-6 w-6">
-          <label for="hasTireInflator" class="ml-3 block font-bold">
+          <input formControlName="tireInflator" id="tireInflator" value="true" type="radio" class="h-6 w-6">
+          <label for="tireInflator" class="ml-3 block font-bold">
             Sí
           </label>
         </div>
         <div class="flex ml-6 xxs:ml-8 md:ml-16">
-          <input id="hasNoTireInflator" value="false" name="hasTireInflator" type="radio" class="h-6 w-6">
+          <input formControlName="tireInflator" id="hasNoTireInflator" value="false" type="radio" class="h-6 w-6">
           <label for="hasNoTireInflator" class="ml-3 block font-bold">
             No
           </label>
         </div>
       </div>
     </fieldset>
-    @if (hasError('hasTireInflator')) {
-    <shared-input-error [message]="getError('hasTireInflator')"></shared-input-error>
+    @if (hasError('tireInflator')) {
+    <shared-input-error [message]="getError('tireInflator')"></shared-input-error>
     }
   </div>
 
@@ -151,21 +151,21 @@
       <legend class="block text-sm mb-1">Cargador de batería</legend>
       <div class="flex">
         <div class="flex">
-          <input id="hasBatteryCharger" value="true" name="hasBatteryCharger" type="radio" checked class="h-6 w-6">
-          <label for="hasBatteryCharger" class="ml-3 block font-bold">
+          <input formControlName="batteryCharger" id="batteryCharger" value="true" type="radio" class="h-6 w-6">
+          <label for="batteryCharger" class="ml-3 block font-bold">
             Sí
           </label>
         </div>
         <div class="flex ml-6 xxs:ml-8 md:ml-16">
-          <input id="hasNoBatteryCharger" value="false" name="hasBatteryCharger" type="radio" class="h-6 w-6">
+          <input formControlName="batteryCharger" id="hasNoBatteryCharger" value="false" type="radio" class="h-6 w-6">
           <label for="hasNoBatteryCharger" class="ml-3 block font-bold">
             No
           </label>
         </div>
       </div>
     </fieldset>
-    @if (hasError('hasTireInflator')) {
-    <shared-input-error [message]="getError('hasTireInflator')"></shared-input-error>
+    @if (hasError('batteryCharger')) {
+    <shared-input-error [message]="getError('batteryCharger')"></shared-input-error>
     }
   </div>
 
@@ -183,10 +183,10 @@
 
   <!-- Otros textarea -->
   <div class="col-span-2">
-    <label for="other" class="block text-sm mb-2">Otros</label>
-    <textarea id="other" rows="4" name="other" formControlName="other" sharedInput sharedTextarea></textarea>
-    @if (hasError('other')) {
-    <shared-input-error [message]="getError('other')"></shared-input-error>
+    <label for="others" class="block text-sm mb-2">Otros</label>
+    <textarea id="others" rows="4" name="others" formControlName="others" sharedInput sharedTextarea></textarea>
+    @if (hasError('others')) {
+    <shared-input-error [message]="getError('others')"></shared-input-error>
     }
   </div>
 
@@ -195,55 +195,58 @@
   </div>
 
   <!-- Cargos adicionales input -->
-  <div>
-    <label for="additionalCharges" class="block text-sm mb-2">Cargos adicionales</label>
-    <input id="additionalCharges" name="additionalCharges" type="number" formControlName="additionalCharges"
-      sharedInput>
-    @if (hasError('additionalCharges')) {
-    <shared-input-error [message]="getError('additionalCharges')"></shared-input-error>
+  <div class="col-span-2 grid gap-5" formArrayName="additionalCharges">
+    @for (charge of additionalChargesFormArrayControls; track i; let i = $index) {
+    <div class="grid grid-cols-2 gap-5" [formGroupName]="i">
+      <div>
+        <label for="chargeType" class="block text-sm mb-2">Cargos adicionales</label>
+        <input formControlName="chargeType" id="chargeType" type="text" sharedInput>
+        @if (hasError('chargeType', charge)) {
+        <shared-input-error [message]="getError('chargeType', charge)"></shared-input-error>
+        }
+      </div>
+      <!-- Monto del cargo $ -->
+      <div>
+        <label for="amount" class="block text-sm mb-2">Monto del cargo $</label>
+        <input formControlName="amount" id="amount" type="number" sharedInput>
+        @if (hasError('amount', charge)) {
+        <shared-input-error [message]="getError('amount',charge)"></shared-input-error>
+        }
+      </div>
+    </div>
     }
   </div>
 
-  <!-- Monto del cargo $ -->
-  <div>
-    <label for="amountOfCharge" class="block text-sm mb-2">Monto del cargo $</label>
-    <input id="amountOfCharge" name="amountOfCharge" type="number" formControlName="amountOfCharge" sharedInput>
-    @if (hasError('amountOfCharge')) {
-    <shared-input-error [message]="getError('amountOfCharge')"></shared-input-error>
-    }
-  </div>
-
-  <div class="col-span-2">
-    <button class="underline">Añadir otro cargo</button>
+  <div (click)="addAdditionalCharge()" class="col-span-2">
+    <button type="button" class="underline">Añadir otro cargo</button>
   </div>
 
   <!-- ¿Algo más que nos quisieras comentar de tu auto? textarea -->
   <div class="col-span-2">
-    <label for="additionalComments" class="block text-sm mb-2">¿Algo más que nos quisieras comentar de tu auto?</label>
-    <textarea id="additionalComments" rows="6" name="additionalComments" formControlName="additionalComments"
-      sharedInput sharedTextarea></textarea>
-    @if (hasError('additionalComments')) {
-    <shared-input-error [message]="getError('additionalComments')"></shared-input-error>
+    <label for="comments" class="block text-sm mb-2">¿Algo más que nos quisieras comentar de tu auto?</label>
+    <textarea id="comments" rows="6" name="comments" formControlName="comments" sharedInput sharedTextarea></textarea>
+    @if (hasError('comments')) {
+    <shared-input-error [message]="getError('comments')"></shared-input-error>
     }
   </div>
 
   <div class="col-span-2 mt-8">
     <div class="flex text-xs">
-      <input id="acceptTermsAndConditions" formControlName="acceptTermsAndConditions" type="checkbox"
+      <input id="termsConditionsAccepted" formControlName="termsConditionsAccepted" type="checkbox"
         class="h-4 w-4 mt-1">
-      <label for="acceptTermsAndConditions" class="ml-3 block leading-6">
+      <label for="termsConditionsAccepted" class="ml-3 block leading-6">
         Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
         <a class="underline">Acuerdos de usuarios.</a>
       </label>
     </div>
-    @if (hasError('acceptTermsAndConditions')) {
-    <shared-input-error [message]="getError('acceptTermsAndConditions')"></shared-input-error>
+    @if (hasError('termsConditionsAccepted')) {
+    <shared-input-error [message]="getError('termsConditionsAccepted')"></shared-input-error>
     }
   </div>
 
   <div class="col-span-2">
-    <button type="submit" [disabled]="isButtonSubmitDisabled()" [class.opacity-50]="isButtonSubmitDisabled()"
-      sharedPrimaryButton>
+    <button class="flex justify-center" type="submit" [disabled]="isButtonSubmitDisabled()"
+      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
       @if (isButtonSubmitDisabled()) {
       <shared-spinner></shared-spinner>
       } @else {

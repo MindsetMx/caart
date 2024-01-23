@@ -3,7 +3,6 @@ import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { environments } from '@env/environments';
 
 import { CarExtrasComponent } from '@registerCarComponents/car-extras/car-extras.component';
-import { CarRegistrationConfirmationComponent } from '@registerCarComponents/car-registration-confirmation/car-registration-confirmation.component';
 import { GeneralDetailsAndExteriorOfTheCarComponent } from '@registerCarComponents/general-details-and-exterior-of-the-car/general-details-and-exterior-of-the-car.component';
 import { GeneralInformationComponent } from '@registerCarComponents/general-information/general-information.component';
 import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-the-car/interior-of-the-car.component';
@@ -30,7 +29,6 @@ export class CompleteCarRegistrationService {
     InteriorOfTheCarComponent,
     MechanicsComponent,
     CarExtrasComponent,
-    CarRegistrationConfirmationComponent,
   ];
 
   indexCurrentStep: WritableSignal<number> = signal(0);
@@ -76,6 +74,34 @@ export class CompleteCarRegistrationService {
     });
 
     return this.#http.post<any>(url, trimmedInteriorOfTheCar, { headers });
+  }
+
+  saveMechanics$(mechanics: FormGroup): Observable<any> {
+    const trimmedMechanics = this.#appService.trimObjectValues(mechanics.value);
+
+    const url = `${this.#baseUrl}/mechanics-detail-cars`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.post<any>(url, trimmedMechanics, { headers });
+  }
+
+  saveCarExtras$(carExtras: FormGroup): Observable<any> {
+    const trimmedCarExtras = this.#appService.trimObjectValues(carExtras.value);
+
+    const url = `${this.#baseUrl}/extras`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.post<any>(url, trimmedCarExtras, { headers });
   }
 
   getAuctionTypes$(): Observable<AuctionTypes> {

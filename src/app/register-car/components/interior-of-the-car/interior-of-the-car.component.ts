@@ -55,7 +55,7 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
       accessoriesFunctioning: ['', [Validators.required]],
       comments: ['', [Validators.required]],
       interiorPhotos: [[], [Validators.required]],
-      interiorVideos: [[], [Validators.required]],
+      interiorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId, [Validators.required]],
     });
   }
@@ -157,13 +157,13 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
 
     this.#completeCarRegistrationService.saveInteriorOfTheCar$(this.interiorOfTheCarForm).subscribe({
       next: () => {
-        this.isButtonSubmitDisabled.set(false);
         this.#completeCarRegistrationService.changeStep(3);
       },
       error: (error) => {
         console.error(error);
-        this.isButtonSubmitDisabled.set(false);
       }
+    }).add(() => {
+      this.isButtonSubmitDisabled.set(false);
     });
   }
 
