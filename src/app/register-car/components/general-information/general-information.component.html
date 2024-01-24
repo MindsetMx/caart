@@ -11,9 +11,20 @@
         <div class="flex">
           <input formControlName="auctionTypeId" [id]="$index" [value]="type.id" type="radio" class="h-6 w-6">
           <label [for]="$index" class="ml-3 block leading-6">
+            @if (isValidDiscountCode()) {
+            <span class="line-through text-red-500">
+              {{type.attributes.amount | currency:'USD':'symbol':'1.2-2'}} MXN
+            </span>
+            &nbsp;
+            <span class="font-bold">
+              {{applyDiscountCodeResponse().data[$index].attributes.discountedAmount | currency:'USD':'symbol':'1.2-2'}}
+              MXN
+            </span>
+            }@else {
             <p class="font-bold">
               {{type.attributes.amount | currency:'USD':'symbol':'1.2-2'}} MXN
             </p>
+            }
             <p>{{type.attributes.description}}</p>
             <span class="text-red-500">
               {{type.attributes.submessage}}
@@ -33,10 +44,13 @@
     <label for="discountCode" class="block mb-4 font-semibold text-lg">¿Tienes un código de descuento?</label>
     <div class="inline-flex gap-x-4 w-full max-w-sm">
       <input formControlName="discountCode" id="discountCode" type="text" placeholder="Ingresa el código" sharedInput>
-      <button type="button" class="underline">Canjear</button>
+      <button (click)="applyDiscountCode()" type="button" class="underline">Canjear</button>
     </div>
-    @if (hasError(generalInformationForm, 'discountCode')) {
-    <shared-input-error [message]="getError(generalInformationForm, 'discountCode')"></shared-input-error>
+
+    @if (isValidDiscountCode()) {
+    <p class="text-green-500 mt-2">{{discountCodeMessage()}}</p>
+    }@else {
+    <shared-input-error [message]="discountCodeMessage()"></shared-input-error>
     }
   </div>
 

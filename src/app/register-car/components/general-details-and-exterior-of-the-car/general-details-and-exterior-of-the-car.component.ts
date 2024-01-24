@@ -7,7 +7,7 @@ import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 
 import { AutoResizeTextareaDirective } from '@shared/directives/auto-resize-textarea.directive';
-import { Colors } from '@app/register-car/interfaces/colors';
+import { Colors } from '@app/register-car/interfaces/colors.interface';
 import { CompleteCarRegistrationService } from '../../services/complete-car-registration.service';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';

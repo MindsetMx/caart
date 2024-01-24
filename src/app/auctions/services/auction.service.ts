@@ -21,4 +21,25 @@ export class AuctionService {
 
     return this.#http.get<AuctionCarPublications>(url, { headers });
   }
+
+  getPublicationRequests$(): Observable<any> {
+    const url = `${this.#baseUrl}/auction-items/auction-cars`;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.#http.get<any>(url, { headers });
+  }
+
+  acceptPublicationRequest$(id: string): Observable<any> {
+    const url = `${this.#baseUrl}/auction-items/${id}/accept`;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.#http.patch<any>(url, {}, { headers });
+  }
+
 }

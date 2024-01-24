@@ -8,11 +8,11 @@ import { GeneralInformationComponent } from '@registerCarComponents/general-info
 import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-the-car/interior-of-the-car.component';
 import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
 import { Observable } from 'rxjs';
-import { Brands, WizardSteps } from '../interfaces';
+import { ApplyDiscountCode, Brands, WizardSteps } from '../interfaces';
 import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
-import { AuctionTypes } from '@app/register-car/interfaces/auctionTypes';
-import { Colors } from '../interfaces/colors';
+import { AuctionTypes } from '@app/register-car/interfaces/auction-types.interface';
+import { Colors } from '../interfaces/colors.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +48,18 @@ export class CompleteCarRegistrationService {
     });
 
     return this.#http.patch<any>(url, trimmedGeneralInformation, { headers });
+  }
+
+  applyDiscountCode$(discountCode: string): Observable<ApplyDiscountCode> {
+    const url = `${this.#baseUrl}/discounts/validate/${discountCode}`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.get<ApplyDiscountCode>(url, { headers });
   }
 
   saveGeneralDetailsAndExteriorOfTheCar$(generalDetailsAndExteriorOfTheCar: FormGroup): Observable<any> {

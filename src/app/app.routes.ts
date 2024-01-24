@@ -52,6 +52,11 @@ export const routes: Routes = [
         path: 'publicaciones',
         canActivate: [AuthGuard],
         loadComponent: () => import('./auctions/pages/auction-car-publications/auction-car-publications.component').then((m) => m.AuctionCarPublishesComponent),
+      },
+      {
+        path: 'solicitudes',
+        canActivate: [AuthGuard],
+        loadComponent: () => import('./auctions/pages/publication-requests/publication-requests.component').then((m) => m.PublicationRequestsComponent),
       }
     ]
   },
