@@ -1,10 +1,11 @@
+import { FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { AppService } from '@app/app.service';
-import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { Brands } from '../interfaces/brands.interface';
+
+import { AppService } from '@app/app.service';
+import { Colors, Brands } from '@registerCarInterfaces/index';
+import { environments } from '@env/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,11 @@ export class RegisterCarService {
       'Authorization': `Bearer ${token}`
     });
 
-
     return this.#http.post<any>(`${this.#baseUrl}/auction-items/register`, trimmedRegisterCar, { headers });
+  }
+
+  getColors$(): Observable<Colors[]> {
+    return this.#http.get<Colors[]>(`${this.#baseUrl}/car-colors`);
   }
 
   getBrands$(): Observable<Brands> {

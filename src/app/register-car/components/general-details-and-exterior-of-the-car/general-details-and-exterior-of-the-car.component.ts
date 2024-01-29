@@ -54,7 +54,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   constructor() {
     this.exteriorOfTheCarForm = this.#fb.group({
       brand: ['', [Validators.required]],
-      year: ['', [Validators.required, Validators.min(1930), Validators.max(this.currentYear)]],
+      year: ['', [Validators.required, Validators.min(1900), Validators.max(this.currentYear)]],
       carModel: ['', [Validators.required]],
       mileage: ['', [Validators.required]],
       odometerVerified: ['', [Validators.required]],

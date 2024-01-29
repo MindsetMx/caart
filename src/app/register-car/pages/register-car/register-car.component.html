@@ -50,11 +50,19 @@
       <div class="grid grid-cols-2 gap-4" [ngClass]="{'pointer-events-none': userIsNotAuthenticated}">
         <div>
           <label for="brand" class="block mb-1 text-sm">Marca</label>
-          <select formControlName="brand" id="brand" sharedInput>
+          <div class="relative">
+            <input type="text" formControlName="brand" [matAutocomplete]="brands" sharedInput>
+            <mat-autocomplete #brands="matAutocomplete">
+              @for (brand of filteredBrands | async; track $index) {
+              <mat-option [value]="brand">{{brand}}</mat-option>
+              }
+            </mat-autocomplete>
+          </div>
+          <!-- <select formControlName="brand" id="brand" sharedInput>
             @for (brand of brands(); track $index) {
             <option [value]="brand">{{brand}}</option>
             }
-          </select>
+          </select> -->
           @if (hasError('brand')) {
           <shared-input-error [message]="getError('brand')"></shared-input-error>
           }
@@ -62,7 +70,7 @@
 
         <div>
           <label for="year" class="block mb-1 text-sm">Año</label>
-          <input formControlName="year" min="1930" [max]="currentYear" id="year" type="number" sharedInput>
+          <input formControlName="year" min="1900" [max]="currentYear" id="year" type="number" sharedInput>
           @if (hasError('year')) {
           <shared-input-error [message]="getError('year')"></shared-input-error>
           }
@@ -78,7 +86,11 @@
 
         <div>
           <label for="exteriorColor" class="block mb-1 text-sm">Color exterior</label>
-          <input formControlName="exteriorColor" id="exteriorColor" type="text" sharedInput>
+          <select formControlName="exteriorColor" id="exteriorColor" sharedInput>
+            @for (color of colors(); track $index) {
+            <option [value]="color.name">{{color.name}}</option>
+            }
+          </select>
           @if (hasError('exteriorColor')) {
           <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
           }
