@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
@@ -10,8 +10,8 @@ import { idTypes } from '@auth/enums';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
-import { ValidatorsService } from '@shared/services/validators.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
   selector: 'register',
@@ -116,54 +116,6 @@ export class RegisterComponent implements OnDestroy {
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
     });
-
-
-    // if (!this.registerForm)
-    //   throw new Error('Register form is undefined');
-
-    // this.createToken().pipe(
-    //   switchMap((result) => {
-    //     if (result.token) {
-    //       this.registerForm?.get('stripeToken')?.setValue(result.token.id);
-    //       this.registerForm?.get('stripeToken')?.setErrors(null);
-    //     } else
-    //       if (result.error && result.error.message) {
-    //         this.#validatorsService.addServerErrorsToForm(this.registerForm, 'stripeToken', result.error.message);
-    //         this.isButtonSubmitDisabled.set(false);
-    //         return of();
-    //       }
-
-    //     const isValid = this.#validatorsService.isValidForm(this.registerForm);
-
-    //     if (isValid)
-    //       return this.#authService.registerUser$(this.registerForm);
-
-    //     return of();
-    //   })).subscribe({
-    //     next: () => {
-    //       this.toastSuccess('Usuario registrado correctamente');
-
-    //       const loginForm = this.#fb.group({
-    //         email: [this.registerForm?.get('email')?.value, [Validators.required, Validators.email]],
-    //         password: [this.registerForm?.get('password')?.value, Validators.required]
-    //       });
-
-    //       this.registerForm?.reset();
-
-    //       this.login(loginForm);
-    //     },
-    //     error: (err) => {
-    //       console.error(err);
-    //       const fieldName = err.source;
-    //       const errorMessage = err.message;
-
-    //       if (this.registerForm) {
-    //         this.#validatorsService.addServerErrorsToForm(this.registerForm, fieldName, errorMessage);
-    //       }
-    //     }
-    //   }).add(() => {
-    //     this.isButtonSubmitDisabled.set(false);
-    //   });
   }
 
   login(loginForm: FormGroup): void {
@@ -203,7 +155,6 @@ export class RegisterComponent implements OnDestroy {
   addOptionalFieldsToRegisterForm(): void {
     this.registerForm?.addControl('postalCode', new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]));
     this.registerForm?.addControl('streetAndNumber', new FormControl('', Validators.required));
-    // this.registerForm?.addControl('stripeToken', new FormControl('', Validators.required));
     this.registerForm?.addControl('taxId', new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(13)]));
     this.registerForm?.addControl('validationImg', new FormArray([
       new FormControl(null, Validators.required),
@@ -220,7 +171,6 @@ export class RegisterComponent implements OnDestroy {
   removeOptionalFieldsFromRegisterForm(): void {
     this.registerForm?.removeControl('postalCode');
     this.registerForm?.removeControl('streetAndNumber');
-    // this.registerForm?.removeControl('stripeToken');
     this.registerForm?.removeControl('taxId');
     this.registerForm?.removeControl('validationImg');
     this.registerForm?.removeControl('validationType');
