@@ -29,6 +29,18 @@
         }
       </div>
 
+      <!-- sellerType -->
+      <div class="col-span-2">
+        <label for="sellerType" class="block mb-1 text-sm">Tipo de usuario</label>
+        <select id="sellerType" formControlName="sellerType" sharedInput>
+          <option value="Persona privada">Persona privada</option>
+          <option value="Dealer">Dealer</option>
+        </select>
+        @if (hasError('sellerType')) {
+        <shared-input-error [message]="getError('sellerType')"></shared-input-error>
+        }
+      </div>
+
       <div class="col-span-2">
         <label for="country" class="block mb-1 text-sm">País</label>
         <select id="country" formControlName="country" autocomplete="country" sharedInput>

@@ -67,6 +67,7 @@ export class RegisterComponent implements OnDestroy {
       password2: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       state: ['', Validators.required],
+      sellerType: ['', Validators.required],
       username: ['', Validators.required],
     }, {
       validators: [this.#validatorsService.samePasswords('password', 'password2')]
