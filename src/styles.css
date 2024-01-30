@@ -4,7 +4,7 @@
 @import "../node_modules/@uppy/core/dist/style.css";
 @import "../node_modules/@uppy/dashboard/dist/style.css";
 
-@import '../node_modules/@uppy/drag-drop/dist/style.min.css';
+@import "../node_modules/@uppy/drag-drop/dist/style.min.css";
 
 @tailwind base;
 @tailwind components;

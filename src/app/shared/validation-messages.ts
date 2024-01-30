@@ -11,4 +11,5 @@ export let VALIDATION_MESSAGES: ValidationMessages = {
   menorEdad: (): string => `Debes estar bajo la supervisión de un adulto para registrarte.`,
   min: ({ min }): string => `El valor mínimo es ${min}.`,
   max: ({ max }): string => `El valor máximo es ${max}.`,
+  onlyDigits: (): string => `El campo solo puede contener números.`,
 };

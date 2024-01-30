@@ -55,26 +55,58 @@
 
       <div>
         <label for="state" class="block mb-1 text-sm">Estado</label>
+        @if (countryControl.value === 'México') {
+        <input id="state" formControlName="state" type="text" autocomplete="none" [matAutocomplete]="states"
+          sharedInput>
+        <mat-autocomplete #states="matAutocomplete">
+          @for (state of filteredStates | async; track $index) {
+          <mat-option [value]="state">{{state}}</mat-option>
+          }
+        </mat-autocomplete>
+        }@else {
         <input id="state" formControlName="state" autocomplete="address-level1" type="text" sharedInput>
+        }
         @if (hasError('state')) {
         <shared-input-error [message]="getError('state')"></shared-input-error>
         }
       </div>
 
-      <div>
+      <div class="relative">
         <label for="city" class="block mb-1 text-sm">Ciudad</label>
-        <input id="city" formControlName="city" autocomplete="address-level1" type="text" sharedInput>
+        <input id="city" formControlName="city" autocomplete="address-level2" type="text" sharedInput>
         @if (hasError('city')) {
         <shared-input-error [message]="getError('city')"></shared-input-error>
         }
       </div>
 
       <div class="col-span-2">
-        <label for="phoneNumber" class="block mb-1 text-sm">Celular</label>
-        <input id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel" sharedInput>
-        @if (hasError('phoneNumber')) {
-        <shared-input-error [message]="getError('phoneNumber')"></shared-input-error>
-        }
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label (click)="selectPrefixes.open(); selectPrefixes.focus()" class="block mb-1 text-sm">
+              Celular
+            </label>
+            <mat-select formControlName="prefix" #selectPrefixes sharedInput>
+              @for (prefix of telephonePrefixes; track $index) {
+              <mat-option [value]="prefix.code">
+                <span class="fi fi-{{prefix.flag}}"></span>
+                &nbsp; {{prefix.name}} ({{prefix.code}})
+              </mat-option>
+              }
+            </mat-select>
+            @if (hasError('prefix')) {
+            <shared-input-error [message]="getError('prefix')"></shared-input-error>
+            }
+          </div>
+
+          <div>
+            <!-- <label for="phoneNumber" class="block mb-1 text-sm hidden">Celular</label> -->
+            <input class="mt-6" id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel"
+              sharedInput>
+            @if (hasError('phoneNumber')) {
+            <shared-input-error [message]="getError('phoneNumber')"></shared-input-error>
+            }
+          </div>
+        </div>
       </div>
 
       <div class="col-span-2">
@@ -87,7 +119,15 @@
 
       <div class="col-span-2">
         <label for="password" class="block mb-1 text-sm">Contraseña</label>
-        <input id="password" formControlName="password" autocomplete="new-password" type="password" sharedInput>
+        <div class="relative">
+          <input id="password" formControlName="password" autocomplete="new-password"
+            [type]="showPassword1() ? 'text' : 'password'" sharedInput>
+          <div class="absolute flex h-full items-center top-0 right-4">
+            <mat-icon class="cursor-pointer" (click)="toggleShowPassword(showPassword1)">
+              {{showPassword1() ? 'visibility' : 'visibility_off'}}
+            </mat-icon>
+          </div>
+        </div>
         @if (hasError('password')) {
         <shared-input-error [message]="getError('password')"></shared-input-error>
         }
@@ -95,8 +135,15 @@
 
       <div class="col-span-2">
         <label for="password2" class="block mb-1 text-sm">Confirmar contraseña</label>
-        <input id="password2" formControlName="password2" autocomplete="new-password" type="password"
-          placeholder="Confirmar contraseña" sharedInput>
+        <div class="relative">
+          <input id="password2" formControlName="password2" autocomplete="new-password"
+            [type]="showPassword2() ? 'text' : 'password'" sharedInput>
+          <div class="absolute flex h-full items-center top-0 right-4">
+            <mat-icon class="cursor-pointer" (click)="toggleShowPassword(showPassword2)">
+              {{showPassword2() ? 'visibility' : 'visibility_off'}}
+            </mat-icon>
+          </div>
+        </div>
         @if (hasError('password2')) {
         <shared-input-error [message]="getError('password2')"></shared-input-error>
         }

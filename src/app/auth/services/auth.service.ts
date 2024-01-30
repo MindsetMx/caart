@@ -90,6 +90,9 @@ export class AuthService {
 
   registerUser$(registerForm: FormGroup): Observable<RegisterResponse> {
     let registerFormValue = registerForm.value;
+    if (registerFormValue.prefix)
+      registerFormValue.phoneNumber = `${registerFormValue.prefix}${registerFormValue.phoneNumber}`;
+    delete registerFormValue.prefix;
     delete registerFormValue.password2;
     registerFormValue = this.#appService.trimObjectValues(registerForm.value, ['password']);
 

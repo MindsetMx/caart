@@ -80,7 +80,7 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get transmisionControl(): FormControl {
-    return this.carRegisterForm.get('transmision') as FormControl;
+    return this.carRegisterForm.get('transmissionType') as FormControl;
   }
 
   get reserveControl(): FormControl {
@@ -123,8 +123,8 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
       reserveAmount: [null],
       kmType: ['', Validators.required],
       kmInput: ['', Validators.required],
-      transmision: ['', Validators.required],
-      otherTransmision: [null],
+      transmissionType: ['', Validators.required],
+      otherTransmission: [null],
       engine: ['', Validators.required],
       howDidYouHearAboutUs: ['', Validators.required],
       photos: [[], Validators.required],
@@ -238,9 +238,9 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.transmisionValueChangesSubscription = this.transmisionControl.valueChanges.subscribe((value) => {
       if (value === 'other') {
-        this.carRegisterForm.get('otherTransmision')?.setValidators([Validators.required]);
+        this.carRegisterForm.get('otherTransmission')?.setValidators([Validators.required]);
       } else {
-        this.carRegisterForm.get('otherTransmision')?.clearValidators();
+        this.carRegisterForm.get('otherTransmission')?.clearValidators();
       }
 
       this.carRegisterForm.updateValueAndValidity();
@@ -274,6 +274,9 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const isValid = this.#validatorsService.isValidForm(this.carRegisterForm);
 
+    console.log(this.carRegisterForm.value);
+    console.log({ isValid });
+
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);
       return;
@@ -305,6 +308,10 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.#registerCarService.getBrands$().subscribe({
       next: (response: Brands) => {
         this.brands.set(response.data);
+        this.filteredBrands = this.brandControl.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value || '')),
+        );
       },
       error: (error) => {
         console.error(error);

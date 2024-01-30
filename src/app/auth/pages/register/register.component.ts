@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, WritableSignal, inject, signal, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterModule } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, map, of, startWith } from 'rxjs';
 
 import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
@@ -9,9 +11,15 @@ import { countries } from '@shared/countries';
 import { idTypes } from '@auth/enums';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { onlyDigitsValidator } from '@shared/validations/onlyDigitsValidator';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { TelephonePrefixes } from '@app/register-car/interfaces';
+import { telephonePrefixes } from '@shared/telephone-prefixes';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { states } from '@shared/states';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'register',
@@ -22,13 +30,17 @@ import { ValidatorsService } from '@shared/services/validators.service';
     ReactiveFormsModule,
     RouterModule,
     InputErrorComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatIconModule,
+    AsyncPipe
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent implements OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy {
   @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() signInModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() mb: string = 'mb-32';
@@ -40,10 +52,15 @@ export class RegisterComponent implements OnDestroy {
   #validatorsService = inject(ValidatorsService);
 
   countries: string[] = countries;
+  states: string[] = states;
+  filteredStates: Observable<string[]> = of(this.states);
+  telephonePrefixes: TelephonePrefixes[] = telephonePrefixes;
   dropdownIsOpen: WritableSignal<boolean> = signal(false);
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   previewImages: WritableSignal<string[]> = signal(['', '']);
   registerForm: FormGroup;
+  showPassword1: WritableSignal<boolean> = signal(false);
+  showPassword2: WritableSignal<boolean> = signal(false);
 
   validationTypeSubscription?: Subscription;
 
@@ -53,6 +70,14 @@ export class RegisterComponent implements OnDestroy {
 
   get validationType(): FormControl {
     return this.registerForm.get('validationType') as FormControl;
+  }
+
+  get countryControl(): FormControl {
+    return this.registerForm.get('country') as FormControl;
+  }
+
+  get stateControl(): FormControl {
+    return this.registerForm.get('state') as FormControl;
   }
 
   constructor() {
@@ -65,13 +90,21 @@ export class RegisterComponent implements OnDestroy {
       lastName: ['', Validators.required],
       password: ['', Validators.required],
       password2: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
+      prefix: ['', Validators.required],
+      phoneNumber: ['', [onlyDigitsValidator(), Validators.minLength(10), Validators.maxLength(10), Validators.required]],
       state: ['', Validators.required],
       sellerType: ['', Validators.required],
       username: ['', Validators.required],
     }, {
       validators: [this.#validatorsService.samePasswords('password', 'password2')]
     });
+  }
+
+  ngOnInit(): void {
+    this.filteredStates = this.stateControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
   }
 
   ngOnDestroy(): void {
@@ -106,12 +139,12 @@ export class RegisterComponent implements OnDestroy {
       },
       error: (err) => {
         console.error(err);
-        const fieldName = err.source;
-        const errorMessage = err.message;
+        // const fieldName = err.source;
+        // const errorMessage = err.message;
 
-        if (this.registerForm) {
-          this.#validatorsService.addServerErrorsToForm(this.registerForm, fieldName, errorMessage);
-        }
+        // if (this.registerForm) {
+        //   this.#validatorsService.addServerErrorsToForm(this.registerForm, fieldName, errorMessage);
+        // }
       }
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
@@ -127,6 +160,19 @@ export class RegisterComponent implements OnDestroy {
         console.error(error);
       }
     });
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = this._normalizeValue(value);
+    return this.states.filter(street => this._normalizeValue(street).includes(filterValue));
+  }
+
+  private _normalizeValue(value: string): string {
+    return value.toLowerCase().replace(/\s/g, '');
+  }
+
+  toggleShowPassword(showPassword: WritableSignal<boolean>): void {
+    showPassword.update((value) => !value);
   }
 
   singInModalIsOpenChange(): void {

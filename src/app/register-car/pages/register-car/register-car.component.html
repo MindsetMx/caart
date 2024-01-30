@@ -50,14 +50,12 @@
       <div class="grid grid-cols-2 gap-4" [ngClass]="{'pointer-events-none': userIsNotAuthenticated}">
         <div>
           <label for="brand" class="block mb-1 text-sm">Marca</label>
-          <div class="relative">
-            <input type="text" formControlName="brand" [matAutocomplete]="brands" sharedInput>
-            <mat-autocomplete #brands="matAutocomplete">
-              @for (brand of filteredBrands | async; track $index) {
-              <mat-option [value]="brand">{{brand}}</mat-option>
-              }
-            </mat-autocomplete>
-          </div>
+          <input type="text" formControlName="brand" [matAutocomplete]="brands" sharedInput>
+          <mat-autocomplete #brands="matAutocomplete">
+            @for (brand of filteredBrands | async; track $index) {
+            <mat-option [value]="brand">{{brand}}</mat-option>
+            }
+          </mat-autocomplete>
           <!-- <select formControlName="brand" id="brand" sharedInput>
             @for (brand of brands(); track $index) {
             <option [value]="brand">{{brand}}</option>
@@ -96,11 +94,34 @@
           }
         </div>
 
+        <!-- specificColor -->
+        <div>
+          <label for="specificColor" class="block mb-1 text-sm">Color específico</label>
+          <input formControlName="specificColor" id="specificColor" type="text" sharedInput>
+          @if (hasError('specificColor')) {
+          <shared-input-error [message]="getError('specificColor')"></shared-input-error>
+          }
+        </div>
+
         <div>
           <label for="interiorColor" class="block mb-1 text-sm">Color interior</label>
           <input formControlName="interiorColor" id="interiorColor" type="text" sharedInput>
           @if (hasError('interiorColor')) {
           <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
+          }
+        </div>
+
+        <!-- generalCondition -->
+        <div>
+          <label for="generalCondition" class="block mb-1 text-sm">Condición general</label>
+          <select formControlName="generalCondition" id="generalCondition" sharedInput>
+            <option value="Excelente">Excelente</option>
+            <option value="Buena">Buena</option>
+            <option value="Regular">Regular</option>
+            <option value="Mala">Mala</option>
+          </select>
+          @if (hasError('generalCondition')) {
+          <shared-input-error [message]="getError('generalCondition')"></shared-input-error>
           }
         </div>
 
@@ -163,6 +184,39 @@
           <input formControlName="kmInput" id="kmInput" type="text" sharedInput>
           @if (hasError('kmInput')) {
           <shared-input-error [message]="getError('kmInput')"></shared-input-error>
+          }
+        </div>
+
+        <!-- transmision -->
+        <div>
+          <label for="transmissionType" class="block mb-1 text-sm">Transmisión</label>
+          <select formControlName="transmissionType" id="transmissionType" sharedInput>
+            <option value="Automática">Automática</option>
+            <option value="Manual">Manual</option>
+            <option value="Otro">Otro</option>
+          </select>
+          @if (hasError('transmissionType')) {
+          <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
+          }
+        </div>
+
+        <!-- otherTransmission -->
+        @if (transmisionControl.value === "Otro") {
+        <div>
+          <label for="otherTransmission" class="block mb-1 text-sm">Otra transmisión</label>
+          <input formControlName="otherTransmission" id="otherTransmission" type="text" sharedInput>
+          @if (hasError('otherTransmission')) {
+          <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
+          }
+        </div>
+        }
+
+        <!-- engine input -->
+        <div>
+          <label for="engine" class="block mb-1 text-sm">Motor</label>
+          <input formControlName="engine" id="engine" type="text" sharedInput>
+          @if (hasError('engine')) {
+          <shared-input-error [message]="getError('engine')"></shared-input-error>
           }
         </div>
 

@@ -4,3 +4,4 @@ export * from './brands.interface';
 export * from './colors.interface';
 export * from './wizard-steps.interface';
 export * from './car-details.interface';
+export * from './telephone-prefixes.interface';
