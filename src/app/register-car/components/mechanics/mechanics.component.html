@@ -24,14 +24,32 @@
     }
   </div>
 
+  <!-- tireSize input -->
+  <div>
+    <label for="tireSize" class="block mb-1 text-sm">Tamaño de llantas</label>
+    <input id="tireSize" formControlName="tireSize" type="text" sharedInput>
+    @if (hasError('tireSize')) {
+    <shared-input-error [message]="getError('tireSize')"></shared-input-error>
+    }
+  </div>
+
+  <!-- tireDate input -->
+  <div>
+    <label for="tireDate" class="block mb-1 text-sm">Fecha de llantas</label>
+    <input id="tireDate" formControlName="tireDate" type="date" sharedInput>
+    @if (hasError('tireDate')) {
+    <shared-input-error [message]="getError('tireDate')"></shared-input-error>
+    }
+  </div>
+
   <!-- Condición de llantas -->
   <div>
     <label for="tireCondition" class="block mb-1 text-sm">Condición de llantas</label>
     <select id="tireCondition" formControlName="tireCondition" sharedInput>
-      <option value="excellent">Excelente</option>
-      <option value="good">Buena</option>
-      <option value="regular">Regular</option>
-      <option value="bad">Mala</option>
+      <option value="Excelente">Excelente</option>
+      <option value="Buena">Buena</option>
+      <option value="Regular">Regular</option>
+      <option value="Mala">Mala</option>
     </select>
     @if (hasError('tireCondition')) {
     <shared-input-error [message]="getError('tireCondition')"></shared-input-error>
@@ -175,16 +193,6 @@
 
     @if (hasError('mechanicsPhotos')) {
     <shared-input-error [message]="getError('mechanicsPhotos')"></shared-input-error>
-    }
-  </div>
-
-  <!-- servicesDoneWithDates textarea -->
-  <div class="col-span-2">
-    <label for="servicesDoneWithDates" class="block mb-1 text-sm">Servicios realizados con fechas</label>
-    <textarea id="servicesDoneWithDates" formControlName="servicesDoneWithDates" rows="4" sharedInput
-      sharedAutoResizeTextarea></textarea>
-    @if (hasError('servicesDoneWithDates')) {
-    <shared-input-error [message]="getError('servicesDoneWithDates')"></shared-input-error>
     }
   </div>
 

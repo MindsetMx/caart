@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild, WritableSignal, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
@@ -30,7 +30,7 @@ import { CompleteCarRegistrationService } from '@app/register-car/services/compl
   styleUrl: './mechanics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MechanicsComponent implements AfterViewInit {
+export class MechanicsComponent implements OnInit, AfterViewInit {
   @ViewChild('uppyDashboard') uppyDashboard!: ElementRef;
 
   #validatorsService = inject(ValidatorsService);
@@ -50,6 +50,8 @@ export class MechanicsComponent implements AfterViewInit {
       originalRims: ['', [Validators.required]],
       // rimsDetail: ['', [Validators.required]],
       tireBrand: ['', [Validators.required]],
+      tireSize: ['', [Validators.required]],
+      tireDate: ['', [Validators.required]],
       tireCondition: ['', [Validators.required]],
       extraTiresOrRims: ['', [Validators.required]],
       // extraBrand: ['', [Validators.required]],
@@ -72,9 +74,13 @@ export class MechanicsComponent implements AfterViewInit {
       mechanicsVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId, [Validators.required]],
       // dashboardWarningLight: ['', [Validators.required]],
-      servicesDoneWithDates: ['', [Validators.required]],
+      // servicesDoneWithDates: ['', [Validators.required]],
       // improvementOrModification: ['', [Validators.required]],
     });
+  }
+
+  ngOnInit(): void {
+    this.getMechanics();
   }
 
   ngAfterViewInit(): void {
@@ -176,6 +182,60 @@ export class MechanicsComponent implements AfterViewInit {
       },
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
+    });
+  }
+
+  getMechanics(): void {
+    this.#completeCarRegistrationService.getMechanics$(this.originalAuctionCarId).subscribe({
+      next: (mechanics) => {
+        console.log(mechanics);
+
+        const {
+          originalRims,
+          tireBrand,
+          tireSize,
+          tireDate,
+          tireCondition,
+          extraTiresOrRims,
+          spareTire,
+          originalTransmissionEngine,
+          improvementModificationOriginal,
+          performedServicesWithDates,
+          mechanicalProblemDetail,
+          illuminatedDashboardSensor,
+          factoryEquipment,
+          extraEquipment,
+          comments,
+          mechanicsPhotos,
+          mechanicsVideos,
+        } = mechanics.data.attributes;
+
+        this.mechanicsForm.patchValue({
+          originalRims,
+          tireBrand,
+          tireSize,
+          tireDate,
+          tireCondition,
+          extraTiresOrRims,
+          spareTire,
+          originalTransmissionEngine,
+          improvementModificationOriginal,
+          performedServicesWithDates,
+          mechanicalProblemDetail,
+          illuminatedDashboardSensor,
+          factoryEquipment,
+          extraEquipment,
+          comments,
+          mechanicsPhotos,
+          mechanicsVideos,
+        });
+
+        // this.previewImagesCarDetails.set(mechanics.attributes.mechanicsPhotos);
+        // this.previewImagesCarExterior.set(mechanics.attributes.mechanicsVideos);
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
 
