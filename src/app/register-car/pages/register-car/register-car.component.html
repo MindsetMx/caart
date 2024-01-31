@@ -157,11 +157,20 @@
           </div>
         </div>
 
-        <!-- Si reserva es igual a 1 se muestra un input para ingresar el reserveAmount -->
         @if (carRegisterForm.get('reserve')?.value === "true") {
         <div>
           <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva</label>
-          <input formControlName="reserveAmount" id="reserveAmount" type="text" sharedInput>
+          <div class="relative rounded-md shadow-sm">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-gray-500 sm:text-sm">$</span>
+            </div>
+            <input formControlName="reserveAmount" (input)="setUnformattedReserveAmount($event)"
+              (keydown)="validateInput($event)" [value]="formattedReserveAmount" type="text" class="pl-7 pr-12"
+              name="price" id="reserveAmount" placeholder="0.00" aria-describedby="price-currency" sharedInput>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+              <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
+            </div>
+          </div>
           @if (hasError('reserveAmount')) {
           <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
           }
@@ -181,7 +190,18 @@
 
         <div>
           <label for="kmInput" class="block mb-1 text-sm">Kilometraje</label>
-          <input formControlName="kmInput" id="kmInput" type="text" sharedInput>
+          <div class="relative rounded-md shadow-sm">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-gray-500 sm:text-sm">$</span>
+            </div>
+            <input formControlName="kmInput" (input)="setUnformattedKm($event)" (keydown)="validateInput($event)"
+              [value]="formattedKm" type="text" class="pl-7 pr-12" name="kmInput" id="kmInput" placeholder="0.00"
+              sharedInput>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+              <span class="text-gray-500 sm:text-sm" id="price-currency">KM</span>
+            </div>
+          </div>
+
           @if (hasError('kmInput')) {
           <shared-input-error [message]="getError('kmInput')"></shared-input-error>
           }
