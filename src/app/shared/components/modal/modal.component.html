@@ -32,7 +32,7 @@
   </div>
 </div> -->
 
-<div class="relative z-10" (click)="closeModal()" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
   @if (isOpen()) {
   <div @fadeAnimation class="fixed inset-0 bg-black bg-opacity-50"></div>
@@ -42,7 +42,7 @@
   <div @scaleAnimation class="fixed inset-0 z-10 w-screen overflow-y-auto">
     <div class="flex min-h-full items-end justify-center p-4 text-center sm:p-0"
       [ngClass]="verticalCenter? 'items-center': 'items-end'">
-      <div (click)="$event.stopPropagation()"
+      <div
         class="relative overflow-hidden rounded-lg bg-white w-full pt-5 text-left shadow-xl sm:my-8 pb-4  sm:w-full sm:max-w-lg">
         <div class="absolute z-10 right-0 top-0 pr-4 pt-4 block">
           <button (click)="closeModal()" type="button"
