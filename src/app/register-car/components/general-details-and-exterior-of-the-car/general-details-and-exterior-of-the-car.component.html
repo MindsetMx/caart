@@ -3,9 +3,19 @@
 <h2 class="text-xl font-bold mb-5">Información general del automóvil</h2>
 <form [formGroup]="exteriorOfTheCarForm" (ngSubmit)="exteriorOfTheCarFormSubmit()"
   class="grid grid-cols-2 gap-5 items-end">
+
+  <!-- kmInput -->
+  <div>
+    <label for="kmInput" class="block mb-1 text-sm">Kilometraje</label>
+    <input id="kmInput" type="text" [value]="kmInputControl.value | number:'1.0-2'" disabled sharedInput>
+    @if (hasError('kmInput')) {
+    <shared-input-error [message]="getError('kmInput')"></shared-input-error>
+    }
+  </div>
+
   <div>
     <label for="brand" class="block mb-1 text-sm">Marca</label>
-    <select id="brand" formControlName="brand" sharedInput>
+    <select id="brand" [value]="brandControl.value" disabled sharedInput>
       @for (brand of brands(); track $index) {
       <option [value]="brand">{{brand}}</option>
       }
@@ -17,15 +27,15 @@
 
   <div>
     <label for="year" class="block mb-1 text-sm">Año</label>
-    <input id="year" formControlName="year" type="number" min="1900" [max]="currentYear" sharedInput>
+    <input id="year" [value]="yearControl.value" type="number" min="0" [max]="currentYear" disabled sharedInput>
     @if (hasError('year')) {
     <shared-input-error [message]="getError('year')"></shared-input-error>
     }
   </div>
 
-  <div class="col-span-2">
+  <div>
     <label for="carModel" class="block mb-1 text-sm">Modelo</label>
-    <input id="carModel" formControlName="carModel" type="text" sharedInput>
+    <input id="carModel" [value]="carModelControl.value" type="text" disabled sharedInput>
     @if (hasError('carModel')) {
     <shared-input-error [message]="getError('carModel')"></shared-input-error>
     }
@@ -53,7 +63,7 @@
   <!-- transmision select -->
   <div>
     <label for="transmissionType" class="block mb-1 text-sm">Transmisión</label>
-    <select id="transmissionType" formControlName="transmissionType" sharedInput>
+    <select id="transmissionType" [value]="transmissionTypeControl.value" disabled sharedInput>
       <option value="Automática">Automática</option>
       <option value="Manual">Manual</option>
       <option value="Otro">Otro</option>
@@ -90,11 +100,11 @@
   <!-- wichWarranties -->
   @if (warrantiesControl.value === 'true') {
   <div class="col-span-2">
-    <label for="whichWarranties" class="block mb-1 text-sm">¿Cuáles?</label>
-    <textarea id="whichWarranties" formControlName="whichWarranties" rows="4" sharedInput
+    <label for="wichWarranties" class="block mb-1 text-sm">¿Cuáles?</label>
+    <textarea id="wichWarranties" formControlName="wichWarranties" rows="4" sharedInput
       sharedAutoResizeTextarea></textarea>
-    @if (hasError('whichWarranties')) {
-    <shared-input-error [message]="getError('whichWarranties')"></shared-input-error>
+    @if (hasError('wichWarranties')) {
+    <shared-input-error [message]="getError('wichWarranties')"></shared-input-error>
     }
   </div>
   }
@@ -142,7 +152,7 @@
   <!-- Color exterior select -->
   <div>
     <label for="exteriorColor" class="block mb-1 text-sm">Color exterior</label>
-    <select id="exteriorColor" formControlName="exteriorColor" sharedInput>
+    <select id="exteriorColor" [value]="exteriorColorControl.value" disabled sharedInput>
       @for (color of colors(); track $index) {
       <option [value]="color.name">{{color.name}}</option>
       }
@@ -155,7 +165,7 @@
   <!-- Color específico -->
   <div>
     <label for="specificColor" class="block mb-1 text-sm">Color específico</label>
-    <input id="specificColor" formControlName="specificColor" type="text" sharedInput>
+    <input id="specificColor" [value]="specificColorControl.value" type="text" disabled sharedInput>
     @if (hasError('specificColor')) {
     <shared-input-error [message]="getError('specificColor')"></shared-input-error>
     }

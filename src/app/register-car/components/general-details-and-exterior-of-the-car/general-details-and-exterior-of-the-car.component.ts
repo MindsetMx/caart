@@ -14,6 +14,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-general-details-and-exterior-of-the-car',
@@ -26,6 +27,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     ReactiveFormsModule,
     SpinnerComponent,
     UppyAngularDashboardModule,
+    DecimalPipe
   ],
   templateUrl: './general-details-and-exterior-of-the-car.component.html',
   styleUrl: './general-details-and-exterior-of-the-car.component.css',
@@ -51,6 +53,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
 
   constructor() {
     this.exteriorOfTheCarForm = this.#fb.group({
+      kmInput: [''],
       brand: ['', [Validators.required]],
       year: ['', [Validators.required, Validators.min(1900), Validators.max(this.currentYear)]],
       carModel: ['', [Validators.required]],
@@ -77,6 +80,30 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
       exteriorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId(), [Validators.required]],
     });
+  }
+
+  get specificColorControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('specificColor') as FormControl;
+  }
+
+  get exteriorColorControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('exteriorColor') as FormControl;
+  }
+
+  get carModelControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('carModel') as FormControl;
+  }
+
+  get yearControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('year') as FormControl;
+  }
+
+  get brandControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('brand') as FormControl;
+  }
+
+  get kmInputControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('kmInput') as FormControl;
   }
 
   get transmissionTypeControl(): FormControl {
@@ -210,7 +237,11 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   exteriorOfTheCarFormSubmit() {
     this.isButtonSubmitDisabled.set(true);
 
+
+    console.log({ exteriorOfTheCarForm: this.exteriorOfTheCarForm.value });
+
     const isValid = this.#validatorsService.isValidForm(this.exteriorOfTheCarForm);
+    console.log({ isValid });
 
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);
@@ -237,6 +268,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
         console.log({ response });
 
         const {
+          kmInput,
           brand,
           year,
           carModel,
@@ -264,6 +296,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
         } = response;
 
         this.exteriorOfTheCarForm.patchValue({
+          kmInput,
           brand,
           year,
           carModel,
