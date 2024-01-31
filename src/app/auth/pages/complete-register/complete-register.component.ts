@@ -115,7 +115,7 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
         ]));
 
         break;
-      case idTypes.pasaporte:
+      case idTypes.passport:
         this.completeRegisterForm?.setControl('validationImg', new FormArray([
           new FormControl(null, Validators.required),
         ]));

@@ -90,7 +90,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       lastName: ['', Validators.required],
       password: ['', Validators.required],
       password2: ['', Validators.required],
-      prefix: ['', Validators.required],
+      prefix: ['+52', Validators.required],
       phoneNumber: ['', [onlyDigitsValidator(), Validators.minLength(10), Validators.maxLength(10), Validators.required]],
       state: ['', Validators.required],
       sellerType: ['', Validators.required],

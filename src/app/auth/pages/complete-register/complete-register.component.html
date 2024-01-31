@@ -48,8 +48,7 @@
               <label for="ine" class="ml-3 block leading-6">INE</label>
             </div>
             <div class="flex items-center">
-              <input id="passport" formControlName="validationType" [value]="idTypes.pasaporte" type="radio"
-                class="h-4 w-4">
+              <input id="passport" formControlName="validationType" value="PASSPORT" type="radio" class="h-4 w-4">
               <label for="passport" class="ml-3 block leading-6">Pasaporte</label>
             </div>
           </div>
@@ -108,7 +107,7 @@
           </div>
         </div>
         }
-        @case (idTypes.pasaporte) {
+        @case (idTypes.passport) {
         <div>
           <label for="passportImg" class="text-sm cursor-pointer">
             Foto Pasaporte

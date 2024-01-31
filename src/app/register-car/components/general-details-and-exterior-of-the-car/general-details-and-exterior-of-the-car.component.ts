@@ -32,8 +32,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, AfterViewInit {
-  @ViewChild('uppyDashboard1') uppyDashboard1!: ElementRef;
-  @ViewChild('uppyDashboard2') uppyDashboard2!: ElementRef;
+  @ViewChild('uppyDashboard') uppyDashboard!: ElementRef;
 
   #validatorsService = inject(ValidatorsService);
   #fb = inject(FormBuilder);
@@ -49,18 +48,19 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   previewImagesCarExterior: WritableSignal<string[]> = signal(['', '']);
 
   uppy?: Uppy;
-  uppy2?: Uppy;
 
   constructor() {
     this.exteriorOfTheCarForm = this.#fb.group({
       brand: ['', [Validators.required]],
       year: ['', [Validators.required, Validators.min(1900), Validators.max(this.currentYear)]],
       carModel: ['', [Validators.required]],
-      mileage: ['', [Validators.required]],
+      // mileage: ['', [Validators.required]],
       odometerVerified: ['', [Validators.required]],
       transmissionType: ['', [Validators.required]],
-      sellerType: ['', [Validators.required]],
+      otherTransmission: [''],
+      // sellerType: ['', [Validators.required]],
       warranties: ['', [Validators.required]],
+      wichWarranties: [''],
       invoiceType: ['', [Validators.required]],
       invoiceDetails: ['', [Validators.required]],
       carHistory: ['', [Validators.required]],
@@ -73,12 +73,26 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
       exteriorModified: ['', [Validators.required]],
       exteriorCondition: ['', [Validators.required]],
       detailComments: ['', [Validators.required]],
-      detailPhotos: [[], [Validators.required]],
-      detailVideos: [[]],
       exteriorPhotos: [[], [Validators.required]],
       exteriorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId(), [Validators.required]],
     });
+  }
+
+  get transmissionTypeControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('transmissionType') as FormControl;
+  }
+
+  get otherTransmissionControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('otherTransmission') as FormControl;
+  }
+
+  get wichWarrantiesControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('wichWarranties') as FormControl;
+  }
+
+  get warrantiesControl(): FormControl {
+    return this.exteriorOfTheCarForm.get('warranties') as FormControl;
   }
 
   get originalAuctionCarId(): WritableSignal<string> {
@@ -87,10 +101,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
 
   set originalAuctionCarId(originalAuctionCarId: string) {
     this.#completeCarRegistrationService.originalAuctionCarId.set(originalAuctionCarId);
-  }
-
-  get detailPhotos(): FormControl {
-    return this.exteriorOfTheCarForm.get('detailPhotos') as FormControl;
   }
 
   get detailVideos(): FormControl {
@@ -108,6 +118,28 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   ngOnInit(): void {
     this.getBrands();
     this.getColors();
+
+    this.getGeneralInformation();
+
+    this.warrantiesControl.valueChanges.subscribe((value) => {
+      if (value === 'true') {
+        this.wichWarrantiesControl?.setValidators([Validators.required]);
+      } else {
+        this.wichWarrantiesControl?.clearValidators();
+      }
+
+      this.wichWarrantiesControl?.updateValueAndValidity();
+    });
+
+    this.transmissionTypeControl.valueChanges.subscribe((value) => {
+      if (value === 'Otro') {
+        this.otherTransmissionControl?.setValidators([Validators.required]);
+      } else {
+        this.otherTransmissionControl?.clearValidators();
+      }
+
+      this.otherTransmissionControl?.updateValueAndValidity();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -134,70 +166,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
         showProgressDetails: true,
         inline: true,
         hideProgressAfterFinish: true,
-        target: this.uppyDashboard1.nativeElement,
-        proudlyDisplayPoweredByUppy: false,
-        locale: {
-          strings: {
-            dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
-          }
-        }
-      })
-      .use(XHRUpload, {
-        endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/upload',
-        formData: true,
-        fieldName: 'file',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        allowedMetaFields: ['upload_preset', 'api_key'],
-      })
-      .on('complete', (result) => {
-        result.successful.forEach(file => {
-          const url = file.uploadURL;
-
-          if (file?.type?.includes('image')) {
-            this.detailPhotos.setValue([...this.detailPhotos.value, url]);
-          } else if (file?.type?.includes('video')) {
-            this.detailVideos.setValue([...this.detailVideos.value, url]);
-          }
-          this.uppyDashboard1.nativeElement.click();
-
-          file.meta['uploadURL'] = url;
-        });
-      }).on('file-removed', (file) => {
-        const urlToRemove = file.meta['uploadURL'];
-
-        if (file?.type?.includes('image')) {
-          this.detailPhotos.setValue(this.detailPhotos.value.filter((url: string) => url !== urlToRemove));
-        } else if (file?.type?.includes('video')) {
-          this.detailVideos.setValue(this.detailVideos.value.filter((url: string) => url !== urlToRemove));
-        }
-      });
-
-    this.uppy2 = new Uppy({
-      debug: true,
-      autoProceed: true,
-      locale: Spanish,
-      meta: {
-        upload_preset: 'if8y72iv',
-        api_key: '218199524155838',
-      },
-      restrictions: {
-        // maxFileSize: 1000000,
-        // maxNumberOfFiles: 20,
-        minNumberOfFiles: 1,
-        allowedFileTypes: ['image/*', 'video/*'],
-      },
-    }).use(Dashboard,
-      {
-        height: 300,
-        hideUploadButton: true,
-        hideCancelButton: true,
-        showRemoveButtonAfterComplete: true,
-        showProgressDetails: true,
-        inline: true,
-        hideProgressAfterFinish: true,
-        target: this.uppyDashboard2.nativeElement,
+        target: this.uppyDashboard.nativeElement,
         proudlyDisplayPoweredByUppy: false,
         locale: {
           strings: {
@@ -223,7 +192,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
           } else if (file?.type?.includes('video')) {
             this.exteriorVideos.setValue([...this.exteriorVideos.value, url]);
           }
-          this.uppyDashboard2.nativeElement.click();
+          this.uppyDashboard.nativeElement.click();
 
           file.meta['uploadURL'] = url;
         });
@@ -260,6 +229,73 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
       }).add(() => {
         this.isButtonSubmitDisabled.set(false);
       });
+  }
+
+  getGeneralInformation(): void {
+    this.#completeCarRegistrationService.getGeneralInformation$(this.originalAuctionCarId()).subscribe({
+      next: (response) => {
+        console.log({ response });
+
+        const {
+          brand,
+          year,
+          carModel,
+          // mileage,
+          odometerVerified,
+          transmissionType,
+          otherTransmission,
+          // sellerType,
+          warranties,
+          wichWarranties,
+          invoiceType,
+          invoiceDetails,
+          carHistory,
+          exteriorColor,
+          specificColor,
+          accident,
+          raced,
+          originalPaint,
+          paintMeter,
+          exteriorModified,
+          exteriorCondition,
+          detailComments,
+          exteriorPhotos,
+          exteriorVideos,
+        } = response;
+
+        this.exteriorOfTheCarForm.patchValue({
+          brand,
+          year,
+          carModel,
+          // mileage,
+          odometerVerified,
+          transmissionType,
+          otherTransmission,
+          // sellerType,
+          warranties,
+          wichWarranties,
+          invoiceType,
+          invoiceDetails,
+          carHistory,
+          exteriorColor,
+          specificColor,
+          accident,
+          raced,
+          originalPaint,
+          paintMeter,
+          exteriorModified,
+          exteriorCondition,
+          detailComments,
+          exteriorPhotos,
+          exteriorVideos,
+        });
+
+        this.previewImagesCarExterior.set(exteriorPhotos);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   getBrands(): void {

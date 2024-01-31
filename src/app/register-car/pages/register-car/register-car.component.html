@@ -222,7 +222,19 @@
 
         <div class="col-span-2">
           <label for="howDidYouHearAboutUs" class="block mb-1 text-sm">¿Cómo te enteraste de la plataforma?</label>
-          <input formControlName="howDidYouHearAboutUs" id="howDidYouHearAboutUs" type="text" sharedInput>
+          <select formControlName="howDidYouHearAboutUs" id="howDidYouHearAboutUs" sharedInput>
+            <option value="Búsqueda en Internet">Búsqueda en Internet</option>
+            <option value="Redes sociales">Redes sociales</option>
+            <option value="Publicidad en línea">Publicidad en línea</option>
+            <option value="Anuncios en televisión o radio">Anuncios en televisión o radio</option>
+            <option value="Artículos o reseñas en medios">Artículos o reseñas en medios</option>
+            <option value="Ferias o eventos del sector automovilístico">Ferias o eventos del sector automovilístico
+            </option>
+            <option value="Publicidad impresa (revistas, periódicos, folletos)">Publicidad impresa (revistas,
+              periódicos, folletos)</option>
+            <option value="Correo electrónico o newsletter">Correo electrónico o newsletter</option>
+            <option value="Otros">Otros</option>
+          </select>
           @if (hasError('howDidYouHearAboutUs')) {
           <shared-input-error [message]="getError('howDidYouHearAboutUs')"></shared-input-error>
           }

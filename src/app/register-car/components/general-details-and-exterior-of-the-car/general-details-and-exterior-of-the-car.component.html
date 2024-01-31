@@ -31,13 +31,13 @@
     }
   </div>
 
-  <div>
+  <!-- <div>
     <label for="mileage" class="block mb-1 text-sm">Kilometraje</label>
     <input id="mileage" formControlName="mileage" type="number" sharedInput>
     @if (hasError('mileage')) {
     <shared-input-error [message]="getError('mileage')"></shared-input-error>
     }
-  </div>
+  </div> -->
 
   <div>
     <label for="odometerVerified" class="block mb-1 text-sm">¿El odómetro es acertado?</label>
@@ -54,8 +54,9 @@
   <div>
     <label for="transmissionType" class="block mb-1 text-sm">Transmisión</label>
     <select id="transmissionType" formControlName="transmissionType" sharedInput>
-      <option value="manual">Manual</option>
-      <option value="automatic">Automática</option>
+      <option value="Automática">Automática</option>
+      <option value="Manual">Manual</option>
+      <option value="Otro">Otro</option>
     </select>
     @if (hasError('transmissionType')) {
     <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
@@ -63,7 +64,7 @@
   </div>
 
   <!-- Tipo de vendedor select -->
-  <div>
+  <!-- <div>
     <label for="sellerType" class="block mb-1 text-sm">Tipo de vendedor</label>
     <select id="sellerType" formControlName="sellerType" sharedInput>
       <option value="individual">Individual</option>
@@ -72,7 +73,7 @@
     @if (hasError('sellerType')) {
     <shared-input-error [message]="getError('sellerType')"></shared-input-error>
     }
-  </div>
+  </div> -->
 
   <!-- Garantías del auto select -->
   <div class="col-span-2">
@@ -85,6 +86,18 @@
     <shared-input-error [message]="getError('warranties')"></shared-input-error>
     }
   </div>
+
+  <!-- wichWarranties -->
+  @if (warrantiesControl.value === 'true') {
+  <div class="col-span-2">
+    <label for="whichWarranties" class="block mb-1 text-sm">¿Cuáles?</label>
+    <textarea id="whichWarranties" formControlName="whichWarranties" rows="4" sharedInput
+      sharedAutoResizeTextarea></textarea>
+    @if (hasError('whichWarranties')) {
+    <shared-input-error [message]="getError('whichWarranties')"></shared-input-error>
+    }
+  </div>
+  }
 
   <!-- Factura / Pedimento select -->
   <div class="col-span-2">
@@ -233,7 +246,7 @@
   </div>
 
   <!-- Fotos/vídeos de detalles -->
-  <div class="col-span-2">
+  <!-- <div class="col-span-2">
     <label for="uppyDashboard1" class="text-sm cursor-pointer">
       Fotos/vídeos de detalles <span class="text-gray4">(Opcional)</span>
     </label>
@@ -243,7 +256,7 @@
     @if (hasError('detailPhotos')) {
     <shared-input-error [message]="getError('detailPhotos')"></shared-input-error>
     }
-  </div>
+  </div> -->
 
   <!-- Fotos/vídeos del exterior del auto -->
   <div class="col-span-2">
@@ -251,7 +264,7 @@
       Fotos/vídeos del exterior del auto
     </label>
 
-    <div id="uppyDashboard2" #uppyDashboard2></div>
+    <div id="uppyDashboard" #uppyDashboard></div>
 
     @if (hasError('exteriorPhotos')) {
     <shared-input-error [message]="getError('exteriorPhotos')"></shared-input-error>

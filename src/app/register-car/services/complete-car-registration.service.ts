@@ -8,7 +8,7 @@ import { GeneralInformationComponent } from '@registerCarComponents/general-info
 import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-the-car/interior-of-the-car.component';
 import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
 import { Observable } from 'rxjs';
-import { ApplyDiscountCode, Brands, WizardSteps } from '../interfaces';
+import { ApplyDiscountCode, Brands, GeneralDetails, WizardSteps } from '../interfaces';
 import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
 import { AuctionTypes } from '@app/register-car/interfaces/auction-types.interface';
@@ -35,6 +35,18 @@ export class CompleteCarRegistrationService {
   indexTargetStep: WritableSignal<number> = signal(0);
 
   originalAuctionCarId: WritableSignal<string> = signal('');
+
+  getGeneralInformation$(auctionCarId: string): Observable<GeneralDetails> {
+    const url = `${this.#baseUrl}/exterior-detail-cars/${auctionCarId}`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.get<GeneralDetails>(url, { headers });
+  }
 
   saveGeneralInformation$(generalInformation: FormGroup): Observable<any> {
     const trimmedGeneralInformation = this.#appService.trimObjectValues(generalInformation.value);

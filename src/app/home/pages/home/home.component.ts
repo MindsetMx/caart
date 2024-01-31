@@ -3,12 +3,14 @@ import { register } from 'swiper/element/bundle';
 register();
 
 import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'home',
   standalone: true,
   imports: [
     SecondaryButtonDirective,
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
