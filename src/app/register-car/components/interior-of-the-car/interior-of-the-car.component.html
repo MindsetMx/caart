@@ -4,16 +4,12 @@
 <form [formGroup]="interiorOfTheCarForm" (ngSubmit)="exteriorOfTheCarFormSubmit()"
   class="grid grid-cols-2 items-end gap-5">
 
-  <!-- color select -->
+  <!-- interiorColor select -->
   <div>
-    <label for="color" class="block mb-1 text-sm">Color</label>
-    <select id="color" formControlName="color" sharedInput>
-      @for (color of colors(); track $index) {
-      <option [value]="color.name">{{color.name}}</option>
-      }
-    </select>
-    @if (hasError('color')) {
-    <shared-input-error [message]="getError('color')"></shared-input-error>
+    <label for="interiorColor" class="block mb-1 text-sm">Color</label>
+    <input id="interiorColor" formControlName="interiorColor" type="text" sharedInput>
+    @if (hasError('interiorColor')) {
+    <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
     }
   </div>
 
@@ -64,7 +60,10 @@
   <div class="col-span-2">
     <label for="accessoriesFunctioning" class="block mb-1 text-sm">¿Los accesorios y electrónicos
       funcionan?</label>
-    <input id="accessoriesFunctioning" formControlName="accessoriesFunctioning" type="text" sharedInput>
+    <select id="accessoriesFunctioning" formControlName="accessoriesFunctioning" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
     @if (hasError('accessoriesFunctioning')) {
     <shared-input-error [message]="getError('accessoriesFunctioning')"></shared-input-error>
     }

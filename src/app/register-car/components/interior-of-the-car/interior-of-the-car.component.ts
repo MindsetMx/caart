@@ -14,6 +14,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-interior-of-the-car',
@@ -26,6 +27,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     ReactiveFormsModule,
     SpinnerComponent,
     UppyAngularDashboardModule,
+    JsonPipe,
   ],
   templateUrl: './interior-of-the-car.component.html',
   styleUrl: './interior-of-the-car.component.css',
@@ -42,13 +44,12 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   previewImagesCarInterior: WritableSignal<string[]> = signal(['', '']);
-  colors: WritableSignal<Colors[]> = signal([]);
 
   uppy?: Uppy;
 
   constructor() {
     this.interiorOfTheCarForm = this.#fb.group({
-      color: ['', [Validators.required]],
+      interiorColor: [{ value: '', disabled: true }, [Validators.required]],
       material: ['', [Validators.required]],
       interiorCondition: ['', [Validators.required]],
       interiorModifications: ['', [Validators.required]],
@@ -60,8 +61,28 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
     });
   }
 
+  get interiorColorControl(): FormControl {
+    return this.interiorOfTheCarForm.get('interiorColor') as FormControl;
+  }
+
+  get interiorPhotos(): FormControl {
+    return this.interiorOfTheCarForm.get('interiorPhotos') as FormControl;
+  }
+
+  get interiorVideos(): FormControl {
+    return this.interiorOfTheCarForm.get('interiorVideos') as FormControl;
+  }
+
+  get originalAuctionCarId(): string {
+    return this.#completeCarRegistrationService.originalAuctionCarId();
+  }
+
+  get photosOrVideosInteriorOfTheCarFormArray(): FormArray {
+    return this.interiorOfTheCarForm.get('interiorImagesOrVideos') as FormArray;
+  }
+
   ngOnInit(): void {
-    this.getColors();
+    this.getInteriorOfTheCar();
   }
 
   ngAfterViewInit(): void {
@@ -129,22 +150,6 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
       });
   }
 
-  get interiorPhotos(): FormControl {
-    return this.interiorOfTheCarForm.get('interiorPhotos') as FormControl;
-  }
-
-  get interiorVideos(): FormControl {
-    return this.interiorOfTheCarForm.get('interiorVideos') as FormControl;
-  }
-
-  get originalAuctionCarId(): string {
-    return this.#completeCarRegistrationService.originalAuctionCarId();
-  }
-
-  get photosOrVideosInteriorOfTheCarFormArray(): FormArray {
-    return this.interiorOfTheCarForm.get('interiorImagesOrVideos') as FormArray;
-  }
-
   exteriorOfTheCarFormSubmit(): void {
     this.isButtonSubmitDisabled.set(true);
 
@@ -155,12 +160,15 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    this.interiorColorControl.enable();
+
     this.#completeCarRegistrationService.saveInteriorOfTheCar$(this.interiorOfTheCarForm).subscribe({
       next: () => {
         this.#completeCarRegistrationService.indexTargetStep.set(3);
         this.#completeCarRegistrationService.indexCurrentStep.set(3);
       },
       error: (error) => {
+        this.interiorColorControl.disable();
         console.error(error);
       }
     }).add(() => {
@@ -168,10 +176,33 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getColors(): void {
-    this.#completeCarRegistrationService.getColors$().subscribe({
-      next: (colors: Colors[]) => {
-        this.colors.set(colors);
+  getInteriorOfTheCar(): void {
+    this.#completeCarRegistrationService.getInteriorOfTheCar$(this.originalAuctionCarId).subscribe({
+      next: (interiorOfTheCar) => {
+        console.log({ interiorOfTheCar });
+
+        const {
+          interiorColor,
+          material,
+          interiorCondition,
+          interiorModifications,
+          accessoriesFunctioning,
+          comments,
+          interiorPhotos,
+          interiorVideos,
+        } = interiorOfTheCar;
+
+
+        this.interiorOfTheCarForm.patchValue({
+          interiorColor,
+          material,
+          interiorCondition,
+          interiorModifications,
+          accessoriesFunctioning,
+          comments,
+          interiorPhotos,
+          interiorVideos,
+        });
       },
       error: (error) => {
         console.error(error);

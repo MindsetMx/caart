@@ -8,7 +8,7 @@ import { GeneralInformationComponent } from '@registerCarComponents/general-info
 import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-the-car/interior-of-the-car.component';
 import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
 import { Observable } from 'rxjs';
-import { ApplyDiscountCode, Brands, GeneralDetails, WizardSteps } from '../interfaces';
+import { ApplyDiscountCode, Brands, GeneralDetails, InteriorOfTheCar, WizardSteps } from '../interfaces';
 import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
 import { AuctionTypes } from '@app/register-car/interfaces/auction-types.interface';
@@ -46,6 +46,18 @@ export class CompleteCarRegistrationService {
     });
 
     return this.#http.get<GeneralDetails>(url, { headers });
+  }
+
+  getInteriorOfTheCar$(auctionCarId: string): Observable<InteriorOfTheCar> {
+    const url = `${this.#baseUrl}/interior-detail-cars/${auctionCarId}`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.get<InteriorOfTheCar>(url, { headers });
   }
 
   saveGeneralInformation$(generalInformation: FormGroup): Observable<any> {
