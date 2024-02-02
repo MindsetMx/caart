@@ -276,10 +276,10 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   }
 
   getGeneralInformation(): void {
-    console.log({ originalAuctionCarId: this.originalAuctionCarId() });
+    // console.log({ originalAuctionCarId: this.originalAuctionCarId() });
     this.#completeCarRegistrationService.getGeneralInformation$(this.originalAuctionCarId()).subscribe({
       next: (response) => {
-        // console.log({ response });
+        console.log({ response });
 
         const {
           kmInput,

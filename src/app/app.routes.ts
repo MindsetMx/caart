@@ -21,11 +21,11 @@ export const routes: Routes = [
       //   canActivate: [GuestGuard],
       //   loadComponent: () => import('./auth/pages/register/register.component').then((m) => m.RegisterComponent),
       // },
-      // {
-      //   path: 'completar-registro',
-      //   canActivate: [AuthGuard, IncompleteAccountGuard],
-      //   loadComponent: () => import('./auth/pages/complete-register/complete-register.component').then((m) => m.CompleteRegisterComponent),
-      // },
+      {
+        path: 'completar-registro',
+        canActivate: [AuthGuard, IncompleteAccountGuard],
+        loadComponent: () => import('./auth/pages/complete-register/complete-register.component').then((m) => m.CompleteRegisterComponent),
+      },
       {
         path: 'registrar-vehiculo',
         loadComponent: () => import('./register-car/pages/register-car/register-car.component').then((m) => m.RegisterCarComponent),
@@ -37,7 +37,7 @@ export const routes: Routes = [
       },
       {
         path: 'completar-registro-vehiculo/:id',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, CompleteAccountGuard],
         loadComponent: () => import('./register-car/pages/complete-car-register/complete-car-register.component').then((m) => m.CompleteCarRegisterComponent),
       },
       {
