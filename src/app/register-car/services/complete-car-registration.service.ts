@@ -8,7 +8,7 @@ import { GeneralInformationComponent } from '@registerCarComponents/general-info
 import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-the-car/interior-of-the-car.component';
 import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
 import { Observable } from 'rxjs';
-import { ApplyDiscountCode, Brands, GeneralDetails, InteriorOfTheCar, Mechanics, WizardSteps } from '../interfaces';
+import { ApplyDiscountCode, Brands, Extras, GeneralDetails, InteriorOfTheCar, Mechanics, WizardSteps } from '../interfaces';
 import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
 import { AuctionTypes } from '@app/register-car/interfaces/auction-types.interface';
@@ -70,6 +70,18 @@ export class CompleteCarRegistrationService {
     });
 
     return this.#http.get<Mechanics>(url, { headers });
+  }
+
+  getCarExtras$(auctionCarId: string): Observable<Extras> {
+    const url = `${this.#baseUrl}/extras/${auctionCarId}`;
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.#http.get<Extras>(url, { headers });
   }
 
   saveGeneralInformation$(generalInformation: FormGroup): Observable<any> {
@@ -182,10 +194,6 @@ export class CompleteCarRegistrationService {
     if (step < 0 || step >= this.steps.length) return;
 
     this.indexTargetStep.set(step);
-  }
-
-  getBrands$(): Observable<Brands> {
-    return this.#http.get<Brands>(`${this.#baseUrl}/car-brands`);
   }
 
   getColors$(): Observable<Colors[]> {

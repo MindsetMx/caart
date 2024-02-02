@@ -25,6 +25,7 @@ import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { Brands, Colors } from '@app/register-car/interfaces';
+import { InputFormatterDirective } from '@shared/directives/InputFormatter.directive';
 
 @Component({
   selector: 'register-car',
@@ -41,6 +42,7 @@ import { Brands, Colors } from '@app/register-car/interfaces';
     TabsWithIconsComponent,
     UppyAngularDashboardModule,
     MatAutocompleteModule,
+    InputFormatterDirective
   ],
   templateUrl: './register-car.component.html',
   styleUrl: './register-car.component.css',
@@ -70,8 +72,13 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
   tabs: TabWithIcon[];
   unformattedReserveAmount?: string;
   unformattedKm?: string;
+  formattedKm?: string;
 
   uppy?: Uppy;
+
+  get kmTypeControl(): FormControl {
+    return this.carRegisterForm.get('kmType') as FormControl;
+  }
 
   get brandControl(): FormControl {
     return this.carRegisterForm.get('brand') as FormControl;
@@ -113,46 +120,11 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.carRegisterForm.get('videos') as FormControl;
   }
 
-  get formattedReserveAmount(): string {
-    if (this.unformattedReserveAmount?.endsWith('.')) {
-      // Si el valor termina en ".", formatear el número entero y agregar "."
-      const integerPart = this.unformattedReserveAmount.split('.')[0];
-      const formattedInteger = new DecimalPipe('en-US').transform(integerPart, '1.0-0') || '';
-      return formattedInteger + '.';
-    } else if (this.unformattedReserveAmount?.endsWith('.0')) {
-      // Si el valor termina en ".0", formatear el número entero y agregar ".0"
-      const integerPart = this.unformattedReserveAmount.split('.')[0];
-      const formattedInteger = new DecimalPipe('en-US').transform(integerPart, '1.0-0') || '';
-      return formattedInteger + '.0';
-    } else {
-      // Si el valor no termina en "." ni ".0", formatear normalmente
-      console.log('no termina en . ni .0', this.unformattedReserveAmount);
-      return new DecimalPipe('en-US').transform(this.unformattedReserveAmount, '1.0-2') || '';
-    }
-  }
-
-  get formattedKm(): string {
-    if (this.unformattedKm?.endsWith('.')) {
-      // Si el valor termina en ".", formatear el número entero y agregar "."
-      const integerPart = this.unformattedKm.split('.')[0];
-      const formattedInteger = new DecimalPipe('en-US').transform(integerPart, '1.0-0') || '';
-      return formattedInteger + '.';
-    } else if (this.unformattedKm?.endsWith('.0')) {
-      // Si el valor termina en ".0", formatear el número entero y agregar ".0"
-      const integerPart = this.unformattedKm.split('.')[0];
-      const formattedInteger = new DecimalPipe('en-US').transform(integerPart, '1.0-0') || '';
-      return formattedInteger + '.0';
-    } else {
-      // Si el valor no termina en "." ni ".0", formatear normalmente
-      return new DecimalPipe('en-US').transform(this.unformattedKm, '1.0-2') || '';
-    }
-  }
-
   constructor() {
     this.carRegisterForm = this.#fb.group({
       type: ['automobile', Validators.required],
       brand: ['', Validators.required],
-      year: ['', [Validators.required, Validators.min(1900), Validators.max(this.currentYear)]],
+      year: ['', [Validators.required, Validators.min(1500), Validators.max(this.currentYear)]],
       carModel: ['', Validators.required],
       exteriorColor: ['', Validators.required],
       specificColor: ['', Validators.required],
@@ -301,50 +273,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _normalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
-  }
-
-  setUnformattedReserveAmount(event: Event): void {
-    let value = (event.target as HTMLInputElement).value;
-    value = value.replace(/,/g, ''); // Eliminar comas
-
-    if (value === '') {
-      this.unformattedReserveAmount = undefined;
-      this.reserveAmountControl.setValue(this.unformattedReserveAmount);
-      return;
-    }
-
-    const regex = /^\d+(\.\d{0,2})?$/; // Solo números con hasta dos decimales
-    if (regex.test(value)) {
-      this.unformattedReserveAmount = value;
-      this.reserveAmountControl.setValue(this.unformattedReserveAmount);
-    }
-  }
-
-  setUnformattedKm(event: Event): void {
-    let value = (event.target as HTMLInputElement).value;
-    value = value.replace(/,/g, ''); // Eliminar comas
-
-    if (value === '') {
-      this.unformattedKm = undefined;
-      this.kmInputControl.setValue(this.unformattedKm);
-      return;
-    }
-
-    const regex = /^\d+(\.\d{0,2})?$/; // Solo números con hasta dos decimales
-    if (regex.test(value)) {
-      this.unformattedKm = value;
-      this.kmInputControl.setValue(this.unformattedKm);
-    }
-  }
-
-  validateInput(event: KeyboardEvent): void {
-    const inputValue: string = (event.target as HTMLInputElement).value;
-    const decimalPart = inputValue.split('.')[1];
-
-    // Si ya hay dos dígitos después del punto y se intenta introducir otro, cancelar el evento o si no es un número o si se intenta borrar o eliminar o es un punto o enter
-    if (decimalPart && decimalPart.length >= 2 && event.key !== 'Backspace' && event.key !== 'Delete' || (isNaN(Number(event.key)) && event.key !== 'Backspace' && event.key !== 'Delete' && event.key !== '.' && event.key !== 'Enter')) {
-      event.preventDefault();
-    }
   }
 
   openSignInModal(): void {

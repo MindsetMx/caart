@@ -47,19 +47,27 @@ export class CompleteCartRegistrationMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.indexCurrentStep = 0;
+    this.indexTargetStep = 0;
+    this.originalAuctionCarId = '';
     this.getWizardSteps();
   }
 
   getWizardSteps(): void {
     this.#completeCarRegistrationService.wizardSteps$(this.publicationId).subscribe((wizardSteps) => {
-      console.log({ wizardSteps });
-      console.log({ carDetails: wizardSteps.data.attributes.carDetails });
+      // console.log({ wizardSteps });
+      // console.log({ carDetails: wizardSteps.data.attributes.carDetails });
       this.indexCurrentStep = wizardSteps.data.attributes.currentStep;
       this.indexTargetStep = wizardSteps.data.attributes.currentStep;
-      console.log({ currentStep: this.indexCurrentStep() });
+      // console.log({ currentStep: this.indexCurrentStep() });
       this.originalAuctionCarId = wizardSteps.data.attributes.originalAuctionCarId;
+      // console.log({ originalAuctionCarId: this.originalAuctionCarId() });
       this.carDetails.set(wizardSteps.data.attributes.carDetails);
     });
+  }
+
+  isStepCompleted(step: number) {
+    return step < this.indexCurrentStep() || this.indexCurrentStep() === 4;
   }
 
   changeStep(step: number) {
@@ -67,6 +75,8 @@ export class CompleteCartRegistrationMenuComponent implements OnInit {
       return;
 
     this.#completeCarRegistrationService.changeStep(step);
+
+    window.scrollTo(0, 0);
   }
 
   isCurrentStep(step: number) {

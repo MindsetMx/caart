@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
@@ -30,7 +30,7 @@ import { CompleteCarRegistrationService } from '@app/register-car/services/compl
   styleUrl: './mechanics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MechanicsComponent implements OnInit, AfterViewInit {
+export class MechanicsComponent implements AfterViewInit {
   @ViewChild('uppyDashboard') uppyDashboard!: ElementRef;
 
   #validatorsService = inject(ValidatorsService);
@@ -44,6 +44,10 @@ export class MechanicsComponent implements OnInit, AfterViewInit {
   previewImagesCarExterior: WritableSignal<string[]> = signal(['', '']);
 
   uppy?: Uppy;
+
+  originalAuctionCarIdChangedEffect = effect(() => {
+    this.getMechanics();
+  });
 
   constructor() {
     this.mechanicsForm = this.#fb.group({
@@ -61,7 +65,7 @@ export class MechanicsComponent implements OnInit, AfterViewInit {
       originalTransmissionEngine: ['', [Validators.required]],
       improvementModificationOriginal: ['', [Validators.required]],
       // whatImprovement: ['', [Validators.required]],
-      performedServicesWithDates: ['', [Validators.required]],
+      performedServicesWithDates: [''],
       mechanicalProblemDetail: ['', [Validators.required]],
       // whatMechanicalProblem: ['', [Validators.required]],
       illuminatedDashboardSensor: ['', [Validators.required]],
@@ -77,10 +81,6 @@ export class MechanicsComponent implements OnInit, AfterViewInit {
       // servicesDoneWithDates: ['', [Validators.required]],
       // improvementOrModification: ['', [Validators.required]],
     });
-  }
-
-  ngOnInit(): void {
-    this.getMechanics();
   }
 
   ngAfterViewInit(): void {
@@ -229,9 +229,6 @@ export class MechanicsComponent implements OnInit, AfterViewInit {
           mechanicsPhotos,
           mechanicsVideos,
         });
-
-        // this.previewImagesCarDetails.set(mechanics.attributes.mechanicsPhotos);
-        // this.previewImagesCarExterior.set(mechanics.attributes.mechanicsVideos);
       },
       error: (error) => {
         console.log(error);

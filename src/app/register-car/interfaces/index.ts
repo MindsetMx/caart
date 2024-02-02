@@ -8,3 +8,4 @@ export * from './telephone-prefixes.interface';
 export * from './general-details.interface';
 export * from './interior-of-the-car.interface';
 export * from './mechanics.interface';
+export * from './extras.interface';

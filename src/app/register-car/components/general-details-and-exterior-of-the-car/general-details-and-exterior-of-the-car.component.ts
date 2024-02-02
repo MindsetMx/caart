@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
 import Spanish from '@uppy/locales/lib/es_ES';
@@ -51,24 +51,28 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
 
   uppy?: Uppy;
 
+  originalAuctionCarIdChangedEffect = effect(() => {
+    this.getGeneralInformation();
+  });
+
   constructor() {
     this.exteriorOfTheCarForm = this.#fb.group({
-      kmInput: [''],
-      brand: ['', [Validators.required]],
-      year: ['', [Validators.required, Validators.min(1900), Validators.max(this.currentYear)]],
-      carModel: ['', [Validators.required]],
+      kmInput: [{ value: '', disabled: true }],
+      brand: [{ value: '', disabled: true }, [Validators.required]],
+      year: [{ value: '', disabled: true }, [Validators.required, Validators.min(1500), Validators.max(this.currentYear)]],
+      carModel: [{ value: '', disabled: true }, [Validators.required]],
       // mileage: ['', [Validators.required]],
       odometerVerified: ['', [Validators.required]],
-      transmissionType: ['', [Validators.required]],
-      otherTransmission: [''],
+      transmissionType: [{ value: '', disabled: true }, [Validators.required]],
+      otherTransmission: [{ value: '', disabled: true }],
       // sellerType: ['', [Validators.required]],
       warranties: ['', [Validators.required]],
       wichWarranties: [''],
       invoiceType: ['', [Validators.required]],
       invoiceDetails: ['', [Validators.required]],
       carHistory: ['', [Validators.required]],
-      exteriorColor: ['', [Validators.required]],
-      specificColor: ['', [Validators.required]],
+      exteriorColor: [{ value: '', disabled: true }, [Validators.required]],
+      specificColor: [{ value: '', disabled: true }, [Validators.required]],
       accident: ['', [Validators.required]],
       raced: ['', [Validators.required]],
       originalPaint: ['', [Validators.required]],
@@ -126,10 +130,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
     return this.#completeCarRegistrationService.originalAuctionCarId;
   }
 
-  set originalAuctionCarId(originalAuctionCarId: string) {
-    this.#completeCarRegistrationService.originalAuctionCarId.set(originalAuctionCarId);
-  }
-
   get detailVideos(): FormControl {
     return this.exteriorOfTheCarForm.get('detailVideos') as FormControl;
   }
@@ -143,10 +143,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   }
 
   ngOnInit(): void {
-    this.getBrands();
     this.getColors();
-
-    this.getGeneralInformation();
 
     this.warrantiesControl.valueChanges.subscribe((value) => {
       if (value === 'true') {
@@ -237,7 +234,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   exteriorOfTheCarFormSubmit() {
     this.isButtonSubmitDisabled.set(true);
 
-
     console.log({ exteriorOfTheCarForm: this.exteriorOfTheCarForm.value });
 
     const isValid = this.#validatorsService.isValidForm(this.exteriorOfTheCarForm);
@@ -248,6 +244,15 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
       return;
     }
 
+    this.kmInputControl.enable();
+    this.brandControl.enable();
+    this.yearControl.enable();
+    this.carModelControl.enable();
+    this.transmissionTypeControl.enable();
+    this.otherTransmissionControl.enable();
+    this.exteriorColorControl.enable();
+    this.specificColorControl.enable();
+
     this.#completeCarRegistrationService.saveGeneralDetailsAndExteriorOfTheCar$(this.exteriorOfTheCarForm)
       .subscribe({
         next: () => {
@@ -255,6 +260,14 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
           this.#completeCarRegistrationService.indexCurrentStep.set(2);
         },
         error: (error) => {
+          this.kmInputControl.disable();
+          this.brandControl.disable();
+          this.yearControl.disable();
+          this.carModelControl.disable();
+          this.transmissionTypeControl.disable();
+          this.otherTransmissionControl.disable();
+          this.exteriorColorControl.disable();
+          this.specificColorControl.disable();
           console.error(error);
         },
       }).add(() => {
@@ -263,9 +276,10 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   }
 
   getGeneralInformation(): void {
+    console.log({ originalAuctionCarId: this.originalAuctionCarId() });
     this.#completeCarRegistrationService.getGeneralInformation$(this.originalAuctionCarId()).subscribe({
       next: (response) => {
-        console.log({ response });
+        // console.log({ response });
 
         const {
           kmInput,
@@ -324,17 +338,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
         });
 
         this.previewImagesCarExterior.set(exteriorPhotos);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
-
-  getBrands(): void {
-    this.#completeCarRegistrationService.getBrands$().subscribe({
-      next: (response) => {
-        this.brands.set(response.data);
       },
       error: (error) => {
         console.error(error);

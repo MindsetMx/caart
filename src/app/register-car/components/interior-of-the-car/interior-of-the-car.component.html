@@ -6,7 +6,8 @@
 
   <!-- interiorColor select -->
   <div>
-    <label for="interiorColor" class="block mb-1 text-sm">Color</label>
+    <label for="interiorColor" class="block mb-1 text-sm">Color <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <input id="interiorColor" formControlName="interiorColor" type="text" sharedInput>
     @if (hasError('interiorColor')) {
     <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
@@ -15,13 +16,9 @@
 
   <!-- Material select   -->
   <div>
-    <label for="material" class="block mb-1 text-sm">Material</label>
-    <select id="material" formControlName="material" sharedInput>
-      <option value="leather">Piel</option>
-      <option value="cloth">Tela</option>
-      <option value="vinyl">Vinil</option>
-      <option value="other">Otro</option>
-    </select>
+    <label for="material" class="block mb-1 text-sm">Material <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="material" formControlName="material" type="text" sharedInput>
     @if (hasError('material')) {
     <shared-input-error [message]="getError('material')"></shared-input-error>
     }
@@ -29,7 +26,8 @@
 
   <!-- Condiciones del interior select -->
   <div class="col-span-2">
-    <label for="interiorCondition" class="block mb-1 text-sm">Condiciones del interior</label>
+    <label for="interiorCondition" class="block mb-1 text-sm">Condiciones del interior <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="interiorCondition" formControlName="interiorCondition" sharedInput>
       <!-- <option value disabled selected>Condiciones del interior</option> -->
       <option value="excellent">Excelente</option>
@@ -45,7 +43,7 @@
   <!-- ¿Ha tenido modificaciones en el interior? select -->
   <div class="col-span-2">
     <label for="interiorModifications" class="block mb-1 text-sm">¿Ha tenido modificaciones en el
-      interior?</label>
+      interior? <span class="font-bold text-red-500 inline-block">*</span></label>
     <select id="interiorModifications" formControlName="interiorModifications" sharedInput>
       <!-- <option value disabled selected>¿Ha tenido modificaciones en el interior?</option> -->
       <option value="true">Sí</option>
@@ -59,7 +57,7 @@
   <!-- ¿Los accesorios y electrónicos funcionan? input-->
   <div class="col-span-2">
     <label for="accessoriesFunctioning" class="block mb-1 text-sm">¿Los accesorios y electrónicos
-      funcionan?</label>
+      funcionan? <span class="font-bold text-red-500 inline-block">*</span></label>
     <select id="accessoriesFunctioning" formControlName="accessoriesFunctioning" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
@@ -71,7 +69,8 @@
 
   <!-- Comentarios sobre detalles textarea -->
   <div class="col-span-2">
-    <label for="comments" class="block mb-1 text-sm">Comentarios sobre detalles</label>
+    <label for="comments" class="block mb-1 text-sm">Comentarios sobre detalles <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <textarea id="comments" formControlName="comments" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
     @if (hasError('comments')) {
     <shared-input-error [message]="getError('comments')"></shared-input-error>
@@ -82,7 +81,7 @@
   <div class="col-span-2">
     <label id="uppyDashboard" for="interiorImagesOrVideos" class="text-sm cursor-pointer">
       Fotos/vídeos del exterior del auto
-    </label>
+      <span class="font-bold text-red-500 inline-block">*</span></label>
 
     <div id="uppyDashboard" #uppyDashboard></div>
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
@@ -7,7 +7,6 @@ import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
 
 import { AutoResizeTextareaDirective } from '@shared/directives/auto-resize-textarea.directive';
-import { Colors } from '@app/register-car/interfaces/colors.interface';
 import { CompleteCarRegistrationService } from '../../services/complete-car-registration.service';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -33,7 +32,7 @@ import { JsonPipe } from '@angular/common';
   styleUrl: './interior-of-the-car.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
+export class InteriorOfTheCarComponent implements AfterViewInit {
   @ViewChild('uppyDashboard') uppyDashboard!: ElementRef;
 
   #validatorsService = inject(ValidatorsService);
@@ -46,6 +45,10 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
   previewImagesCarInterior: WritableSignal<string[]> = signal(['', '']);
 
   uppy?: Uppy;
+
+  originalAuctionCarIdChangedEffect = effect(() => {
+    this.getInteriorOfTheCar();
+  });
 
   constructor() {
     this.interiorOfTheCarForm = this.#fb.group({
@@ -79,10 +82,6 @@ export class InteriorOfTheCarComponent implements OnInit, AfterViewInit {
 
   get photosOrVideosInteriorOfTheCarFormArray(): FormArray {
     return this.interiorOfTheCarForm.get('interiorImagesOrVideos') as FormArray;
-  }
-
-  ngOnInit(): void {
-    this.getInteriorOfTheCar();
   }
 
   ngAfterViewInit(): void {

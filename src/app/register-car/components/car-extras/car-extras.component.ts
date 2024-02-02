@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, WritableSignal, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
 
 import { AutoResizeTextareaDirective } from '@shared/directives/auto-resize-textarea.directive';
@@ -9,6 +9,8 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 import { Router } from '@angular/router';
+import { DecimalPipe, JsonPipe } from '@angular/common';
+import { InputFormatterDirective } from '@shared/directives/InputFormatter.directive';
 
 @Component({
   selector: 'app-car-extras',
@@ -20,6 +22,9 @@ import { Router } from '@angular/router';
     PrimaryButtonDirective,
     ReactiveFormsModule,
     SpinnerComponent,
+    DecimalPipe,
+    InputFormatterDirective,
+    JsonPipe
   ],
   templateUrl: './car-extras.component.html',
   styleUrl: './car-extras.component.css',
@@ -30,6 +35,7 @@ export class CarExtrasComponent {
   #fb = inject(FormBuilder);
   #completeCarRegistrationService = inject(CompleteCarRegistrationService);
   #router = inject(Router);
+  #changeDetectorRef = inject(ChangeDetectorRef);
 
   carExtrasForm: FormGroup;
 
@@ -37,14 +43,18 @@ export class CarExtrasComponent {
   previewImagesCarDetails: WritableSignal<string[]> = signal(['', '']);
   previewImagesCarExterior: WritableSignal<string[]> = signal(['', '']);
 
+  originalAuctionCarIdChangedEffect = effect(() => {
+    this.getCarExtras();
+  });
+
   constructor() {
     this.carExtrasForm = this.#fb.group({
-      serviceHistory: ['', Validators.required],
+      // serviceHistory: ['', Validators.required],
       toolBox: ['', Validators.required],
       carCover: ['', Validators.required],
       batteryCharger: ['', Validators.required],
       manuals: ['', Validators.required],
-      spareTire: ['', Validators.required],
+      // spareTire: ['', Validators.required],
       tireInflator: ['', Validators.required],
       numberOfKeys: ['', Validators.required],
       others: ['', Validators.required],
@@ -104,6 +114,54 @@ export class CarExtrasComponent {
       },
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
+    });
+  }
+
+  getCarExtras(): void {
+    this.#completeCarRegistrationService.getCarExtras$(this.originalAuctionCarId).subscribe({
+      next: (carExtras) => {
+        const {
+          toolBox,
+          carCover,
+          batteryCharger,
+          manuals,
+          tireInflator,
+          numberOfKeys,
+          others,
+          // additionalCharges,
+          comments,
+          termsConditionsAccepted,
+        } = carExtras.data.attributes;
+
+        this.carExtrasForm.patchValue({
+          toolBox,
+          carCover,
+          batteryCharger,
+          manuals,
+          tireInflator,
+          numberOfKeys,
+          others,
+          // additionalCharges,
+          comments,
+          termsConditionsAccepted,
+        });
+
+
+        const additionalCharges = carExtras.data.attributes.additionalCharges;
+
+        const aditionalChargesFormGroups = additionalCharges.map((additionalCharge: any) => {
+          return this.#fb.group({
+            chargeType: [additionalCharge.chargeType, Validators.required],
+            amount: [additionalCharge.amount, Validators.required],
+          });
+        });
+
+        this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
+        this.#changeDetectorRef.detectChanges();
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
 

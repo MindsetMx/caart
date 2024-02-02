@@ -6,7 +6,8 @@
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md {{mb}}">
     <form [formGroup]="registerForm" (ngSubmit)="register()" class="grid grid-cols-2 gap-4">
       <div>
-        <label for="firstName" class="block mb-1 text-sm">Nombre/s</label>
+        <label for="firstName" class="block mb-1 text-sm">Nombre/s <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <input id="firstName" formControlName="firstName" autocomplete="given-name" type="text" sharedInput>
         @if (hasError('firstName')) {
         <shared-input-error [message]="getError('firstName')"></shared-input-error>
@@ -14,7 +15,8 @@
       </div>
 
       <div>
-        <label for="lastName" class="block mb-1 text-sm">Apellido/s</label>
+        <label for="lastName" class="block mb-1 text-sm">Apellido/s <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <input id="lastName" formControlName="lastName" autocomplete="family-name" type="text" sharedInput>
         @if (hasError('lastName')) {
         <shared-input-error [message]="getError('lastName')"></shared-input-error>
@@ -22,7 +24,8 @@
       </div>
 
       <div class="col-span-2">
-        <label for="_username" class="block mb-1 text-sm">Nombre de usuario</label>
+        <label for="_username" class="block mb-1 text-sm">Nombre de usuario <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <input id="_username" formControlName="username" type="text" sharedInput>
         @if (hasError('username')) {
         <shared-input-error [message]="getError('username')"></shared-input-error>
@@ -31,7 +34,8 @@
 
       <!-- sellerType -->
       <div class="col-span-2">
-        <label for="sellerType" class="block mb-1 text-sm">Tipo de usuario</label>
+        <label for="sellerType" class="block mb-1 text-sm">Tipo de usuario <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <select id="sellerType" formControlName="sellerType" sharedInput>
           <option value="Persona privada">Persona privada</option>
           <option value="Dealer">Dealer</option>
@@ -42,7 +46,8 @@
       </div>
 
       <div class="col-span-2">
-        <label for="country" class="block mb-1 text-sm">País</label>
+        <label for="country" class="block mb-1 text-sm">País <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <select id="country" formControlName="country" autocomplete="country" sharedInput>
           @for (country of countries; track $index) {
           <option value="{{country}}">{{country}}</option>
@@ -54,7 +59,8 @@
       </div>
 
       <div>
-        <label for="state" class="block mb-1 text-sm">Estado</label>
+        <label for="state" class="block mb-1 text-sm">Estado <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         @if (countryControl.value === 'México') {
         <input id="state" formControlName="state" type="text" autocomplete="none" [matAutocomplete]="states"
           sharedInput>
@@ -72,7 +78,8 @@
       </div>
 
       <div class="relative">
-        <label for="city" class="block mb-1 text-sm">Ciudad</label>
+        <label for="city" class="block mb-1 text-sm">Ciudad <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <input id="city" formControlName="city" autocomplete="address-level2" type="text" sharedInput>
         @if (hasError('city')) {
         <shared-input-error [message]="getError('city')"></shared-input-error>
@@ -84,7 +91,7 @@
           <div>
             <label (click)="selectPrefixes.open(); selectPrefixes.focus()" class="block mb-1 text-sm">
               Celular
-            </label>
+              <span class="font-bold text-red-500 inline-block">*</span></label>
             <mat-select formControlName="prefix" #selectPrefixes sharedInput>
               @for (prefix of telephonePrefixes; track $index) {
               <mat-option [value]="prefix.code">
@@ -99,7 +106,7 @@
           </div>
 
           <div>
-            <!-- <label for="phoneNumber" class="block mb-1 text-sm hidden">Celular</label> -->
+            <!-- <label for="phoneNumber" class="block mb-1 text-sm hidden">Celular <span class="font-bold text-red-500 inline-block">*</span></label> -->
             <input class="mt-6" id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel"
               sharedInput>
             @if (hasError('phoneNumber')) {
@@ -110,7 +117,8 @@
       </div>
 
       <div class="col-span-2">
-        <label for="email" class="block mb-1 text-sm">Correo electrónico</label>
+        <label for="email" class="block mb-1 text-sm">Correo electrónico <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <input id="email" formControlName="email" autocomplete="email" type="email" sharedInput>
         @if (hasError('email')) {
         <shared-input-error [message]="getError('email')"></shared-input-error>
@@ -118,7 +126,8 @@
       </div>
 
       <div class="col-span-2">
-        <label for="password" class="block mb-1 text-sm">Contraseña</label>
+        <label for="password" class="block mb-1 text-sm">Contraseña <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <div class="relative">
           <input id="password" formControlName="password" autocomplete="new-password"
             [type]="showPassword1() ? 'text' : 'password'" sharedInput>
@@ -134,7 +143,8 @@
       </div>
 
       <div class="col-span-2">
-        <label for="password2" class="block mb-1 text-sm">Confirmar contraseña</label>
+        <label for="password2" class="block mb-1 text-sm">Confirmar contraseña <span
+            class="font-bold text-red-500 inline-block">*</span></label>
         <div class="relative">
           <input id="password2" formControlName="password2" autocomplete="new-password"
             [type]="showPassword2() ? 'text' : 'password'" sharedInput>
@@ -169,7 +179,8 @@
 
           <div class="grid grid-cols-2 gap-4 mt-4">
             <div class="col-span-2">
-              <label for="taxId" class="block mb-1">RFC</label>
+              <label for="taxId" class="block mb-1">RFC <span
+                  class="font-bold text-red-500 inline-block">*</span></label>
               <input id="taxId" formControlName="taxId" autocomplete="tax-id" type="text" placeholder="RFC" sharedInput>
               @if (hasError('taxId')) {
               <shared-input-error [message]="getError('taxId')"></shared-input-error>
@@ -181,22 +192,22 @@
             </div>
 
             <!-- <div class="col-span-2">
-                <label for="titular" class="block mb-1">Nombre del titular de la tarjeta</label>
+                <label for="titular" class="block mb-1">Nombre del titular de la tarjeta <span class="font-bold text-red-500 inline-block">*</span></label>
                 <input id="titular" type="text" placeholder="Nombre completo del titular de la tarjeta" sharedInput>
               </div>
 
               <div class="col-span-2">
-                <label for="numero" class="block mb-1">Número de tarjeta</label>
+                <label for="numero" class="block mb-1">Número de tarjeta <span class="font-bold text-red-500 inline-block">*</span></label>
                 <input id="numero" type="text" placeholder="Número de 16 dígitos de la tarjeta" sharedInput>
               </div>
 
               <div>
-                <label for="vencimiento" class="block mb-1">Fecha de vencimiento</label>
+                <label for="vencimiento" class="block mb-1">Fecha de vencimiento <span class="font-bold text-red-500 inline-block">*</span></label>
                 <input id="vencimiento" type="text" placeholder="MM/AA" sharedInput>
               </div>
 
               <div>
-                <label for="cvv" class="block mb-1">CVV</label>
+                <label for="cvv" class="block mb-1">CVV <span class="font-bold text-red-500 inline-block">*</span></label>
                 <input id="cvv" type="text" placeholder="CVV" sharedInput>
               </div> -->
 
@@ -205,7 +216,8 @@
             </div>
 
             <div class="col-span-2">
-              <label for="street" class="block mb-1">Calle y número</label>
+              <label for="street" class="block mb-1">Calle y número <span
+                  class="font-bold text-red-500 inline-block">*</span></label>
               <input id="street" formControlName="streetAndNumber" autocomplete="street-address" type="text"
                 placeholder="Calle y número interno y externo" sharedInput>
               @if (hasError('streetAndNumber')) {
@@ -214,7 +226,8 @@
             </div>
 
             <div class="col-span-2">
-              <label for="postalCode" class="block mb-1">Código Postal</label>
+              <label for="postalCode" class="block mb-1">Código Postal <span
+                  class="font-bold text-red-500 inline-block">*</span></label>
               <input id="postalCode" formControlName="postalCode" autocomplete="postal-code" type="text"
                 placeholder="C.P." sharedInput>
               @if (hasError('postalCode')) {
@@ -227,12 +240,14 @@
               <div class="space-y-2">
                 <div class="flex items-center">
                   <input id="ine" formControlName="validationType" [value]="idTypes.ine" type="radio" class="h-4 w-4">
-                  <label for="ine" class="ml-3 block leading-6">INE</label>
+                  <label for="ine" class="ml-3 block leading-6">INE <span
+                      class="font-bold text-red-500 inline-block">*</span></label>
                 </div>
                 <div class="flex items-center">
                   <input id="passport" formControlName="validationType" [value]="idTypes.pasaporte" type="radio"
                     class="h-4 w-4">
-                  <label for="passport" class="ml-3 block leading-6">Pasaporte</label>
+                  <label for="passport" class="ml-3 block leading-6">Pasaporte <span
+                      class="font-bold text-red-500 inline-block">*</span></label>
                 </div>
               </div>
             </fieldset>
@@ -258,6 +273,7 @@
                       <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
                     </div>
                     }
+                    <span class="font-bold text-red-500 inline-block">*</span>
                   </label>
 
                   @if (formArrayHasError(0)) {
@@ -281,6 +297,7 @@
                       <input (change)="selectFile($event, 1)" id="posterior" type="file" class="sr-only">
                     </div>
                     }
+                    <span class="font-bold text-red-500 inline-block">*</span>
                   </label>
 
                   @if (formArrayHasError(1)) {
@@ -308,6 +325,7 @@
                   <input (change)="selectFile($event, 0)" id="passportImg" type="file" class="sr-only">
                 </div>
                 }
+                <span class="font-bold text-red-500 inline-block">*</span>
               </label>
 
               @if (formArrayHasError(0)) {
@@ -328,7 +346,7 @@
           <label for="acceptTermsAndConditions" class="ml-3 block leading-6">
             Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
             <a class="underline">Acuerdos de usuarios.</a>
-          </label>
+            <span class="font-bold text-red-500 inline-block">*</span></label>
         </div>
         @if (hasError('acceptTermsAndConditions')) {
         <shared-input-error [message]="getError('acceptTermsAndConditions')"></shared-input-error>

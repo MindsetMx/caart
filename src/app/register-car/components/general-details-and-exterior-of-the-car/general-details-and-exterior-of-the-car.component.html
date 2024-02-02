@@ -4,45 +4,45 @@
 <form [formGroup]="exteriorOfTheCarForm" (ngSubmit)="exteriorOfTheCarFormSubmit()"
   class="grid grid-cols-2 gap-5 items-end">
 
-  <!-- kmInput -->
   <div>
-    <label for="kmInput" class="block mb-1 text-sm">Kilometraje</label>
-    <input id="kmInput" type="text" [value]="kmInputControl.value | number:'1.0-2'" disabled sharedInput>
-    @if (hasError('kmInput')) {
-    <shared-input-error [message]="getError('kmInput')"></shared-input-error>
-    }
-  </div>
-
-  <div>
-    <label for="brand" class="block mb-1 text-sm">Marca</label>
-    <select id="brand" [value]="brandControl.value" disabled sharedInput>
-      @for (brand of brands(); track $index) {
-      <option [value]="brand">{{brand}}</option>
-      }
-    </select>
+    <label for="brand" class="block mb-1 text-sm">Marca <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="brand" formControlName="brand" type="text" sharedInput>
     @if (hasError('brand')) {
     <shared-input-error [message]="getError('brand')"></shared-input-error>
     }
   </div>
 
   <div>
-    <label for="year" class="block mb-1 text-sm">Año</label>
-    <input id="year" [value]="yearControl.value" type="number" min="0" [max]="currentYear" disabled sharedInput>
-    @if (hasError('year')) {
-    <shared-input-error [message]="getError('year')"></shared-input-error>
-    }
-  </div>
-
-  <div>
-    <label for="carModel" class="block mb-1 text-sm">Modelo</label>
-    <input id="carModel" [value]="carModelControl.value" type="text" disabled sharedInput>
+    <label for="carModel" class="block mb-1 text-sm">Modelo <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="carModel" formControlName="carModel" type="text" sharedInput>
     @if (hasError('carModel')) {
     <shared-input-error [message]="getError('carModel')"></shared-input-error>
     }
   </div>
 
+  <div>
+    <label for="year" class="block mb-1 text-sm">Año <span class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="year" formControlName="year" type="number" min="0" [max]="currentYear" sharedInput>
+    @if (hasError('year')) {
+    <shared-input-error [message]="getError('year')"></shared-input-error>
+    }
+  </div>
+
+  <!-- kmInput -->
+  <div>
+    <label for="kmInput" class="block mb-1 text-sm">Kilometraje <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="kmInput" formControlName="kmInput" type="text" [value]="kmInputControl.value | number:'1.0-2'"
+      sharedInput>
+    @if (hasError('kmInput')) {
+    <shared-input-error [message]="getError('kmInput')"></shared-input-error>
+    }
+  </div>
+
   <!-- <div>
-    <label for="mileage" class="block mb-1 text-sm">Kilometraje</label>
+    <label for="mileage" class="block mb-1 text-sm">Kilometraje <span class="font-bold text-red-500 inline-block">*</span></label>
     <input id="mileage" formControlName="mileage" type="number" sharedInput>
     @if (hasError('mileage')) {
     <shared-input-error [message]="getError('mileage')"></shared-input-error>
@@ -50,7 +50,8 @@
   </div> -->
 
   <div>
-    <label for="odometerVerified" class="block mb-1 text-sm">¿El odómetro es acertado?</label>
+    <label for="odometerVerified" class="block mb-1 text-sm">¿El odómetro es acertado? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="odometerVerified" formControlName="odometerVerified" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
@@ -62,20 +63,30 @@
 
   <!-- transmision select -->
   <div>
-    <label for="transmissionType" class="block mb-1 text-sm">Transmisión</label>
-    <select id="transmissionType" [value]="transmissionTypeControl.value" disabled sharedInput>
-      <option value="Automática">Automática</option>
-      <option value="Manual">Manual</option>
-      <option value="Otro">Otro</option>
-    </select>
+    <label for="transmissionType" class="block mb-1 text-sm">Transmisión <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="transmissionType" formControlName="transmissionType" type="text" sharedInput>
     @if (hasError('transmissionType')) {
     <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
     }
   </div>
 
+  <!-- other transmission type -->
+
+  @if (transmissionTypeControl.value === 'Otro') {
+  <div>
+    <label for="otherTransmission" class="block mb-1 text-sm">Otro tipo de transmisión <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="otherTransmission" formControlName="otherTransmission" type="text" sharedInput>
+    @if (hasError('otherTransmission')) {
+    <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
+    }
+  </div>
+  }
+
   <!-- Tipo de vendedor select -->
   <!-- <div>
-    <label for="sellerType" class="block mb-1 text-sm">Tipo de vendedor</label>
+    <label for="sellerType" class="block mb-1 text-sm">Tipo de vendedor <span class="font-bold text-red-500 inline-block">*</span></label>
     <select id="sellerType" formControlName="sellerType" sharedInput>
       <option value="individual">Individual</option>
       <option value="dealer">Distribuidor</option>
@@ -87,7 +98,8 @@
 
   <!-- Garantías del auto select -->
   <div class="col-span-2">
-    <label for="warranties" class="block mb-1 text-sm">Garantías del auto</label>
+    <label for="warranties" class="block mb-1 text-sm">Garantías del auto <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="warranties" formControlName="warranties" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
@@ -100,7 +112,8 @@
   <!-- wichWarranties -->
   @if (warrantiesControl.value === 'true') {
   <div class="col-span-2">
-    <label for="wichWarranties" class="block mb-1 text-sm">¿Cuáles?</label>
+    <label for="wichWarranties" class="block mb-1 text-sm">¿Cuáles? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <textarea id="wichWarranties" formControlName="wichWarranties" rows="4" sharedInput
       sharedAutoResizeTextarea></textarea>
     @if (hasError('wichWarranties')) {
@@ -111,7 +124,8 @@
 
   <!-- Factura / Pedimento select -->
   <div class="col-span-2">
-    <label for="invoiceType" class="block mb-1 text-sm">Factura / Pedimento</label>
+    <label for="invoiceType" class="block mb-1 text-sm">Factura / Pedimento <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="invoiceType" formControlName="invoiceType" sharedInput>
       <!-- <option value="true">Sí</option>
       <option value="false">No</option> -->
@@ -128,7 +142,7 @@
   <!-- Explica los detalles de Factura / Pedimiento / Otro textarea -->
   <div class="col-span-2">
     <label for="invoiceDetails" class="block mb-1 text-sm">Explica los detalles de Factura / Pedimiento /
-      Otro</label>
+      Otro <span class="font-bold text-red-500 inline-block">*</span></label>
     <textarea id="invoiceDetails" formControlName="invoiceDetails" rows="4" sharedInput
       sharedAutoResizeTextarea></textarea>
     @if (hasError('invoiceDetails')) {
@@ -138,7 +152,8 @@
 
   <!-- Historia del auto textarea -->
   <div class="col-span-2">
-    <label for="carHistory" class="block mb-1 text-sm">Historia del auto</label>
+    <label for="carHistory" class="block mb-1 text-sm">Historia del auto <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <textarea id="carHistory" formControlName="carHistory" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
     @if (hasError('carHistory')) {
     <shared-input-error [message]="getError('carHistory')"></shared-input-error>
@@ -151,12 +166,9 @@
 
   <!-- Color exterior select -->
   <div>
-    <label for="exteriorColor" class="block mb-1 text-sm">Color exterior</label>
-    <select id="exteriorColor" [value]="exteriorColorControl.value" disabled sharedInput>
-      @for (color of colors(); track $index) {
-      <option [value]="color.name">{{color.name}}</option>
-      }
-    </select>
+    <label for="exteriorColor" class="block mb-1 text-sm">Color exterior <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="exteriorColor" formControlName="exteriorColor" type="text" sharedInput>
     @if (hasError('exteriorColor')) {
     <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
     }
@@ -164,8 +176,9 @@
 
   <!-- Color específico -->
   <div>
-    <label for="specificColor" class="block mb-1 text-sm">Color específico</label>
-    <input id="specificColor" [value]="specificColorControl.value" type="text" disabled sharedInput>
+    <label for="specificColor" class="block mb-1 text-sm">Color específico <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="specificColor" formControlName="specificColor" type="text" sharedInput>
     @if (hasError('specificColor')) {
     <shared-input-error [message]="getError('specificColor')"></shared-input-error>
     }
@@ -173,7 +186,8 @@
 
   <!-- Ha estado involucrado en un accidente select -->
   <div class="col-span-2">
-    <label for="accident" class="block mb-1 text-sm">¿Ha estado involucrado en un accidente?</label>
+    <label for="accident" class="block mb-1 text-sm">¿Ha estado involucrado en un accidente? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="accident" formControlName="accident" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
@@ -185,7 +199,8 @@
 
   <!-- El auto se ha corrido en pista / autodromo select -->
   <div class="col-span-2">
-    <label for="raced" class="block mb-1 text-sm">¿El auto se ha corrido en pista / autodromo?</label>
+    <label for="raced" class="block mb-1 text-sm">¿El auto se ha corrido en pista / autodromo? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="raced" formControlName="raced" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
@@ -197,7 +212,8 @@
 
   <!-- Pintura original select -->
   <div>
-    <label for="originalPaint" class="block mb-1 text-sm">¿Pintura original?</label>
+    <label for="originalPaint" class="block mb-1 text-sm">¿Pintura original? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="originalPaint" formControlName="originalPaint" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
@@ -209,7 +225,8 @@
 
   <!-- Cuentas con medidor de pintura select -->
   <div>
-    <label for="paintMeter" class="block mb-1 text-sm">¿Cuentas con medidor de pintura?</label>
+    <label for="paintMeter" class="block mb-1 text-sm">¿Cuentas con medidor de pintura? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="paintMeter" formControlName="paintMeter" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
@@ -221,7 +238,8 @@
 
   <!-- Se le ha modificado el exterior select -->
   <div>
-    <label for="exteriorModified" class="block mb-1 text-sm">¿Se le ha modificado el exterior?</label>
+    <label for="exteriorModified" class="block mb-1 text-sm">¿Se le ha modificado el exterior? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="exteriorModified" formControlName="exteriorModified" sharedInput>
       <option value="true">Sí</option>
       <option value="false">No</option>
@@ -233,7 +251,8 @@
 
   <!-- Condición del exterior select -->
   <div>
-    <label for="exteriorCondition" class="block mb-1 text-sm">Condición del exterior</label>
+    <label for="exteriorCondition" class="block mb-1 text-sm">Condición del exterior <span
+        class="font-bold text-red-500 inline-block">*</span></label>
     <select id="exteriorCondition" formControlName="exteriorCondition" sharedInput>
       <option value="excellent">Excelente</option>
       <option value="good">Buena</option>
@@ -247,9 +266,10 @@
 
   <!-- Comentarios sobre detalles textarea -->
   <div class="col-span-2">
-    <label for="detailComments" class="block mb-1 text-sm">Comentarios sobre detalles</label>
-    <textarea id="detailComments" formControlName="detailComments" rows="6" sharedInput
-      sharedAutoResizeTextarea></textarea>
+    <label for="detailComments" class="block mb-1 text-sm">Comentarios sobre detalles <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <textarea id="detailComments" formControlName="detailComments" rows="6"
+      placeholder="Explícanos más sobre pintura, pista, sucesos, etc.." sharedInput sharedAutoResizeTextarea></textarea>
     @if (hasError('detailComments')) {
     <shared-input-error [message]="getError('detailComments')"></shared-input-error>
     }
@@ -259,7 +279,7 @@
   <!-- <div class="col-span-2">
     <label for="uppyDashboard1" class="text-sm cursor-pointer">
       Fotos/vídeos de detalles <span class="text-gray4">(Opcional)</span>
-    </label>
+     <span class="font-bold text-red-500 inline-block">*</span></label>
 
     <div id="uppyDashboard1" #uppyDashboard1></div>
 
@@ -272,7 +292,7 @@
   <div class="col-span-2">
     <label for="exteriorImagesOrVideos" class="text-sm cursor-pointer">
       Fotos/vídeos del exterior del auto
-    </label>
+      <span class="font-bold text-red-500 inline-block">*</span></label>
 
     <div id="uppyDashboard" #uppyDashboard></div>
 
