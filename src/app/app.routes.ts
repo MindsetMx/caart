@@ -57,6 +57,16 @@ export const routes: Routes = [
         path: 'solicitudes',
         canActivate: [AuthGuard],
         loadComponent: () => import('./auctions/pages/publication-requests/publication-requests.component').then((m) => m.PublicationRequestsComponent),
+      },
+      {
+        path: 'dashboard',
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: 'solicitudes',
+            loadComponent: () => import('./dashboard/pages/requests/requests.component').then((m) => m.RequestsComponent),
+          },
+        ]
       }
     ]
   },

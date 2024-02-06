@@ -43,6 +43,10 @@ export class AppComponent {
     }
   });
 
+  isDashboardRoute(): boolean {
+    return this.#router.url.startsWith('/dashboard');
+  }
+
   openSignInModal(): void {
     this.signInModalIsOpen.set(true);
   }

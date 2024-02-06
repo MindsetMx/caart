@@ -1,5 +1,9 @@
+@if (!isDashboardRoute()) {
 <shared-navbar [signInModalIsOpen]="signInModalIsOpen" [registerModalIsOpen]="registerModalIsOpen"></shared-navbar>
+}
 
 <router-outlet (openSignInModal)="openSignInModal()"></router-outlet>
 
+@if (!isDashboardRoute()) {
 <shared-footer></shared-footer>
+}
