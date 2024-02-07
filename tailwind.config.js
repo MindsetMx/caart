@@ -43,7 +43,8 @@ module.exports = {
     "py-3",
     "py-3.5",
     "px-8",
-    "max-h-[48px]"
+    "max-h-[48px]",
+    "h-64",
   ]
 }
 
