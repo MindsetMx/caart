@@ -49,6 +49,10 @@ export const routes: Routes = [
         loadComponent: () => import('./auctions/pages/auction/auction.component').then((m) => m.AuctionComponent),
       },
       {
+        path: 'subastas-en-vivo',
+        loadComponent: () => import('./auctions/pages/live-auctions/live-auctions.component').then((m) => m.LiveAuctionsComponent),
+      },
+      {
         path: 'publicaciones',
         canActivate: [AuthGuard],
         loadComponent: () => import('./auctions/pages/auction-car-publications/auction-car-publications.component').then((m) => m.AuctionCarPublishesComponent),

@@ -7,7 +7,7 @@ register();
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { InputDirective } from '@shared/directives/input.directive';
-import { MakeAnOfferModalComponent } from '../modals/make-an-offer-modal/make-an-offer-modal.component';
+import { MakeAnOfferModalComponent } from '../../modals/make-an-offer-modal/make-an-offer-modal.component';
 import { Subscription, interval } from 'rxjs';
 import { SlicePipe } from '@angular/common';
 
