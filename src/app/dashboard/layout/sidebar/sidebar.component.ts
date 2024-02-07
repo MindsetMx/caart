@@ -1,6 +1,9 @@
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, signal } from '@angular/core';
-import { trigger, state, style, animate, transition, query, animateChild, group } from '@angular/animations';
+import { trigger, style, animate, transition, query, animateChild, group } from '@angular/animations';
+
+import { AuthService } from '@auth/services/auth.service';
+import { UserData } from '@auth/interfaces';
 
 @Component({
   selector: 'sidebar-layout',
@@ -41,7 +44,13 @@ import { trigger, state, style, animate, transition, query, animateChild, group 
 export class SidebarComponent {
   @ViewChild('mobileSidebar') mobileSidebar?: ElementRef;
 
+  #authService = inject(AuthService);
+
   sideBarIsOpen = signal<boolean>(false);
+
+  get user(): UserData | null {
+    return this.#authService.currentUser();
+  }
 
   openSidebar(): void {
     this.sideBarIsOpen.set(true);
