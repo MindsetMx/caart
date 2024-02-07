@@ -63,6 +63,10 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
           {
+            path: 'publicaciones',
+            loadComponent: () => import('./dashboard/pages/publications/publications.component').then((m) => m.PublicationsComponent),
+          },
+          {
             path: 'solicitudes',
             loadComponent: () => import('./dashboard/pages/requests/requests.component').then((m) => m.RequestsComponent),
           },

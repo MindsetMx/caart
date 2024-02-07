@@ -4,12 +4,14 @@ import { trigger, style, animate, transition, query, animateChild, group } from 
 
 import { AuthService } from '@auth/services/auth.service';
 import { UserData } from '@auth/interfaces';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'sidebar-layout',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
