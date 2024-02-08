@@ -74,3 +74,32 @@ select {
 .uppy-size--md .uppy-Dashboard-inner {
   width: 100% !important;
 }
+
+.mat-mdc-form-field[name="mat-form-field1"] {
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    @apply bg-transparent;
+  }
+
+  .mdc-line-ripple {
+    @apply hidden;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    @apply border rounded-lg;
+  }
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label,
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label--float-above {
+    @apply text-black text-sm;
+  }
+
+  .mat-mdc-select {
+    @apply text-sm;
+  }
+}
+
+.mat-mdc-option[name="mat-option1"] {
+  .mdc-list-item__primary-text {
+    @apply text-sm !important;
+  }
+}

@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, ViewEncapsulation, signal } from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { SortComponent } from '@shared/components/sort/sort.component';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TertiaryButtonDirective } from '@shared/directives/tertiary-button.directive';
 
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 
+const MOBILE_SCREEN_WIDTH = 1024;
 @Component({
   selector: 'app-live-auctions',
   standalone: true,
@@ -13,7 +18,11 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
     CommonModule,
     TabsWithIconsComponent,
     SortComponent,
-    TertiaryButtonDirective
+    TertiaryButtonDirective,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    AuctionFilterMenuComponent
   ],
   templateUrl: './live-auctions.component.html',
   styleUrl: './live-auctions.component.css',
@@ -22,7 +31,17 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 export class LiveAuctionsComponent {
   tabs: TabWithIcon[];
   currentTab = signal<TabWithIcon>({} as TabWithIcon);
+  toppings = new FormControl('');
+  auctionFilterMenuIsOpen = signal<boolean>(false);
 
+  isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH; // Actualiza el valor en tiempo real
+  }
+
+  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   constructor() {
     this.tabs =
       [
@@ -51,5 +70,9 @@ export class LiveAuctionsComponent {
 
   onTabSelected(tab: TabWithIcon): void {
     this.currentTab.set(tab);
+  }
+
+  openAuctionFilterMenu(): void {
+    this.auctionFilterMenuIsOpen.set(true);
   }
 }
