@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { SortComponent } from '@shared/components/sort/sort.component';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
+import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { TertiaryButtonDirective } from '@shared/directives/tertiary-button.directive';
 
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
@@ -19,6 +20,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
     TabsWithIconsComponent,
     SortComponent,
     TertiaryButtonDirective,
+    PrimaryButtonDirective,
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,

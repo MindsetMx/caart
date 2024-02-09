@@ -31,7 +31,9 @@
     </button>
 
     @if (isMobile) {
-    <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full" class="text-sm" sharedTertiaryButton>
+    <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"
+      class="text-sm inline-flex justify-center bg-black" sharedPrimaryButton>
+      <img src="assets/img/icons/filter.svg" alt="ícono filtro" class="w-5 h-5 mr-2">
       Filtros
     </button>
     }
