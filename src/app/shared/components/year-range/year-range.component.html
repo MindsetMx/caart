@@ -1,0 +1,17 @@
+<shared-dropdown width="w-60" [isOpen]="isOpen" sharedClickOutside (clickOutside)="close()">
+  <button type="button" (click)="toggle()"
+    class="inline-flex border h-full items-center w-full justify-center gap-x-2 rounded-md bg-white px-4 py-2 text-sm text-gray-900 hover:bg-gray-50"
+    aria-expanded="true" aria-haspopup="true">
+    Rango de años
+    <img class="w-3 h-3 ml-4" src="assets/img/shared/icons/arrow-down.svg" alt="ícono flecha abajo">
+  </button>
+  <div menu-items>
+    <div class="flex gap-3 items-center px-4 py-2">
+      <input (input)="updateSinceInput($event)" (blur)="markAsTouched()" type="number" min="0" max="9999"
+        background="bg-transparent" class="border" sharedInput [disabled]="disabled">
+      <span class="text-center text-sm">a</span>
+      <input (input)="updateUntilInput($event)" (blur)="markAsTouched()" type="number" min="0" max="9999"
+        background="bg-transparent" class="border" sharedInput [disabled]="disabled">
+    </div>
+  </div>
+</shared-dropdown>

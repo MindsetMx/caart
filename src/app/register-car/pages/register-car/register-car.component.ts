@@ -25,7 +25,7 @@ import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { Brands, Colors } from '@app/register-car/interfaces';
-import { InputFormatterDirective } from '@shared/directives/InputFormatter.directive';
+import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
 
 @Component({
   selector: 'register-car',

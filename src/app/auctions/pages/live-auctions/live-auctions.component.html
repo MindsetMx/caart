@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <sort></sort>
+    <sort [options]="orderByList"></sort>
 
     <button px="px-4" width="lg:w-fit w-full" class="text-sm whitespace-nowrap" sharedTertiaryButton>
       Última oportunidad
@@ -43,56 +43,56 @@
   <div class="flex gap-4">
     <mat-form-field name="mat-form-field1">
       <mat-label>Tipo de listado</mat-label>
-      <mat-select [formControl]="toppings" multiple>
+      <mat-select [formControl]="auctionType" multiple>
         <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          @if ((toppings.value?.length || 0) > 1) {
+          {{auctionType.value?.[0] || ''}}
+          @if ((auctionType.value?.length || 0) > 1) {
           <span>
-            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+            (+{{(auctionType.value?.length || 0) - 1}} {{auctionType.value?.length === 2 ? 'other' : 'others'}})
           </span>
           }
         </mat-select-trigger>
-        @for (topping of toppingList; track topping) {
-        <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
+        @for (auction of auctionTypeList; track auction) {
+        <mat-option name="mat-option1" [value]="auction">{{auction}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field name="mat-form-field1">
       <mat-label>Categoría</mat-label>
-      <mat-select [formControl]="toppings" multiple>
+      <mat-select [formControl]="category" multiple>
         <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          @if ((toppings.value?.length || 0) > 1) {
+          {{category.value?.[0] || ''}}
+          @if ((category.value?.length || 0) > 1) {
           <span>
-            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+            (+{{(category.value?.length || 0) - 1}} {{category.value?.length === 2 ? 'other' : 'others'}})
           </span>
           }
         </mat-select-trigger>
-        @for (topping of toppingList; track topping) {
-        <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
+        @for (category of categoryList; track category) {
+        <mat-option name="mat-option1" [value]="category">{{category}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field name="mat-form-field1">
-      <mat-label>Epoca</mat-label>
-      <mat-select [formControl]="toppings" multiple>
+      <mat-label>Era</mat-label>
+      <mat-select [formControl]="era" multiple>
         <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          @if ((toppings.value?.length || 0) > 1) {
+          {{era.value?.[0] || ''}}
+          @if ((era.value?.length || 0) > 1) {
           <span>
-            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+            (+{{(era.value?.length || 0) - 1}} {{era.value?.length === 2 ? 'other' : 'others'}})
           </span>
           }
         </mat-select-trigger>
-        @for (topping of toppingList; track topping) {
-        <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
+        @for (era of eraList; track era) {
+        <mat-option name="mat-option1" [value]="era">{{era}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field name="mat-form-field1">
+    <!-- <mat-form-field name="mat-form-field1">
       <mat-label>Rango de años</mat-label>
       <mat-select [formControl]="toppings" multiple>
         <mat-select-trigger>
@@ -107,62 +107,66 @@
         <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
         }
       </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
+
+    <div class="flex">
+      <year-range class="w-max"></year-range>
+    </div>
 
     <mat-form-field name="mat-form-field1">
       <mat-label>Termina en</mat-label>
-      <mat-select [formControl]="toppings" multiple>
+      <mat-select [formControl]="endsIn" multiple>
         <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          @if ((toppings.value?.length || 0) > 1) {
+          {{endsIn.value?.[0] || ''}}
+          @if ((endsIn.value?.length || 0) > 1) {
           <span>
-            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+            (+{{(endsIn.value?.length || 0) - 1}} {{endsIn.value?.length === 2 ? 'other' : 'others'}})
           </span>
           }
         </mat-select-trigger>
-        @for (topping of toppingList; track topping) {
-        <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
+        @for (endsIn of endsInList; track endsIn) {
+        <mat-option name="mat-option1" [value]="endsIn">{{endsIn}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field name="mat-form-field1">
       <mat-label>Oferta actual</mat-label>
-      <mat-select [formControl]="toppings" multiple>
+      <mat-select [formControl]="currentOffer" multiple>
         <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          @if ((toppings.value?.length || 0) > 1) {
+          {{currentOffer.value?.[0] || ''}}
+          @if ((currentOffer.value?.length || 0) > 1) {
           <span>
-            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+            (+{{(currentOffer.value?.length || 0) - 1}} {{currentOffer.value?.length === 2 ? 'other' : 'others'}})
           </span>
           }
         </mat-select-trigger>
-        @for (topping of toppingList; track topping) {
+        @for (topping of currentOfferList; track topping) {
         <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field name="mat-form-field1">
-      <mat-label>Ciudad</mat-label>
-      <mat-select [formControl]="toppings" multiple>
+      <mat-label>Estado</mat-label>
+      <mat-select [formControl]="states" multiple>
         <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          @if ((toppings.value?.length || 0) > 1) {
+          {{states.value?.[0] || ''}}
+          @if ((states.value?.length || 0) > 1) {
           <span>
-            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+            (+{{(states.value?.length || 0) - 1}} {{states.value?.length === 2 ? 'other' : 'others'}})
           </span>
           }
         </mat-select-trigger>
-        @for (topping of toppingList; track topping) {
-        <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
+        @for (state of statesList; track state) {
+        <mat-option name="mat-option1" [value]="state">{{state}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
   </div>
   }
 
-  <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8">
+  <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8 mt-4">
     @for (item of [].constructor(4); track $index) {
     <div class="relative cursor-pointer">
       <img class="w-full h-64 object-cover" src="assets/img/home/autos en vivo/ford-gt.png" alt="">

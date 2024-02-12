@@ -96,6 +96,11 @@ select {
   .mat-mdc-select {
     @apply text-sm;
   }
+
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-mdc-form-field-bottom-align::before {
+    @apply hidden;
+  }
 }
 
 .mat-mdc-option[name="mat-option1"] {

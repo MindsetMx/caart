@@ -10,7 +10,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 import { Router } from '@angular/router';
 import { DecimalPipe, JsonPipe } from '@angular/common';
-import { InputFormatterDirective } from '@shared/directives/InputFormatter.directive';
+import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
 
 @Component({
   selector: 'app-car-extras',

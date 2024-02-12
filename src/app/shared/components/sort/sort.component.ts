@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
@@ -26,6 +26,8 @@ import { ClickOutsideDirective } from '@shared/directives/click-outside.directiv
   ],
 })
 export class SortComponent {
+  @Input({ required: true }) options: string[] = [];
+
   isOpen = signal<boolean>(false);
 
   toggleSort(): void {
