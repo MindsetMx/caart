@@ -1,0 +1,233 @@
+<h2 class="text-center font-optima font-bold text-3xl my-8">Subastas de Automóviles y Arte</h2>
+
+<div class="grid lg:flex gap-4 mb-4">
+  <div class="w-full my-auto">
+    <label for="search" class="sr-only">Buscar</label>
+    <div class="relative">
+      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+        <img class="h-7 w-7" src="assets/img/navbar/search-outline.svg" alt="ícono lupa">
+      </div>
+      <input
+        class="block w-full rounded-full bg-gray1 py-3 pl-[3.25rem] pr-3 text-gray-900 placeholder:text-gray2 placeholder:font-montserrat focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        placeholder="Buscar" type="search">
+    </div>
+  </div>
+
+  <!-- <sort [options]="orderByList"></sort> -->
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Ordenar por</mat-label>
+    <mat-select>
+      @for (orderBy of orderByList; track $index) {
+      <mat-option name="mat-option1" [value]="orderBy">{{orderBy}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button px="px-4" width="lg:w-fit w-full" class="text-sm whitespace-nowrap" sharedTertiaryButton>
+    Última oportunidad
+  </button>
+
+  <button px="px-4" width="lg:w-fit w-full" class="text-sm" sharedTertiaryButton>
+    Resultados
+  </button>
+
+  @if (isMobile) {
+  <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"
+    class="text-sm inline-flex justify-center bg-black" sharedPrimaryButton>
+    <img src="assets/img/icons/filter.svg" alt="ícono filtro" class="w-5 h-5 mr-2">
+    Filtros
+  </button>
+  }
+</div>
+
+@if (!isMobile) {
+<div class="flex gap-4">
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Tipo de listado</mat-label>
+    <mat-select [formControl]="auctionType" multiple>
+      <mat-select-trigger>
+        {{auctionType.value?.[0] || ''}}
+        @if ((auctionType.value?.length || 0) > 1) {
+        <span>
+          (+{{(auctionType.value?.length || 0) - 1}} {{auctionType.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (auction of auctionTypeList; track auction) {
+      <mat-option name="mat-option1" [value]="auction">{{auction}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Categoría</mat-label>
+    <mat-select [formControl]="category" multiple>
+      <mat-select-trigger>
+        {{category.value?.[0] || ''}}
+        @if ((category.value?.length || 0) > 1) {
+        <span>
+          (+{{(category.value?.length || 0) - 1}} {{category.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (category of categoryList; track category) {
+      <mat-option name="mat-option1" [value]="category">{{category}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Era</mat-label>
+    <mat-select [formControl]="era" multiple>
+      <mat-select-trigger>
+        {{era.value?.[0] || ''}}
+        @if ((era.value?.length || 0) > 1) {
+        <span>
+          (+{{(era.value?.length || 0) - 1}} {{era.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (era of eraList; track era) {
+      <mat-option name="mat-option1" [value]="era">{{era}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- <mat-form-field name="mat-form-field1">
+      <mat-label>Rango de años</mat-label>
+      <mat-select [formControl]="toppings" multiple>
+        <mat-select-trigger>
+          {{toppings.value?.[0] || ''}}
+          @if ((toppings.value?.length || 0) > 1) {
+          <span>
+            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+          </span>
+          }
+        </mat-select-trigger>
+        @for (topping of toppingList; track topping) {
+        <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field> -->
+
+  <div class="flex">
+    <year-range class="w-max"></year-range>
+  </div>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Termina en</mat-label>
+    <mat-select [formControl]="endsIn" multiple>
+      <mat-select-trigger>
+        {{endsIn.value?.[0] || ''}}
+        @if ((endsIn.value?.length || 0) > 1) {
+        <span>
+          (+{{(endsIn.value?.length || 0) - 1}} {{endsIn.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (endsIn of endsInList; track endsIn) {
+      <mat-option name="mat-option1" [value]="endsIn">{{endsIn}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Oferta actual</mat-label>
+    <mat-select [formControl]="currentOffer" multiple>
+      <mat-select-trigger>
+        {{currentOffer.value?.[0] || ''}}
+        @if ((currentOffer.value?.length || 0) > 1) {
+        <span>
+          (+{{(currentOffer.value?.length || 0) - 1}} {{currentOffer.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (topping of currentOfferList; track topping) {
+      <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Estado</mat-label>
+    <mat-select [formControl]="states" multiple>
+      <mat-select-trigger>
+        {{states.value?.[0] || ''}}
+        @if ((states.value?.length || 0) > 1) {
+        <span>
+          (+{{(states.value?.length || 0) - 1}} {{states.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (state of statesList; track state) {
+      <mat-option name="mat-option1" [value]="state">{{state}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+}
+
+<div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8 mt-4">
+  @for (item of [].constructor(4); track $index) {
+  <div class="relative cursor-pointer">
+    <img class="w-full h-64 object-cover" src="assets/img/home/autos en vivo/ford-gt.png" alt="">
+    <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
+      <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
+    </button>
+
+    <div class="mt-4">
+      <p class="font-optima font-semibold text-xl">2017 Ford GT Heritage Edition</p>
+      <p class="text-gray4">
+        Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum...
+      </p>
+      <span class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: $8,000,500 MXN &nbsp; · &nbsp;
+        <img class="w-5 h-5" src="assets/img/icons/time-outline.svg" alt=""> &nbsp; 4d, 15h</span>
+    </div>
+  </div>
+  <div class="relative cursor-pointer">
+    <img class="w-full h-64 object-cover" src="assets/img/home/arte en vivo/BalloonVenusHohlenFelsMagenta01 1.png"
+      alt="">
+    <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
+      <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
+    </button>
+
+    <div class="mt-4">
+      <p class="font-optima font-semibold text-xl">Ballon Venus, Jeff Koons</p>
+      <span class="inline-block text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded mb-2">
+        Sin Reserva
+      </span>
+      <p class="text-gray4">
+        Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum...
+      </p>
+      <p>Valor estimado: $8,000 - $12,000 MXN</p>
+      <span class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: $8,000,500 MXN &nbsp; · &nbsp;
+        <img class="w-5 h-5" src="assets/img/icons/time-outline.svg" alt=""> &nbsp; <span
+          class="text-red-500">19:05:34</span></span>
+    </div>
+  </div>
+  <div class="relative cursor-pointer">
+    <img class="w-full h-64 object-cover" src="assets/img/home/autos en vivo/ford-gt.png" alt="">
+    <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
+      <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
+    </button>
+
+    <div class="mt-4">
+      <p class="font-optima font-semibold text-xl">2017 Ford GT Heritage Edition</p>
+      <span class="inline-block text-sm w-fit bg-black/30 text-black px-4 py-1 rounded mb-2">
+        Premium
+      </span>
+      <p class="text-gray4">
+        Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum...
+      </p>
+      <span class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: $8,000,500 MXN &nbsp; · &nbsp;
+        <img class="w-5 h-5" src="assets/img/icons/time-outline.svg" alt=""> &nbsp; <span
+          class="text-red-500">15:22:17</span></span>
+    </div>
+  </div>
+  }
+</div>
+
+<auction-filter-menu [auctionTypeList]="auctionTypeList" [categoryList]="categoryList"
+  [currentOfferList]="currentOfferList" [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList"
+  [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen"></auction-filter-menu>
