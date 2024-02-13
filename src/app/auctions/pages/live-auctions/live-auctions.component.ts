@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, ViewEncapsulation, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, ViewEncapsulation, inject, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
 import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { SortComponent } from '@shared/components/sort/sort.component';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
@@ -45,6 +46,8 @@ export class LiveAuctionsComponent {
   states = new FormControl('');
 
   auctionFilterMenuIsOpen = signal<boolean>(false);
+
+  #router = inject(Router);
 
   isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH;
 
@@ -89,6 +92,13 @@ export class LiveAuctionsComponent {
 
   onTabSelected(tab: TabWithIcon): void {
     this.currentTab.set(tab);
+
+    this.#router.navigate([], {
+      queryParams: {
+        tab: tab.id
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   openAuctionFilterMenu(): void {
