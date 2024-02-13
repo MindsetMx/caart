@@ -12,18 +12,29 @@
     @for (item of [].constructor(5); track $index) {
     <swiper-slide class="relative">
       <img class="w-full" src="assets/img/home/carousel/banner.png" alt="imagen automóvil">
+      @if (!isMobile) {
       <div class="text-white text-lg absolute bottom-0 pb-10 pl-20 pt-6 gradient w-full">
         <p class="font-optima text-3xl font-bold">1993 Porsche 911 Turbo</p>
         <p>Oferta: $5,350,234&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;4 días</p>
         CDMX, México
       </div>
+      }
 
-      <button class="absolute bottom-10 bg-white/50 rounded-full p-2 right-20">
+      <button class="absolute bg-white/50 rounded-full p-2"
+        [ngClass]="isMobile ? 'top-4 right-4' : 'bottom-10 right-20'">
         <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
       </button>
     </swiper-slide>
     }
   </swiper-container>
+
+  @if (isMobile) {
+  <div class="text-lg w-full mt-4">
+    <p class="font-optima text-3xl font-bold">1993 Porsche 911 Turbo</p>
+    <p>Oferta: $5,350,234&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;4 días</p>
+    CDMX, México
+  </div>
+  }
 </section>
 
 <section class="container">

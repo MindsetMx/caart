@@ -1,16 +1,18 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { register } from 'swiper/element/bundle';
 register();
 
 import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'home',
   standalone: true,
   imports: [
     SecondaryButtonDirective,
-    RouterLink
+    RouterLink,
+    CommonModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -19,6 +21,13 @@ import { RouterLink } from '@angular/router';
 })
 export class HomeComponent implements AfterViewInit {
   @ViewChild('carousel') carousel!: ElementRef;
+
+  isMobile = window.innerWidth < 768;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.isMobile = window.innerWidth < 768; // Actualiza el valor en tiempo real
+  }
 
   ngAfterViewInit(): void {
     const swiperEl = this.carousel.nativeElement;
