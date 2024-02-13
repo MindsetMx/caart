@@ -8,7 +8,7 @@ import { ClickOutsideDirective } from '@shared/directives/click-outside.directiv
   standalone: true,
   imports: [
     CommonModule,
-    ClickOutsideDirective
+    ClickOutsideDirective,
   ],
   templateUrl: './sort.component.html',
   styleUrl: './sort.component.css',

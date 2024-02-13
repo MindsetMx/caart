@@ -20,7 +20,16 @@
       </div>
     </div>
 
-    <sort [options]="orderByList"></sort>
+    <!-- <sort [options]="orderByList"></sort> -->
+
+    <mat-form-field name="mat-form-field1">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select>
+        @for (orderBy of orderByList; track $index) {
+        <mat-option name="mat-option1" [value]="orderBy">{{orderBy}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
     <button px="px-4" width="lg:w-fit w-full" class="text-sm whitespace-nowrap" sharedTertiaryButton>
       Última oportunidad
@@ -235,4 +244,6 @@
   }
 </section>
 
-<auction-filter-menu [isOpen]="auctionFilterMenuIsOpen"></auction-filter-menu>
+<auction-filter-menu [auctionTypeList]="auctionTypeList" [categoryList]="categoryList"
+  [currentOfferList]="currentOfferList" [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList"
+  [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen"></auction-filter-menu>
