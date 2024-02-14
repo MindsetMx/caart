@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild, WritableSignal, signal, effect } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { InputDirective } from '@shared/directives';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'auction-filter-menu',
@@ -9,6 +10,7 @@ import { InputDirective } from '@shared/directives';
   imports: [
     CommonModule,
     InputDirective,
+    FormsModule,
   ],
   templateUrl: './auction-filter-menu.component.html',
   styleUrl: './auction-filter-menu.component.css',
@@ -36,15 +38,34 @@ import { InputDirective } from '@shared/directives';
 })
 export class AuctionFilterMenuComponent {
   @Input() isOpen = signal<boolean>(false);
-  @Input({ required: true }) auctionTypeList!: string[];
-  @Input({ required: true }) categoryList!: string[];
-  @Input({ required: true }) currentOfferList!: string[];
-  @Input({ required: true }) endsInList!: string[];
-  @Input({ required: true }) eraList!: string[];
-  @Input({ required: true }) orderByList!: string[];
-  @Input({ required: true }) statesList!: string[];
+  @Input({ required: true }) auctionTypeList!: { value: string; label: string }[];
+  @Input({ required: true }) categoryList!: { value: string; label: string }[];
+  @Input({ required: true }) currentOfferList!: { value: string; label: string }[];
+  @Input({ required: true }) endsInList!: { value: string; label: string }[];
+  @Input({ required: true }) eraList!: { value: string; label: string }[];
+  @Input({ required: true }) orderByList!: { value: string; label: string }[];
+  @Input({ required: true }) statesList!: { value: string; label: string }[];
+
+  @Output() setAuctionTypeChange = new EventEmitter<string[]>();
+  @Output() setCategoryChange = new EventEmitter<string[]>();
+  @Output() setEraChange = new EventEmitter<string[]>();
+  @Output() setCurrentOfferChange = new EventEmitter<string[]>();
+  @Output() setEndsInChange = new EventEmitter<string[]>();
+  @Output() setOrderByChange = new EventEmitter<string>();
+  @Output() setStatesChange = new EventEmitter<string[]>();
+  @Output() setYearRangeChange = new EventEmitter<{ yearFrom: number, yearTo: number }>();
 
   @ViewChild('filterMenu') filterMenu?: ElementRef;
+
+  auctionType = signal<string[]>([]);
+  category = signal<string[]>([]);
+  era = signal<string[]>([]);
+  currentOffer = signal<string[]>([]);
+  endsIn = signal<string[]>([]);
+  orderBy = signal<string[]>([]);
+  states = signal<string[]>([]);
+  yearFrom = signal<number | undefined>(undefined);
+  yearTo = signal<number | undefined>(undefined);
 
   listingTypeIsOpen = signal<boolean>(false);
   categoryIsOpen = signal<boolean>(false);
@@ -54,6 +75,56 @@ export class AuctionFilterMenuComponent {
   currentOfferIsOpen = signal<boolean>(false);
   statesIsOpen = signal<boolean>(false);
 
+
+  setYearRangeChangeEffect = effect(() => {
+    if (this.yearFrom() && this.yearTo()) {
+      this.setYearRangeChange.emit({ yearFrom: this.yearFrom()!, yearTo: this.yearTo()! });
+    }
+  }, { allowSignalWrites: true });
+
+  toggleSelection(value: string, selectedValues: WritableSignal<string[]>): void {
+    (this.isSelected(value, selectedValues))
+      ? selectedValues.update((values) => values.filter((val) => val !== value))
+      : selectedValues.update((values) => [...values, value]);
+
+    switch (selectedValues) {
+      case this.auctionType:
+        this.setAuctionTypeChange.emit(selectedValues());
+        break;
+      case this.category:
+        this.setCategoryChange.emit(selectedValues());
+        break;
+      case this.era:
+        this.setEraChange.emit(selectedValues());
+        break;
+      case this.currentOffer:
+        this.setCurrentOfferChange.emit(selectedValues());
+        break;
+      case this.endsIn:
+        this.setEndsInChange.emit(selectedValues());
+        break;
+      case this.states:
+        this.setStatesChange.emit(selectedValues());
+        break;
+    }
+  }
+
+  toggleSelectionOrderBy(value: string): void {
+    this.orderBy.set([value]);
+    this.setOrderByChange.emit(value);
+  }
+
+  isSelected(value: string, selectedValues: WritableSignal<string[]>): boolean {
+    return selectedValues().includes(value);
+  }
+
+  setYearFrom(value: number): void {
+    this.yearFrom.set(value);
+  }
+
+  setYearTo(value: number): void {
+    this.yearTo.set(value);
+  }
 
   openMenu(): void {
     this.isOpen.set(true);

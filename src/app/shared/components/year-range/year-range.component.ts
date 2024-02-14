@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropdownComponent } from '@shared/components/dropdown/dropdown.component';
 import { ClickOutsideDirective, InputDirective } from '@shared/directives';
 
@@ -9,7 +9,8 @@ import { ClickOutsideDirective, InputDirective } from '@shared/directives';
   imports: [
     DropdownComponent,
     ClickOutsideDirective,
-    InputDirective
+    InputDirective,
+    FormsModule
   ],
   templateUrl: './year-range.component.html',
   styleUrl: './year-range.component.css',
@@ -34,33 +35,37 @@ export class YearRangeComponent implements ControlValueAccessor {
     return this.#disabled;
   }
 
-  since = signal<number>(0);
-  until = signal<number>(0);
-  #onChange: (value: { since: number, until: number }) => void = () => { };
+  yearFrom = signal<number | undefined>(undefined);
+  yearTo = signal<number | undefined>(undefined);
+  #onChange: (value: { yearFrom: number | undefined, yearTo: number | undefined }) => void = () => { };
   #onTouched: () => void = () => { };
 
-  updateSinceInput(value: Event): void {
-    this.since.set(Number((value.target as HTMLInputElement).value));
+  updateYearFromInput(value: number): void {
+    this.yearFrom.set(value);
     this.emitChanges();
   }
 
-  updateUntilInput(value: Event): void {
-    this.until.set(Number((value.target as HTMLInputElement).value));
+  updateYearToInput(value: number): void {
+    this.yearTo.set(value);
     this.emitChanges();
   }
 
   private emitChanges(): void {
-    this.#onChange({ since: this.since(), until: this.until() });
+    // this.#onChange({ yearFrom: this.yearFrom(), yearTo: this.yearTo() });
+    // if (this.yearFrom() && this.yearTo()) {
+    this.#onChange({ yearFrom: this.yearFrom(), yearTo: this.yearTo() });
+    // }
   }
 
   markAsTouched(): void {
     this.#onTouched();
   }
 
-  writeValue(obj: { since: number, until: number }): void {
+  writeValue(obj: { yearFrom: number, yearTo: number }): void {
     if (obj) {
-      this.since.set(obj.since);
-      this.until.set(obj.until);
+      // if (obj && obj.yearFrom && obj.yearTo) {
+      this.yearFrom.set(obj.yearFrom);
+      this.yearTo.set(obj.yearTo);
     }
   }
 

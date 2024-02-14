@@ -13,13 +13,11 @@
     </div>
   </div>
 
-  <!-- <sort [options]="orderByList"></sort> -->
-
   <mat-form-field name="mat-form-field1">
     <mat-label>Ordenar por</mat-label>
-    <mat-select>
+    <mat-select [ngModel]="orderBy()" (ngModelChange)="setOrderBy($event)">
       @for (orderBy of orderByList; track $index) {
-      <mat-option name="mat-option1" [value]="orderBy">{{orderBy}}</mat-option>
+      <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
@@ -45,123 +43,106 @@
 <div class="flex gap-4">
   <mat-form-field name="mat-form-field1">
     <mat-label>Tipo de listado</mat-label>
-    <mat-select [formControl]="auctionType" multiple>
+    <mat-select [ngModel]="auctionType()" (ngModelChange)="setAuctionType($event)" multiple>
       <mat-select-trigger>
-        {{auctionType.value?.[0] || ''}}
-        @if ((auctionType.value?.length || 0) > 1) {
+        {{auctionType()[0]}}
+        @if (auctionType().length > 1) {
         <span>
-          (+{{(auctionType.value?.length || 0) - 1}} {{auctionType.value?.length === 2 ? 'other' : 'others'}})
+          (+{{auctionType().length - 1}} {{auctionType().length === 2 ? 'other' : 'others'}})
         </span>
         }
       </mat-select-trigger>
       @for (auction of auctionTypeList; track auction) {
-      <mat-option name="mat-option1" [value]="auction">{{auction}}</mat-option>
+      <mat-option name="mat-option1" [value]="auction.value">{{auction.label}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Categoría</mat-label>
-    <mat-select [formControl]="category" multiple>
+    <mat-select [ngModel]="category()" (ngModelChange)="setCategory($event)" multiple>
       <mat-select-trigger>
-        {{category.value?.[0] || ''}}
-        @if ((category.value?.length || 0) > 1) {
+        {{category()[0]}}
+        @if (category().length > 1) {
         <span>
-          (+{{(category.value?.length || 0) - 1}} {{category.value?.length === 2 ? 'other' : 'others'}})
+          (+{{category().length - 1}} {{category().length === 2 ? 'other' : 'others'}})
         </span>
         }
       </mat-select-trigger>
       @for (category of categoryList; track category) {
-      <mat-option name="mat-option1" [value]="category">{{category}}</mat-option>
+      <mat-option name="mat-option1" [value]="category.value">{{category.label}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Era</mat-label>
-    <mat-select [formControl]="era" multiple>
+    <mat-select [ngModel]="era()" (ngModelChange)="setEra($event)" multiple>
       <mat-select-trigger>
-        {{era.value?.[0] || ''}}
-        @if ((era.value?.length || 0) > 1) {
+        {{era()[0]}}
+        @if (era().length > 1) {
         <span>
-          (+{{(era.value?.length || 0) - 1}} {{era.value?.length === 2 ? 'other' : 'others'}})
+          (+{{era().length - 1}} {{era().length === 2 ? 'other' : 'others'}})
         </span>
         }
       </mat-select-trigger>
       @for (era of eraList; track era) {
-      <mat-option name="mat-option1" [value]="era">{{era}}</mat-option>
+      <mat-option name="mat-option1" [value]="era.value">{{era.label}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 
-  <!-- <mat-form-field name="mat-form-field1">
-      <mat-label>Rango de años</mat-label>
-      <mat-select [formControl]="toppings" multiple>
-        <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          @if ((toppings.value?.length || 0) > 1) {
-          <span>
-            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
-          </span>
-          }
-        </mat-select-trigger>
-        @for (topping of toppingList; track topping) {
-        <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field> -->
-
   <div class="flex">
-    <year-range class="w-max"></year-range>
+    <year-range [ngModel]="yearRange()" (ngModelChange)="setYearRange($event)" class="w-max"></year-range>
   </div>
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Termina en</mat-label>
-    <mat-select [formControl]="endsIn" multiple>
+    <mat-select [ngModel]="endsIn()" (ngModelChange)="setEndsIn($event)" multiple>
       <mat-select-trigger>
-        {{endsIn.value?.[0] || ''}}
-        @if ((endsIn.value?.length || 0) > 1) {
+        {{endsIn()[0]}}
+        @if (endsIn().length > 1) {
         <span>
-          (+{{(endsIn.value?.length || 0) - 1}} {{endsIn.value?.length === 2 ? 'other' : 'others'}})
+          (+{{endsIn().length - 1}} {{endsIn().length === 2 ? 'other' : 'others'}})
         </span>
         }
       </mat-select-trigger>
       @for (endsIn of endsInList; track endsIn) {
-      <mat-option name="mat-option1" [value]="endsIn">{{endsIn}}</mat-option>
+      <mat-option name="mat-option1" [value]="endsIn.value">{{endsIn.label}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Oferta actual</mat-label>
-    <mat-select [formControl]="currentOffer" multiple>
+    <mat-select [ngModel]="currentOffer()" (ngModelChange)="setCurrentOffer($event)" multiple>
       <mat-select-trigger>
-        {{currentOffer.value?.[0] || ''}}
-        @if ((currentOffer.value?.length || 0) > 1) {
+        {{currentOffer()[0]}}
+        @if (currentOffer().length > 1) {
         <span>
-          (+{{(currentOffer.value?.length || 0) - 1}} {{currentOffer.value?.length === 2 ? 'other' : 'others'}})
+          (+{{currentOffer().length - 1}} {{currentOffer().length === 2 ? 'other' : 'others'}})
         </span>
         }
       </mat-select-trigger>
       @for (topping of currentOfferList; track topping) {
-      <mat-option name="mat-option1" [value]="topping">{{topping}}</mat-option>
+      <mat-option name="mat-option1" [value]="topping.value">{{topping.label}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Estado</mat-label>
-    <mat-select [formControl]="states" multiple>
+    <mat-select [ngModel]="states()" (ngModelChange)="setStates($event)" multiple>
       <mat-select-trigger>
-        {{states.value?.[0] || ''}}
-        @if ((states.value?.length || 0) > 1) {
+        {{states()[0]}}
+        @if (states().length > 1) {
         <span>
-          (+{{(states.value?.length || 0) - 1}} {{states.value?.length === 2 ? 'other' : 'others'}})
+          (+{{states().length - 1}} {{states().length === 2 ? 'other' : 'others'}})
         </span>
         }
       </mat-select-trigger>
       @for (state of statesList; track state) {
-      <mat-option name="mat-option1" [value]="state">{{state}}</mat-option>
+      <mat-option name="mat-option1" [value]="state.value">{{state.label}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
@@ -169,15 +150,15 @@
 }
 
 <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8 mt-4">
-  @for (item of [].constructor(4); track $index) {
+  @for (auction of auctions()?.data; track $index) {
   <div class="relative cursor-pointer">
-    <img class="w-full h-64 object-cover" src="assets/img/home/autos en vivo/ford-gt.png" alt="">
+    <img class="w-full h-64 object-cover" [src]="auction.attributes.photos[0]" alt="">
     <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
       <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
     </button>
 
     <div class="mt-4">
-      <p class="font-optima font-semibold text-xl">2017 Ford GT Heritage Edition</p>
+      <p class="font-optima font-semibold text-xl">{{auction.attributes.year}} {{auction.attributes.brand}}</p>
       <p class="text-gray4">
         Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum...
       </p>
@@ -185,6 +166,7 @@
         <img class="w-5 h-5" src="assets/img/icons/time-outline.svg" alt=""> &nbsp; 4d, 15h</span>
     </div>
   </div>
+  }
   <div class="relative cursor-pointer">
     <img class="w-full h-64 object-cover" src="assets/img/home/arte en vivo/BalloonVenusHohlenFelsMagenta01 1.png"
       alt="">
@@ -225,9 +207,11 @@
           class="text-red-500">15:22:17</span></span>
     </div>
   </div>
-  }
 </div>
 
 <auction-filter-menu [auctionTypeList]="auctionTypeList" [categoryList]="categoryList"
   [currentOfferList]="currentOfferList" [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList"
-  [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen"></auction-filter-menu>
+  [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen" (setAuctionTypeChange)="setAuctionType($event)"
+  (setCategoryChange)="setCategory($event)" (setCurrentOfferChange)="setCurrentOffer($event)"
+  (setEndsInChange)="setEndsIn($event)" (setEraChange)="setEra($event)" (setOrderByChange)="setOrderBy($event)"
+  (setStatesChange)="setStates($event)" (setYearRangeChange)="setYearRange($event)"></auction-filter-menu>

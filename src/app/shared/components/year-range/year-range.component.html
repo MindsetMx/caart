@@ -13,11 +13,11 @@
   </button>
   <div menu-items>
     <div class="flex gap-3 items-center px-4 py-2">
-      <input (input)="updateSinceInput($event)" (blur)="markAsTouched()" type="number" min="0" max="9999"
-        background="bg-transparent" class="border" sharedInput [disabled]="disabled">
+      <input [ngModel]="yearFrom()" (ngModelChange)="updateYearFromInput($event)" (blur)="markAsTouched()" type="number"
+        min="0" max="9999" background="bg-transparent" class="border" sharedInput [disabled]="disabled">
       <span class="text-center text-sm">a</span>
-      <input (input)="updateUntilInput($event)" (blur)="markAsTouched()" type="number" min="0" max="9999"
-        background="bg-transparent" class="border" sharedInput [disabled]="disabled">
+      <input [ngModel]="yearTo()" (ngModelChange)="updateYearToInput($event)" (blur)="markAsTouched()" type="number"
+        min="0" max="9999" background="bg-transparent" class="border" sharedInput [disabled]="disabled">
     </div>
   </div>
 </shared-dropdown>

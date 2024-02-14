@@ -8,7 +8,7 @@
     <div #filterMenu
       class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
       <div class="flex items-center justify-between px-4">
-        <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+        <h2 class="text-lg font-medium text-gray-900">Filtros</h2>
         <button (click)="closeMenu()" type="button"
           class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400">
           <span class="sr-only">Close menu</span>
@@ -20,7 +20,7 @@
       </div>
 
       <!-- Filters -->
-      <form class="mt-4 border-t border-gray-200">
+      <div class="mt-4 border-t border-gray-200">
         <h3 class="sr-only">Filter options</h3>
         <!-- Tipo de listado -->
         <div class="px-4 py-6">
@@ -50,11 +50,14 @@
           @if (listingTypeIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-0">
             <div class="space-y-6">
-              @for (auctionType of auctionTypeList; track $index) {
+              @for (_auctionType of auctionTypeList; track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-color-0" name="color[]" value="white" type="checkbox"
+                <input id="filter-mobile-auctionType-{{ $index }}"
+                  [checked]="auctionType().includes(_auctionType.value)"
+                  (change)="toggleSelectionOrderBy(_auctionType.value)" type="checkbox"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                <label for="filter-mobile-color-0" class="ml-3 min-w-0 flex-1 text-gray-500">{{auctionType}}</label>
+                <label for="filter-mobile-auctionType-{{ $index }}"
+                  class="ml-3 min-w-0 flex-1 text-gray-500">{{_auctionType.label}}</label>
               </div>
               }
             </div>
@@ -90,11 +93,13 @@
           <!-- Filter section, show/hide based on section state. -->
           <div class="pt-6" id="filter-section-mobile-1">
             <div class="space-y-6">
-              @for (category of categoryList; track $index) {
+              @for (_category of categoryList; track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-category-0" name="category[]" value="new-arrivals" type="checkbox"
+                <input id="filter-mobile-category-{{ $index }}" [checked]="category().includes(_category.value)"
+                  (change)="toggleSelection(_category.value, category)" type="checkbox"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                <label for="filter-mobile-category-0" class="ml-3 min-w-0 flex-1 text-gray-500">{{category}}</label>
+                <label for="filter-mobile-category-{{ $index }}"
+                  class="ml-3 min-w-0 flex-1 text-gray-500">{{_category.label}}</label>
               </div>
               }
             </div>
@@ -130,11 +135,13 @@
           @if (eraIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-2">
             <div class="space-y-6">
-              @for (era of eraList; track $index) {
+              @for (_era of eraList; track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-size-0" name="size[]" value="2l" type="checkbox"
+                <input id="filter-mobile-era-{{ $index }}" [checked]="era().includes(_era.value)"
+                  (change)="toggleSelection(_era.value, era)" type="checkbox"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                <label for="filter-mobile-size-0" class="ml-3 min-w-0 flex-1 text-gray-500">{{era}}</label>
+                <label for="filter-mobile-era-{{ $index }}"
+                  class="ml-3 min-w-0 flex-1 text-gray-500">{{_era.label}}</label>
               </div>
               }
             </div>
@@ -170,9 +177,11 @@
           @if (yearsRangeIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-3">
             <div class="flex gap-3 items-center w-44">
-              <input type="number" min="0" max="9999" background="bg-transparent" class="border" sharedInput>
+              <input [ngModel]="yearFrom()" (ngModelChange)="setYearFrom($event)" type="number" min="0" max="9999"
+                background="bg-transparent" class="border" sharedInput>
               <span class="text-center text-sm">a</span>
-              <input type="number" min="0" max="9999" background="bg-transparent" class="border" sharedInput>
+              <input [ngModel]="yearTo()" (ngModelChange)="setYearTo($event)" type="number" min="0" max="9999"
+                background="bg-transparent" class="border" sharedInput>
             </div>
           </div>
           }
@@ -206,11 +215,13 @@
           @if (endsInIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-3">
             <div class="space-y-6">
-              @for (endsIn of endsInList; track $index) {
+              @for (_endsIn of endsInList; track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-endsIn-0" name="endsIn[]" value="1d" type="checkbox"
+                <input id="filter-mobile-endsIn-{{ $index }}" [checked]="endsIn().includes(_endsIn.value)"
+                  (change)="toggleSelection(_endsIn.value, endsIn)" type="checkbox"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                <label for="filter-mobile-endsIn-0" class="ml-3 min-w-0 flex-1 text-gray-500">{{endsIn}}</label>
+                <label for="filter-mobile-endsIn-{{ $index }}"
+                  class="ml-3 min-w-0 flex-1 text-gray-500">{{_endsIn.label}}</label>
               </div>
               }
             </div>
@@ -246,12 +257,14 @@
           @if (currentOfferIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-4">
             <div class="space-y-6">
-              @for (currentOffer of currentOfferList; track $index) {
+              @for (_currentOffer of currentOfferList; track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-currentOffer-0" name="currentOffer[]" value="1d" type="checkbox"
+                <input id="filter-mobile-currentOffer-{{ $index }}"
+                  [checked]="currentOffer().includes(_currentOffer.value)"
+                  (change)="toggleSelection(_currentOffer.value, currentOffer)" type="checkbox"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                <label for="filter-mobile-currentOffer-0"
-                  class="ml-3 min-w-0 flex-1 text-gray-500">{{currentOffer}}</label>
+                <label for="filter-mobile-currentOffer-{{ $index }}"
+                  class="ml-3 min-w-0 flex-1 text-gray-500">{{_currentOffer.label}}</label>
               </div>
               }
             </div>
@@ -287,18 +300,20 @@
           @if (statesIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-5">
             <div class="space-y-6">
-              @for (state of statesList; track $index) {
+              @for (_state of statesList; track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-state-0" name="state[]" value="1d" type="checkbox"
+                <input id="filter-mobile-state-{{ $index }}" [checked]="states().includes(_state.value)"
+                  (change)="toggleSelection(_state.value, states)" type="checkbox"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                <label for="filter-mobile-state-0" class="ml-3 min-w-0 flex-1 text-gray-500">{{state}}</label>
+                <label for="filter-mobile-state-{{ $index }}"
+                  class="ml-3 min-w-0 flex-1 text-gray-500">{{_state.label}}</label>
               </div>
               }
             </div>
           </div>
           }
         </div>
-      </form>
+      </div>
     </div>
   </div>
   }
