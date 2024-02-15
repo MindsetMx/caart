@@ -1,15 +1,16 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { VehicleAuction, VehicleAuctionData } from '@app/auctions/interfaces';
 import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
-import { VehicleAuction } from '@app/auctions/interfaces';
+import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -26,6 +27,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
     AuctionFilterMenuComponent,
     TertiaryButtonDirective,
     PrimaryButtonDirective,
+    CountdownModule,
   ],
   templateUrl: './vehicle-filter-results.component.html',
   styleUrl: './vehicle-filter-results.component.css',
@@ -57,6 +59,7 @@ export class VehicleFilterResultsComponent implements OnInit {
 
   categoryList: { value: string; label: string }[] = [
     { value: 'automoviles', label: 'Automóviles' },
+    { value: 'motos', label: 'Motos' },
     { value: 'electric', label: 'Eléctricos' },
     { value: 'proyectos', label: 'Proyectos' },
     { value: 'autopartes', label: 'Autopartes' },
@@ -107,11 +110,32 @@ export class VehicleFilterResultsComponent implements OnInit {
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
   #vehicleFilterService = inject(VehicleFilterService);
+  #cdr = inject(ChangeDetectorRef);
 
   auctions = signal<VehicleAuction | null>(null);
 
   ngOnInit(): void {
     this.getLiveAuctions();
+  }
+
+  countdownConfig(auction: VehicleAuctionData): CountdownConfig {
+    let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);
+    return {
+      leftTime: leftTime,
+      format: this.getFormat(leftTime)
+    };
+  }
+
+  getSecondsUntilEndDate(endDate: string): number {
+    let now = new Date();
+    let end = new Date(endDate);
+    let difference = end.getTime() - now.getTime();
+
+    return Math.floor(difference / 1000);
+  }
+
+  getFormat(seconds: number): string {
+    return seconds >= 86400 ? 'd\'d\', H\'h\'' : 'HH:mm:ss';
   }
 
   getLiveAuctions(): void {
@@ -128,6 +152,7 @@ export class VehicleFilterResultsComponent implements OnInit {
       next: (auctions: VehicleAuction) => {
         console.log({ auctions });
         this.auctions.set(auctions);
+        this.#cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
