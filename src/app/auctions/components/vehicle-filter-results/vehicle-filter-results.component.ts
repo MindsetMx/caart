@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
-import { PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
+import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { VehicleAuction, VehicleAuctionData } from '@app/auctions/interfaces';
+import { VehicleAuction } from '@app/auctions/interfaces';
 import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { AuctionCardComponent } from '../auction-card/auction-card.component';
+import { VehicleAuctionData, VehicleAuctionMeta } from '@app/auctions/interfaces/vehicle-auction';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -18,22 +19,26 @@ const MOBILE_SCREEN_WIDTH = 1024;
   selector: 'vehicle-filter-results',
   standalone: true,
   imports: [
+    AuctionCardComponent,
+    AuctionFilterMenuComponent,
     CommonModule,
+    FormsModule,
+    IntersectionDirective,
     MatFormFieldModule,
     MatSelectModule,
-    ReactiveFormsModule,
-    FormsModule,
-    YearRangeComponent,
-    AuctionFilterMenuComponent,
-    TertiaryButtonDirective,
     PrimaryButtonDirective,
-    CountdownModule,
+    ReactiveFormsModule,
+    TertiaryButtonDirective,
+    YearRangeComponent,
   ],
   templateUrl: './vehicle-filter-results.component.html',
   styleUrl: './vehicle-filter-results.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VehicleFilterResultsComponent implements OnInit {
+  currentPage = signal<number>(0);
+  size = signal<number>(1);
+
   auctionType = signal<string[]>([]);
   category = signal<string[]>([]);
   era = signal<string[]>([]);
@@ -112,34 +117,19 @@ export class VehicleFilterResultsComponent implements OnInit {
   #vehicleFilterService = inject(VehicleFilterService);
   #cdr = inject(ChangeDetectorRef);
 
-  auctions = signal<VehicleAuction | null>(null);
+  auctions = signal<VehicleAuction | undefined>(undefined);
 
   ngOnInit(): void {
     this.getLiveAuctions();
   }
 
-  countdownConfig(auction: VehicleAuctionData): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);
-    return {
-      leftTime: leftTime,
-      format: this.getFormat(leftTime)
-    };
-  }
-
-  getSecondsUntilEndDate(endDate: string): number {
-    let now = new Date();
-    let end = new Date(endDate);
-    let difference = end.getTime() - now.getTime();
-
-    return Math.floor(difference / 1000);
-  }
-
-  getFormat(seconds: number): string {
-    return seconds >= 86400 ? 'd\'d\', H\'h\'' : 'HH:mm:ss';
-  }
-
   getLiveAuctions(): void {
+    console.log('getLiveAuctions');
+    this.currentPage.update((page) => page + 1);
+
     this.#vehicleFilterService.getLiveAuctions$(
+      this.currentPage(),
+      this.size(),
       this.auctionType().join(','),
       this.category().join(','),
       this.era().join(','),
@@ -150,9 +140,12 @@ export class VehicleFilterResultsComponent implements OnInit {
       this.states().join(','),
     ).subscribe({
       next: (auctions: VehicleAuction) => {
-        console.log({ auctions });
-        this.auctions.set(auctions);
-        this.#cdr.detectChanges();
+        this.auctions.update((auction) => {
+          return {
+            data: auction ? [...auction.data, ...auctions.data] : auctions.data,
+            meta: auctions.meta,
+          };
+        });
       },
       error: (err) => {
         console.error(err);

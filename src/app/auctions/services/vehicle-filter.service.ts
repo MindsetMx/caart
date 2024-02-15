@@ -13,10 +13,12 @@ export class VehicleFilterService {
 
   #http = inject(HttpClient);
 
-  getLiveAuctions$(auctionType?: string, category?: string, era?: string, range?: { yearFrom: number, yearTo: number }, currentOffer?: string, orderBy?: string, endsIn?: string, states?: string): Observable<VehicleAuction> {
+  getLiveAuctions$(page: number, size: number, auctionType?: string, category?: string, era?: string, range?: { yearFrom: number, yearTo: number }, currentOffer?: string, orderBy?: string, endsIn?: string, states?: string): Observable<VehicleAuction> {
     const url = `${this.#baseUrl}/auctions-cars/live-auctions`;
 
-    let params = new HttpParams();
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
 
     if (auctionType) { params = params.set('type', auctionType); }
     if (category) { params = params.set('category', category); }
