@@ -26,7 +26,6 @@ export class PublicationRequestsComponent implements OnInit {
 
   getPublicationRequests(): void {
     this.#auctionService.getPublicationRequests$().subscribe((response) => {
-      console.log(response.data);
       this.publicationRequests.set(response.data);
     });
   }
@@ -34,12 +33,11 @@ export class PublicationRequestsComponent implements OnInit {
   acceptPublicationRequest(id: string): void {
     this.#auctionService.acceptPublicationRequest$(id).subscribe({
       next: (response) => {
-        console.log(response);
         this.getPublicationRequests();
         this.toastSuccess('Solicitud aceptada');
       },
       error: (error) => {
-        console.log(error);
+        console.error(error);
       }
     });
   }

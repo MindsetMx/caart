@@ -55,13 +55,9 @@ export class CompleteCartRegistrationMenuComponent implements OnInit {
 
   getWizardSteps(): void {
     this.#completeCarRegistrationService.wizardSteps$(this.publicationId).subscribe((wizardSteps) => {
-      // console.log({ wizardSteps });
-      // console.log({ carDetails: wizardSteps.data.attributes.carDetails });
       this.indexCurrentStep = wizardSteps.data.attributes.currentStep;
       this.indexTargetStep = wizardSteps.data.attributes.currentStep;
-      // console.log({ currentStep: this.indexCurrentStep() });
       this.originalAuctionCarId = wizardSteps.data.attributes.originalAuctionCarId;
-      // console.log({ originalAuctionCarId: this.originalAuctionCarId() });
       this.carDetails.set(wizardSteps.data.attributes.carDetails);
     });
   }

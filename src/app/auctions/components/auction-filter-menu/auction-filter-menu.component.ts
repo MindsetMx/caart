@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild, WritableSignal, signal, effect } from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-import { InputDirective } from '@shared/directives';
+import { CommonModule } from '@angular/common';
+import { trigger, style, animate, transition } from '@angular/animations';
+
 import { FormsModule } from '@angular/forms';
+import { InputDirective } from '@shared/directives';
 
 @Component({
   selector: 'auction-filter-menu',
@@ -75,13 +76,6 @@ export class AuctionFilterMenuComponent {
   currentOfferIsOpen = signal<boolean>(false);
   statesIsOpen = signal<boolean>(false);
 
-
-  setYearRangeChangeEffect = effect(() => {
-    if (this.yearFrom() && this.yearTo()) {
-      this.setYearRangeChange.emit({ yearFrom: this.yearFrom()!, yearTo: this.yearTo()! });
-    }
-  }, { allowSignalWrites: true });
-
   toggleSelection(value: string, selectedValues: WritableSignal<string[]>): void {
     (this.isSelected(value, selectedValues))
       ? selectedValues.update((values) => values.filter((val) => val !== value))
@@ -109,10 +103,10 @@ export class AuctionFilterMenuComponent {
     }
   }
 
-  toggleSelectionOrderBy(value: string): void {
-    this.orderBy.set([value]);
-    this.setOrderByChange.emit(value);
-  }
+  // toggleSelectionOrderBy(value: string): void {
+  //   this.orderBy.set([value]);
+  //   this.setOrderByChange.emit(value);
+  // }
 
   isSelected(value: string, selectedValues: WritableSignal<string[]>): boolean {
     return selectedValues().includes(value);
@@ -120,10 +114,18 @@ export class AuctionFilterMenuComponent {
 
   setYearFrom(value: number): void {
     this.yearFrom.set(value);
+
+    if (this.yearTo() !== undefined) {
+      this.setYearRangeChange.emit({ yearFrom: this.yearFrom()!, yearTo: this.yearTo()! });
+    }
   }
 
   setYearTo(value: number): void {
     this.yearTo.set(value);
+
+    if (this.yearFrom() !== undefined) {
+      this.setYearRangeChange.emit({ yearFrom: this.yearFrom()!, yearTo: this.yearTo()! });
+    }
   }
 
   openMenu(): void {

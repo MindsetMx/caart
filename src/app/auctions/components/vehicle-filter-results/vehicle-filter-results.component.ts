@@ -1,17 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
+import { AuctionCardComponent } from '@app/auctions/components/auction-card/auction-card.component';
 import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
 import { VehicleAuction } from '@app/auctions/interfaces';
 import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
-import { AuctionCardComponent } from '../auction-card/auction-card.component';
-import { VehicleAuctionData, VehicleAuctionMeta } from '@app/auctions/interfaces/vehicle-auction';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -37,7 +36,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
 })
 export class VehicleFilterResultsComponent implements OnInit {
   currentPage = signal<number>(0);
-  size = signal<number>(1);
+  size = signal<number>(10);
 
   auctionType = signal<string[]>([]);
   category = signal<string[]>([]);
@@ -115,7 +114,6 @@ export class VehicleFilterResultsComponent implements OnInit {
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
   #vehicleFilterService = inject(VehicleFilterService);
-  #cdr = inject(ChangeDetectorRef);
 
   auctions = signal<VehicleAuction | undefined>(undefined);
 
@@ -124,7 +122,6 @@ export class VehicleFilterResultsComponent implements OnInit {
   }
 
   getLiveAuctions(): void {
-    console.log('getLiveAuctions');
     this.currentPage.update((page) => page + 1);
 
     this.#vehicleFilterService.getLiveAuctions$(
@@ -153,44 +150,56 @@ export class VehicleFilterResultsComponent implements OnInit {
     });
   }
 
+  resetAuctionsAndPage(): void {
+    this.auctions.set(undefined);
+    this.currentPage.set(0);
+  }
+
   setAuctionType(value: string[]): void {
     this.auctionType.set(value);
+    this.resetAuctionsAndPage();
     this.getLiveAuctions();
   }
 
   setCategory(value: string[]): void {
     this.category.set(value);
+    this.resetAuctionsAndPage();
     this.getLiveAuctions();
   }
 
   setEra(value: string[]): void {
     this.era.set(value);
+    this.resetAuctionsAndPage();
     this.getLiveAuctions();
   }
 
   setEndsIn(value: string[]): void {
     this.endsIn.set(value);
+    this.resetAuctionsAndPage();
     this.getLiveAuctions();
   }
 
   setCurrentOffer(value: string[]): void {
     this.currentOffer.set(value);
+    this.resetAuctionsAndPage();
     this.getLiveAuctions();
   }
 
   setStates(value: string[]): void {
     this.states.set(value);
+    this.resetAuctionsAndPage();
     this.getLiveAuctions();
   }
 
   setOrderBy(value: string): void {
     this.orderBy.set(value);
+    this.resetAuctionsAndPage();
     this.getLiveAuctions();
   }
 
   setYearRange(value: { yearFrom: number, yearTo: number }): void {
-    console.log('setYearRange', value);
     this.yearRange.set(value);
+    this.resetAuctionsAndPage();
     this.getLiveAuctions();
   }
 

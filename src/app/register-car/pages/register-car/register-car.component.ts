@@ -241,7 +241,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.reserveValueChangesSubscription = this.reserveControl.valueChanges.subscribe((value) => {
       if (value === 'true') {
-        console.log('true');
         this.reserveAmountControl.setValidators([Validators.required]);
       } else {
         this.reserveAmountControl.clearValidators();
@@ -287,9 +286,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isButtonSubmitDisabled.set(true);
 
     const isValid = this.#validatorsService.isValidForm(this.carRegisterForm);
-
-    console.log(this.carRegisterForm.value);
-    console.log({ isValid });
 
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);

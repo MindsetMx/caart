@@ -97,9 +97,6 @@ export class CarExtrasComponent {
 
     const isValid = this.#validatorsService.isValidForm(this.carExtrasForm);
 
-    console.log({ isValid });
-    console.log({ carExtrasForm: this.carExtrasForm.value });
-
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);
       return;
@@ -109,9 +106,7 @@ export class CarExtrasComponent {
       next: () => {
         this.#router.navigate(['/registro-exitoso-auto']);
       },
-      error: (error) => {
-        console.log(error);
-      },
+      error: (error) => console.error(error),
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
     });
@@ -159,9 +154,7 @@ export class CarExtrasComponent {
         this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
         this.#changeDetectorRef.detectChanges();
       },
-      error: (error) => {
-        console.log(error);
-      },
+      error: (error) => console.error(error),
     });
   }
 

@@ -104,8 +104,6 @@ export class GeneralInformationComponent implements OnInit {
     this.#completeCarRegistrationService.applyDiscountCode$(this.generalInformationForm.value.discountCode)
       .subscribe({
         next: (response) => {
-          console.log(response);
-          console.log(response.discountInfo.attributes.isValid);
           this.applyDiscountCodeResponse.set(response);
         },
         error: (error) => {

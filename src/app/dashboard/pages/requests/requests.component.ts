@@ -30,7 +30,6 @@ export class RequestsComponent {
 
   getPublicationRequests(): void {
     this.#auctionService.getPublicationRequests$().subscribe((response) => {
-      console.log(response.data);
       this.publicationRequests.set(response.data);
     });
   }
@@ -39,14 +38,11 @@ export class RequestsComponent {
     this.acceptPublicationRequestButtonIsDisabled.set(true);
 
     this.#auctionService.acceptPublicationRequest$(id).subscribe({
-      next: (response) => {
-        console.log(response);
+      next: () => {
         this.getPublicationRequests();
         this.toastSuccess('Solicitud aceptada');
       },
-      error: (error) => {
-        console.log(error);
-      }
+      error: (error) => console.error(error),
     }).add(() => {
       this.acceptPublicationRequestButtonIsDisabled.set(false);
     });

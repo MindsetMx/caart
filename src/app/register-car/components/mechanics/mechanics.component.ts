@@ -84,8 +84,6 @@ export class MechanicsComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log('this.uppyDashboard.nativeElement', this.uppyDashboard.nativeElement);
-
     this.uppy = new Uppy({
       debug: true,
       autoProceed: true,
@@ -177,9 +175,7 @@ export class MechanicsComponent implements AfterViewInit {
         this.#completeCarRegistrationService.indexTargetStep.set(4);
         this.#completeCarRegistrationService.indexCurrentStep.set(4);
       },
-      error: (error) => {
-        console.log('error', error);
-      },
+      error: (error) => console.error(error),
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
     });
@@ -188,8 +184,6 @@ export class MechanicsComponent implements AfterViewInit {
   getMechanics(): void {
     this.#completeCarRegistrationService.getMechanics$(this.originalAuctionCarId).subscribe({
       next: (mechanics) => {
-        console.log(mechanics);
-
         const {
           originalRims,
           tireBrand,
@@ -230,9 +224,7 @@ export class MechanicsComponent implements AfterViewInit {
           mechanicsVideos,
         });
       },
-      error: (error) => {
-        console.log(error);
-      },
+      error: (error) => console.error(error),
     });
   }
 

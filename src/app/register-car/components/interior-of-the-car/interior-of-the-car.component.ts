@@ -178,8 +178,6 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
   getInteriorOfTheCar(): void {
     this.#completeCarRegistrationService.getInteriorOfTheCar$(this.originalAuctionCarId).subscribe({
       next: (interiorOfTheCar) => {
-        console.log({ interiorOfTheCar });
-
         const {
           interiorColor,
           material,

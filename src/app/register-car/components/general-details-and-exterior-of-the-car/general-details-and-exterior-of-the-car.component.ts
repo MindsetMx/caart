@@ -234,10 +234,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   exteriorOfTheCarFormSubmit() {
     this.isButtonSubmitDisabled.set(true);
 
-    console.log({ exteriorOfTheCarForm: this.exteriorOfTheCarForm.value });
-
     const isValid = this.#validatorsService.isValidForm(this.exteriorOfTheCarForm);
-    console.log({ isValid });
 
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);
@@ -276,11 +273,8 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
   }
 
   getGeneralInformation(): void {
-    // console.log({ originalAuctionCarId: this.originalAuctionCarId() });
     this.#completeCarRegistrationService.getGeneralInformation$(this.originalAuctionCarId()).subscribe({
       next: (response) => {
-        console.log({ response });
-
         const {
           kmInput,
           brand,
