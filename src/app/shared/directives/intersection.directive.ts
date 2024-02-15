@@ -14,7 +14,7 @@ export class IntersectionDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     const options = {
-      threshold: 0.5 // Umbral de intersección (0.5 significa que al menos la mitad del elemento debe estar visible)
+      threshold: 0 // Umbral de intersección (0.5 significa que al menos la mitad del elemento debe estar visible)
     };
 
     this.#intersectionObserver = new IntersectionObserver(

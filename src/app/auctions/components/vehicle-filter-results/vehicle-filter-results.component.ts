@@ -118,10 +118,10 @@ export class VehicleFilterResultsComponent implements OnInit {
   auctions = signal<VehicleAuction | undefined>(undefined);
 
   ngOnInit(): void {
-    this.getLiveAuctions();
+    this.getLiveAuctions(true);
   }
 
-  getLiveAuctions(): void {
+  getLiveAuctions(replace: boolean = false): void {
     this.currentPage.update((page) => page + 1);
 
     this.#vehicleFilterService.getLiveAuctions$(
@@ -137,6 +137,12 @@ export class VehicleFilterResultsComponent implements OnInit {
       this.states().join(','),
     ).subscribe({
       next: (auctions: VehicleAuction) => {
+        if (replace) {
+          this.auctions.set(auctions);
+          this.getLiveAuctions(false);
+          return;
+        }
+
         this.auctions.update((auction) => {
           return {
             data: auction ? [...auction.data, ...auctions.data] : auctions.data,
@@ -150,57 +156,57 @@ export class VehicleFilterResultsComponent implements OnInit {
     });
   }
 
-  resetAuctionsAndPage(): void {
-    this.auctions.set(undefined);
+  resetPage(): void {
+    // this.auctions.set(undefined);
     this.currentPage.set(0);
   }
 
   setAuctionType(value: string[]): void {
     this.auctionType.set(value);
-    this.resetAuctionsAndPage();
-    this.getLiveAuctions();
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setCategory(value: string[]): void {
     this.category.set(value);
-    this.resetAuctionsAndPage();
-    this.getLiveAuctions();
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setEra(value: string[]): void {
     this.era.set(value);
-    this.resetAuctionsAndPage();
-    this.getLiveAuctions();
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setEndsIn(value: string[]): void {
     this.endsIn.set(value);
-    this.resetAuctionsAndPage();
-    this.getLiveAuctions();
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setCurrentOffer(value: string[]): void {
     this.currentOffer.set(value);
-    this.resetAuctionsAndPage();
-    this.getLiveAuctions();
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setStates(value: string[]): void {
     this.states.set(value);
-    this.resetAuctionsAndPage();
-    this.getLiveAuctions();
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setOrderBy(value: string): void {
     this.orderBy.set(value);
-    this.resetAuctionsAndPage();
-    this.getLiveAuctions();
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setYearRange(value: { yearFrom: number, yearTo: number }): void {
     this.yearRange.set(value);
-    this.resetAuctionsAndPage();
-    this.getLiveAuctions();
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   openAuctionFilterMenu(): void {
