@@ -47,6 +47,8 @@ export class VehicleFilterResultsComponent implements OnInit {
   endsIn = signal<string[]>([]);
   states = signal<string[]>([]);
 
+  search = signal<string>('');
+
   auctionFilterMenuIsOpen = signal<boolean>(false);
 
   isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH;
@@ -135,6 +137,7 @@ export class VehicleFilterResultsComponent implements OnInit {
       this.orderBy(),
       this.endsIn().join(','),
       this.states().join(','),
+      this.search(),
     ).subscribe({
       next: (auctions: VehicleAuction) => {
         if (replace) {
@@ -157,8 +160,13 @@ export class VehicleFilterResultsComponent implements OnInit {
   }
 
   resetPage(): void {
-    // this.auctions.set(undefined);
     this.currentPage.set(0);
+  }
+
+  setSearch(value: string): void {
+    this.search.set(value);
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setAuctionType(value: string[]): void {
