@@ -6,6 +6,7 @@ export interface VehicleAuction {
 export interface VehicleAuctionData {
   type: string;
   id: string;
+  originalAuctionCarId: string;
   attributes: VehicleAuctionAttributes;
 }
 

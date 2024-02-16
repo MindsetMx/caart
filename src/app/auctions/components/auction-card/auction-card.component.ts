@@ -1,15 +1,18 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { VehicleAuctionData } from '@app/auctions/interfaces';
+import { RouterLink } from '@angular/router';
+import { CountdownService } from '@shared/services/countdown.service';
 
 @Component({
   selector: 'auction-card',
   standalone: true,
   imports: [
     CommonModule,
-    CountdownModule
+    CountdownModule,
+    RouterLink
   ],
   templateUrl: './auction-card.component.html',
   styleUrl: './auction-card.component.css',
@@ -17,6 +20,8 @@ import { VehicleAuctionData } from '@app/auctions/interfaces';
 })
 export class AuctionCardComponent {
   @Input({ required: true }) auction!: VehicleAuctionData;
+
+  #countdownService = inject(CountdownService);
 
   countdownConfig(auction: VehicleAuctionData): CountdownConfig {
     let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);
@@ -27,14 +32,10 @@ export class AuctionCardComponent {
   }
 
   getSecondsUntilEndDate(endDate: string): number {
-    let now = new Date();
-    let end = new Date(endDate);
-    let difference = end.getTime() - now.getTime();
-
-    return Math.floor(difference / 1000);
+    return this.#countdownService.getSecondsUntilEndDate(endDate);
   }
 
   getFormat(seconds: number): string {
-    return seconds >= 86400 ? 'd\'d\', H\'h\'' : 'HH:mm:ss';
+    return this.#countdownService.getFormat(seconds);
   }
 }

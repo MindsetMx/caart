@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { environments } from '@env/environments';
-import { AuthService } from './auth.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GeneralInfo } from '@auth/interfaces/general-info';
 
@@ -16,12 +15,6 @@ export class GeneralInfoService {
   getGeneralInfo$(): Observable<GeneralInfo> {
     const url = `${this.#baseUrl}/users/profile/general-info`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    })
-
-    return this.#http.get<GeneralInfo>(url, { headers });
+    return this.#http.get<GeneralInfo>(url);
   }
 }

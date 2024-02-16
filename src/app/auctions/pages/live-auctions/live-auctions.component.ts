@@ -21,9 +21,7 @@ export class LiveAuctionsComponent {
   tabs: TabWithIcon[];
   currentTab = signal<TabWithIcon>({} as TabWithIcon);
 
-
   #router = inject(Router);
-
 
   constructor() {
     this.tabs =

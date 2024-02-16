@@ -45,7 +45,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         loadComponent: () => import('./register-car/pages/successful-car-registration/successful-car-registration.component').then((m) => m.SuccessfulCarRegistrationComponent),
       }, {
-        path: 'subasta',
+        path: 'subasta/:id',
         loadComponent: () => import('./auctions/pages/auction/auction.component').then((m) => m.AuctionComponent),
       },
       {

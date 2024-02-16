@@ -1,0 +1,36 @@
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+  @for (item of photos; track $index) {
+  @if ($index <= photoGalleryLength) { @if ($index < photoGalleryLength) { <a [href]="item" data-fancybox="gallery3">
+    <img [src]="item" class="h-28 object-cover w-full" alt="">
+    </a>
+    } @else {
+    @if(isMobile) {
+    <div class="relative cursor-pointer" (click)="incrementPhotoGalleryLength()">
+      <img [src]="item" class="h-28 object-cover w-full" alt="">
+      <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
+      <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
+        +{{photos.length - photoGalleryLength}} fotos
+      </div>
+    </div>
+    } @else {
+    <div class="relative cursor-pointer" (click)="incrementPhotoGalleryLength()">
+      <a [href]="item" data-fancybox="gallery3">
+        <img [src]="item" class="h-28 object-cover w-full" alt="">
+        <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
+        <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
+          +{{photos.length - photoGalleryLength}}
+          fotos
+        </div>
+      </a>
+    </div>
+    }
+    }
+    } @else {
+    @if (!isMobile) {
+    <a class="hidden" [href]="item" data-fancybox="gallery3">
+      <img [src]="item" alt="">
+    </a>
+    }
+    }
+    }
+</div>

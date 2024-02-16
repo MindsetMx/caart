@@ -15,31 +15,19 @@ export class AuctionService {
   auctionCarPublications$(): Observable<AuctionCarPublications> {
     const url = `${this.#baseUrl}/auction-items/auction-car-publishes`;
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    });
-
-    return this.#http.get<AuctionCarPublications>(url, { headers });
+    return this.#http.get<AuctionCarPublications>(url);
   }
 
   getPublicationRequests$(): Observable<any> {
     const url = `${this.#baseUrl}/auction-items/auction-cars`;
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    });
-
-    return this.#http.get<any>(url, { headers });
+    return this.#http.get<any>(url);
   }
 
   acceptPublicationRequest$(id: string): Observable<any> {
     const url = `${this.#baseUrl}/auction-items/${id}/accept`;
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    });
-
-    return this.#http.patch<any>(url, {}, { headers });
+    return this.#http.patch<any>(url, {});
   }
 
 }

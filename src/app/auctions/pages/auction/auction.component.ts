@@ -1,52 +1,62 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, WritableSignal, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import 'moment/locale/es';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild, signal, inject } from '@angular/core';
+import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
 import { Fancybox } from "@fancyapps/ui";
 import { register } from 'swiper/element/bundle';
-
 register();
 
+import { InputDirective } from '@shared/directives/input.directive';
+import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { StarComponent } from '@shared/components/icons/star/star.component';
-import { InputDirective } from '@shared/directives/input.directive';
-import { MakeAnOfferModalComponent } from '../../modals/make-an-offer-modal/make-an-offer-modal.component';
-import { Subscription, interval } from 'rxjs';
-import { SlicePipe } from '@angular/common';
+import { AuctionDetailsService } from '@auctions/services/auction-details.service';
+import { AuctionDetails, SpecificAuction } from '@auctions/interfaces';
+import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { CountdownService } from '@shared/services/countdown.service';
+import { switchMap } from 'rxjs';
+import { MomentModule } from 'ngx-moment';
+import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
 
 @Component({
   selector: 'app-auction',
   standalone: true,
   imports: [
+    CommonModule,
     InputDirective,
     MakeAnOfferModalComponent,
     PrimaryButtonDirective,
     StarComponent,
-    SlicePipe
+    SlicePipe,
+    CurrencyPipe,
+    CountdownModule,
+    MomentModule,
+    ImageGalleryComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
   styleUrl: './auction.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AuctionComponent implements OnInit, AfterViewInit {
   @ViewChild('videoGallery') videoGallery!: ElementRef;
   @ViewChild('auctionsEnded') auctionsEnded!: ElementRef;
 
-  hours: WritableSignal<number> = signal(2);
-  minutes: WritableSignal<number> = signal(58);
-  seconds: WritableSignal<number> = signal(4);
-  private timerSubscription?: Subscription;
+  hours = signal<number>(2);
+  minutes = signal<number>(58);
+  seconds = signal<number>(4);
 
   externalPhotoGalleryLength: number = 7;
   internalPhotoGalleryLength: number = 7;
   mechanicalPhotoGalleryLength: number = 7;
 
-  makeAnOfferModalIsOpen: WritableSignal<boolean> = signal(false);
+  makeAnOfferModalIsOpen = signal<boolean>(false);
+  auction = signal<AuctionDetails>({} as AuctionDetails);
+  specificAuction = signal<SpecificAuction>({} as any);
 
-  isMobile = window.innerWidth < 768;
-
-  @HostListener('window:resize', ['$event'])
-  onResize(): void {
-    this.isMobile = window.innerWidth < 768; // Actualiza el valor en tiempo real
-  }
+  #route = inject(ActivatedRoute);
+  #auctionDetailsService = inject(AuctionDetailsService);
+  #countdownService = inject(CountdownService);
 
   get swiperParams(): any {
     return {
@@ -80,16 +90,9 @@ export class AuctionComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
   ngOnInit() {
-    const timer = interval(1000);
-    this.timerSubscription = timer.subscribe(() => {
-      this.updateTimer();
-    });
-  }
+    const auctionId = this.#route.snapshot.paramMap.get('id');
 
-  ngOnDestroy() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
+    this.getAuctionDetails(auctionId);
   }
 
   ngAfterViewInit(): void {
@@ -104,52 +107,79 @@ export class AuctionComponent implements OnInit, OnDestroy, AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery6']");
   }
 
-  private updateTimer() {
-    if (this.seconds() > 0) {
-      this.seconds.set(this.seconds() - 1);
-    } else {
-      if (this.minutes() > 0) {
-        this.minutes.set(this.minutes() - 1);
-        this.seconds.set(59);
-      } else {
-        if (this.hours() > 0) {
-          this.hours.set(this.hours() - 1);
-          this.minutes.set(59);
-          this.seconds.set(59);
-        } else {
-          // El contador ha llegado a cero, puedes tomar acciones adicionales aquí.
-          this.timerSubscription?.unsubscribe(); // Detener el contador
-        }
+  getAuctionDetails(auctionId: string | null): void {
+    if (!auctionId) return;
+
+    this.#auctionDetailsService.getAuctionDetails$(auctionId).pipe(
+      switchMap((auctionDetails) => {
+        this.auction.set(auctionDetails);
+        return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
+      })
+    ).subscribe({
+      next: (specificAuctionDetails) => {
+        this.specificAuction.set(specificAuctionDetails);
+      },
+      error: (error) => {
+        console.error(error);
       }
-    }
+    });
   }
 
-  // Función para formatear números con ceros a la izquierda
-  formatNumber(value: number): string {
-    return value < 10 ? `0${value}` : value.toString();
+  transformDate(dateString: string): Date {
+    return new Date(dateString);
+  }
+
+  countdownConfig(): CountdownConfig {
+    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
+    return {
+      leftTime: leftTime,
+      format: this.getFormat(leftTime)
+    };
+  }
+
+  countdownConfig2(): CountdownConfig {
+    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
+    return {
+      leftTime: leftTime,
+      format: this.getFormat2(leftTime)
+    };
+  }
+
+  getSecondsUntilEndDate(endDate: string): number {
+    return this.#countdownService.getSecondsUntilEndDate(endDate);
+  }
+
+  getFormat(seconds: number): string {
+    return this.#countdownService.getFormat(seconds);
+  }
+
+  getFormat2(seconds: number): string {
+    return this.#countdownService.getFormat2(seconds);
   }
 
   openMakeAnOfferModal(): void {
     this.makeAnOfferModalIsOpen.set(true);
   }
 
-  incrementExternalPhotoGalleryLength(): void {
-    if (!this.isMobile) return;
+  // incrementExternalPhotoGalleryLength(): void {
+  //   console.log('incrementExternalPhotoGalleryLength');
 
-    this.externalPhotoGalleryLength += 8;
-  }
+  //   if (!this.isMobile) return;
 
-  incrementInternalPhotoGalleryLength(): void {
-    if (!this.isMobile) return;
+  //   this.externalPhotoGalleryLength += 8;
+  // }
 
-    this.internalPhotoGalleryLength += 8;
-  }
+  // incrementInternalPhotoGalleryLength(): void {
+  //   if (!this.isMobile) return;
 
-  incrementMechanicalPhotoGalleryLength(): void {
-    if (!this.isMobile) return;
+  //   this.internalPhotoGalleryLength += 8;
+  // }
 
-    this.mechanicalPhotoGalleryLength += 8;
-  }
+  // incrementMechanicalPhotoGalleryLength(): void {
+  //   if (!this.isMobile) return;
+
+  //   this.mechanicalPhotoGalleryLength += 8;
+  // }
 
   initSwiperCarousel(swiperEl: ElementRef | undefined, swiperParams: any): void {
     if (!swiperEl) return;

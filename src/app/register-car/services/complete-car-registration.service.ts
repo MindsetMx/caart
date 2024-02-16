@@ -39,49 +39,25 @@ export class CompleteCarRegistrationService {
   getGeneralInformation$(auctionCarId: string): Observable<GeneralDetails> {
     const url = `${this.#baseUrl}/exterior-detail-cars/${auctionCarId}`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.get<GeneralDetails>(url, { headers });
+    return this.#http.get<GeneralDetails>(url);
   }
 
   getInteriorOfTheCar$(auctionCarId: string): Observable<InteriorOfTheCar> {
     const url = `${this.#baseUrl}/interior-detail-cars/${auctionCarId}`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.get<InteriorOfTheCar>(url, { headers });
+    return this.#http.get<InteriorOfTheCar>(url);
   }
 
   getMechanics$(auctionCarId: string): Observable<Mechanics> {
     const url = `${this.#baseUrl}/mechanics-detail-cars/${auctionCarId}`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.get<Mechanics>(url, { headers });
+    return this.#http.get<Mechanics>(url);
   }
 
   getCarExtras$(auctionCarId: string): Observable<Extras> {
     const url = `${this.#baseUrl}/extras/${auctionCarId}`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.get<Extras>(url, { headers });
+    return this.#http.get<Extras>(url);
   }
 
   saveGeneralInformation$(generalInformation: FormGroup): Observable<any> {
@@ -89,25 +65,13 @@ export class CompleteCarRegistrationService {
 
     const url = `${this.#baseUrl}/users/complete-registration-with-payment`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.patch<any>(url, trimmedGeneralInformation, { headers });
+    return this.#http.patch<any>(url, trimmedGeneralInformation);
   }
 
   applyDiscountCode$(discountCode: string): Observable<ApplyDiscountCode> {
     const url = `${this.#baseUrl}/discounts/validate/${discountCode}`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.get<ApplyDiscountCode>(url, { headers });
+    return this.#http.get<ApplyDiscountCode>(url);
   }
 
   saveGeneralDetailsAndExteriorOfTheCar$(generalDetailsAndExteriorOfTheCar: FormGroup): Observable<any> {
@@ -115,13 +79,7 @@ export class CompleteCarRegistrationService {
 
     const url = `${this.#baseUrl}/exterior-detail-cars`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.post<any>(url, trimmedGeneralDetailsAndExteriorOfTheCar, { headers });
+    return this.#http.post<any>(url, trimmedGeneralDetailsAndExteriorOfTheCar);
   }
 
   saveInteriorOfTheCar$(interiorOfTheCar: FormGroup): Observable<any> {
@@ -129,13 +87,7 @@ export class CompleteCarRegistrationService {
 
     const url = `${this.#baseUrl}/interior-detail-cars`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.post<any>(url, trimmedInteriorOfTheCar, { headers });
+    return this.#http.post<any>(url, trimmedInteriorOfTheCar);
   }
 
   saveMechanics$(mechanics: FormGroup): Observable<any> {
@@ -143,13 +95,7 @@ export class CompleteCarRegistrationService {
 
     const url = `${this.#baseUrl}/mechanics-detail-cars`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.post<any>(url, trimmedMechanics, { headers });
+    return this.#http.post<any>(url, trimmedMechanics);
   }
 
   saveCarExtras$(carExtras: FormGroup): Observable<any> {
@@ -157,37 +103,19 @@ export class CompleteCarRegistrationService {
 
     const url = `${this.#baseUrl}/extras`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.post<any>(url, trimmedCarExtras, { headers });
+    return this.#http.post<any>(url, trimmedCarExtras);
   }
 
   getAuctionTypes$(): Observable<AuctionTypes> {
     const url = `${this.#baseUrl}/auction-types`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.get<AuctionTypes>(url, { headers });
+    return this.#http.get<AuctionTypes>(url);
   }
 
   addPaymentMethod(stripeToken: string): Observable<any> {
     const url = `${this.#baseUrl}/users/add-payment-method`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.patch<any>(url, { stripeToken }, { headers });
+    return this.#http.patch<any>(url, { stripeToken });
   }
 
   changeStep(step: number) {
@@ -203,12 +131,6 @@ export class CompleteCarRegistrationService {
   wizardSteps$(publicationId: string): Observable<WizardSteps> {
     const url = `${this.#baseUrl}/auction-items/auction-car-publish/${publicationId}/wizard-steps`;
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.#http.get<WizardSteps>(url, { headers });
+    return this.#http.get<WizardSteps>(url);
   }
 }
