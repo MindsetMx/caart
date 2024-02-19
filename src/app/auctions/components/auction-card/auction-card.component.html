@@ -5,7 +5,9 @@
   </button>
 
   <div class="mt-4">
-    <p class="font-optima font-semibold text-xl">{{auction.attributes.year}} {{auction.attributes.brand}}</p>
+    <p class="font-optima font-semibold text-xl">{{auction.attributes.year}} {{auction.attributes.brand}}
+      {{auction.attributes.model}}
+    </p>
     @if (auction.attributes.reserve === false || auction.attributes.premium) {
     <div class="space-x-2">
       @if (auction.attributes.reserve === false) {
@@ -20,8 +22,9 @@
       }
     </div>
     }
-    <p class="text-gray4">
-      Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum...
+    <p class="text-gray4 line-clamp-3"
+      [ngClass]="{'mt-9': !auction.attributes.reserve === false && !auction.attributes.premium}">
+      {{auction.attributes.extract}}
     </p>
     <span class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: {{ auction.attributes.lastBid
       | currency:'USD':'symbol':'1.0-2' }} MXN &nbsp; · &nbsp;

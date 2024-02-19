@@ -62,23 +62,12 @@
   <h2 class="font-optima font-bold text-4xl">AUTOS EN VIVO</h2>
 
   <div class="flex mb-8">
-    <p class="ml-auto underline font-optima font-semibold">Ver todo</p>
+    <a routerLink="/subastas-en-vivo" class="ml-auto underline font-optima font-semibold">Ver todo</a>
   </div>
 
   <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:gap-y-0 lg:grid-cols-3 lg:gap-x-8">
-    @for (item of [].constructor(3); track $index) {
-    <div routerLink="/subasta" class="relative cursor-pointer">
-      <img class="w-full" src="assets/img/home/autos en vivo/ford-gt.png" alt="">
-      <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
-        <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
-      </button>
-
-      <div class="mt-4">
-        <p class="font-optima font-semibold text-xl">2017 Ford GT Heritage Edition</p>
-        <p>Oferta: $8,000,500 MXN&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;4 días</p>
-        <span class="text-gray4">CDMX, México</span>
-      </div>
-    </div>
+    @for (auction of auctions().data; track $index) {
+    <auction-card2 [auction]="auction"></auction-card2>
     }
   </div>
 </section>

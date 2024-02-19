@@ -133,7 +133,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
     return {
       leftTime: leftTime,
-      format: this.getFormat(leftTime)
+      format: this.getFormat3(leftTime)
     };
   }
 
@@ -145,16 +145,18 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     };
   }
 
+
+
   getSecondsUntilEndDate(endDate: string): number {
     return this.#countdownService.getSecondsUntilEndDate(endDate);
   }
 
-  getFormat(seconds: number): string {
-    return this.#countdownService.getFormat(seconds);
-  }
-
   getFormat2(seconds: number): string {
     return this.#countdownService.getFormat2(seconds);
+  }
+
+  getFormat3(seconds: number): string {
+    return this.#countdownService.getFormat3(seconds);
   }
 
   openMakeAnOfferModal(): void {

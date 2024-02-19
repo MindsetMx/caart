@@ -1,0 +1,18 @@
+<div [routerLink]="['/subasta', auction().originalAuctionCarId]" class="relative cursor-pointer">
+  <img class="w-full h-64 object-cover" [src]="auction().attributes.photos[0]" alt="">
+  <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
+    <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
+  </button>
+
+  <div class="mt-4">
+    <p class="font-optima font-semibold text-xl">
+      {{auction().attributes.year}} {{auction().attributes.brand}} {{auction().attributes.model}}
+    </p>
+    <p>Oferta: {{ auction().attributes.lastBid
+      | currency:'USD':'symbol':'1.0-2' }} MXN&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;<countdown
+        [config]="countdownConfig(auction())">
+      </countdown>
+      <br>
+      <span class="text-gray4">CDMX, México</span>
+  </div>
+</div>

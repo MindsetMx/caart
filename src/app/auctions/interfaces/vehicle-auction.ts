@@ -11,12 +11,14 @@ export interface VehicleAuctionData {
 }
 
 export interface VehicleAuctionAttributes {
-  reserve: boolean;
-  premium: boolean;
-  lastBid: number;
-  endDate: string;
-  photos: string[];
   brand: string;
+  endDate: string;
+  extract: string;
+  lastBid: number;
+  model: string;
+  photos: string[];
+  premium: boolean;
+  reserve: boolean;
   year: number;
 }
 

@@ -1,10 +1,13 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { register } from 'swiper/element/bundle';
 register();
 
 import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { VehicleFilterService } from '@auctions/services/vehicle-filter.service';
+import { VehicleAuction } from '@auctions/interfaces';
+import { AuctionCard2Component } from '@auctions/components/auction-card2/auction-card2.component';
 
 @Component({
   selector: 'home',
@@ -12,21 +15,30 @@ import { CommonModule } from '@angular/common';
   imports: [
     SecondaryButtonDirective,
     RouterLink,
-    CommonModule
+    CommonModule,
+    AuctionCard2Component
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('carousel') carousel!: ElementRef;
 
   isMobile = window.innerWidth < 768;
 
+  #vehicleFilterService = inject(VehicleFilterService);
+
+  auctions = signal<VehicleAuction>({} as VehicleAuction);
+
   @HostListener('window:resize', ['$event'])
   onResize(): void {
     this.isMobile = window.innerWidth < 768; // Actualiza el valor en tiempo real
+  }
+
+  ngOnInit(): void {
+    this.getLiveAuctions();
   }
 
   ngAfterViewInit(): void {
@@ -60,5 +72,17 @@ export class HomeComponent implements AfterViewInit {
 
     // and now initialize it
     swiperEl.initialize();
+  }
+
+  getLiveAuctions(): void {
+    this.#vehicleFilterService.getLiveAuctions$(1, 3).subscribe({
+      next: (auctions: VehicleAuction) => {
+        console.log({ auctions });
+        this.auctions.set(auctions);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 }
