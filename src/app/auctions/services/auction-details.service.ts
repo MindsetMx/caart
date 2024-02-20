@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AuctionDetails, SpecificAuction } from '@auctions/interfaces';
+import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
 import { environments } from '@env/environments';
 
 @Injectable({
@@ -23,5 +23,11 @@ export class AuctionDetailsService {
     const url = `${this.#baseUrl}/auctions-cars/auction/${id}`;
 
     return this.#http.get<SpecificAuction>(url);
+  }
+
+  getMetrics$(id: string): Observable<AuctionMetrics> {
+    const url = `${this.#baseUrl}/auctions-cars/${id}/metrics`;
+
+    return this.#http.get<AuctionMetrics>(url);
   }
 }

@@ -1,5 +1,6 @@
-@defer (when auction().data) {
+<!-- @defer (when auction().data) { -->
 <div class="container mt-4 mb-32">
+  @defer (when auction().data) {
   <section>
     <!-- <div class="flex items-center"> -->
     <h1 class="font-optima font-semibold inline-block text-3xl mr-4">
@@ -56,10 +57,12 @@
           <img class="inline-block mr-2 w-7 h-7" src="assets/img/icons/share.svg" alt="">
           <span class="underline">Compartir</span>
         </div>
-        <div>
+        <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionCarId)">
           <img class="inline-block mr-2 w-7 h-7" src="assets/img/icons/star.svg" alt="">
-          <span class="underline">Seguir</span>
-        </div>
+          <span class="underline">
+            {{isFollowing() ? 'Dejar de seguir' : 'Seguir'}}
+          </span>
+        </button>
         <div class="col-span-2 md:col-span-1">
           <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-6" width="w-fit"
             classes="font-optima font-semibold text-sm" sharedPrimaryButton>
@@ -122,26 +125,30 @@
       </div>
     </div>
   </section>
+  }
 
   <div class="grid grid-cols-12 gap-4">
     <div class="col-span-12 md:col-span-7">
       <section class="flex justify-between mt-8">
         <div class="underline">5 Comentarios</div>
 
+        @defer (when metrics().data) {
         <div class="text-gray4 text-sm flex space-x-4">
           <div class="flex items-center">
             <img class="mr-2" src="assets/img/icons/eye-outline.svg">
-            1,235
+            {{metrics().data.attributes.visualizations | number}}
           </div>
           <div class="flex items-center">
             <shared-star class="mr-2" classes="text-gray4 w-5 h-5"></shared-star>
-            235
+            {{metrics().data.attributes.followedCount | number}}
           </div>
         </div>
+        }
       </section>
 
       <hr class="my-4">
 
+      @defer (when auction().data) {
       <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
         <ul class="space-y-1">
           <li>
@@ -180,48 +187,15 @@
           </li>
         </ul>
       </section>
+      }
 
       <hr class="my-6">
 
+      @defer (when auction().data) {
       <section>
-        <!-- auction().data.attributes.carHistory.content -->
         <div [innerHTML]="auction().data.attributes.carHistory.content"></div>
-
-
-        <!-- <h2 class="text-2xl font-semibold">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum </h2>
-        <p class="mt-4">
-          Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        </p>
-        <img class="my-8" src="assets/img/home/carousel/banner.png" alt="">
-        <p>
-          Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        </p>
-        <img class="my-8" src="assets/img/home/carousel/banner.png" alt="">
-        <p>
-          Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-        </p> -->
       </section>
+      }
 
       <section>
         <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
@@ -235,6 +209,8 @@
           }
         </swiper-container>
       </section>
+
+      @defer (when auction().data) {
 
       <section class="mt-12">
         <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
@@ -278,8 +254,8 @@
             Tiempo restante:
           </div>
           <!-- <span class="col-span-8 lg:col-span-9 font-semibold text-red2">
-            02 horas, 35 minutos, 00 segundos
-          </span> -->
+              02 horas, 35 minutos, 00 segundos
+            </span> -->
           <countdown class="col-span-8 lg:col-span-9 font-semibold text-red2" [config]="countdownConfig2()"
             [ngClass]="{'text-red-500': countdownConfig2().leftTime! <= 86400}"></countdown>
         </div>
@@ -292,8 +268,8 @@
           </div>
           <div class="col-span-8 lg:col-span-9">
             <!-- <span class="font-semibold inline mr-4 lg:mr-12">
-              Miercoles, Noviembre 15 a la 18:00 PM
-            </span> -->
+                Miercoles, Noviembre 15 a la 18:00 PM
+              </span> -->
             <span class="font-semibold inline mr-4 lg:mr-12">
               {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
               a'}}
@@ -332,16 +308,17 @@
 
         <hr class="my-4">
 
+        @defer (when metrics().data) {
         <div class="lg:flex lg:justify-between">
           <div class="md:flex md:items-center md:space-x-4 md:divide-x md:divide-gray3">
             <div class="underline">¿Cómo funciona?</div>
             <div class="mt-2 md:mt-0 md:pl-4 text-sm text-gray4">
               <img class="inline mr-2" src="assets/img/icons/eye-outline.svg">
-              1,235 visualizaciones
+              {{metrics().data.attributes.visualizations | number}} visualizaciones
             </div>
             <div class="md:pl-4 text-sm text-gray4">
               <shared-star class="inline mr-2" classes="inline text-gray4 w-5 h-5"></shared-star>
-              235 seguidos
+              {{metrics().data.attributes.followedCount | number}} seguidos
             </div>
           </div>
 
@@ -350,6 +327,7 @@
             <span class="underline align-middle">Compartir</span>
           </div>
         </div>
+        }
       </section>
 
       <section class="mt-12">
@@ -424,6 +402,7 @@
           </div>
         </div>
       </section>
+      }
 
       <section class="mt-12">
         <h2 class="text-xl font-bold mt-8 mb-6">Subastas finalizadas recientemente</h2>
@@ -580,6 +559,6 @@
     </div>
   </div>
 </div>
-}
+<!-- } -->
 
 <auction-make-an-offer-modal [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>

@@ -12,6 +12,7 @@ export interface VehicleAuctionData {
 
 export interface VehicleAuctionAttributes {
   brand: string;
+  city: string;
   endDate: string;
   extract: string;
   lastBid: number;
@@ -19,6 +20,7 @@ export interface VehicleAuctionAttributes {
   photos: string[];
   premium: boolean;
   reserve: boolean;
+  state: string;
   year: number;
 }
 

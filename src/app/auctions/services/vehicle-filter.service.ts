@@ -13,7 +13,19 @@ export class VehicleFilterService {
 
   #http = inject(HttpClient);
 
-  getLiveAuctions$(page: number, size: number, auctionType?: string, category?: string, era?: string, range?: { yearFrom: number, yearTo: number }, currentOffer?: string, orderBy?: string, endsIn?: string, states?: string, search?: string): Observable<VehicleAuction> {
+  getLiveAuctions$(
+    page: number,
+    size: number,
+    auctionType?: string,
+    category?: string,
+    era?: string,
+    range?: { yearFrom: number, yearTo: number },
+    currentOffer?: string,
+    orderBy?: string,
+    endsIn?: string,
+    states?: string,
+    search?: string
+  ): Observable<VehicleAuction> {
     const url = `${this.#baseUrl}/auctions-cars/live-auctions`;
 
     let params = new HttpParams()

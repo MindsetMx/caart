@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, WritableSignal, inject, input, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -28,6 +28,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
 })
 export class CompleteRegisterComponent implements OnInit, OnDestroy {
   @Input() mb: string = 'mb-32';
+  publicationId = input.required<string>();
+
   @Output() completeRegisterModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   #appService = inject(AppService);
@@ -94,7 +96,7 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
 
         this.completeRegisterForm.reset();
 
-        this.redirectToPreviousUrlIfExists();
+        this.#router.navigate(['/completar-registro-vehiculo', this.publicationId()]);
 
         this.completeRegisterModalIsOpenChange.emit(false);
       },
@@ -122,12 +124,6 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
 
         break;
     }
-  }
-
-  redirectToPreviousUrlIfExists(): void {
-    const url = localStorage.getItem('url');
-
-    if (url) { this.#router.navigate([url]) };
   }
 
   selectFile(event: Event, indice: number): void {

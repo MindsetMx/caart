@@ -25,8 +25,6 @@ export class ImageGalleryComponent {
   }
 
   incrementPhotoGalleryLength(): void {
-    console.log('incrementExternalPhotoGalleryLength');
-
     if (!this.isMobile) return;
 
     this.photoGalleryLength += 8;

@@ -75,9 +75,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   getLiveAuctions(): void {
-    this.#vehicleFilterService.getLiveAuctions$(1, 3).subscribe({
+    this.#vehicleFilterService.getLiveAuctions$(
+      1,
+      3,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      'EndingSoonest'
+    ).subscribe({
       next: (auctions: VehicleAuction) => {
-        console.log({ auctions });
         this.auctions.set(auctions);
       },
       error: (err) => {

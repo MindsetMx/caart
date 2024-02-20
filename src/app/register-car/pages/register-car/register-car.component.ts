@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, WritableSignal, inject, signal, ViewChild, ElementRef, AfterViewInit, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, WritableSignal, inject, signal, ViewChild, ElementRef, AfterViewInit, effect, viewChild } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -42,14 +42,14 @@ import { InputFormatterDirective } from '@shared/directives/input-formatter.dire
     TabsWithIconsComponent,
     UppyAngularDashboardModule,
     MatAutocompleteModule,
-    InputFormatterDirective
+    InputFormatterDirective,
   ],
   templateUrl: './register-car.component.html',
   styleUrl: './register-car.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('uppyDashboard') uppyDashboard!: ElementRef;
+export class RegisterCarComponent implements OnInit, OnDestroy {
+  uppyDashboard = viewChild<ElementRef>('uppyDashboard');
 
   #appComponent = inject(AppComponent);
   #fb = inject(FormBuilder);
@@ -120,6 +120,73 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.carRegisterForm.get('videos') as FormControl;
   }
 
+  brandsChangeEffect = effect(() => {
+    if (this.uppyDashboard()) {
+      this.uppy = new Uppy({
+        debug: true,
+        autoProceed: true,
+        locale: Spanish,
+        meta: {
+          upload_preset: 'if8y72iv',
+          api_key: '218199524155838',
+        },
+        restrictions: {
+          // maxFileSize: 1000000,
+          // maxNumberOfFiles: 20,
+          minNumberOfFiles: 1,
+          allowedFileTypes: ['image/*', 'video/*'],
+        },
+      }).use(Dashboard,
+        {
+          height: 300,
+          hideUploadButton: true,
+          hideCancelButton: true,
+          showRemoveButtonAfterComplete: true,
+          showProgressDetails: true,
+          inline: true,
+          hideProgressAfterFinish: true,
+          target: this.uppyDashboard()?.nativeElement,
+          proudlyDisplayPoweredByUppy: false,
+          locale: {
+            strings: {
+              dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
+            }
+          }
+        })
+        .use(XHRUpload, {
+          endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/upload',
+          formData: true,
+          fieldName: 'file',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          allowedMetaFields: ['upload_preset', 'api_key'],
+        })
+        .on('complete', (result) => {
+          result.successful.forEach(file => {
+            const url = file.uploadURL;
+
+            if (file?.type?.includes('image')) {
+              this.photosControl.setValue([...this.photosControl.value, url]);
+            } else if (file?.type?.includes('video')) {
+              this.videosControl.setValue([...this.videosControl.value, url]);
+            }
+            this.uppyDashboard()?.nativeElement.click();
+
+            file.meta['uploadURL'] = url;
+          });
+        }).on('file-removed', (file) => {
+          const urlToRemove = file.meta['uploadURL'];
+
+          if (file?.type?.includes('image')) {
+            this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
+          } else if (file?.type?.includes('video')) {
+            this.videosControl.setValue(this.videosControl.value.filter((url: string) => url !== urlToRemove));
+          }
+        });
+    }
+  });
+
   constructor() {
     this.carRegisterForm = this.#fb.group({
       type: ['automobile', Validators.required],
@@ -163,71 +230,6 @@ export class RegisterCarComponent implements OnInit, AfterViewInit, OnDestroy {
       ];
 
     this.currentTab.set(this.tabs[0]);
-  }
-
-  ngAfterViewInit(): void {
-    this.uppy = new Uppy({
-      debug: true,
-      autoProceed: true,
-      locale: Spanish,
-      meta: {
-        upload_preset: 'if8y72iv',
-        api_key: '218199524155838',
-      },
-      restrictions: {
-        // maxFileSize: 1000000,
-        // maxNumberOfFiles: 20,
-        minNumberOfFiles: 1,
-        allowedFileTypes: ['image/*', 'video/*'],
-      },
-    }).use(Dashboard,
-      {
-        height: 300,
-        hideUploadButton: true,
-        hideCancelButton: true,
-        showRemoveButtonAfterComplete: true,
-        showProgressDetails: true,
-        inline: true,
-        hideProgressAfterFinish: true,
-        target: this.uppyDashboard.nativeElement,
-        proudlyDisplayPoweredByUppy: false,
-        locale: {
-          strings: {
-            dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
-          }
-        }
-      })
-      .use(XHRUpload, {
-        endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/upload',
-        formData: true,
-        fieldName: 'file',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        allowedMetaFields: ['upload_preset', 'api_key'],
-      })
-      .on('complete', (result) => {
-        result.successful.forEach(file => {
-          const url = file.uploadURL;
-
-          if (file?.type?.includes('image')) {
-            this.photosControl.setValue([...this.photosControl.value, url]);
-          } else if (file?.type?.includes('video')) {
-            this.videosControl.setValue([...this.videosControl.value, url]);
-          }
-          this.uppyDashboard.nativeElement.click();
-
-          file.meta['uploadURL'] = url;
-        });
-      }).on('file-removed', (file) => {
-        const urlToRemove = file.meta['uploadURL'];
-
-        if (file?.type?.includes('image')) {
-          this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
-        } else if (file?.type?.includes('video')) {
-          this.videosControl.setValue(this.videosControl.value.filter((url: string) => url !== urlToRemove));
-        }
-      });
   }
 
   ngOnInit(): void {

@@ -20,9 +20,9 @@
           Completar información
         </button>
         }@else {
-        <span (click)="openCompleteRegisterModal()">
-          Necesitas completar tu perfil para poder completar la información
-        </span>
+        <button (click)="openCompleteRegisterModal(publication.id)" class="underline font-semibold text-lg">
+          Completar información
+        </button>
         }
       </div>
     </div>
@@ -32,5 +32,5 @@
   </div>
 </section>
 
-<complete-register-modal (getHasGeneralInfo)="getHasGeneralInfo()"
-  [isOpen]="completeRegisterModalIsOpen"></complete-register-modal>
+<complete-register-modal (getHasGeneralInfo)="getHasGeneralInfo()" [isOpen]="completeRegisterModalIsOpen"
+  [publicationId]="publicationId()"></complete-register-modal>

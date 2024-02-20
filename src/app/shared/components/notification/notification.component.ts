@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -25,6 +25,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class NotificationComponent {
+  @Input({ required: true }) message!: string;
   isOpen = signal<boolean>(true);
 
   closeNotification(): void {

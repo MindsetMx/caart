@@ -8,4 +8,7 @@
 <shared-footer></shared-footer>
 }
 
-<notification></notification>
+
+@for (message of messages(); track $index) {
+<notification @dumbAnimation [message]="message"></notification>
+}

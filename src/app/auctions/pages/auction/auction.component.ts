@@ -11,12 +11,13 @@ import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { AuctionDetailsService } from '@auctions/services/auction-details.service';
-import { AuctionDetails, SpecificAuction } from '@auctions/interfaces';
+import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { CountdownService } from '@shared/services/countdown.service';
 import { switchMap } from 'rxjs';
 import { MomentModule } from 'ngx-moment';
 import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
+import { AuctionFollowService } from '@auctions/services/auction-follow.service';
 
 @Component({
   selector: 'app-auction',
@@ -42,21 +43,17 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   @ViewChild('videoGallery') videoGallery!: ElementRef;
   @ViewChild('auctionsEnded') auctionsEnded!: ElementRef;
 
-  hours = signal<number>(2);
-  minutes = signal<number>(58);
-  seconds = signal<number>(4);
-
-  externalPhotoGalleryLength: number = 7;
-  internalPhotoGalleryLength: number = 7;
-  mechanicalPhotoGalleryLength: number = 7;
-
   makeAnOfferModalIsOpen = signal<boolean>(false);
   auction = signal<AuctionDetails>({} as AuctionDetails);
-  specificAuction = signal<SpecificAuction>({} as any);
+  specificAuction = signal<SpecificAuction>({} as SpecificAuction);
+  metrics = signal<AuctionMetrics>({} as AuctionMetrics);
+
+  isFollowing = signal<boolean | undefined>(undefined);
 
   #route = inject(ActivatedRoute);
   #auctionDetailsService = inject(AuctionDetailsService);
   #countdownService = inject(CountdownService);
+  #auctionFollowService = inject(AuctionFollowService);
 
   get swiperParams(): any {
     return {
@@ -93,6 +90,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     const auctionId = this.#route.snapshot.paramMap.get('id');
 
     this.getAuctionDetails(auctionId);
+    this.getMetrics(auctionId);
   }
 
   ngAfterViewInit(): void {
@@ -105,6 +103,52 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery4']");
     Fancybox.bind("[data-fancybox='gallery5']");
     Fancybox.bind("[data-fancybox='gallery6']");
+  }
+
+  followAuction(auctionId: string): void {
+    this.#auctionFollowService.followAuction$(auctionId).subscribe({
+      next: (response) => {
+        this.isFollowing.set(response.data.attributes.isFollowing);
+        // this.getAuctionDetails(auctionId);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  unfollowAuction(auctionId: string): void {
+    this.#auctionFollowService.unfollowAuction$(auctionId).subscribe({
+      next: (response) => {
+        this.isFollowing.set(response.data.attributes.isFollowing);
+        // this.getAuctionDetails(auctionId);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  followOrUnfollowAuction(auctionId: string): void {
+    if (this.isFollowing()) {
+      this.unfollowAuction(auctionId);
+    } else {
+      this.followAuction(auctionId);
+    }
+  }
+
+  getMetrics(auctionId: string | null): void {
+    if (!auctionId) return;
+
+    this.#auctionDetailsService.getMetrics$(auctionId).subscribe({
+      next: (metrics: AuctionMetrics) => {
+        this.metrics.set(metrics);
+        this.isFollowing.set(metrics.data.attributes.isFollowing);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   getAuctionDetails(auctionId: string | null): void {
@@ -133,7 +177,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
     return {
       leftTime: leftTime,
-      format: this.getFormat3(leftTime)
+      format: this.getFormat(leftTime)
     };
   }
 
@@ -145,43 +189,21 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     };
   }
 
-
-
   getSecondsUntilEndDate(endDate: string): number {
     return this.#countdownService.getSecondsUntilEndDate(endDate);
+  }
+
+  getFormat(seconds: number): string {
+    return this.#countdownService.getFormat(seconds);
   }
 
   getFormat2(seconds: number): string {
     return this.#countdownService.getFormat2(seconds);
   }
 
-  getFormat3(seconds: number): string {
-    return this.#countdownService.getFormat3(seconds);
-  }
-
   openMakeAnOfferModal(): void {
     this.makeAnOfferModalIsOpen.set(true);
   }
-
-  // incrementExternalPhotoGalleryLength(): void {
-  //   console.log('incrementExternalPhotoGalleryLength');
-
-  //   if (!this.isMobile) return;
-
-  //   this.externalPhotoGalleryLength += 8;
-  // }
-
-  // incrementInternalPhotoGalleryLength(): void {
-  //   if (!this.isMobile) return;
-
-  //   this.internalPhotoGalleryLength += 8;
-  // }
-
-  // incrementMechanicalPhotoGalleryLength(): void {
-  //   if (!this.isMobile) return;
-
-  //   this.mechanicalPhotoGalleryLength += 8;
-  // }
 
   initSwiperCarousel(swiperEl: ElementRef | undefined, swiperParams: any): void {
     if (!swiperEl) return;

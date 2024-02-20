@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, WritableSignal, input, signal } from '@angular/core';
 
 import { CompleteRegisterComponent } from '@auth/pages/complete-register/complete-register.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
@@ -16,6 +16,8 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 })
 export class CompleteRegisterModalComponent {
   @Input() isOpen: WritableSignal<boolean> = signal(false);
+  publicationId = input.required<string>();
+
   @Output() getHasGeneralInfo: EventEmitter<void> = new EventEmitter<void>();
 
   completeRegisterModalIsOpenChange(isOpen: boolean): void {

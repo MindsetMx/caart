@@ -10,9 +10,10 @@
     </p>
     <p>Oferta: {{ auction().attributes.lastBid
       | currency:'USD':'symbol':'1.0-2' }} MXN&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;<countdown
+        [ngClass]="{'text-red-500': countdownConfig(auction()).leftTime! <= 86400}"
         [config]="countdownConfig(auction())">
       </countdown>
       <br>
-      <span class="text-gray4">CDMX, México</span>
+      <span class="text-gray4">{{auction().attributes.city}}, {{auction().attributes.state}}</span>
   </div>
 </div>

@@ -33,6 +33,7 @@ export class AuctionCarPublishesComponent implements OnInit {
   auctionCarPublishes: WritableSignal<AuctionCarPublicationsData[]> = signal([]);
   completeRegisterModalIsOpen: WritableSignal<boolean> = signal(false);
   hasGeneralInfo$: Observable<boolean> | undefined;
+  publicationId = signal<string>('');
 
   authStatusChangeEffect = effect(() => {
     if (this.authStatus === AuthStatus.authenticated) {
@@ -63,8 +64,9 @@ export class AuctionCarPublishesComponent implements OnInit {
     });
   }
 
-  openCompleteRegisterModal(): void {
+  openCompleteRegisterModal(publicationId: string): void {
     this.completeRegisterModalIsOpen.set(true);
+    this.publicationId.set(publicationId);
   }
 
   getHasGeneralInfo(): void {
