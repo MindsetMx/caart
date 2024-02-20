@@ -108,8 +108,8 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   followAuction(auctionId: string): void {
     this.#auctionFollowService.followAuction$(auctionId).subscribe({
       next: (response) => {
+        this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
-        // this.getAuctionDetails(auctionId);
       },
       error: (error) => {
         console.error(error);
@@ -120,8 +120,8 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   unfollowAuction(auctionId: string): void {
     this.#auctionFollowService.unfollowAuction$(auctionId).subscribe({
       next: (response) => {
+        this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
-        // this.getAuctionDetails(auctionId);
       },
       error: (error) => {
         console.error(error);

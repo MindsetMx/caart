@@ -58,7 +58,7 @@
           <span class="underline">Compartir</span>
         </div>
         <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionCarId)">
-          <img class="inline-block mr-2 w-7 h-7" src="assets/img/icons/star.svg" alt="">
+          <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block mr-2 w-7 h-7"></shared-star>
           <span class="underline">
             {{isFollowing() ? 'Dejar de seguir' : 'Seguir'}}
           </span>
