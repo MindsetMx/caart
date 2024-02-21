@@ -25,10 +25,12 @@
     <div class="grid gap-y-4 lg:flex md:justify-between mb-4 mt-8">
       <div class="grid gap-4 grid-cols-2 md:gap-x-8 md:gap-y-0 md:grid-cols-3 w-fit">
         <div class="py-1">
+          @if (auction().data.attributes.bids.length > 0) {
           <p class="font-bold text-lg">
             {{auction().data.attributes.bids[auction().data.attributes.bids.length-1].bidAmount |
             currency:'USD':'symbol':'1.0-2'}} MXN
           </p>
+          }
           <span class="text-gray4 text-sm">Oferta actual</span>
         </div>
         <div>
@@ -240,11 +242,13 @@
             Oferta actual:
           </div>
           <!-- <span class="col-span-8 lg:col-span-9 font-semibold">$1,650,500 MXN</span> -->
+          @if (auction().data.attributes.bids.length > 0) {
           <span class="col-span-8 lg:col-span-9 font-semibold">
             {{auction().data.attributes.bids[auction().data.attributes.bids.length-1].bidAmount |
             currency:'USD':'symbol':'1.0-2'}}
             MXN
           </span>
+          }
         </div>
 
         <hr class="my-4">
@@ -561,4 +565,7 @@
 </div>
 <!-- } -->
 
-<auction-make-an-offer-modal [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>
+@if (makeAnOfferModalIsOpen()) {
+<auction-make-an-offer-modal [auctionId]="auction().data.id"
+  [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>
+}

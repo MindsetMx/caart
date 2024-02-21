@@ -8,7 +8,6 @@
 <shared-footer></shared-footer>
 }
 
-
 @for (message of messages(); track $index) {
-<notification @dumbAnimation [message]="message"></notification>
+<notification @dumbAnimation (notificationClosed)="removeMessage()" [message]="message"></notification>
 }

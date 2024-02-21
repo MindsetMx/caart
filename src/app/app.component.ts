@@ -1,5 +1,5 @@
 import { AuthService } from '@auth/services/auth.service';
-import { Component, OnDestroy, OnInit, WritableSignal, effect, inject, signal } from '@angular/core';
+import { Component, OnDestroy, WritableSignal, effect, inject, signal } from '@angular/core';
 import { Router, RouterOutlet, } from '@angular/router';
 
 import { AuthStatus } from '@auth/enums';
@@ -21,7 +21,7 @@ import { UserData } from '@auth/interfaces';
     FooterComponent,
     ModalComponent,
     SignInComponent,
-    NotificationComponent
+    NotificationComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -46,7 +46,6 @@ export class AppComponent implements OnDestroy {
 
   eventSource?: EventSource;
   messages = signal<string[]>([]);
-  hiddenMessages = signal<string[]>([]);
 
   authStatusChangedEffect = effect(() => {
     switch (this.#authService.authStatus()) {
@@ -61,29 +60,8 @@ export class AppComponent implements OnDestroy {
         this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe/${this.user?.id}`);
 
         this.eventSource.onmessage = (event) => {
-          if (document.hidden) {
-            this.hiddenMessages.update((hiddenMessages) => [...hiddenMessages, JSON.parse(event.data).message]);
-          } else {
-            this.messages.update((messages) => [...messages, JSON.parse(event.data).message]);
-          }
+          this.messages.update((messages) => [...messages, JSON.parse(event.data).message]);
         };
-
-        document.addEventListener('visibilitychange', () => {
-          if (!document.hidden && this.hiddenMessages.length > 0) {
-            this.messages.update((messages) => [...messages, ...this.hiddenMessages()]);
-            this.hiddenMessages.set([]);
-          }
-        });
-
-        setInterval(() => {
-          if (this.messages().length > 0) {
-
-            this.messages.update((messages) => {
-              messages.shift();
-              return messages;
-            });
-          }
-        }, 5000);
         break;
 
       case AuthStatus.notAuthenticated:
@@ -102,6 +80,15 @@ export class AppComponent implements OnDestroy {
     if (this.eventSource) {
       this.eventSource.close();
     }
+  }
+
+  removeMessage(): void {
+    setTimeout(() => {
+      this.messages.update((messages) => {
+        messages.shift();
+        return messages;
+      });
+    }, 5000);
   }
 
   isDashboardRoute(): boolean {

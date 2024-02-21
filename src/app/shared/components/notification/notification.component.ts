@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, signal, EventEmitter, OnInit, OnDestroy, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -24,9 +24,14 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class NotificationComponent {
+export class NotificationComponent implements OnInit {
   @Input({ required: true }) message!: string;
+  @Output() notificationClosed = new EventEmitter<void>();
   isOpen = signal<boolean>(true);
+
+  ngOnInit(): void {
+    this.notificationClosed.emit();
+  }
 
   closeNotification(): void {
     this.isOpen.set(false);
