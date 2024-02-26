@@ -46,7 +46,7 @@
     </p>
     }
 
-    @defer (when brands().length > 0) {
+    @defer (when brands().length > 0 && states().length > 0) {
     <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" (click)="showModalBasedOnUserStatus()">
       <div class="grid grid-cols-2 gap-4" [ngClass]="{'pointer-events-none': userIsNotAuthenticated}">
         <div>
@@ -143,6 +143,22 @@
           <input formControlName="city" id="city" type="text" sharedInput>
           @if (hasError('city')) {
           <shared-input-error [message]="getError('city')"></shared-input-error>
+          }
+        </div>
+
+        <!-- State autocomplete -->
+        <div>
+          <label for="state" class="block mb-1 text-sm">Estado <span
+              class="font-bold text-red-500 inline-block">*</span></label>
+          <input id="state" type="text" formControlName="state" [matAutocomplete]="states" autocomplete="abc"
+            sharedInput>
+          <mat-autocomplete #states="matAutocomplete">
+            @for (state of filteredStates | async; track $index) {
+            <mat-option [value]="state">{{state}}</mat-option>
+            }
+          </mat-autocomplete>
+          @if (hasError('state')) {
+          <shared-input-error [message]="getError('state')"></shared-input-error>
           }
         </div>
 

@@ -1,3 +1,19 @@
 <complete-cart-registration-menu>
-  <ng-container *ngComponentOutlet="steps[indexTargetStep()]"></ng-container>
+  @switch (indexTargetStep()) {
+  @case (0) {
+  <register-car-general-information></register-car-general-information>
+  }
+  @case (1) {
+  <general-details-and-exterior-of-the-car></general-details-and-exterior-of-the-car>
+  }
+  @case (2) {
+  <interior-of-the-car></interior-of-the-car>
+  }
+  @case (3) {
+  <mechanics></mechanics>
+  }
+  @case (4) {
+  <car-extras></car-extras>
+  }
+  }
 </complete-cart-registration-menu>

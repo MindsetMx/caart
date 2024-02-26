@@ -2,7 +2,7 @@
 <shared-navbar [signInModalIsOpen]="signInModalIsOpen" [registerModalIsOpen]="registerModalIsOpen"></shared-navbar>
 }
 
-<router-outlet (openSignInModal)="openSignInModal()"></router-outlet>
+<router-outlet></router-outlet>
 
 @if (!isDashboardRoute()) {
 <shared-footer></shared-footer>

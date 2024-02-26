@@ -27,7 +27,10 @@
         <label for="_username" class="block mb-1 text-sm">Nombre de usuario <span
             class="font-bold text-red-500 inline-block">*</span></label>
         <input id="_username" formControlName="username" type="text" sharedInput>
-        @if (hasError('username')) {
+        @if(!userNameIsAvailable()) {
+        <shared-input-error message="El nombre de usuario ya está en uso"></shared-input-error>
+        }
+        @if (hasError('username') && userNameIsAvailable()) {
         <shared-input-error [message]="getError('username')"></shared-input-error>
         }
       </div>

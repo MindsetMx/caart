@@ -1,0 +1,3 @@
+<button (click)="followOrUnfollowAuction($event)" class="bg-white/50 rounded-full p-2">
+  <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block w-6 h-6"></shared-star>
+</button>

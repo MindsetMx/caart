@@ -61,6 +61,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   showPassword1: WritableSignal<boolean> = signal(false);
   showPassword2: WritableSignal<boolean> = signal(false);
+  userNameIsAvailable: WritableSignal<boolean> = signal(true);
 
   validationTypeSubscription?: Subscription;
 
@@ -78,6 +79,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   get stateControl(): FormControl {
     return this.registerForm.get('state') as FormControl;
+  }
+
+  get usernameControl(): FormControl {
+    return this.registerForm.get('username') as FormControl;
   }
 
   constructor() {
@@ -105,6 +110,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
       startWith(''),
       map(value => this._filter(value || '')),
     );
+
+    this.usernameControl.valueChanges.subscribe(() => {
+      this.checkUsernameAvailability();
+    });
   }
 
   ngOnDestroy(): void {
@@ -155,6 +164,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.#authService.login$(loginForm).subscribe({
       next: () => {
         this.#router.navigate(['/confirmacion']);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  checkUsernameAvailability(): void {
+    this.#authService.checkUsernameAvailability$(this.usernameControl.value).subscribe({
+      next: (response) => {
+        this.userNameIsAvailable.set(response.available);
       },
       error: (error) => {
         console.error(error);

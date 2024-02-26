@@ -13,7 +13,7 @@ import { DecimalPipe, JsonPipe } from '@angular/common';
 import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
 
 @Component({
-  selector: 'app-car-extras',
+  selector: 'car-extras',
   standalone: true,
   imports: [
     AutoResizeTextareaDirective,

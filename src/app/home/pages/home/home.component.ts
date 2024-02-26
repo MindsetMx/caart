@@ -1,4 +1,4 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild, WritableSignal, inject, signal } from '@angular/core';
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -6,8 +6,11 @@ import { SecondaryButtonDirective } from '@shared/directives/secondary-button.di
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { VehicleFilterService } from '@auctions/services/vehicle-filter.service';
-import { VehicleAuction } from '@auctions/interfaces';
+import { VehicleAuction, VehicleAuctionData } from '@auctions/interfaces';
 import { AuctionCard2Component } from '@auctions/components/auction-card2/auction-card2.component';
+import { CountdownService } from '@shared/services/countdown.service';
+import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 
 @Component({
   selector: 'home',
@@ -16,7 +19,9 @@ import { AuctionCard2Component } from '@auctions/components/auction-card2/auctio
     SecondaryButtonDirective,
     RouterLink,
     CommonModule,
-    AuctionCard2Component
+    AuctionCard2Component,
+    CountdownModule,
+    FollowButtonComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -31,6 +36,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   #vehicleFilterService = inject(VehicleFilterService);
 
   auctions = signal<VehicleAuction>({} as VehicleAuction);
+
+  currentIndex = signal(0);
+
+  #countdownService = inject(CountdownService);
 
   @HostListener('window:resize', ['$event'])
   onResize(): void {
@@ -61,10 +70,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         `,
       ],
       pagination: true,
-      autoplay: {
-        delay: 5000
-      },
-      loop: true,
+      // autoplay: {
+      //   delay: 5000
+      // },
+      // loop: true,
     };
 
     // now we need to assign all parameters to Swiper element
@@ -72,6 +81,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     // and now initialize it
     swiperEl.initialize();
+
+    this.carousel.nativeElement.swiper.on('slideChangeTransitionEnd', () => {
+      this.currentIndex.set(this.carousel.nativeElement.swiper.activeIndex);
+    });
   }
 
   getLiveAuctions(): void {
@@ -92,5 +105,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
         console.error(err);
       },
     });
+  }
+
+  countdownConfig(auction: VehicleAuctionData): CountdownConfig {
+    let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);
+    return {
+      leftTime: leftTime,
+      format: this.getFormat(leftTime)
+    };
+  }
+
+  getSecondsUntilEndDate(endDate: string): number {
+    return this.#countdownService.getSecondsUntilEndDate(endDate);
+  }
+
+  getFormat(seconds: number): string {
+    return this.#countdownService.getFormat(seconds);
   }
 }

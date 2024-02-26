@@ -16,7 +16,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-interior-of-the-car',
+  selector: 'interior-of-the-car',
   standalone: true,
   imports: [
     AutoResizeTextareaDirective,

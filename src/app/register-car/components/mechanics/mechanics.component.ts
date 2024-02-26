@@ -15,7 +15,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 
 @Component({
-  selector: 'app-mechanics',
+  selector: 'mechanics',
   standalone: true,
   imports: [
     AutoResizeTextareaDirective,

@@ -5,6 +5,7 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { VehicleAuctionData } from '@app/auctions/interfaces';
 import { RouterLink } from '@angular/router';
 import { CountdownService } from '@shared/services/countdown.service';
+import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 
 @Component({
   selector: 'auction-card',
@@ -12,7 +13,8 @@ import { CountdownService } from '@shared/services/countdown.service';
   imports: [
     CommonModule,
     CountdownModule,
-    RouterLink
+    RouterLink,
+    FollowButtonComponent
   ],
   templateUrl: './auction-card.component.html',
   styleUrl: './auction-card.component.css',

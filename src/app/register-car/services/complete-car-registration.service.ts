@@ -1,18 +1,14 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { environments } from '@env/environments';
-
-import { CarExtrasComponent } from '@registerCarComponents/car-extras/car-extras.component';
-import { GeneralDetailsAndExteriorOfTheCarComponent } from '@registerCarComponents/general-details-and-exterior-of-the-car/general-details-and-exterior-of-the-car.component';
-import { GeneralInformationComponent } from '@registerCarComponents/general-information/general-information.component';
-import { InteriorOfTheCarComponent } from '@registerCarComponents/interior-of-the-car/interior-of-the-car.component';
-import { MechanicsComponent } from '@registerCarComponents/mechanics/mechanics.component';
-import { Observable } from 'rxjs';
-import { ApplyDiscountCode, Brands, Extras, GeneralDetails, InteriorOfTheCar, Mechanics, WizardSteps } from '../interfaces';
 import { FormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject, signal } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { ApplyDiscountCode, Extras, GeneralDetails, InteriorOfTheCar, Mechanics, WizardSteps } from '@app/register-car/interfaces';
 import { AppService } from '@app/app.service';
 import { AuctionTypes } from '@app/register-car/interfaces/auction-types.interface';
-import { Colors } from '../interfaces/colors.interface';
+import { Colors } from '@app/register-car/interfaces/colors.interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,18 +19,11 @@ export class CompleteCarRegistrationService {
   #http = inject(HttpClient);
   #appService = inject(AppService);
 
-  steps = [
-    GeneralInformationComponent,
-    GeneralDetailsAndExteriorOfTheCarComponent,
-    InteriorOfTheCarComponent,
-    MechanicsComponent,
-    CarExtrasComponent,
-  ];
+  numberOfSteps = signal(5);
+  indexCurrentStep = signal(0);
+  indexTargetStep = signal(0);
 
-  indexCurrentStep: WritableSignal<number> = signal(0);
-  indexTargetStep: WritableSignal<number> = signal(0);
-
-  originalAuctionCarId: WritableSignal<string> = signal('');
+  originalAuctionCarId = signal('');
 
   getGeneralInformation$(auctionCarId: string): Observable<GeneralDetails> {
     const url = `${this.#baseUrl}/exterior-detail-cars/${auctionCarId}`;
@@ -119,7 +108,7 @@ export class CompleteCarRegistrationService {
   }
 
   changeStep(step: number) {
-    if (step < 0 || step >= this.steps.length) return;
+    if (step < 0 || step >= this.numberOfSteps()) return;
 
     this.indexTargetStep.set(step);
   }

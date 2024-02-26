@@ -26,6 +26,7 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { Brands, Colors } from '@app/register-car/interfaces';
 import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
+import { states } from '@shared/states';
 
 @Component({
   selector: 'register-car',
@@ -58,15 +59,17 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   #validatorsService = inject(ValidatorsService);
   #authService = inject(AuthService);
 
-  brands: WritableSignal<string[]> = signal([]);
+  brands = signal<string[]>([]);
   filteredBrands?: Observable<string[]>;
+  states = signal<string[]>(states);
+  filteredStates?: Observable<string[]>;
 
-  colors: WritableSignal<Colors[]> = signal([]);
+  colors = signal<Colors[]>([]);
   carRegisterForm: FormGroup;
-  currentSubastaAutomovilesType: WritableSignal<SubastaAutomovilesTypes> = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
-  currentTab: WritableSignal<TabWithIcon> = signal<TabWithIcon>({} as TabWithIcon);
+  currentSubastaAutomovilesType = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
+  currentTab = signal<TabWithIcon>({} as TabWithIcon);
   currentYear = new Date().getFullYear();
-  isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
+  isButtonSubmitDisabled = signal(false);
   reserveValueChangesSubscription?: Subscription;
   transmisionValueChangesSubscription?: Subscription;
   tabs: TabWithIcon[];
@@ -75,6 +78,10 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   formattedKm?: string;
 
   uppy?: Uppy;
+
+  get stateControl(): FormControl {
+    return this.carRegisterForm.get('state') as FormControl;
+  }
 
   get kmTypeControl(): FormControl {
     return this.carRegisterForm.get('kmType') as FormControl;
@@ -198,6 +205,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       interiorColor: ['', Validators.required],
       generalCondition: ['', Validators.required],
       city: ['', Validators.required],
+      state: ['', Validators.required],
       postalCode: ['', Validators.required],
       reserve: [null, Validators.required],
       reserveAmount: [''],
@@ -236,9 +244,9 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
     this.getBrands();
     this.getColors();
 
-    this.filteredBrands = this.brandControl.valueChanges.pipe(
+    this.filteredStates = this.stateControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || '')),
+      map(value => this._filterStates(value || '')),
     );
 
     this.reserveValueChangesSubscription = this.reserveControl.valueChanges.subscribe((value) => {
@@ -270,6 +278,11 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   private _filter(value: string): string[] {
     const filterValue = this._normalizeValue(value);
     return this.brands().filter(street => this._normalizeValue(street).includes(filterValue));
+  }
+
+  private _filterStates(value: string): string[] {
+    const filterValue = this._normalizeValue(value);
+    return states.filter(street => this._normalizeValue(street).includes(filterValue));
   }
 
   private _normalizeValue(value: string): string {

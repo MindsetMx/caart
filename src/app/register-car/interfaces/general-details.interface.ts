@@ -1,4 +1,5 @@
 export interface GeneralDetails {
+  VIN: string;
   brand: string;
   year: number;
   carModel: string;

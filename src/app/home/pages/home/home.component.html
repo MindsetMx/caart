@@ -9,30 +9,39 @@
   </div>
 
   <swiper-container class="mt-6" init="false" #carousel>
-    @for (item of [].constructor(5); track $index) {
+    @for (auction of auctions().data; track $index) {
     <swiper-slide class="relative">
-      <img class="w-full" src="assets/img/home/carousel/banner.png" alt="imagen automóvil">
+      <img class="w-full h-56 md:h-[35rem] object-cover" [src]="auction.attributes.photos[0]" alt="imagen automóvil">
       @if (!isMobile) {
       <div class="text-white text-lg absolute bottom-0 pb-10 pl-20 pt-6 gradient w-full">
-        <p class="font-optima text-3xl font-bold">1993 Porsche 911 Turbo</p>
-        <p>Oferta: $5,350,234&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;4 días</p>
-        CDMX, México
+        <p class="font-optima text-3xl font-bold">
+          {{auction.attributes.year}} {{auction.attributes.brand}} {{auction.attributes.model}}
+        </p>
+        <p>Oferta: {{ auction.attributes.lastBid | currency:'USD':'symbol':'1.0-2'
+          }}&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;<countdown [config]="countdownConfig(auction)">
+          </countdown>
+        </p>
+        {{auction.attributes.city}}, {{auction.attributes.state}}
       </div>
       }
 
-      <button class="absolute bg-white/50 rounded-full p-2"
+      <follow-button [auctionId]="auction.originalAuctionCarId" class="absolute"
         [ngClass]="isMobile ? 'top-4 right-4' : 'bottom-10 right-20'">
-        <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
-      </button>
+      </follow-button>
     </swiper-slide>
     }
   </swiper-container>
 
-  @if (isMobile) {
+  @if (auctions().data && isMobile) {
   <div class="text-lg w-full mt-4">
-    <p class="font-optima text-3xl font-bold">1993 Porsche 911 Turbo</p>
-    <p>Oferta: $5,350,234&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;4 días</p>
-    CDMX, México
+    <p class="font-optima text-3xl font-bold">{{auctions().data[currentIndex()].attributes.year}}
+      {{auctions().data[currentIndex()].attributes.brand}}
+      {{auctions().data[currentIndex()].attributes.model}}</p>
+    <p>Oferta: {{auctions().data[currentIndex()].attributes.lastBid | currency:'USD':'symbol':'1.0-2'
+      }}&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;<countdown [config]="countdownConfig(auctions().data[currentIndex()])">
+      </countdown>
+    </p>
+    {{auctions().data[currentIndex()].attributes.city}}, {{auctions().data[currentIndex()].attributes.state}}
   </div>
   }
 </section>

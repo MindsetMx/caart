@@ -119,6 +119,10 @@ export class AuthService {
     return this.#http.post<any>(`${this.#baseUrl}/users/complete-registration`, formData, { headers });
   }
 
+  checkUsernameAvailability$(username: string): Observable<{ available: boolean }> {
+    return this.#http.get<{ available: boolean }>(`${this.#baseUrl}/users/check-username?username=${username}`);
+  }
+
   toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {
     this.changeInputType(element);
 

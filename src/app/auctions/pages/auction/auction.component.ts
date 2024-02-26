@@ -1,23 +1,29 @@
-import { ActivatedRoute } from '@angular/router';
 import 'moment/locale/es';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild, signal, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, signal, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
 import { Fancybox } from "@fancyapps/ui";
+import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
+import { switchMap } from 'rxjs';
 register();
 
+import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
+import { AuctionDetailsService } from '@auctions/services/auction-details.service';
+import { AuctionFollowService } from '@auctions/services/auction-follow.service';
+import { AuthService } from '@auth/services/auth.service';
+import { AuthStatus } from '@auth/enums';
+import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { CountdownService } from '@shared/services/countdown.service';
+import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
 import { InputDirective } from '@shared/directives/input.directive';
 import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { StarComponent } from '@shared/components/icons/star/star.component';
-import { AuctionDetailsService } from '@auctions/services/auction-details.service';
-import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
-import { CountdownConfig, CountdownModule } from 'ngx-countdown';
-import { CountdownService } from '@shared/services/countdown.service';
-import { switchMap } from 'rxjs';
-import { MomentModule } from 'ngx-moment';
-import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
-import { AuctionFollowService } from '@auctions/services/auction-follow.service';
+import { AppComponent } from '@app/app.component';
+import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { GeneralInfoService } from '@auth/services/general-info.service';
+import { PaymentMethod } from '@auth/interfaces/general-info';
 
 @Component({
   selector: 'app-auction',
@@ -32,7 +38,8 @@ import { AuctionFollowService } from '@auctions/services/auction-follow.service'
     CurrencyPipe,
     CountdownModule,
     MomentModule,
-    ImageGalleryComponent
+    ImageGalleryComponent,
+    PaymentMethodModalComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
@@ -47,13 +54,21 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   auction = signal<AuctionDetails>({} as AuctionDetails);
   specificAuction = signal<SpecificAuction>({} as SpecificAuction);
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
-
   isFollowing = signal<boolean | undefined>(undefined);
+  paymentMethodModalIsOpen = signal<boolean>(false);
+  paymentMethods = signal<PaymentMethod[]>([] as PaymentMethod[]);
 
   #route = inject(ActivatedRoute);
   #auctionDetailsService = inject(AuctionDetailsService);
   #countdownService = inject(CountdownService);
   #auctionFollowService = inject(AuctionFollowService);
+  #authService = inject(AuthService);
+  #appComponent = inject(AppComponent);
+  #generalInfoService = inject(GeneralInfoService);
+
+  get authStatus(): AuthStatus {
+    return this.#authService.authStatus();
+  }
 
   get swiperParams(): any {
     return {
@@ -108,6 +123,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   followAuction(auctionId: string): void {
     this.#auctionFollowService.followAuction$(auctionId).subscribe({
       next: (response) => {
+        console.log('followAuction', response);
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
       },
@@ -120,6 +136,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   unfollowAuction(auctionId: string): void {
     this.#auctionFollowService.unfollowAuction$(auctionId).subscribe({
       next: (response) => {
+        console.log('unfollowAuction', response);
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
       },
@@ -130,6 +147,12 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   }
 
   followOrUnfollowAuction(auctionId: string): void {
+    if (this.authStatus === AuthStatus.notAuthenticated) {
+      this.openSignInModal();
+
+      return;
+    }
+
     if (this.isFollowing()) {
       this.unfollowAuction(auctionId);
     } else {
@@ -160,6 +183,17 @@ export class AuctionComponent implements OnInit, AfterViewInit {
         return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
       })
     ).subscribe({
+      next: (specificAuctionDetails) => {
+        this.specificAuction.set(specificAuctionDetails);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  getSpecificAuctionDetails(): void {
+    this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionCarId).subscribe({
       next: (specificAuctionDetails) => {
         this.specificAuction.set(specificAuctionDetails);
       },
@@ -202,7 +236,34 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   }
 
   openMakeAnOfferModal(): void {
-    this.makeAnOfferModalIsOpen.set(true);
+    if (this.authStatus === AuthStatus.notAuthenticated) {
+      this.openSignInModal();
+
+      return;
+    }
+
+    //Si tiene un método de pago registrado, se abre el modal
+    this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
+      this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
+
+      if (this.paymentMethods().length > 0) {
+        this.makeAnOfferModalIsOpen.set(true);
+        return;
+      }
+
+      //Si no tiene un método de pago registrado, se abre el modal de registro de método de pago
+      this.paymentMethodModalIsOpen.set(true);
+    });
+  }
+
+  refreshPaymentMethods(): void {
+    this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
+      this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
+    });
+  }
+
+  openSignInModal(): void {
+    this.#appComponent.openSignInModal();
   }
 
   initSwiperCarousel(swiperEl: ElementRef | undefined, swiperParams: any): void {

@@ -17,7 +17,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-general-details-and-exterior-of-the-car',
+  selector: 'general-details-and-exterior-of-the-car',
   standalone: true,
   imports: [
     AutoResizeTextareaDirective,
@@ -66,6 +66,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
       transmissionType: [{ value: '', disabled: true }, [Validators.required]],
       otherTransmission: [{ value: '', disabled: true }],
       // sellerType: ['', [Validators.required]],
+      VIN: ['', [Validators.required]],
       warranties: ['', [Validators.required]],
       wichWarranties: [''],
       invoiceType: ['', [Validators.required]],
@@ -276,6 +277,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
     this.#completeCarRegistrationService.getGeneralInformation$(this.originalAuctionCarId()).subscribe({
       next: (response) => {
         const {
+          VIN,
           kmInput,
           brand,
           year,
@@ -304,6 +306,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
         } = response;
 
         this.exteriorOfTheCarForm.patchValue({
+          VIN,
           kmInput,
           brand,
           year,

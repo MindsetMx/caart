@@ -96,8 +96,17 @@
     }
   </div> -->
 
+  <!-- VIN -->
+  <div>
+    <label for="vin" class="block mb-1 text-sm">VIN <span class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="vin" formControlName="VIN" type="text" sharedInput>
+    @if (hasError('VIN')) {
+    <shared-input-error [message]="getError('VIN')"></shared-input-error>
+    }
+  </div>
+
   <!-- Garantías del auto select -->
-  <div class="col-span-2">
+  <div class="col-span-1">
     <label for="warranties" class="block mb-1 text-sm">Garantías del auto <span
         class="font-bold text-red-500 inline-block">*</span></label>
     <select id="warranties" formControlName="warranties" sharedInput>

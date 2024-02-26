@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { VehicleAuctionData } from '@auctions/interfaces';
+import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { CountdownService } from '@shared/services/countdown.service';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 
@@ -11,7 +12,8 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
   imports: [
     CommonModule,
     RouterLink,
-    CountdownModule
+    CountdownModule,
+    FollowButtonComponent
   ],
   templateUrl: './auction-card2.component.html',
   styleUrl: './auction-card2.component.css',
