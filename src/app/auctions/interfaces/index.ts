@@ -5,3 +5,4 @@ export * from './specific-auction';
 export * from './auction-metrics';
 export * from './bidding-conditions';
 export * from './bid-conditions';
+export * from './get-comments';

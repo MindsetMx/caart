@@ -24,6 +24,10 @@ import { AppComponent } from '@app/app.component';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { GeneralInfoService } from '@auth/services/general-info.service';
 import { PaymentMethod } from '@auth/interfaces/general-info';
+import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
+import { CommentComponent } from '@auctions/components/comment/comment.component';
+import { CommentsService } from '@auctions/services/comments.service';
+import { GetComments } from '@auctions/interfaces/get-comments';
 
 @Component({
   selector: 'app-auction',
@@ -39,7 +43,9 @@ import { PaymentMethod } from '@auth/interfaces/general-info';
     CountdownModule,
     MomentModule,
     ImageGalleryComponent,
-    PaymentMethodModalComponent
+    PaymentMethodModalComponent,
+    CommentsTextareaComponent,
+    CommentComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
@@ -57,6 +63,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   isFollowing = signal<boolean | undefined>(undefined);
   paymentMethodModalIsOpen = signal<boolean>(false);
   paymentMethods = signal<PaymentMethod[]>([] as PaymentMethod[]);
+  comments = signal<GetComments>({} as GetComments);
 
   #route = inject(ActivatedRoute);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -65,6 +72,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   #authService = inject(AuthService);
   #appComponent = inject(AppComponent);
   #generalInfoService = inject(GeneralInfoService);
+  #commentsService = inject(CommentsService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -118,6 +126,18 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery4']");
     Fancybox.bind("[data-fancybox='gallery5']");
     Fancybox.bind("[data-fancybox='gallery6']");
+  }
+
+  getComments(): void {
+    this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.comments.set(response);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   followAuction(auctionId: string): void {
@@ -180,6 +200,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     this.#auctionDetailsService.getAuctionDetails$(auctionId).pipe(
       switchMap((auctionDetails) => {
         this.auction.set(auctionDetails);
+        this.getComments();
         return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
       })
     ).subscribe({

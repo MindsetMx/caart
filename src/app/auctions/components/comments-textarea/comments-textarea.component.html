@@ -1,0 +1,17 @@
+@if (createComment) {
+<form [formGroup]="createComment" (submit)="createCommentSubmit()">
+  <textarea formControlName="text"
+    class="rounded-lg border border-gray-300 w-full px-4 focus:outline-none focus:ring-0 resize-none h-auto overflow-hidden pt-2 mb-2"
+    [rows]="rows()" [placeholder]="placeholder()" sharedAutoResizeTextarea></textarea>
+
+  <button rounded="rounded-lg" width="w-fit" py="py-3" px="px-12" class="text-sm"
+    [disabled]="createCommentButtonIsDisabled()" [class.opacity-50]="createCommentButtonIsDisabled()"
+    sharedPrimaryButton>
+    @if (createCommentButtonIsDisabled()) {
+    <shared-spinner></shared-spinner>
+    } @else {
+    Publicar
+    }
+  </button>
+</form>
+}

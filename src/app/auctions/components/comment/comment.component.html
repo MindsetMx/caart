@@ -1,0 +1,45 @@
+<div class="mt-4 mb-4">
+  <div class="px-2 py-1">
+    <p class="font-semibold">Jorge Medina</p>
+    <p>{{comment().attributes.text}}</p>
+    <button (click)="likeComment()">
+      <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+    </button>
+    <span class="align-middle">0</span>
+    <button (click)="toggleReply()" class="text-gray4 align-middle ml-2" type="button">
+      Responder
+    </button>
+    <span class="align-middle text-gray4 ml-2">{{comment().attributes.dateCreated | date: 'MMM d, h:mm a'}}</span>
+  </div>
+
+  @if (comment().relationships?.responses?.data!.length > 0) {
+  <div class="flex items-center mt-2">
+    <div class="h-px w-16 bg-gray4" aria-hidden="true"></div>
+    <button (click)="toggleResponses()" class="ml-2 text-gray4">
+      {{responsesIsOpen() ? 'Ocultar respuestas' : 'Ver respuestas'}}
+    </button>
+  </div>
+  }
+
+  @if (responsesIsOpen()) {
+  <div class="space-y-2">
+    @for (comment of comment().relationships?.responses?.data; track $index) {
+    <div class="px-2 py-1 ml-8">
+      <p class="font-semibold">Jorge Medina</p>
+      <p>{{comment.attributes.text}}</p>
+      <button (click)="likeComment()">
+        <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+      </button>
+      <span class="align-middle">0</span>
+      <span class="align-middle text-gray4 ml-2">{{comment.attributes.dateCreated | date: 'MMM d, h:mm a'}}</span>
+    </div>
+    }
+  </div>
+  }
+
+  @if (replyIsOpen()) {
+  <comments-textarea class="block ml-8 mt-4" [auctionCarPublishId]="auctionCarPublishId()"
+    [parentCommentId]="comment().id" placeholder="Agregar un comentario" (commentCreated)="emitCommentCreated()">
+  </comments-textarea>
+  }
+</div>

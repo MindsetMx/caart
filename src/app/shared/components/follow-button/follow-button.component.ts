@@ -53,7 +53,6 @@ export class FollowButtonComponent implements OnInit {
   unfollowAuction(): void {
     this.#auctionFollowService.unfollowAuction$(this.auctionId()).subscribe({
       next: (response) => {
-        console.log('unfollowAuction response', response);
         this.getMetrics();
         this.isFollowing.set(response.data.attributes.isFollowing);
       },

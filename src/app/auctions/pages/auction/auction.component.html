@@ -337,29 +337,23 @@
       <section class="mt-12">
         <h3 class="text-xl font-bold mb-6">5 Comentarios</h3>
 
-        <div class="flex">
-          <input placeholder="Haz un comentario" rounded="rounded-l-lg" type="text" sharedInput>
-          <button rounded="rounded-r-lg" width="w-fit" sharedPrimaryButton>Publicar</button>
-        </div>
+        @defer (when auction().data) {
+        <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
+          [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId" placeholder="Agregar un comentario"
+          (commentCreated)="getComments()"></comments-textarea>
+        }
 
         <div class="mt-4">
           <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
           <span class="underline">Mantenme en la conversación por correo</span>
         </div>
 
-        <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
-          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-            Nov 15 a las 04:00 PM
-          </div>
-          <div class="md:col-span-9 mb-4 md:mb-0">
-            <div class="px-2 py-1">
-              <p class="font-semibold">Jorge Medina</p>
-              <p>Muy buen auto. Dificil encontrar otro igual</p>
-              <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-              <span class="align-middle">0</span>
-            </div>
-          </div>
+        @for (comment of comments().data; track $index) {
+        <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
+          (commentCreated)="getComments()"></comment>
+        }
 
+        <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
           <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
             Nov 15 a las 03:38 PM
           </div>
@@ -404,7 +398,7 @@
               <span class="align-middle">0</span>
             </div>
           </div>
-        </div>
+        </div> -->
       </section>
       }
 
