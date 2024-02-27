@@ -25,11 +25,10 @@ export class CommentComponent {
 
   #comments = inject(CommentsService);
 
-  likeComment(): void {
-    this.#comments.likeComment(this.comment().id).subscribe({
-      next: (response) => {
-        console.log({ response });
-        // this.comment().attributes.likesCount++;
+  likeComment(commentId = this.comment()._id): void {
+    this.#comments.likeComment(commentId).subscribe({
+      next: () => {
+        this.commentCreated.emit();
       },
       error: (error) => {
         console.error(error);

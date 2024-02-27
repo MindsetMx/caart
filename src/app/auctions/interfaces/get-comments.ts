@@ -1,19 +1,12 @@
-export interface Relationships {
-  responses: GetComments;
-}
-
-export interface GetCommentsData {
-  type: string;
-  id: string;
-  attributes: GetCommentsAttributes;
-  relationships?: Relationships;
-}
-
 export interface GetComments {
   data: GetCommentsData[];
 }
+export interface GetCommentsRelationships {
+  responses: GetCommentsData[];
+}
 
-export interface GetCommentsAttributes {
+export interface GetCommentsData {
+  _id: string;
   text: string;
   createdBy: string;
   dateCreated: string;
@@ -21,4 +14,6 @@ export interface GetCommentsAttributes {
   isSeller: boolean;
   likesCount: number;
   likedByMe: boolean;
+  relationships: GetCommentsRelationships;
+  parentCommentId?: string;
 }

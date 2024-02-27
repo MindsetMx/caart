@@ -1,6 +1,6 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, signal, inject } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, signal, inject, effect } from '@angular/core';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
@@ -52,7 +52,7 @@ import { GetComments } from '@auctions/interfaces/get-comments';
   styleUrl: './auction.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionComponent implements OnInit, AfterViewInit {
+export class AuctionComponent implements AfterViewInit {
   @ViewChild('videoGallery') videoGallery!: ElementRef;
   @ViewChild('auctionsEnded') auctionsEnded!: ElementRef;
 
@@ -64,6 +64,7 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   paymentMethodModalIsOpen = signal<boolean>(false);
   paymentMethods = signal<PaymentMethod[]>([] as PaymentMethod[]);
   comments = signal<GetComments>({} as GetComments);
+  auctionId = signal<string | null>(null);
 
   #route = inject(ActivatedRoute);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -109,11 +110,21 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     }
   };
 
-  ngOnInit() {
-    const auctionId = this.#route.snapshot.paramMap.get('id');
+  authStatusEffect = effect(() => {
+    switch (this.authStatus) {
+      case AuthStatus.authenticated:
+        this.getAuctionDetails(this.auctionId());
+        this.getMetrics(this.auctionId());
 
-    this.getAuctionDetails(auctionId);
-    this.getMetrics(auctionId);
+        break;
+      case AuthStatus.notAuthenticated:
+        this.getAuctionDetails(this.auctionId());
+        break;
+    }
+  });
+
+  constructor() {
+    this.auctionId.set(this.#route.snapshot.paramMap.get('id'));
   }
 
   ngAfterViewInit(): void {
@@ -131,7 +142,6 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   getComments(): void {
     this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId).subscribe({
       next: (response) => {
-        console.log(response);
         this.comments.set(response);
       },
       error: (error) => {
@@ -143,7 +153,6 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   followAuction(auctionId: string): void {
     this.#auctionFollowService.followAuction$(auctionId).subscribe({
       next: (response) => {
-        console.log('followAuction', response);
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
       },
@@ -156,7 +165,6 @@ export class AuctionComponent implements OnInit, AfterViewInit {
   unfollowAuction(auctionId: string): void {
     this.#auctionFollowService.unfollowAuction$(auctionId).subscribe({
       next: (response) => {
-        console.log('unfollowAuction', response);
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
       },
@@ -200,7 +208,9 @@ export class AuctionComponent implements OnInit, AfterViewInit {
     this.#auctionDetailsService.getAuctionDetails$(auctionId).pipe(
       switchMap((auctionDetails) => {
         this.auction.set(auctionDetails);
-        this.getComments();
+        if (this.authStatus === AuthStatus.authenticated) {
+          this.getComments();
+        }
         return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
       })
     ).subscribe({

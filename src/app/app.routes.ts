@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard, GuestGuard, UnverifiedGuard, VerifiedGuard, CompleteAccountGuard } from '@auth/guards';
 import { IncompleteAccountGuard } from '@auth/guards/incomplete-account.guard';
+import { LastChanceComponent } from './last-chance/pages/last-chance/last-chance.component';
 
 export const routes: Routes = [
   {
@@ -51,6 +52,10 @@ export const routes: Routes = [
       {
         path: 'subastas-en-vivo',
         loadComponent: () => import('./auctions/pages/live-auctions/live-auctions.component').then((m) => m.LiveAuctionsComponent),
+      },
+      {
+        path: 'ultima-oportunidad',
+        loadComponent: () => import('./last-chance/pages/last-chance/last-chance.component').then((m) => m.LastChanceComponent),
       },
       {
         path: 'publicaciones',

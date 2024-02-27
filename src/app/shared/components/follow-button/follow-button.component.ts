@@ -35,7 +35,9 @@ export class FollowButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMetrics();
+    if (this.authStatus === AuthStatus.authenticated) {
+      this.getMetrics();
+    }
   }
 
   followAuction(): void {

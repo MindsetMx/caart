@@ -7,6 +7,7 @@ import { AuthService } from '@auth/services/auth.service';
 import { AutoResizeTextareaDirective, PrimaryButtonDirective } from '@shared/directives';
 import { ValidatorsService } from '../../../shared/services/validators.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'comments-textarea',
@@ -36,8 +37,13 @@ export class CommentsTextareaComponent implements OnInit {
   #authService = inject(AuthService);
   #commentsService = inject(CommentsService);
   #validatorsService = inject(ValidatorsService);
+  #appComponent = inject(AppComponent);
 
   createComment?: FormGroup;
+
+  get authStatus(): AuthStatus {
+    return this.#authService.authStatus();
+  }
 
   ngOnInit(): void {
     this.createComment = this.#formBuilder.group({
@@ -54,6 +60,12 @@ export class CommentsTextareaComponent implements OnInit {
   }
 
   createCommentSubmit(): void {
+    if (this.authStatus === AuthStatus.notAuthenticated) {
+      this.openSignInModal();
+
+      return;
+    }
+
     this.createCommentButtonIsDisabled.set(true);
 
     const isValid = this.#validatorsService.isValidForm(this.createComment as FormGroup);
@@ -74,5 +86,9 @@ export class CommentsTextareaComponent implements OnInit {
     }).add(() => {
       this.createCommentButtonIsDisabled.set(false);
     });
+  }
+
+  openSignInModal(): void {
+    this.#appComponent.openSignInModal();
   }
 }
