@@ -11,6 +11,7 @@ import { states } from '@shared/states';
 import { VehicleAuction } from '@app/auctions/interfaces';
 import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { RouterModule } from '@angular/router';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -29,6 +30,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
     ReactiveFormsModule,
     TertiaryButtonDirective,
     YearRangeComponent,
+    RouterModule
   ],
   templateUrl: './vehicle-filter-results.component.html',
   styleUrl: './vehicle-filter-results.component.css',

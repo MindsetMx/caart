@@ -1,9 +1,5 @@
 <div [routerLink]="['/subasta', auction().originalAuctionCarId]" class="relative cursor-pointer">
   <img class="w-full h-64 object-cover" [src]="auction().attributes.photos[0]" alt="">
-  <!-- <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
-    <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
-  </button> -->
-
   <follow-button [auctionId]="auction().originalAuctionCarId" class="absolute top-3 right-5">
   </follow-button>
 
@@ -11,30 +7,12 @@
     <p class="font-optima font-semibold text-xl">{{auction().attributes.year}} {{auction().attributes.brand}}
       {{auction().attributes.model}}
     </p>
-    @if (auction().attributes.reserve === false || auction().attributes.premium) {
-    <div class="space-x-2">
-      @if (auction().attributes.reserve === false) {
-      <span class="inline-block text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded mb-2">
-        Sin Reserva
-      </span>
-      }
-      @if (auction().attributes.premium) {
-      <span class="inline-block text-sm w-fit bg-black/30 text-black px-4 py-1 rounded mb-2">
-        Premium
-      </span>
-      }
-    </div>
-    }
-    <p class="text-gray4 line-clamp-3"
-      [ngClass]="{'mt-9': !auction().attributes.reserve === false && !auction().attributes.premium}">
+    <p class="text-gray4 line-clamp-3">
       {{auction().attributes.extract}}
     </p>
-    <span class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: {{ auction().attributes.lastBid
-      | currency:'USD':'symbol':'1.0-2' }} MXN &nbsp; · &nbsp;
-      <img class="w-5 h-5" src="assets/img/icons/time-outline.svg" alt=""> &nbsp; &nbsp;
-      <countdown [config]="countdownConfig(auction())"
-        [ngClass]="{'text-red-500': countdownConfig(auction()).leftTime! <= 86400}">
-      </countdown>
-    </span>
+
+    <button class="mt-4" width="w-fit" px="px-4" py="py-2.5" sharedPrimaryButton>
+      Ver o hacer una oferta
+    </button>
   </div>
 </div>

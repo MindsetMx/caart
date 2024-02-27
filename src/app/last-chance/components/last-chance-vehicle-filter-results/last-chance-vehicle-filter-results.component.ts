@@ -7,9 +7,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { LastChanceAuctionFilterMenuComponent } from '@app/last-chance/components/last-chance-auction-filter-menu/last-chance-auction-filter-menu.component';
-import { LastChanceVehicleFilterService } from '@auctions/services/last-chance-vehicle-filter.service';
+import { LastChanceVehicleFilterService } from '@app/last-chance/services/last-chance-vehicle-filter.service';
 import { states } from '@shared/states';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { RouterModule } from '@angular/router';
+import { LastChanceVehicleCardComponent } from '../last-chance-vehicle-card/last-chance-vehicle-card.component';
+import { LastChanceVehicles } from '@app/last-chance/interfaces';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -28,6 +31,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
     ReactiveFormsModule,
     TertiaryButtonDirective,
     YearRangeComponent,
+    RouterModule,
+    LastChanceVehicleCardComponent
   ],
   templateUrl: './last-chance-vehicle-filter-results.component.html',
   styleUrl: './last-chance-vehicle-filter-results.component.css',
@@ -110,7 +115,7 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
 
   #vehicleFilterService = inject(LastChanceVehicleFilterService);
 
-  vehicles = signal<any | undefined>(undefined);
+  vehicles = signal<LastChanceVehicles | undefined>(undefined);
 
   ngOnInit(): void {
     this.getVehicles(true);
@@ -122,11 +127,17 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
     this.#vehicleFilterService.getLastChanceVehicles$(
       this.currentPage(),
       this.size(),
-      this.era().join(','),
       this.category().join(','),
+      this.era().join(','),
+      this.yearRange(),
+      this.currentOffer().join(','),
+      this.orderBy(),
+      this.endsIn().join(','),
+      this.states().join(','),
+      this.search()
     ).subscribe({
       next: (vehicles) => {
-        console.log({ vehicles });
+        console.log(vehicles);
         if (replace) {
           this.vehicles.set(vehicles);
           this.getVehicles(false);

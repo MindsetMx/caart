@@ -15,6 +15,9 @@
       "@app/*": [
         "./src/app/*"
       ],
+      "@lastChance/*": [
+        "./src/app/last-chance/*"
+      ],
       "@env/*": [
         "./src/environments/*"
       ],
