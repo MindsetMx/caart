@@ -1,0 +1,17 @@
+<section class="container mt-16 mb-32">
+  <h1 class="text-center font-optima font-bold text-4xl mb-6">RESULTADOS</h1>
+
+  <shared-tabs-with-icons [tabs]="tabs" (tabSelected)="onTabSelected($event)"></shared-tabs-with-icons>
+
+  @switch (currentTab().id) {
+  @case (1) {
+  Todo
+  }
+  @case (2) {
+  <auction-results-vehicle-filter-results></auction-results-vehicle-filter-results>
+  }
+  @case (3) {
+  Arte
+  }
+  }
+</section>

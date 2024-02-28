@@ -22,14 +22,15 @@
     </mat-select>
   </mat-form-field>
 
-  <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
-    class="text-sm whitespace-nowrap flex items-center" sharedTertiaryButton>
-    Última oportunidad
+  <a routerLink="/subastas-en-vivo" px="px-4" width="lg:w-fit w-full"
+    class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
+    Subastas en vivo
   </a>
 
-  <button px="px-4" width="lg:w-fit w-full" class="text-sm" sharedTertiaryButton>
+  <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
+    sharedTertiaryButton>
     Resultados
-  </button>
+  </a>
 
   @if (isMobile) {
   <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"
