@@ -50,6 +50,10 @@ export const routes: Routes = [
         loadComponent: () => import('./auctions/pages/auction/auction.component').then((m) => m.AuctionComponent),
       },
       {
+        path: 'ultima-oportunidad/:id',
+        loadComponent: () => import('./last-chance/pages/last-chance-detail/last-chance-detail.component').then((m) => m.LastChanceDetailComponent),
+      },
+      {
         path: 'subastas-en-vivo',
         loadComponent: () => import('./auctions/pages/live-auctions/live-auctions.component').then((m) => m.LiveAuctionsComponent),
       },

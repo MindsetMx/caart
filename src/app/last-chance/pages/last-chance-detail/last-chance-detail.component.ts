@@ -8,29 +8,28 @@ import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
 import { switchMap } from 'rxjs';
 register();
-
-import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
+import { AppComponent } from '@app/app.component';
+import { AuctionDetails, SpecificAuction, AuctionMetrics, GetComments } from '@auctions/interfaces';
 import { AuctionDetailsService } from '@auctions/services/auction-details.service';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
-import { CountdownService } from '@shared/services/countdown.service';
-import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
-import { InputDirective } from '@shared/directives/input.directive';
-import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
-import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
-import { StarComponent } from '@shared/components/icons/star/star.component';
-import { AppComponent } from '@app/app.component';
-import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
-import { GeneralInfoService } from '@auth/services/general-info.service';
-import { PaymentMethod } from '@auth/interfaces/general-info';
-import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
 import { CommentComponent } from '@auctions/components/comment/comment.component';
 import { CommentsService } from '@auctions/services/comments.service';
-import { GetComments } from '@auctions/interfaces/get-comments';
+import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
+import { CountdownService } from '@shared/services/countdown.service';
+import { GeneralInfoService } from '@auth/services/general-info.service';
+import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
+import { InputDirective, PrimaryButtonDirective, SecondaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
+import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
+import { PaymentMethod } from '@auth/interfaces/general-info';
+import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { StarComponent } from '@shared/components/icons/star/star.component';
+import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
+import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
 
 @Component({
-  selector: 'app-auction',
+  selector: 'app-last-chance-detail',
   standalone: true,
   imports: [
     CommonModule,
@@ -45,19 +44,21 @@ import { GetComments } from '@auctions/interfaces/get-comments';
     ImageGalleryComponent,
     PaymentMethodModalComponent,
     CommentsTextareaComponent,
-    CommentComponent
+    CommentComponent,
+    SecondaryButtonDirective,
+    TertiaryButtonDirective
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './auction.component.html',
-  styleUrl: './auction.component.css',
+  templateUrl: './last-chance-detail.component.html',
+  styleUrl: './last-chance-detail.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionComponent implements AfterViewInit {
+export class LastChanceDetailComponent implements AfterViewInit {
   @ViewChild('videoGallery') videoGallery!: ElementRef;
   @ViewChild('auctionsEnded') auctionsEnded!: ElementRef;
 
   makeAnOfferModalIsOpen = signal<boolean>(false);
-  auction = signal<AuctionDetails>({} as AuctionDetails);
+  auction = signal<LastChanceAuctionVehicleDetail>({} as LastChanceAuctionVehicleDetail);
   specificAuction = signal<SpecificAuction>({} as SpecificAuction);
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
   isFollowing = signal<boolean | undefined>(undefined);
@@ -67,7 +68,7 @@ export class AuctionComponent implements AfterViewInit {
   auctionId = signal<string | null>(null);
 
   #route = inject(ActivatedRoute);
-  #auctionDetailsService = inject(AuctionDetailsService);
+  #lastChanceVehicleDetailService = inject(LastChanceVehicleDetailService);
   #countdownService = inject(CountdownService);
   #auctionFollowService = inject(AuctionFollowService);
   #authService = inject(AuthService);
@@ -140,7 +141,7 @@ export class AuctionComponent implements AfterViewInit {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId).subscribe({
+    this.#commentsService.getComments(this.auction().carHistory.originalAuctionCarId).subscribe({
       next: (response) => {
         this.comments.set(response);
       },
@@ -191,7 +192,7 @@ export class AuctionComponent implements AfterViewInit {
   getMetrics(auctionId: string | null): void {
     if (!auctionId) return;
 
-    this.#auctionDetailsService.getMetrics$(auctionId).subscribe({
+    this.#lastChanceVehicleDetailService.getMetrics$(auctionId).subscribe({
       next: (metrics: AuctionMetrics) => {
         this.metrics.set(metrics);
         this.isFollowing.set(metrics.data.attributes.isFollowing);
@@ -205,13 +206,14 @@ export class AuctionComponent implements AfterViewInit {
   getAuctionDetails(auctionId: string | null): void {
     if (!auctionId) return;
 
-    this.#auctionDetailsService.getAuctionDetails$(auctionId).pipe(
+    this.#lastChanceVehicleDetailService.getAuctionDetails$(auctionId).pipe(
       switchMap((auctionDetails) => {
+        console.log({ auctionDetails });
         this.auction.set(auctionDetails);
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
         }
-        return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
+        return this.#lastChanceVehicleDetailService.getSpecificAuctionDetails$(auctionDetails.carHistory.originalAuctionCarId);
       })
     ).subscribe({
       next: (specificAuctionDetails) => {
@@ -224,7 +226,7 @@ export class AuctionComponent implements AfterViewInit {
   }
 
   getSpecificAuctionDetails(): void {
-    this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionCarId).subscribe({
+    this.#lastChanceVehicleDetailService.getSpecificAuctionDetails$(this.auction().carHistory.originalAuctionCarId).subscribe({
       next: (specificAuctionDetails) => {
         this.specificAuction.set(specificAuctionDetails);
       },
@@ -238,21 +240,21 @@ export class AuctionComponent implements AfterViewInit {
     return new Date(dateString);
   }
 
-  countdownConfig(): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
-    return {
-      leftTime: leftTime,
-      format: this.getFormat(leftTime)
-    };
-  }
+  // countdownConfig(): CountdownConfig {
+  //   let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
+  //   return {
+  //     leftTime: leftTime,
+  //     format: this.getFormat(leftTime)
+  //   };
+  // }
 
-  countdownConfig2(): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
-    return {
-      leftTime: leftTime,
-      format: this.getFormat2(leftTime)
-    };
-  }
+  // countdownConfig2(): CountdownConfig {
+  //   let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
+  //   return {
+  //     leftTime: leftTime,
+  //     format: this.getFormat2(leftTime)
+  //   };
+  // }
 
   getSecondsUntilEndDate(endDate: string): number {
     return this.#countdownService.getSecondsUntilEndDate(endDate);
