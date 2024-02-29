@@ -13,14 +13,14 @@
     </div>
   </div>
 
-  <mat-form-field name="mat-form-field1">
+  <!-- <mat-form-field name="mat-form-field1">
     <mat-label>Ordenar por</mat-label>
     <mat-select [ngModel]="orderBy()" (ngModelChange)="setOrderBy($event)">
       @for (orderBy of orderByList; track $index) {
       <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
       }
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <a routerLink="/subastas-en-vivo" px="px-4" width="lg:w-fit w-full"
     class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
@@ -44,7 +44,7 @@
 @if (!isMobile) {
 <div class="flex gap-4">
   <!-- Marcas -->
-  <mat-form-field name="mat-form-field1">
+  <!-- <mat-form-field name="mat-form-field1">
     <mat-label>Marca</mat-label>
     <mat-select multiple>
       <mat-select-trigger>
@@ -54,7 +54,7 @@
       <mat-option name="mat-option1" value="brand 2">Brand 2</mat-option>
       <mat-option name="mat-option1" value="brand 3">Brand 3</mat-option>
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Categoría</mat-label>
@@ -94,7 +94,7 @@
     <year-range [ngModel]="yearRange()" (ngModelChange)="setYearRange($event)" class="w-max"></year-range>
   </div>
 
-  <mat-form-field name="mat-form-field1">
+  <!-- <mat-form-field name="mat-form-field1">
     <mat-label>Termina en</mat-label>
     <mat-select [ngModel]="endsIn()" (ngModelChange)="setEndsIn($event)" multiple>
       <mat-select-trigger>
@@ -126,7 +126,7 @@
       <mat-option name="mat-option1" [value]="topping.value">{{topping.label}}</mat-option>
       }
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Estado</mat-label>

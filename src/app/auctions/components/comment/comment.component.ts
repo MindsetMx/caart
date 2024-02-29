@@ -3,13 +3,15 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input
 import { GetCommentsData } from '@auctions/interfaces';
 import { CommentsService } from '@auctions/services/comments.service';
 import { CommentsTextareaComponent } from '../comments-textarea/comments-textarea.component';
+import { ThumbsUpOutlineComponent } from '@shared/components/icons/thumbs-up-outline/thumbs-up-outline.component';
 
 @Component({
   selector: 'comment',
   standalone: true,
   imports: [
     CommonModule,
-    CommentsTextareaComponent
+    CommentsTextareaComponent,
+    ThumbsUpOutlineComponent
   ],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.css',

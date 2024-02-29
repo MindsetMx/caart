@@ -12,6 +12,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { MakeBidService } from '@auctions/services/make-bid.service';
 import { AppService } from '@app/app.service';
+import { InputFormatterDirective } from '@shared/directives';
 
 @Component({
   selector: 'auction-make-an-offer-modal',
@@ -24,6 +25,7 @@ import { AppService } from '@app/app.service';
     ReactiveFormsModule,
     InputErrorComponent,
     SpinnerComponent,
+    InputFormatterDirective,
   ],
   templateUrl: './make-an-offer-modal.component.html',
   styleUrl: './make-an-offer-modal.component.css',
@@ -32,7 +34,7 @@ import { AppService } from '@app/app.service';
 export class MakeAnOfferModalComponent implements OnInit {
   @Input() isOpen: WritableSignal<boolean> = signal(false);
   @Output() offerMade = new EventEmitter();
-  paymentMethods = input.required<PaymentMethod[]>();
+  paymentMethodId = input.required<string>();
 
   auctionId = input.required<string>();
   minimumNextBid = signal<number>(0);
@@ -50,6 +52,10 @@ export class MakeAnOfferModalComponent implements OnInit {
 
   minimumNextBidChangedEffect = effect(() => {
     this.offerAmountControl.addValidators(Validators.min(this.minimumNextBid()));
+  });
+
+  paymentMethodIdEffect = effect(() => {
+    this.paymentMethodControl.setValue(this.paymentMethodId());
   });
 
   constructor() {

@@ -204,8 +204,10 @@
         <swiper-container init="false" #videoGallery>
           @for (item of [].constructor(6); track $index) {
           <swiper-slide class="pb-12">
-            <a href="https://www.youtube.com/watch?v=SWLz4GQZW2I" data-fancybox="gallery2">
+            <a class="relative" href="https://www.youtube.com/watch?v=SWLz4GQZW2I" data-fancybox="gallery2">
               <img src="assets/img/home/carousel/banner.png" alt="">
+              <img src="assets/img/icons/play-circle.svg" alt=""
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
             </a>
           </swiper-slide>
           }
@@ -560,8 +562,8 @@
   </div>
 </div>
 
-@if (makeAnOfferModalIsOpen()) {
-<auction-make-an-offer-modal [auctionId]="auction().data.id" [paymentMethods]="paymentMethods()"
+@defer (when makeAnOfferModalIsOpen()) {
+<auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   (offerMade)="getSpecificAuctionDetails()" [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>
 }
 

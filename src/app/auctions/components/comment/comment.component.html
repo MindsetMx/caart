@@ -3,7 +3,8 @@
     <p class="font-semibold">{{comment().createdBy}}</p>
     <p>{{comment().text}}</p>
     <button (click)="likeComment()">
-      <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+      <!-- <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt=""> -->
+      <thumbs-up-outline class="mr-2" [shouldFill]="comment().likedByMe ? true : false"></thumbs-up-outline>
     </button>
     <span class="align-middle">{{comment().likesCount}}</span>
     <button (click)="toggleReply()" class="text-gray4 align-middle ml-2" type="button">
@@ -28,7 +29,8 @@
       <p class="font-semibold">{{comment.createdBy}}</p>
       <p>{{comment.text}}</p>
       <button (click)="likeComment(comment._id)">
-        <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+        <!-- <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt=""> -->
+        <thumbs-up-outline class="mr-2" [shouldFill]="comment.likedByMe ? true : false"></thumbs-up-outline>
       </button>
       <span class="align-middle">{{comment.likesCount}}</span>
       <span class="align-middle text-gray4 ml-2">{{comment.dateCreated | date: 'MMM d, h:mm a'}}</span>

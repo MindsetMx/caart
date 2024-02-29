@@ -28,6 +28,7 @@ import { CommentsTextareaComponent } from '@auctions/components/comments-textare
 import { CommentComponent } from '@auctions/components/comment/comment.component';
 import { CommentsService } from '@auctions/services/comments.service';
 import { GetComments } from '@auctions/interfaces/get-comments';
+import { PaymentMethodsService } from '../../../shared/services/payment-methods.service';
 
 @Component({
   selector: 'app-auction',
@@ -62,9 +63,10 @@ export class AuctionComponent implements AfterViewInit {
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
   isFollowing = signal<boolean | undefined>(undefined);
   paymentMethodModalIsOpen = signal<boolean>(false);
-  paymentMethods = signal<PaymentMethod[]>([] as PaymentMethod[]);
+  // paymentMethods = signal<PaymentMethod[]>([] as PaymentMethod[]);
   comments = signal<GetComments>({} as GetComments);
   auctionId = signal<string | null>(null);
+  paymentMethodId = signal<string>('');
 
   #route = inject(ActivatedRoute);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -72,8 +74,9 @@ export class AuctionComponent implements AfterViewInit {
   #auctionFollowService = inject(AuctionFollowService);
   #authService = inject(AuthService);
   #appComponent = inject(AppComponent);
-  #generalInfoService = inject(GeneralInfoService);
+  // #generalInfoService = inject(GeneralInfoService);
   #commentsService = inject(CommentsService);
+  #paymentMethodsService = inject(PaymentMethodsService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -274,13 +277,21 @@ export class AuctionComponent implements AfterViewInit {
     }
 
     //Si tiene un método de pago registrado, se abre el modal
-    this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
-      this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
+    this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
+      console.log({ paymentMethods });
 
-      if (this.paymentMethods().length > 0) {
+      if (paymentMethods.data.length > 0) {
+        this.paymentMethodId.set(paymentMethods.data[0].id);
+        console.log({ paymentMethodId: this.paymentMethodId() });
         this.makeAnOfferModalIsOpen.set(true);
         return;
       }
+      // this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
+
+      // if (this.paymentMethods().length > 0) {
+      //   this.makeAnOfferModalIsOpen.set(true);
+      //   return;
+      // }
 
       //Si no tiene un método de pago registrado, se abre el modal de registro de método de pago
       this.paymentMethodModalIsOpen.set(true);
@@ -288,8 +299,12 @@ export class AuctionComponent implements AfterViewInit {
   }
 
   refreshPaymentMethods(): void {
-    this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
-      this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
+    // this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
+    //   this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
+    // });
+
+    this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
+      this.paymentMethodId.set(paymentMethods.data[0].id);
     });
   }
 
