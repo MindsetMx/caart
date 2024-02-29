@@ -99,40 +99,6 @@
   </div>
 
   <mat-form-field name="mat-form-field1">
-    <mat-label>Termina en</mat-label>
-    <mat-select [ngModel]="endsIn()" (ngModelChange)="setEndsIn($event)" multiple>
-      <mat-select-trigger>
-        {{endsIn()[0]}}
-        @if (endsIn().length > 1) {
-        <span>
-          (+{{endsIn().length - 1}} {{endsIn().length === 2 ? 'other' : 'others'}})
-        </span>
-        }
-      </mat-select-trigger>
-      @for (endsIn of endsInList; track endsIn) {
-      <mat-option name="mat-option1" [value]="endsIn.value">{{endsIn.label}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field name="mat-form-field1">
-    <mat-label>Oferta actual</mat-label>
-    <mat-select [ngModel]="currentOffer()" (ngModelChange)="setCurrentOffer($event)" multiple>
-      <mat-select-trigger>
-        {{currentOffer()[0]}}
-        @if (currentOffer().length > 1) {
-        <span>
-          (+{{currentOffer().length - 1}} {{currentOffer().length === 2 ? 'other' : 'others'}})
-        </span>
-        }
-      </mat-select-trigger>
-      @for (topping of currentOfferList; track topping) {
-      <mat-option name="mat-option1" [value]="topping.value">{{topping.label}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field name="mat-form-field1">
     <mat-label>Estado</mat-label>
     <mat-select [ngModel]="states()" (ngModelChange)="setStates($event)" multiple>
       <mat-select-trigger>
