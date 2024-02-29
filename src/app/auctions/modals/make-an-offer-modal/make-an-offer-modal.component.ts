@@ -13,6 +13,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { MakeBidService } from '@auctions/services/make-bid.service';
 import { AppService } from '@app/app.service';
 import { InputFormatterDirective } from '@shared/directives';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'auction-make-an-offer-modal',
@@ -25,7 +26,7 @@ import { InputFormatterDirective } from '@shared/directives';
     ReactiveFormsModule,
     InputErrorComponent,
     SpinnerComponent,
-    InputFormatterDirective,
+    NgxMaskDirective
   ],
   templateUrl: './make-an-offer-modal.component.html',
   styleUrl: './make-an-offer-modal.component.css',

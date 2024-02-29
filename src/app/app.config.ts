@@ -8,6 +8,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { environments } from '@env/environments';
 import { routes } from '@app/app.routes';
 import { tokenInterceptor } from '@shared/interceptors/token.interceptor';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
         tokenInterceptor
       ])
     ),
+    provideEnvironmentNgxMask(),
     provideAnimationsAsync(),
     provideNgxStripe(environments.stripe.publishableKey)
   ]

@@ -26,6 +26,7 @@
     "@uppy/dashboard": "^3.7.1",
     "@uppy/xhr-upload": "^3.6.0",
     "ngx-countdown": "^17.1.1",
+    "ngx-mask": "^17.0.4",
     "ngx-moment": "^6.0.2",
     "ngx-stripe": "^17.0.1",
     "ngx-toastr": "^18.0.0",

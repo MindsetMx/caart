@@ -12,7 +12,7 @@
   <form [formGroup]="makeAnOfferForm" (ngSubmit)="makeAnOffer()" class="container mb-8">
 
     <input formControlName="offerAmount" type="text" placeholder="Oferta ${{minimumNextBid() | number}} o más"
-      sharedInput required>
+      sharedInput mask="separator" thousandSeparator="," required>
     @if(controlHasError(offerAmountControl)) {
     <shared-input-error class="mt-1" [message]="getFirstError(offerAmountControl)"></shared-input-error>
     }
