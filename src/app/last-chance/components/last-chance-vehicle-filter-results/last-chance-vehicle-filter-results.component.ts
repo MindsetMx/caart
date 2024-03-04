@@ -7,12 +7,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { LastChanceAuctionFilterMenuComponent } from '@app/last-chance/components/last-chance-auction-filter-menu/last-chance-auction-filter-menu.component';
+import { LastChanceVehicleCardComponent } from '@app/last-chance/components/last-chance-vehicle-card/last-chance-vehicle-card.component';
 import { LastChanceVehicleFilterService } from '@app/last-chance/services/last-chance-vehicle-filter.service';
+import { LastChanceVehicles } from '@app/last-chance/interfaces';
+import { RouterModule } from '@angular/router';
 import { states } from '@shared/states';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
-import { RouterModule } from '@angular/router';
-import { LastChanceVehicleCardComponent } from '../last-chance-vehicle-card/last-chance-vehicle-card.component';
-import { LastChanceVehicles } from '@app/last-chance/interfaces';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -21,18 +21,18 @@ const MOBILE_SCREEN_WIDTH = 1024;
   standalone: true,
   imports: [
     AuctionCardComponent,
-    LastChanceAuctionFilterMenuComponent,
     CommonModule,
     FormsModule,
     IntersectionDirective,
+    LastChanceAuctionFilterMenuComponent,
+    LastChanceVehicleCardComponent,
     MatFormFieldModule,
     MatSelectModule,
     PrimaryButtonDirective,
     ReactiveFormsModule,
+    RouterModule,
     TertiaryButtonDirective,
     YearRangeComponent,
-    RouterModule,
-    LastChanceVehicleCardComponent
   ],
   templateUrl: './last-chance-vehicle-filter-results.component.html',
   styleUrl: './last-chance-vehicle-filter-results.component.css',
@@ -46,8 +46,6 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
   era = signal<string[]>([]);
   yearRange = signal<{ yearFrom: number, yearTo: number } | undefined>(undefined);
   currentOffer = signal<string[]>([]);
-  orderBy = signal<string>('');
-  endsIn = signal<string[]>([]);
   states = signal<string[]>([]);
 
   search = signal<string>('');
@@ -78,14 +76,6 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
     { value: 'lessThan2000000', label: 'Menor a 2,000,000' },
   ];
 
-  endsInList: { value: string; label: string }[] = [
-    { value: '1h', label: '1 hora' },
-    { value: '4h', label: '4 horas' },
-    { value: '1d', label: '1 día' },
-    { value: '5d', label: '5 días' },
-    { value: '7d', label: '7 días' },
-  ];
-
   eraList: { value: string; label: string }[] = [
     { value: '2020s', label: '2020s' },
     { value: '2010s', label: '2010s' },
@@ -101,14 +91,6 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
     { value: '1910s', label: '1910s' },
     { value: '1900s', label: '1900s' },
     { value: 'Pre1900', label: 'Pre-1900s' },
-  ];
-
-  orderByList: { value: string; label: string }[] = [
-    { value: 'EndingSoonest', label: 'Tiempo Menor a mayor' },
-    { value: 'EndingLatest', label: 'Tiempo Mayor a Menor' },
-    { value: 'BidLowestFirst', label: 'Precio Menor a Mayor' },
-    { value: 'BidHighestFirst', label: 'Precio Mayor a Menor' },
-    // { value: 'zipCode', label: 'Codigo Postal' },
   ];
 
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
@@ -131,13 +113,10 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
       this.era().join(','),
       this.yearRange(),
       this.currentOffer().join(','),
-      this.orderBy(),
-      this.endsIn().join(','),
       this.states().join(','),
       this.search()
     ).subscribe({
       next: (vehicles) => {
-        console.log(vehicles);
         if (replace) {
           this.vehicles.set(vehicles);
           this.getVehicles(false);
@@ -179,12 +158,6 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
     this.getVehicles(true);
   }
 
-  setEndsIn(value: string[]): void {
-    this.endsIn.set(value);
-    this.resetPage();
-    this.getVehicles(true);
-  }
-
   setCurrentOffer(value: string[]): void {
     this.currentOffer.set(value);
     this.resetPage();
@@ -193,12 +166,6 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
 
   setStates(value: string[]): void {
     this.states.set(value);
-    this.resetPage();
-    this.getVehicles(true);
-  }
-
-  setOrderBy(value: string): void {
-    this.orderBy.set(value);
     this.resetPage();
     this.getVehicles(true);
   }

@@ -127,7 +127,6 @@ export class AuctionComponent implements AfterViewInit {
         this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
 
         this.eventSource.onmessage = (event) => {
-          console.log({ message: JSON.parse(event.data) });
           if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
             this.getSpecificAuctionDetails();
           }
@@ -306,11 +305,8 @@ export class AuctionComponent implements AfterViewInit {
 
     //Si tiene un método de pago registrado, se abre el modal
     this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
-      console.log({ paymentMethods });
-
       if (paymentMethods.data.length > 0) {
         this.paymentMethodId.set(paymentMethods.data[0].id);
-        console.log({ paymentMethodId: this.paymentMethodId() });
         this.makeAnOfferModalIsOpen.set(true);
         return;
       }

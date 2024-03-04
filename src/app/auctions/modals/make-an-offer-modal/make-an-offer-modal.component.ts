@@ -116,9 +116,7 @@ export class MakeAnOfferModalComponent implements OnInit {
   getBiddingConditions(): void {
     this.#biddingConditionsService.getBiddingConditions(this.auctionId()).subscribe({
       next: (biddingConditions) => {
-        console.log({ biddingConditions });
         this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
-        console.log({ minimumNextBid: biddingConditions.data.minimumNextBid });
         // this.offerAmount.set(biddingConditions.data.minimumNextBid);
         this.offerAmountControl.setValue(this.minimumNextBid());
         this.getBidConditions(this.minimumNextBid());
@@ -132,7 +130,6 @@ export class MakeAnOfferModalComponent implements OnInit {
   getBidConditions(userBidAmount: number): void {
     this.#biddingConditionsService.getBidConditions(this.auctionId(), userBidAmount).subscribe({
       next: (bidConditions) => {
-        console.log({ bidConditions });
         this.disableBidButton.set(bidConditions.data.disableBidButton);
         this.holdAmount.set(bidConditions.data.holdAmount);
       },

@@ -13,24 +13,17 @@
     </div>
   </div>
 
-  <!-- <mat-form-field name="mat-form-field1">
-    <mat-label>Ordenar por</mat-label>
-    <mat-select [ngModel]="orderBy()" (ngModelChange)="setOrderBy($event)">
-      @for (orderBy of orderByList; track $index) {
-      <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field> -->
+  <div class="hidden md:flex gap-4">
+    <a routerLink="/subastas-en-vivo" px="px-4" width="lg:w-fit w-full"
+      class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
+      Subastas en vivo
+    </a>
 
-  <a routerLink="/subastas-en-vivo" px="px-4" width="lg:w-fit w-full"
-    class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
-    Subastas en vivo
-  </a>
-
-  <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
-    sharedTertiaryButton>
-    Resultados
-  </a>
+    <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
+      sharedTertiaryButton>
+      Resultados
+    </a>
+  </div>
 
   @if (isMobile) {
   <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"
@@ -43,19 +36,6 @@
 
 @if (!isMobile) {
 <div class="flex gap-4">
-  <!-- Marcas -->
-  <!-- <mat-form-field name="mat-form-field1">
-    <mat-label>Marca</mat-label>
-    <mat-select multiple>
-      <mat-select-trigger>
-
-      </mat-select-trigger>
-      <mat-option name="mat-option1" value="brand 1">Brand 1</mat-option>
-      <mat-option name="mat-option1" value="brand 2">Brand 2</mat-option>
-      <mat-option name="mat-option1" value="brand 3">Brand 3</mat-option>
-    </mat-select>
-  </mat-form-field> -->
-
   <mat-form-field name="mat-form-field1">
     <mat-label>Categoría</mat-label>
     <mat-select [ngModel]="category()" (ngModelChange)="setCategory($event)" multiple>
@@ -94,23 +74,6 @@
     <year-range [ngModel]="yearRange()" (ngModelChange)="setYearRange($event)" class="w-max"></year-range>
   </div>
 
-  <!-- <mat-form-field name="mat-form-field1">
-    <mat-label>Termina en</mat-label>
-    <mat-select [ngModel]="endsIn()" (ngModelChange)="setEndsIn($event)" multiple>
-      <mat-select-trigger>
-        {{endsIn()[0]}}
-        @if (endsIn().length > 1) {
-        <span>
-          (+{{endsIn().length - 1}} {{endsIn().length === 2 ? 'other' : 'others'}})
-        </span>
-        }
-      </mat-select-trigger>
-      @for (endsIn of endsInList; track endsIn) {
-      <mat-option name="mat-option1" [value]="endsIn.value">{{endsIn.label}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
   <mat-form-field name="mat-form-field1">
     <mat-label>Oferta actual</mat-label>
     <mat-select [ngModel]="currentOffer()" (ngModelChange)="setCurrentOffer($event)" multiple>
@@ -126,7 +89,7 @@
       <mat-option name="mat-option1" [value]="topping.value">{{topping.label}}</mat-option>
       }
     </mat-select>
-  </mat-form-field> -->
+  </mat-form-field>
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Estado</mat-label>
@@ -176,12 +139,10 @@
 
 </div>
 
-<last-chance-auction-filter-menu [categoryList]="categoryList" [currentOfferList]="currentOfferList"
-  [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList"
-  [(isOpen)]="auctionFilterMenuIsOpen" (setCategoryChange)="setCategory($event)"
-  (setCurrentOfferChange)="setCurrentOffer($event)" (setEndsInChange)="setEndsIn($event)"
-  (setEraChange)="setEra($event)" (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
-  (setYearRangeChange)="setYearRange($event)"></last-chance-auction-filter-menu>
+<last-chance-auction-filter-menu [categoryList]="categoryList" [currentOfferList]="currentOfferList" [eraList]="eraList"
+  [statesList]="statesList" [(isOpen)]="auctionFilterMenuIsOpen" (setCategoryChange)="setCategory($event)"
+  (setCurrentOfferChange)="setCurrentOffer($event)" (setEraChange)="setEra($event)"
+  (setStatesChange)="setStates($event)" (setYearRangeChange)="setYearRange($event)"></last-chance-auction-filter-menu>
 
 <ng-template #auctionCardSkeleton>
   @for (item of [].constructor(8); track $index) {

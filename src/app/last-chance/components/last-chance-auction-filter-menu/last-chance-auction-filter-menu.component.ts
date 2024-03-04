@@ -2,7 +2,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Output, WritableSignal, input, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { InputDirective } from '@shared/directives';
+import { RouterLink } from '@angular/router';
+import { InputDirective, TertiaryButtonDirective } from '@shared/directives';
 
 @Component({
   selector: 'last-chance-auction-filter-menu',
@@ -11,6 +12,8 @@ import { InputDirective } from '@shared/directives';
     CommonModule,
     InputDirective,
     FormsModule,
+    TertiaryButtonDirective,
+    RouterLink
   ],
   templateUrl: './last-chance-auction-filter-menu.component.html',
   styleUrl: './last-chance-auction-filter-menu.component.css',
@@ -40,27 +43,21 @@ export class LastChanceAuctionFilterMenuComponent {
   isOpen = input<boolean>(false);
   @Output() isOpenChange = new EventEmitter<boolean>();
   categoryList = input.required<{ value: string; label: string }[]>();
-  currentOfferList = input.required<{ value: string; label: string }[]>();
-  endsInList = input.required<{ value: string; label: string }[]>();
   eraList = input.required<{ value: string; label: string }[]>();
-  orderByList = input.required<{ value: string; label: string }[]>();
+  currentOfferList = input.required<{ value: string; label: string }[]>();
   statesList = input.required<{ value: string; label: string }[]>();
 
   @Output() setCategoryChange = new EventEmitter<string[]>();
   @Output() setEraChange = new EventEmitter<string[]>();
-  @Output() setCurrentOfferChange = new EventEmitter<string[]>();
-  @Output() setEndsInChange = new EventEmitter<string[]>();
-  @Output() setOrderByChange = new EventEmitter<string>();
-  @Output() setStatesChange = new EventEmitter<string[]>();
   @Output() setYearRangeChange = new EventEmitter<{ yearFrom: number, yearTo: number }>();
+  @Output() setCurrentOfferChange = new EventEmitter<string[]>();
+  @Output() setStatesChange = new EventEmitter<string[]>();
 
   filterMenu = viewChild.required<ElementRef>('filterMenu');
 
   category = signal<string[]>([]);
   era = signal<string[]>([]);
   currentOffer = signal<string[]>([]);
-  endsIn = signal<string[]>([]);
-  orderBy = signal<string[]>([]);
   states = signal<string[]>([]);
   yearFrom = signal<number | undefined>(undefined);
   yearTo = signal<number | undefined>(undefined);
@@ -68,7 +65,6 @@ export class LastChanceAuctionFilterMenuComponent {
   categoryIsOpen = signal<boolean>(false);
   eraIsOpen = signal<boolean>(false);
   yearsRangeIsOpen = signal<boolean>(false);
-  endsInIsOpen = signal<boolean>(false);
   currentOfferIsOpen = signal<boolean>(false);
   statesIsOpen = signal<boolean>(false);
 
@@ -87,19 +83,11 @@ export class LastChanceAuctionFilterMenuComponent {
       case this.currentOffer:
         this.setCurrentOfferChange.emit(selectedValues());
         break;
-      case this.endsIn:
-        this.setEndsInChange.emit(selectedValues());
-        break;
       case this.states:
         this.setStatesChange.emit(selectedValues());
         break;
     }
   }
-
-  // toggleSelectionOrderBy(value: string): void {
-  //   this.orderBy.set([value]);
-  //   this.setOrderByChange.emit(value);
-  // }
 
   isSelected(value: string, selectedValues: WritableSignal<string[]>): boolean {
     return selectedValues().includes(value);

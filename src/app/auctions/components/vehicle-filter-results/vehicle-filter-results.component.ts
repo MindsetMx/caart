@@ -208,7 +208,6 @@ export class VehicleFilterResultsComponent implements OnInit {
   }
 
   setOrderBy(value: string): void {
-    console.log('setOrderBy', value);
     this.orderBy.set(value);
     this.resetPage();
     this.getLiveAuctions(true);

@@ -208,7 +208,6 @@ export class LastChanceDetailComponent implements AfterViewInit {
 
     this.#lastChanceVehicleDetailService.getAuctionDetails$(auctionId).pipe(
       switchMap((auctionDetails) => {
-        console.log({ auctionDetails });
         this.auction.set(auctionDetails);
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
