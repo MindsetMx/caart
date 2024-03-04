@@ -1,0 +1,161 @@
+<form [formGroup]="vehicleMemorabiliaForm" (ngSubmit)="registerVehicleMemorabilia()">
+  <div class="grid grid-cols-2 gap-4">
+    <!-- title -->
+    <div>
+      <label for="title" class="block mb-1 text-sm">Título <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="title" id="title" type="text" sharedInput>
+      @if (hasError('title')) {
+      <shared-input-error [message]="getError('title')"></shared-input-error>
+      }
+    </div>
+
+    <!-- history textarea -->
+    <div>
+      <label for="history" class="block mb-1 text-sm">Historia <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <textarea formControlName="history" id="history" sharedInput></textarea>
+      @if (hasError('history')) {
+      <shared-input-error [message]="getError('history')"></shared-input-error>
+      }
+    </div>
+
+    <!-- materials textarea -->
+    <div>
+      <label for="materials" class="block mb-1 text-sm">Materiales <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <textarea formControlName="materials" id="materials" sharedInput></textarea>
+      @if (hasError('materials')) {
+      <shared-input-error [message]="getError('materials')"></shared-input-error>
+      }
+    </div>
+
+    <!-- dimensions textarea -->
+    <div>
+      <label for="dimensions" class="block mb-1 text-sm">Medidas <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <textarea formControlName="dimensions" id="dimensions" sharedInput></textarea>
+      @if (hasError('dimensions')) {
+      <shared-input-error [message]="getError('dimensions')"></shared-input-error>
+      }
+    </div>
+
+    <!-- hasSignature select -->
+    <div>
+      <label for="hasSignature" class="block mb-1 text-sm">Firma <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="hasSignature" id="hasSignature" sharedInput>
+        <option value="1">Sí</option>
+        <option value="0">No</option>
+      </select>
+      @if (hasError('hasSignature')) {
+      <shared-input-error [message]="getError('hasSignature')"></shared-input-error>
+      }
+    </div>
+
+    <!-- hasAuthenticityCertificate select -->
+    <div>
+      <label for="hasAuthenticityCertificate" class="block mb-1 text-sm">Certificado de autenticidad <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="hasAuthenticityCertificate" id="hasAuthenticityCertificate" sharedInput>
+        <option value="1">Sí</option>
+        <option value="0">No</option>
+      </select>
+      @if (hasError('hasAuthenticityCertificate')) {
+      <shared-input-error [message]="getError('hasAuthenticityCertificate')"></shared-input-error>
+      }
+    </div>
+
+    <!-- technicalSheet textarea -->
+    <div>
+      <label for="technicalSheet" class="block mb-1 text-sm">Ficha técnica <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <textarea formControlName="technicalSheet" id="technicalSheet" sharedInput></textarea>
+      @if (hasError('technicalSheet')) {
+      <shared-input-error [message]="getError('technicalSheet')"></shared-input-error>
+      }
+    </div>
+
+    <!-- state select -->
+    <div>
+      <label for="state" class="block mb-1 text-sm">Estado <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="state" id="state" sharedInput>
+        @for (state of states(); track $index) {
+        <option [value]="state">{{ state }}</option>
+        }
+      </select>
+      @if (hasError('state')) {
+      <shared-input-error [message]="getError('state')"></shared-input-error>
+      }
+    </div>
+
+    <!-- city input -->
+    <div>
+      <label for="city" class="block mb-1 text-sm">Ciudad <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="city" id="city" type="text" sharedInput>
+      @if (hasError('city')) {
+      <shared-input-error [message]="getError('city')"></shared-input-error>
+      }
+    </div>
+
+    <!-- reserve select -->
+    <div>
+      <label for="reserve" class="block mb-1 text-sm">Reserva <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="reserve" id="reserve" sharedInput>
+        <option value="1">Sí</option>
+        <option value="0">No</option>
+      </select>
+      @if (hasError('reserve')) {
+      <shared-input-error [message]="getError('reserve')"></shared-input-error>
+      }
+    </div>
+
+    <!-- reserveAmount input -->
+    <div>
+      <label for="reserveAmount" class="block mb-1 text-sm">Monto de la reserva <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="reserveAmount" id="reserveAmount" type="text" mask="separator" thousandSeparator=","
+        sharedInput>
+      @if (hasError('reserveAmount')) {
+      <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <label class="text-sm cursor-pointer">
+        Fotos/vídeos
+        <span class="font-bold text-red-500 inline-block">*</span></label>
+
+      <div #uppyDashboard></div>
+
+      @if (hasError('photos')) {
+      <shared-input-error [message]="getError('photos')"></shared-input-error>
+      }
+    </div>
+
+    <!-- additionalInformation textarea -->
+    <div class="col-span-2">
+      <label for="additionalInformation" class="block mb-1 text-sm">Información adicional <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <textarea formControlName="additionalInformation" id="additionalInformation" sharedInput></textarea>
+      @if (hasError('additionalInformation')) {
+      <shared-input-error [message]="getError('additionalInformation')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <button type="submit" class="inline-flex justify-center items-center"
+        [disabled]="isButtonRegisterMemorabiliaDisabled()" [class.opacity-50]="isButtonRegisterMemorabiliaDisabled()"
+        sharedPrimaryButton>
+        @if (isButtonRegisterMemorabiliaDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Registrar
+        }
+      </button>
+    </div>
+  </div>
+</form>

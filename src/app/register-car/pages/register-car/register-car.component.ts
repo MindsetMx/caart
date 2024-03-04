@@ -1,32 +1,33 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, WritableSignal, inject, signal, ViewChild, ElementRef, AfterViewInit, effect, viewChild } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, signal, ElementRef, effect, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Observable, Subscription, map, startWith } from 'rxjs';
+import { Router } from '@angular/router';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { AppComponent } from '@app/app.component';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
+import { Brands, Colors } from '@app/register-car/interfaces';
 import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-modal/complete-register-modal.component';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { RegisterCarService } from '@app/register-car/services/register-car.service';
 import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { states } from '@shared/states';
 import { SubastaAutomovilesTypes } from '@app/register-car/enums/subastaAutomovilesTypes.enum';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { Brands, Colors } from '@app/register-car/interfaces';
-import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
-import { states } from '@shared/states';
+import { VehicleMemorabiliaComponentComponent } from '@app/register-car/components/vehicle-memorabilia-component/vehicle-memorabilia-component.component';
 
 @Component({
   selector: 'register-car',
@@ -44,6 +45,7 @@ import { states } from '@shared/states';
     UppyAngularDashboardModule,
     MatAutocompleteModule,
     InputFormatterDirective,
+    VehicleMemorabiliaComponentComponent,
   ],
   templateUrl: './register-car.component.html',
   styleUrl: './register-car.component.css',

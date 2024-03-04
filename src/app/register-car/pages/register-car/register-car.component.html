@@ -46,6 +46,8 @@
     </p>
     }
 
+    @switch (currentSubastaAutomovilesType()) {
+    @case (subastaAutomovilesType.AUTOMOVILES) {
     @defer (when brands().length > 0 && states().length > 0) {
     <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" (click)="showModalBasedOnUserStatus()">
       <div class="grid grid-cols-2 gap-4" [ngClass]="{'pointer-events-none': userIsNotAuthenticated}">
@@ -59,10 +61,10 @@
             }
           </mat-autocomplete>
           <!-- <select formControlName="brand" id="brand" sharedInput>
-                @for (brand of brands(); track $index) {
-                <option [value]="brand">{{brand}}</option>
-                }
-              </select> -->
+                  @for (brand of brands(); track $index) {
+                  <option [value]="brand">{{brand}}</option>
+                  }
+                </select> -->
           @if (hasError('brand')) {
           <shared-input-error [message]="getError('brand')"></shared-input-error>
           }
@@ -225,8 +227,8 @@
               class="font-bold text-red-500 inline-block">*</span></label>
           <div class="relative rounded-md shadow-sm">
             <!-- <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <span class="text-gray-500 sm:text-sm">$</span>
-              </div> -->
+                  <span class="text-gray-500 sm:text-sm">$</span>
+                </div> -->
             <input formControlName="kmInput" inputFormatter type="text" class="pl pr-12" name="kmInput" id="kmInput"
               autocomplete="off" sharedInput>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -371,6 +373,15 @@
     } @placeholder {
     Cargando formulario...
     }
+    }
+    @case (subastaAutomovilesType.AUTOPARTES) {
+
+    }
+    @case (subastaAutomovilesType.MEMORABILIA) {
+    <vehicle-memorabilia-component></vehicle-memorabilia-component>
+    }
+    }
+
   </div>
   }
   @case (2) {
