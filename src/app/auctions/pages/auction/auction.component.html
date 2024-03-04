@@ -197,15 +197,14 @@
       <section>
         <div [innerHTML]="auction().data.attributes.carHistory.content"></div>
       </section>
-      }
 
       <section>
         <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
         <swiper-container init="false" #videoGallery>
-          @for (item of [].constructor(6); track $index) {
+          @for (item of this.auction().data.attributes.exteriorDetails.exteriorVideos; track $index) {
           <swiper-slide class="pb-12">
-            <a class="relative" href="https://www.youtube.com/watch?v=SWLz4GQZW2I" data-fancybox="gallery2">
-              <img src="assets/img/home/carousel/banner.png" alt="">
+            <a class="relative" [href]="item" data-fancybox="gallery2">
+              <img [src]="getPhotoFromVideoUrl(item)" alt="">
               <img src="assets/img/icons/play-circle.svg" alt=""
                 class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
             </a>
@@ -213,6 +212,7 @@
           }
         </swiper-container>
       </section>
+      }
 
       @defer (when auction().data) {
 
@@ -564,7 +564,8 @@
 
 @defer (when makeAnOfferModalIsOpen()) {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
-  (offerMade)="getSpecificAuctionDetails()" [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>
+  (offerMade)="getSpecificAuctionDetails();getComments()"
+  [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>
 }
 
 <payment-method-modal (paymentMethodAdded)="refreshPaymentMethods()"

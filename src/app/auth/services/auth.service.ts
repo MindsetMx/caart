@@ -123,6 +123,14 @@ export class AuthService {
     return this.#http.get<{ available: boolean }>(`${this.#baseUrl}/users/check-username?username=${username}`);
   }
 
+  checkEmailAvailability$(email: string): Observable<{ available: boolean }> {
+    return this.#http.get<{ available: boolean }>(`${this.#baseUrl}/users/check-email?email=${email}`);
+  }
+
+  checkPhoneNumberAvailability$(phoneNumber: string): Observable<{ available: boolean }> {
+    return this.#http.get<{ available: boolean }>(`${this.#baseUrl}/users/check-phone?phone=${phoneNumber}`);
+  }
+
   toggleShowPassword(element: ElementRef<HTMLInputElement>, element2?: ElementRef<HTMLInputElement>): void {
     this.changeInputType(element);
 

@@ -112,6 +112,9 @@
             <!-- <label for="phoneNumber" class="block mb-1 text-sm hidden">Celular <span class="font-bold text-red-500 inline-block">*</span></label> -->
             <input class="mt-6" id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel"
               sharedInput>
+            @if(!phoneNumberIsAvailable()) {
+            <shared-input-error message="El número de teléfono ya está en uso"></shared-input-error>
+            }
             @if (hasError('phoneNumber')) {
             <shared-input-error [message]="getError('phoneNumber')"></shared-input-error>
             }
@@ -123,6 +126,9 @@
         <label for="email" class="block mb-1 text-sm">Correo electrónico <span
             class="font-bold text-red-500 inline-block">*</span></label>
         <input id="email" formControlName="email" autocomplete="email" type="email" sharedInput>
+        @if(!emailIsAvailable()) {
+        <shared-input-error message="El correo electrónico ya está en uso"></shared-input-error>
+        }
         @if (hasError('email')) {
         <shared-input-error [message]="getError('email')"></shared-input-error>
         }

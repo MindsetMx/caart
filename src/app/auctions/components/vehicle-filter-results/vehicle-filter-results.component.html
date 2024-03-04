@@ -1,7 +1,7 @@
-<h2 class="text-center font-optima font-bold text-3xl my-8">Subastas de Automóviles</h2>
+<h2 class="hidden md:block text-center font-optima font-bold text-3xl my-8">Subastas de Automóviles</h2>
 
 <div class="grid lg:flex gap-4 mb-4">
-  <div class="w-full my-auto">
+  <div class="w-full my-auto mt-4 md:mt-0">
     <label for="search" class="sr-only">Buscar</label>
     <div class="relative">
       <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
@@ -13,24 +13,27 @@
     </div>
   </div>
 
-  <mat-form-field name="mat-form-field1">
-    <mat-label>Ordenar por</mat-label>
-    <mat-select [ngModel]="orderBy()" (ngModelChange)="setOrderBy($event)">
-      @for (orderBy of orderByList; track $index) {
-      <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <div class="hidden md:block w-fit">
+    <mat-form-field name="mat-form-field1">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select [ngModel]="orderBy()" (ngModelChange)="setOrderBy($event)">
+        @for (orderBy of orderByList; track $index) {
+        <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-  <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
-    class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
-    Última oportunidad
-  </a>
-
-  <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
-    sharedTertiaryButton>
-    Resultados
-  </a>
+  <div class="hidden md:flex gap-4">
+    <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
+      class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
+      Última oportunidad
+    </a>
+    <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
+      sharedTertiaryButton>
+      Resultados
+    </a>
+  </div>
 
   @if (isMobile) {
   <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"

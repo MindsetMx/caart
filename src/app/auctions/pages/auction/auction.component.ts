@@ -1,6 +1,6 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, signal, inject, effect } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, signal, inject, effect, viewChild } from '@angular/core';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
@@ -29,6 +29,7 @@ import { CommentComponent } from '@auctions/components/comment/comment.component
 import { CommentsService } from '@auctions/services/comments.service';
 import { GetComments } from '@auctions/interfaces/get-comments';
 import { PaymentMethodsService } from '../../../shared/services/payment-methods.service';
+import { environments } from '@env/environments';
 
 @Component({
   selector: 'app-auction',
@@ -54,11 +55,14 @@ import { PaymentMethodsService } from '../../../shared/services/payment-methods.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionComponent implements AfterViewInit {
-  @ViewChild('videoGallery') videoGallery!: ElementRef;
+  readonly #baseUrl = environments.baseUrl;
+
+  videoGallery = viewChild<ElementRef>('videoGallery');
   @ViewChild('auctionsEnded') auctionsEnded!: ElementRef;
 
   makeAnOfferModalIsOpen = signal<boolean>(false);
   auction = signal<AuctionDetails>({} as AuctionDetails);
+  auctionId2 = signal<string | null>(null);
   specificAuction = signal<SpecificAuction>({} as SpecificAuction);
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
   isFollowing = signal<boolean | undefined>(undefined);
@@ -67,6 +71,7 @@ export class AuctionComponent implements AfterViewInit {
   comments = signal<GetComments>({} as GetComments);
   auctionId = signal<string | null>(null);
   paymentMethodId = signal<string>('');
+  eventSource?: EventSource;
 
   #route = inject(ActivatedRoute);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -119,10 +124,24 @@ export class AuctionComponent implements AfterViewInit {
         this.getAuctionDetails(this.auctionId());
         this.getMetrics(this.auctionId());
 
+        this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
+
+        this.eventSource.onmessage = (event) => {
+          console.log({ message: JSON.parse(event.data) });
+          if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
+            this.getSpecificAuctionDetails();
+          }
+        };
         break;
       case AuthStatus.notAuthenticated:
         this.getAuctionDetails(this.auctionId());
         break;
+    }
+  });
+
+  videoGalleryEffect = effect(() => {
+    if (this.videoGallery) {
+      this.initSwiperCarousel(this.videoGallery(), this.swiperParams);
     }
   });
 
@@ -131,7 +150,7 @@ export class AuctionComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.initSwiperCarousel(this.videoGallery, this.swiperParams);
+    // this.initSwiperCarousel(this.videoGallery, this.swiperParams);
     this.initSwiperCarousel(this.auctionsEnded, this.swiperParams);
 
     Fancybox.bind("[data-fancybox='gallery']");
@@ -142,10 +161,18 @@ export class AuctionComponent implements AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery6']");
   }
 
+  getPhotoFromVideoUrl(videoUrl: string): string {
+    const videoId = videoUrl.split('/').pop()?.split('.').shift();
+    return `https://res.cloudinary.com/dfadvv7yu/video/upload/so_0,w_1920,h_1080,c_fill/${videoId}.jpg`;
+  }
+
   getComments(): void {
     this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId).subscribe({
       next: (response) => {
         this.comments.set(response);
+
+        //invertir el orden de los comentarios
+        this.comments().data = this.comments().data.reverse();
       },
       error: (error) => {
         console.error(error);
@@ -211,6 +238,7 @@ export class AuctionComponent implements AfterViewInit {
     this.#auctionDetailsService.getAuctionDetails$(auctionId).pipe(
       switchMap((auctionDetails) => {
         this.auction.set(auctionDetails);
+        this.auctionId2.set(auctionDetails.data.id);
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
         }

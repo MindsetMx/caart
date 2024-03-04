@@ -98,8 +98,8 @@ export class MakeAnOfferModalComponent implements OnInit {
     }
 
     this.#makeBidService.makeBid$(this.auctionId(), this.offerAmountControl.value, this.paymentMethodControl.value).subscribe({
-      next: (response) => {
-        console.log({ response });
+      next: () => {
+        this.getBiddingConditions();
         this.isOpen.set(false);
 
         this.offerMade.emit();

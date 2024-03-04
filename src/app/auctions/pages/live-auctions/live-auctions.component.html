@@ -1,7 +1,8 @@
-<section class="container mt-16 mb-32">
-  <h1 class="text-center font-optima font-bold text-4xl mb-6">SUBASTAS EN VIVO</h1>
-
-  <shared-tabs-with-icons [tabs]="tabs" (tabSelected)="onTabSelected($event)"></shared-tabs-with-icons>
+<section class="container mt-2 mb-32">
+  <div #stickyDiv class="sticky md:relative pt-4 inset-0 z-10 bg-white outline-white outline-2 outline">
+    <h1 class="text-center font-optima font-bold text-4xl">SUBASTAS EN VIVO</h1>
+    <shared-tabs-with-icons [tabs]="tabs" (tabSelected)="onTabSelected($event)"></shared-tabs-with-icons>
+  </div>
 
   @switch (currentTab().id) {
   @case (1) {

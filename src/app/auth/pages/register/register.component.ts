@@ -62,6 +62,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   showPassword1: WritableSignal<boolean> = signal(false);
   showPassword2: WritableSignal<boolean> = signal(false);
   userNameIsAvailable: WritableSignal<boolean> = signal(true);
+  emailIsAvailable: WritableSignal<boolean> = signal(true);
+  phoneNumberIsAvailable: WritableSignal<boolean> = signal(true);
 
   validationTypeSubscription?: Subscription;
 
@@ -83,6 +85,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   get usernameControl(): FormControl {
     return this.registerForm.get('username') as FormControl;
+  }
+
+  get emailControl(): FormControl {
+    return this.registerForm.get('email') as FormControl;
+  }
+
+  get phoneNumberControl(): FormControl {
+    return this.registerForm.get('phoneNumber') as FormControl;
   }
 
   constructor() {
@@ -113,6 +123,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.usernameControl.valueChanges.subscribe(() => {
       this.checkUsernameAvailability();
+    });
+
+    this.emailControl.valueChanges.subscribe(() => {
+      this.checkEmailAvailability();
+    });
+
+    this.phoneNumberControl.valueChanges.subscribe(() => {
+      this.checkPhoneNumberAvailability();
     });
   }
 
@@ -175,6 +193,28 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.#authService.checkUsernameAvailability$(this.usernameControl.value).subscribe({
       next: (response) => {
         this.userNameIsAvailable.set(response.available);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  checkEmailAvailability(): void {
+    this.#authService.checkEmailAvailability$(this.registerForm.get('email')?.value).subscribe({
+      next: (response) => {
+        this.emailIsAvailable.set(response.available);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  checkPhoneNumberAvailability(): void {
+    this.#authService.checkPhoneNumberAvailability$(this.registerForm.get('phoneNumber')?.value).subscribe({
+      next: (response) => {
+        this.phoneNumberIsAvailable.set(response.available);
       },
       error: (error) => {
         console.error(error);

@@ -5,48 +5,27 @@
     <hr class="absolute w-full -bottom-4">
   </div>
 
-  <!-- <pre>
-    {{makeAnOfferForm.value | json}}
-  </pre> -->
-
   <form [formGroup]="makeAnOfferForm" (ngSubmit)="makeAnOffer()" class="container mb-8">
-
-    <input formControlName="offerAmount" type="text" placeholder="Oferta ${{minimumNextBid() | number}} o más"
-      sharedInput mask="separator" thousandSeparator="," required>
+    <div>
+      <div class="relative mt-2 rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input formControlName="offerAmount" type="text" placeholder="Oferta ${{minimumNextBid() | number}} o más"
+          class="block w-full rounded-md border-0 py-1.5 pl-7 pr-12  placeholder:text-gray-400" sharedInput
+          mask="separator" thousandSeparator="," required aria-describedby="price-currency">
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
+        </div>
+      </div>
+    </div>
     @if(controlHasError(offerAmountControl)) {
     <shared-input-error class="mt-1" [message]="getFirstError(offerAmountControl)"></shared-input-error>
     }
 
-    <p class="text-sm">Comision a cobrar: ${{holdAmount() === 0 ? '0' : holdAmount() | number}}</p>
+    <p class="text-sm mt-1">Comision a cobrar: ${{holdAmount() === 0 ? '0' : holdAmount() | number}} MXN.</p>
     <br>
 
-    <!-- @if (paymentMethods().length>0) {
-    <fieldset class="mb-8">
-      <legend class="sr-only">Método de pago</legend>
-      <div class="space-y-6">
-        @for (_paymentMethod of paymentMethods(); track $index; let last = $last) {
-        <div class="flex items-center">
-          <input formControlName="paymentMethod" [value]="_paymentMethod.id" [id]="$index" type="radio" class="h-6 w-6"
-            required>
-          <label [for]="$index" class="ml-3 block leading-6">
-            @switch (_paymentMethod.card.brand) {
-            @case ('visa') {
-            <img src="assets/img/icons/visa.svg" alt="Visa">
-            }
-            }
-            <p class="font-bold mt-2">
-              <span>{{_paymentMethod.card.brand | titlecase}}</span> que termina en {{_paymentMethod.card.last4}}
-            </p>
-            <p>Expira el {{_paymentMethod.card.expMonth}}/{{_paymentMethod.card.expYear}}</p>
-          </label>
-        </div>
-        }
-      </div>
-      @if(controlHasError(paymentMethodControl)) {
-      <shared-input-error class="mt-1" [message]="getFirstError(paymentMethodControl)"></shared-input-error>
-      }
-    </fieldset>
-    } -->
     <input formControlName="acceptTerms" class="align-middle mr-2" type="checkbox" id="terms">
     <label class="text-xs align-middle" for="terms">
       Estoy consiente de que estoy haciendo una oferta y debo pagarlo

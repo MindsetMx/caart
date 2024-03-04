@@ -313,6 +313,26 @@
           </div>
           }
         </div>
+
+        <div class="border-t border-gray-200 px-4 py-6 space-y-4">
+          <mat-form-field class="w-full" name="mat-form-field1">
+            <mat-label>Ordenar por</mat-label>
+            <mat-select [ngModel]="orderByControl" (ngModelChange)="setOrderBy($event)">
+              @for (orderBy of orderByList; track $index) {
+              <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
+            class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
+            Última oportunidad
+          </a>
+          <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
+            sharedTertiaryButton>
+            Resultados
+          </a>
+        </div>
+
       </div>
     </div>
   </div>

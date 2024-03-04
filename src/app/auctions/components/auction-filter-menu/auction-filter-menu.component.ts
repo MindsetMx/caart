@@ -2,8 +2,11 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Ou
 import { CommonModule } from '@angular/common';
 import { trigger, style, animate, transition } from '@angular/animations';
 
-import { FormsModule } from '@angular/forms';
-import { InputDirective } from '@shared/directives';
+import { FormControl, FormsModule } from '@angular/forms';
+import { InputDirective, TertiaryButtonDirective } from '@shared/directives';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'auction-filter-menu',
@@ -12,6 +15,10 @@ import { InputDirective } from '@shared/directives';
     CommonModule,
     InputDirective,
     FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    TertiaryButtonDirective,
+    RouterLink
   ],
   templateUrl: './auction-filter-menu.component.html',
   styleUrl: './auction-filter-menu.component.css',
@@ -75,6 +82,8 @@ export class AuctionFilterMenuComponent {
   endsInIsOpen = signal<boolean>(false);
   currentOfferIsOpen = signal<boolean>(false);
   statesIsOpen = signal<boolean>(false);
+
+  orderByControl: FormControl = new FormControl();
 
   toggleSelection(value: string, selectedValues: WritableSignal<string[]>): void {
     (this.isSelected(value, selectedValues))
@@ -143,5 +152,10 @@ export class AuctionFilterMenuComponent {
   toggleFilter(event: Event, filter: WritableSignal<boolean>): void {
     event.stopPropagation();
     filter.update((value) => !value);
+  }
+
+  setOrderBy(value: string): void {
+    this.orderBy.set([value]);
+    this.setOrderByChange.emit(value);
   }
 }
