@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { RouterModule } from '@angular/router';
 
 import { AuctionCardComponent } from '@app/auctions/components/auction-card/auction-card.component';
-import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
+import { AuctionResultsFilterMenuComponent } from '@app/auction-results/components/auction-results-filter-menu/auction-results-filter-menu.component';
+import { AuctionResultsVehicleCardComponent } from '@app/auction-results/components/auction-results-vehicle-card/auction-results-vehicle-card.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
 import { VehicleAuction } from '@app/auctions/interfaces';
 import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
-import { RouterModule } from '@angular/router';
-import { AuctionResultsVehicleCardComponent } from '../auction-results-vehicle-card/auction-results-vehicle-card.component';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 @Component({
@@ -20,7 +21,6 @@ const MOBILE_SCREEN_WIDTH = 1024;
   standalone: true,
   imports: [
     AuctionCardComponent,
-    AuctionFilterMenuComponent,
     CommonModule,
     FormsModule,
     IntersectionDirective,
@@ -31,11 +31,32 @@ const MOBILE_SCREEN_WIDTH = 1024;
     TertiaryButtonDirective,
     YearRangeComponent,
     RouterModule,
-    AuctionResultsVehicleCardComponent
+    AuctionResultsVehicleCardComponent,
+    AuctionResultsFilterMenuComponent
   ],
   templateUrl: './auction-results-vehicle-filter-results.component.html',
   styleUrl: './auction-results-vehicle-filter-results.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('openClose', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.3s ease-in', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('0.3s ease-out', style({ opacity: 0 }))
+      ]),
+    ]),
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('0.3s ease-in-out', style({ transform: 'translateX(0)' })),
+      ]),
+      transition(':leave', [
+        animate('0.3s ease-in-out', style({ transform: 'translateX(100%)' }))
+      ]),
+    ]),
+  ]
 })
 export class AuctionResultsVehicleFilterResultsComponent implements OnInit {
   currentPage = signal<number>(0);

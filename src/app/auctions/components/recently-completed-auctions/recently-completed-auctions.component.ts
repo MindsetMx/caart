@@ -65,7 +65,6 @@ export class RecentlyCompletedAuctionsComponent implements OnInit {
   getCompletedAuctions(): void {
     this.#completedAuctionsService.getCompletedAuctions$().subscribe({
       next: (data) => {
-        console.log(data);
         this.completedAuctions.set(data);
       },
       error: (error) => {

@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
+
 import { AuthGuard, GuestGuard, UnverifiedGuard, VerifiedGuard, CompleteAccountGuard } from '@auth/guards';
 import { IncompleteAccountGuard } from '@auth/guards/incomplete-account.guard';
-import { LastChanceComponent } from './last-chance/pages/last-chance/last-chance.component';
-import { AuctionResultsComponent } from './auctions/pages/auction-results/auction-results.component';
-import { MobileUserLiveAuctionRedirectGuard } from './home/guards/mobile-user-live-auction-redirect.guard';
+import { MobileUserLiveAuctionRedirectGuard } from '@app/home/guards/mobile-user-live-auction-redirect.guard';
 
 export const routes: Routes = [
   {

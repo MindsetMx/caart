@@ -22,15 +22,17 @@
     </mat-select>
   </mat-form-field>
 
-  <a routerLink="/subastas-en-vivo" px="px-4" width="lg:w-fit w-full"
-    class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
-    Subastas en vivo
-  </a>
+  <div class="hidden md:flex gap-4">
+    <a routerLink="/subastas-en-vivo" px="px-4" width="lg:w-fit w-full"
+      class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
+      Subastas en vivo
+    </a>
 
-  <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
-    class="text-sm flex flex-shrink-0 items-center justify-center" sharedTertiaryButton>
-    Última oportunidad
-  </a>
+    <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
+      class="text-sm flex flex-shrink-0 items-center justify-center" sharedTertiaryButton>
+      Última oportunidad
+    </a>
+  </div>
 
   @if (isMobile) {
   <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"
@@ -147,12 +149,11 @@
 
 </div>
 
-<auction-filter-menu [auctionTypeList]="auctionTypeList" [categoryList]="categoryList"
-  [currentOfferList]="currentOfferList" [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList"
-  [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen" (setAuctionTypeChange)="setAuctionType($event)"
-  (setCategoryChange)="setCategory($event)" (setCurrentOfferChange)="setCurrentOffer($event)"
-  (setEndsInChange)="setEndsIn($event)" (setEraChange)="setEra($event)" (setOrderByChange)="setOrderBy($event)"
-  (setStatesChange)="setStates($event)" (setYearRangeChange)="setYearRange($event)"></auction-filter-menu>
+<auction-results-filter-menu [(isOpen)]="auctionFilterMenuIsOpen" [auctionTypeList]="auctionTypeList"
+  [categoryList]="categoryList" [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList"
+  (setAuctionTypeChange)="setAuctionType($event)" (setCategoryChange)="setCategory($event)"
+  (setEraChange)="setEra($event)" (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
+  (setYearRangeChange)="setYearRange($event)"></auction-results-filter-menu>
 
 <ng-template #auctionCardSkeleton>
   @for (item of [].constructor(8); track $index) {

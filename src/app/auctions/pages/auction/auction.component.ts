@@ -124,10 +124,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
         this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
 
-        console.log(this.eventSource);
-
         this.eventSource.onmessage = (event) => {
-          console.log({ event });
           if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
             this.getSpecificAuctionDetails();
           }
