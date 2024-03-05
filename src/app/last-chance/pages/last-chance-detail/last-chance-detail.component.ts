@@ -2,15 +2,14 @@ import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, signal, inject, effect } from '@angular/core';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
-import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { CountdownModule } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
 import { switchMap } from 'rxjs';
 register();
+
 import { AppComponent } from '@app/app.component';
-import { AuctionDetails, SpecificAuction, AuctionMetrics, GetComments } from '@auctions/interfaces';
-import { AuctionDetailsService } from '@auctions/services/auction-details.service';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
@@ -21,12 +20,14 @@ import { CountdownService } from '@shared/services/countdown.service';
 import { GeneralInfoService } from '@auth/services/general-info.service';
 import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
 import { InputDirective, PrimaryButtonDirective, SecondaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
+import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
+import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
 import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
 import { PaymentMethod } from '@auth/interfaces/general-info';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { SpecificAuction, AuctionMetrics, GetComments } from '@auctions/interfaces';
 import { StarComponent } from '@shared/components/icons/star/star.component';
-import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
-import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
+import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 
 @Component({
   selector: 'app-last-chance-detail',
@@ -46,7 +47,8 @@ import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
     CommentsTextareaComponent,
     CommentComponent,
     SecondaryButtonDirective,
-    TertiaryButtonDirective
+    TertiaryButtonDirective,
+    RecentlyCompletedAuctionsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './last-chance-detail.component.html',

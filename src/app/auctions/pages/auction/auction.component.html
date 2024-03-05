@@ -406,16 +406,7 @@
       </section>
       }
 
-      <section class="mt-12">
-        <h2 class="text-xl font-bold mt-8 mb-6">Subastas finalizadas recientemente</h2>
-        <swiper-container init="false" #auctionsEnded>
-          @for (item of [].constructor(6); track $index) {
-          <swiper-slide class="pb-12">
-            <img src="assets/img/home/carousel/banner.png" alt="">
-          </swiper-slide>
-          }
-        </swiper-container>
-      </section>
+      <recently-completed-auctions></recently-completed-auctions>
     </div>
     <div class="col-span-12 md:col-span-5">
       <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">

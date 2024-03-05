@@ -1,0 +1,17 @@
+<section class="mt-12">
+  <h2 class="text-xl font-bold mt-8 mb-6">Subastas finalizadas recientemente</h2>
+  <swiper-container init="false" #auctionsEnded>
+    @for (auction of completedAuctions().data; track $index) {
+    <swiper-slide class="pb-12">
+      <img class="w-full h-64 object-cover" [src]="auction.attributes.photos[0]" [alt]="auction.attributes.model" />
+
+      <div class="mt-4">
+        <p class="font-optima font-semibold text-xl">
+          {{auction.attributes.year}} {{auction.attributes.brand}} {{auction.attributes.model}}
+        </p>
+        <span class="text-gray4">{{auction.attributes.city}}, {{auction.attributes.state}}</span>
+      </div>
+    </swiper-slide>
+    }
+  </swiper-container>
+</section>

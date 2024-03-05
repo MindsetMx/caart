@@ -90,6 +90,7 @@ export const routes: Routes = [
             path: 'solicitudes',
             loadComponent: () => import('./dashboard/pages/requests/requests.component').then((m) => m.RequestsComponent),
           },
+          { path: '**', redirectTo: 'publicaciones' }
         ]
       }
     ]
