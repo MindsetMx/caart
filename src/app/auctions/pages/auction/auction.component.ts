@@ -1,6 +1,6 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal } from '@angular/core';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
@@ -29,6 +29,8 @@ import { PaymentMethodsService } from '@shared/services/payment-methods.service'
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
+import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
+import { BiddingConditionsService } from '@auctions/services/bidding-conditions.service';
 
 @Component({
   standalone: true,
@@ -46,7 +48,8 @@ import { StarComponent } from '@shared/components/icons/star/star.component';
     PaymentMethodModalComponent,
     CommentsTextareaComponent,
     CommentComponent,
-    RecentlyCompletedAuctionsComponent
+    RecentlyCompletedAuctionsComponent,
+    AuctionSummaryComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
@@ -69,6 +72,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   paymentMethodId = signal<string>('');
   paymentMethodModalIsOpen = signal<boolean>(false);
   specificAuction = signal<SpecificAuction>({} as SpecificAuction);
+  offeredAmount = signal<number | undefined>(undefined);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -278,14 +282,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  countdownConfig2(): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
-    return {
-      leftTime: leftTime,
-      format: this.getFormat2(leftTime)
-    };
-  }
-
   getSecondsUntilEndDate(endDate: string): number {
     return this.#countdownService.getSecondsUntilEndDate(endDate);
   }
@@ -298,7 +294,9 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     return this.#countdownService.getFormat2(seconds);
   }
 
-  openMakeAnOfferModal(): void {
+  openMakeAnOfferModal(offeredAmount?: number): void {
+    this.offeredAmount.set(undefined);
+
     if (this.authStatus === AuthStatus.notAuthenticated) {
       this.openSignInModal();
 
@@ -309,6 +307,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
       if (paymentMethods.data.length > 0) {
         this.paymentMethodId.set(paymentMethods.data[0].id);
+        this.offeredAmount.set(offeredAmount);
         this.makeAnOfferModalIsOpen.set(true);
         return;
       }

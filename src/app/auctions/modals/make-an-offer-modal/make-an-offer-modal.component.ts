@@ -1,19 +1,17 @@
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, WritableSignal, effect, inject, input, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgxMaskDirective } from 'ngx-mask';
 
+import { AppService } from '@app/app.service';
+import { BiddingConditionsService } from '@auctions/services/bidding-conditions.service';
 import { InputDirective } from '@shared/directives/input.directive';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { MakeBidService } from '@auctions/services/make-bid.service';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
-import { BiddingConditionsService } from '../../services/bidding-conditions.service';
-import { CommonModule } from '@angular/common';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PaymentMethod } from '@auth/interfaces/general-info';
-import { ValidatorsService } from '@shared/services/validators.service';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { MakeBidService } from '@auctions/services/make-bid.service';
-import { AppService } from '@app/app.service';
-import { InputFormatterDirective } from '@shared/directives';
-import { NgxMaskDirective } from 'ngx-mask';
+import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
   selector: 'auction-make-an-offer-modal',
@@ -36,10 +34,9 @@ export class MakeAnOfferModalComponent implements OnInit {
   @Input() isOpen: WritableSignal<boolean> = signal(false);
   @Output() offerMade = new EventEmitter();
   paymentMethodId = input.required<string>();
-
   auctionId = input.required<string>();
+  offerAmount = input<number | undefined>();
   minimumNextBid = signal<number>(0);
-  disableBidButton = signal<boolean>(false);
   isButtonMakeAnOfferDisabled = signal<boolean>(false);
   holdAmount = signal<number>(0);
 
@@ -50,6 +47,10 @@ export class MakeAnOfferModalComponent implements OnInit {
   #makeBidService = inject(MakeBidService);
   #appService = inject(AppService);
   #formBuilder = inject(FormBuilder);
+
+  offerAmountChangedEffect = effect(() => {
+    this.offerAmountControl.setValue(this.offerAmount());
+  });
 
   minimumNextBidChangedEffect = effect(() => {
     this.offerAmountControl.addValidators(Validators.min(this.minimumNextBid()));
@@ -99,7 +100,7 @@ export class MakeAnOfferModalComponent implements OnInit {
 
     this.#makeBidService.makeBid$(this.auctionId(), this.offerAmountControl.value, this.paymentMethodControl.value).subscribe({
       next: () => {
-        this.getBiddingConditions();
+        // this.getBiddingConditions();
         this.isOpen.set(false);
 
         this.offerMade.emit();
@@ -117,8 +118,11 @@ export class MakeAnOfferModalComponent implements OnInit {
     this.#biddingConditionsService.getBiddingConditions(this.auctionId()).subscribe({
       next: (biddingConditions) => {
         this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
-        // this.offerAmount.set(biddingConditions.data.minimumNextBid);
-        this.offerAmountControl.setValue(this.minimumNextBid());
+
+        this.offerAmount()
+          ? this.offerAmountControl.setValue(this.offerAmount())
+          : this.offerAmountControl.setValue(this.minimumNextBid());
+
         this.getBidConditions(this.minimumNextBid());
       },
       error: (error) => {
@@ -130,7 +134,6 @@ export class MakeAnOfferModalComponent implements OnInit {
   getBidConditions(userBidAmount: number): void {
     this.#biddingConditionsService.getBidConditions(this.auctionId(), userBidAmount).subscribe({
       next: (bidConditions) => {
-        this.disableBidButton.set(bidConditions.data.disableBidButton);
         this.holdAmount.set(bidConditions.data.holdAmount);
       },
       error: (error) => {

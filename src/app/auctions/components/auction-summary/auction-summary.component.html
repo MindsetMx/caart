@@ -1,0 +1,108 @@
+<section class="shadow mt-12 rounded-xl border border-gray3 px-6 py-6">
+  <h2 class="font-semibold text-xl">Resumen de la subasta</h2>
+
+  <hr class="my-4">
+
+  <div class="md:grid md:grid-cols-12 gap-4">
+    <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+      Oferta actual:
+    </div>
+    <!-- <span class="col-span-8 lg:col-span-9 font-semibold">$1,650,500 MXN</span> -->
+    @if (auction().data.attributes.bids.length > 0) {
+    <span class="col-span-8 lg:col-span-9 font-semibold">
+      {{auction().data.attributes.bids[auction().data.attributes.bids.length-1].bidAmount |
+      currency:'USD':'symbol':'1.0-2'}}
+      MXN
+    </span>
+    }
+  </div>
+
+  <hr class="my-4">
+
+  <div class="md:grid md:grid-cols-12 gap-4">
+    <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+      Tiempo restante:
+    </div>
+    <countdown class="col-span-8 lg:col-span-9 font-semibold text-red2" [config]="countdownConfig()"
+      [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
+  </div>
+
+  <hr class="my-4">
+
+  <div class="md:grid md:grid-cols-12 gap-4">
+    <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+      Termina en:
+    </div>
+    <div class="col-span-8 lg:col-span-9">
+      <!-- <span class="font-semibold inline mr-4 lg:mr-12">
+          Miercoles, Noviembre 15 a la 18:00 PM
+        </span> -->
+      <span class="font-semibold inline mr-4 lg:mr-12">
+        {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
+        a'}}
+      </span>
+      <img class="inline align-bottom" src="assets/img/icons/notifications-outline.svg" alt="">
+      <span class="underline">Recuerdame por correo</span>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <div class="md:grid md:grid-cols-12 gap-4">
+    <div class="inline md:flex md:items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+      Ofertas:
+    </div>
+    <!-- <span class="col-span-8 lg:col-span-9 font-semibold">3</span> -->
+    <span class="col-span-8 lg:col-span-9 font-semibold">{{auction().data.attributes.bids.length}}</span>
+  </div>
+
+  <hr class="my-4">
+
+  <form [formGroup]="makeAnOfferForm" (ngSubmit)="makeAnOffer()" class="md:grid md:grid-cols-12 gap-4">
+    <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+      Haz una oferta:
+    </div>
+    <div class="col-span-8 lg:col-span-9">
+      <div class="lg:flex gap-4">
+        <input formControlName="offerAmount" class="font-normal" type="text" placeholder="Oferta $1,700,000 o más"
+          mask="separator" thousandSeparator="," sharedInput>
+        <button width="w-fit lg:w-[14rem]" px="px-6" py="py-1"
+          classes="flex justify-center items-center text-xs xl:text-sm h-12 mt-2 lg:mt-0"
+          [disabled]="isButtonMakeAnOfferDisabled()" [class.opacity-50]="isButtonMakeAnOfferDisabled()"
+          sharedPrimaryButton>
+          @if (isButtonMakeAnOfferDisabled()) {
+          <shared-spinner></shared-spinner>
+          } @else {
+          HACER OFERTA
+          }
+        </button>
+      </div>
+      @if (hasError('offerAmount')) {
+      <shared-input-error [message]="getError('offerAmount')"></shared-input-error>
+      }
+    </div>
+  </form>
+
+  <hr class="my-4">
+
+  @defer (when metrics().data) {
+  <div class="lg:flex lg:justify-between">
+    <div class="md:flex md:items-center md:space-x-4 md:divide-x md:divide-gray3">
+      <div class="underline">¿Cómo funciona?</div>
+      <div class="mt-2 md:mt-0 md:pl-4 text-sm text-gray4">
+        <img class="inline mr-2" src="assets/img/icons/eye-outline.svg">
+        {{metrics().data.attributes.visualizations | number}} visualizaciones
+      </div>
+      <div class="md:pl-4 text-sm text-gray4">
+        <shared-star class="inline mr-2" classes="inline text-gray4 w-5 h-5"></shared-star>
+        {{metrics().data.attributes.followedCount | number}} seguidos
+      </div>
+    </div>
+
+    <div class="mt-4 lg:mt-0 w-fit ml-auto mr-auto flex items-center">
+      <img class="inline mr-2 w-6 h-6" src="assets/img/icons/share.svg" alt="">
+      <span class="underline align-middle">Compartir</span>
+    </div>
+  </div>
+  }
+</section>
