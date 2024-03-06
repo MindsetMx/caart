@@ -11,9 +11,9 @@ import { AuctionResultsVehicleCardComponent } from '@app/auction-results/compone
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
 import { VehicleAuction } from '@app/auctions/interfaces';
-import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { CompletedAuctionsService } from '@auctions/services/completed-auctions.service';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 @Component({
@@ -21,6 +21,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
   standalone: true,
   imports: [
     AuctionCardComponent,
+    AuctionResultsFilterMenuComponent,
+    AuctionResultsVehicleCardComponent,
     CommonModule,
     FormsModule,
     IntersectionDirective,
@@ -28,11 +30,9 @@ const MOBILE_SCREEN_WIDTH = 1024;
     MatSelectModule,
     PrimaryButtonDirective,
     ReactiveFormsModule,
+    RouterModule,
     TertiaryButtonDirective,
     YearRangeComponent,
-    RouterModule,
-    AuctionResultsVehicleCardComponent,
-    AuctionResultsFilterMenuComponent
   ],
   templateUrl: './auction-results-vehicle-filter-results.component.html',
   styleUrl: './auction-results-vehicle-filter-results.component.css',
@@ -139,7 +139,8 @@ export class AuctionResultsVehicleFilterResultsComponent implements OnInit {
 
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
-  #vehicleFilterService = inject(VehicleFilterService);
+  // #vehicleFilterService = inject(VehicleFilterService);
+  #completedAuctionsService = inject(CompletedAuctionsService);
 
   auctions = signal<VehicleAuction | undefined>(undefined);
 
@@ -150,23 +151,24 @@ export class AuctionResultsVehicleFilterResultsComponent implements OnInit {
   getLiveAuctions(replace: boolean = false): void {
     this.currentPage.update((page) => page + 1);
 
-    this.#vehicleFilterService.getLiveAuctions$(
-      this.currentPage(),
-      this.size(),
-      this.auctionType().join(','),
+    this.#completedAuctionsService.getCompletedAuctions$(
+      // this.currentPage(),
+      // this.size(),
+      // this.auctionType().join(','),
       this.category().join(','),
-      this.era().join(','),
+      // this.era().join(','),
       this.yearRange(),
-      this.currentOffer().join(','),
-      this.orderBy(),
-      this.endsIn().join(','),
+      // this.currentOffer().join(','),
+      // this.orderBy(),
+      // this.endsIn().join(','),
       this.states().join(','),
       this.search(),
     ).subscribe({
       next: (auctions: VehicleAuction) => {
         if (replace) {
           this.auctions.set(auctions);
-          this.getLiveAuctions(false);
+          // TODO: descomentar cuando quede lista la paginacion
+          // this.getLiveAuctions(false);
           return;
         }
 
