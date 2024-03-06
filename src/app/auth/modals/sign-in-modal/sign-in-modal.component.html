@@ -1,4 +1,4 @@
-<shared-modal [isOpen]="isOpen" [verticalCenter]="true">
+<shared-modal [isOpen]="isOpen()" (isOpenChange)="isOpenChange($event)" [verticalCenter]="true">
   <div class="relative">
     <h3 class="text-center font-bold text-lg mb-12">Inicia sesión</h3>
 

@@ -456,11 +456,12 @@
 @if (offeredAmount()) {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   (offerMade)="getSpecificAuctionDetails();getComments()" [offerAmount]="offeredAmount()"
-  [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>
+  [isOpen]="makeAnOfferModalIsOpen()" (isOpenChange)="makeAnOfferModalIsOpenChanged($event)">
+</auction-make-an-offer-modal>
 }@else {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
-  (offerMade)="getSpecificAuctionDetails();getComments()"
-  [isOpen]="makeAnOfferModalIsOpen"></auction-make-an-offer-modal>
+  (offerMade)="getSpecificAuctionDetails();getComments()" [isOpen]="makeAnOfferModalIsOpen()"
+  (isOpenChange)="makeAnOfferModalIsOpenChanged($event)"></auction-make-an-offer-modal>
 }
 }
 

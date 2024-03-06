@@ -22,4 +22,8 @@ export class RegisterModalComponent {
   emitSignInModalIsOpenChange(isOpen: boolean) {
     this.signInModalIsOpenChange.emit(isOpen);
   }
+
+  isOpenChange(isOpen: boolean) {
+    this.isOpen.set(isOpen);
+  }
 }

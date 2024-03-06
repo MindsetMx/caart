@@ -116,6 +116,10 @@ export class PaymentMethodModalComponent {
       });
   }
 
+  isOpenChange(isOpen: boolean): void {
+    this.isOpen.set(isOpen);
+  }
+
   createToken(): Observable<TokenResult> {
     if (!this.card) return of({} as TokenResult);
 

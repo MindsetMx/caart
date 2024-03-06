@@ -24,4 +24,8 @@ export class CompleteRegisterModalComponent {
     this.isOpen.set(isOpen);
     this.getHasGeneralInfo.emit();
   }
+
+  isOpenChange(isOpen: boolean): void {
+    this.isOpen.set(isOpen);
+  }
 }

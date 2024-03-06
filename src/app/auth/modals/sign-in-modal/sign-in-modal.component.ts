@@ -20,4 +20,8 @@ export class SignInModalComponent {
   emitRegisterModalIsOpenChange(isOpen: boolean): void {
     this.registerModalIsOpenChange.emit(isOpen);
   }
+
+  isOpenChange(isOpen: boolean): void {
+    this.isOpen.set(isOpen);
+  }
 }

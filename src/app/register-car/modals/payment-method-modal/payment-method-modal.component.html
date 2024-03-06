@@ -1,4 +1,4 @@
-<shared-modal [isOpen]="isOpen" [verticalCenter]="true">
+<shared-modal [isOpen]="isOpen()" (isOpenChange)="isOpenChange($event)" [verticalCenter]="true">
   <div class="relative">
     <h3 class="container text-center font-bold text-lg mb-12">Añade tus datos bancarios</h3>
 

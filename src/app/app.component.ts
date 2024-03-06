@@ -57,11 +57,11 @@ export class AppComponent implements OnDestroy {
           localStorage.removeItem('url');
         }
 
-        // this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe/${this.user?.id}`);
+        this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe/${this.user?.id}`);
 
-        // this.eventSource.onmessage = (event) => {
-        //   this.messages.update((messages) => [...messages, JSON.parse(event.data).message]);
-        // };
+        this.eventSource.onmessage = (event) => {
+          this.messages.update((messages) => [...messages, JSON.parse(event.data).message]);
+        };
         break;
 
       case AuthStatus.notAuthenticated:

@@ -166,6 +166,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     Fancybox.bind("[data-fancybox='gallery6']");
   }
 
+  makeAnOfferModalIsOpenChanged(isOpen: boolean): void {
+    this.makeAnOfferModalIsOpen.set(isOpen);
+  }
+
   getPhotoFromVideoUrl(videoUrl: string): string {
     const videoId = videoUrl.split('/').pop()?.split('.').shift();
     return `https://res.cloudinary.com/dfadvv7yu/video/upload/so_0,w_1920,h_1080,c_fill/${videoId}.jpg`;

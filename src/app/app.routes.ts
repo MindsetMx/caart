@@ -78,6 +78,10 @@ export const routes: Routes = [
         loadComponent: () => import('./auctions/pages/publication-requests/publication-requests.component').then((m) => m.PublicationRequestsComponent),
       },
       {
+        path: 'test',
+        loadComponent: () => import('./test/test.component').then((m) => m.TestComponent),
+      },
+      {
         path: 'dashboard',
         canActivate: [AuthGuard],
         children: [

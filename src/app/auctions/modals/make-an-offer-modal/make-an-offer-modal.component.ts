@@ -31,7 +31,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MakeAnOfferModalComponent implements OnInit {
-  @Input() isOpen: WritableSignal<boolean> = signal(false);
+  isOpen = input<boolean>(false);
+  @Output() isOpenChange = new EventEmitter<boolean>();
   @Output() offerMade = new EventEmitter();
   paymentMethodId = input.required<string>();
   auctionId = input.required<string>();
@@ -101,7 +102,8 @@ export class MakeAnOfferModalComponent implements OnInit {
     this.#makeBidService.makeBid$(this.auctionId(), this.offerAmountControl.value, this.paymentMethodControl.value).subscribe({
       next: () => {
         // this.getBiddingConditions();
-        this.isOpen.set(false);
+        // this.isOpen.set(false);
+        this.isOpenChange.emit(false);
 
         this.offerMade.emit();
         this.toastSuccess('Oferta realizada con éxito');
