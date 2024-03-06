@@ -12,6 +12,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { AuctionComponent } from '@auctions/pages/auction/auction.component';
 
 @Component({
   selector: 'auction-make-an-offer-modal',
@@ -48,6 +49,7 @@ export class MakeAnOfferModalComponent implements OnInit {
   #makeBidService = inject(MakeBidService);
   #appService = inject(AppService);
   #formBuilder = inject(FormBuilder);
+  #auctionComponent = inject(AuctionComponent);
 
   offerAmountChangedEffect = effect(() => {
     this.offerAmountControl.setValue(this.offerAmount());
@@ -67,6 +69,14 @@ export class MakeAnOfferModalComponent implements OnInit {
       paymentMethod: ['', Validators.required],
       acceptTerms: [false, Validators.requiredTrue],
     });
+
+    if (this.#auctionComponent.eventSource) {
+      this.#auctionComponent.eventSource.onmessage = (event) => {
+        if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
+          this.getBiddingConditions();
+        }
+      }
+    }
   }
 
   get offerAmountControl(): FormControl {
@@ -101,8 +111,7 @@ export class MakeAnOfferModalComponent implements OnInit {
 
     this.#makeBidService.makeBid$(this.auctionId(), this.offerAmountControl.value, this.paymentMethodControl.value).subscribe({
       next: () => {
-        // this.getBiddingConditions();
-        // this.isOpen.set(false);
+        this.getBiddingConditions();
         this.isOpenChange.emit(false);
 
         this.offerMade.emit();
