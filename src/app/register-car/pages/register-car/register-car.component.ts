@@ -237,6 +237,12 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
           img: 'assets/img/registrar auto/milo-venus.svg',
           current: false
         },
+        {
+          id: 3,
+          name: 'Memorabilia',
+          img: 'assets/img/registrar auto/milo-venus.svg',
+          current: false
+        }
       ];
 
     this.currentTab.set(this.tabs[0]);

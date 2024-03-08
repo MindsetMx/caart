@@ -29,15 +29,6 @@
         Autopartes
       </button>
       }
-      @if (currentSubastaAutomovilesType()===subastaAutomovilesType.MEMORABILIA) {
-      <button py="py-2" classes="font-semibold font-optima" sharedPrimaryButton>
-        Memorabilia
-      </button>
-      } @else {
-      <button py="py-2" (click)="setSubastaAutomovilesType(subastaAutomovilesType.MEMORABILIA)" sharedSecondaryButton>
-        Memorabilia
-      </button>
-      }
     </div>
 
     @if (userIsNotAuthenticated) {
@@ -377,15 +368,17 @@
     @case (subastaAutomovilesType.AUTOPARTES) {
 
     }
-    @case (subastaAutomovilesType.MEMORABILIA) {
-    <vehicle-memorabilia-component></vehicle-memorabilia-component>
-    }
     }
 
   </div>
   }
   @case (2) {
   tab 2
+  }
+  @case (3) {
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-xl mb-32">
+    <vehicle-memorabilia-component></vehicle-memorabilia-component>
+  </div>
   }
   }
 </section>
