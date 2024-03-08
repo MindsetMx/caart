@@ -8,9 +8,9 @@
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
       <div>
         <label for="email" class="block mb-1 text-sm">Correo electrónico</label>
-        <input id="email" formControlName="email" autocomplete="email" type="email" sharedInput>
-        @if (hasError('email')) {
-        <shared-input-error [message]="getError('email')"></shared-input-error>
+        <input id="email" formControlName="login" autocomplete="email" type="email" sharedInput>
+        @if (hasError('login')) {
+        <shared-input-error [message]="getError('login')"></shared-input-error>
         }
       </div>
       <div>

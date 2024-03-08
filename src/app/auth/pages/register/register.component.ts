@@ -154,7 +154,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.toastSuccess('Usuario registrado correctamente');
 
         const loginForm = this.#fb.group({
-          email: [this.registerForm?.get('email')?.value, [Validators.required, Validators.email]],
+          login: [this.registerForm?.get('email')?.value, [Validators.required, Validators.email]],
           password: [this.registerForm?.get('password')?.value, Validators.required]
         });
 
