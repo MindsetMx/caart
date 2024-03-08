@@ -78,6 +78,11 @@ export const routes: Routes = [
         loadComponent: () => import('./auctions/pages/publication-requests/publication-requests.component').then((m) => m.PublicationRequestsComponent),
       },
       {
+        path: 'reestablecer-contrasena',
+        canActivate: [GuestGuard],
+        loadComponent: () => import('./auth/components/password-reset/password-reset.component').then((m) => m.PasswordResetComponent),
+      },
+      {
         path: 'dashboard',
         canActivate: [AuthGuard],
         children: [

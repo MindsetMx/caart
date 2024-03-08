@@ -6,5 +6,6 @@
   </div>
 
   <sign-in (registerModalIsOpenChange)="emitRegisterModalIsOpenChange($event)"
+    (emailForPasswordResetModalIsOpenChange)="emitEmailForPasswordResetModalIsOpenChange($event)"
     (signInModalIsOpenChange)="isOpen.set($event)" mt="mt-0" mb="mb-0"></sign-in>
 </shared-modal>

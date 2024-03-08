@@ -216,6 +216,12 @@
 </div>
 
 <auth-sign-in-modal (registerModalIsOpenChange)="registerModalIsOpen.set($event)"
+  (emailForPasswordResetModalIsOpenChange)="emailForPasswordResetModalIsOpen.set($event)"
   [isOpen]="signInModalIsOpen"></auth-sign-in-modal>
+@defer (when emailForPasswordResetModalIsOpen()) {
+<email-for-password-reset-input-component-modal
+  (emailForPasswordResetModalIsOpenChange)="emailForPasswordResetModalIsOpen.set($event)"
+  [isOpen]="emailForPasswordResetModalIsOpen()"></email-for-password-reset-input-component-modal>
+}
 <register-modal (signInModalIsOpenChange)="signInModalIsOpen.set($event)"
   [isOpen]="registerModalIsOpen"></register-modal>

@@ -24,9 +24,10 @@ import { ValidatorsService } from '@shared/services/validators.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent {
+  @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
   @Output() signInModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
+  @Output() emailForPasswordResetModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() mt: string = 'mt-16';
   @Input() mb: string = 'mb-32';
@@ -35,9 +36,9 @@ export class SignInComponent {
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
 
-  isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
-  showPassword: WritableSignal<boolean> = signal(false);
-  errorMessage: WritableSignal<string> = signal('');
+  isButtonSubmitDisabled = signal<boolean>(false);
+  showPassword = signal<boolean>(false);
+  errorMessage = signal<string>('');
 
   get loginForm(): FormGroup {
     return this.#authService.loginForm;
@@ -67,6 +68,12 @@ export class SignInComponent {
         if (currentUrl === '/' && currentUser?.attributes?.accountVerified === false)
           this.#router.navigate(['/confirmacion']);
 
+        if (currentUrl === '/iniciar-sesion') {
+          this.#router.navigate(['/']);
+
+          return;
+        }
+
         this.signInModalIsOpenChange.emit(false);
       },
       error: (error) => {
@@ -81,6 +88,11 @@ export class SignInComponent {
   openRegisterModal(): void {
     this.signInModalIsOpenChange.emit(false);
     this.registerModalIsOpenChange.emit(true);
+  }
+
+  openEmailForPasswordResetModal(): void {
+    this.signInModalIsOpenChange.emit(false);
+    this.emailForPasswordResetModalIsOpenChange.emit(true);
   }
 
   redirectToPreviousUrlIfExists(): void {

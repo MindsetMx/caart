@@ -32,7 +32,9 @@
         @if (errorMessage() && !hasError('password')) {
         <shared-input-error [message]="errorMessage()"></shared-input-error>
         }
-        <p class=" text-lg mt-2 underline">¿Ólvidaste tu contraseña?</p>
+        <button type="button" (click)="openEmailForPasswordResetModal()" class="text-lg mt-2 underline">
+          ¿Ólvidaste tu contraseña?
+        </button>
       </div>
 
       <button class="inline-flex justify-center items-center" type="submit" [disabled]="isButtonSubmitDisabled()"

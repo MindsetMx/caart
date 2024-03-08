@@ -8,6 +8,7 @@ import { DropdownComponent } from '@shared/components/dropdown/dropdown.componen
 import { DropdownLink } from '@shared/interfaces/DropdownLink';
 import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.component';
 import { RegisterModalComponent } from '@auth/modals/register-modal/register-modal.component';
+import { EmailForPasswordResetInputComponentModalComponent } from '@auth/modals/email-for-password-reset-input-component-modal/email-for-password-reset-input-component-modal.component';
 
 @Component({
   selector: 'shared-navbar',
@@ -17,7 +18,8 @@ import { RegisterModalComponent } from '@auth/modals/register-modal/register-mod
     DropdownComponent,
     RouterModule,
     SignInModalComponent,
-    RegisterModalComponent
+    RegisterModalComponent,
+    EmailForPasswordResetInputComponentModalComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
@@ -30,9 +32,10 @@ export class NavbarComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  menuIsOpen: WritableSignal<boolean> = signal(false);
-  categoriesDropdownIsOpen: WritableSignal<boolean> = signal(false);
-  userDropdownIsOpen: WritableSignal<boolean> = signal(false);
+  menuIsOpen = signal<boolean>(false);
+  categoriesDropdownIsOpen = signal<boolean>(false);
+  userDropdownIsOpen = signal<boolean>(false);
+  emailForPasswordResetModalIsOpen = signal(false);
 
   dropdownLinksCategories: DropdownLink[] = [
     {

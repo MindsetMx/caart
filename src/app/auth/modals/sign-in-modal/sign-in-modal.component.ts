@@ -16,9 +16,14 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 export class SignInModalComponent {
   @Input() isOpen: WritableSignal<boolean> = signal(false);
   @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() emailForPasswordResetModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   emitRegisterModalIsOpenChange(isOpen: boolean): void {
     this.registerModalIsOpenChange.emit(isOpen);
+  }
+
+  emitEmailForPasswordResetModalIsOpenChange(isOpen: boolean): void {
+    this.emailForPasswordResetModalIsOpenChange.emit(isOpen);
   }
 
   isOpenChange(isOpen: boolean): void {
