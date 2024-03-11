@@ -45,7 +45,7 @@ export class VehicleFilterResultsComponent implements OnInit {
   era = signal<string[]>([]);
   yearRange = signal<{ yearFrom: number, yearTo: number } | undefined>(undefined);
   currentOffer = signal<string[]>([]);
-  orderBy = signal<string>('');
+  orderBy = signal<string>('EndingSoonest');
   endsIn = signal<string[]>([]);
   states = signal<string[]>([]);
 

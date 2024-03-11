@@ -3,12 +3,14 @@
 
   <div class="space-y-6">
     @for (auction of liveAuctions().data; track auction.id) {
-    <div [routerLink]="['/subasta', auction.originalAuctionCarId]" class="cursor-pointer">
+    <!-- <div [routerLink]="['/subasta', auction.originalAuctionCarId]" class="cursor-pointer">
       <img class="w-full" [src]="auction.attributes.photos[0]" alt="">
       <span class="font-optima text-lg mt-2 font-bold">
         {{auction.attributes.year}} {{auction.attributes.brand}} {{auction.attributes.model}}
       </span>
-    </div>
+    </div> -->
+
+    <auction-card2 [auction]="auction"></auction-card2>
     }
     <!-- <div>
       <div class="relative">

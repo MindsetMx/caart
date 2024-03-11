@@ -23,7 +23,7 @@
     <shared-input-error class="mt-1" [message]="getFirstError(offerAmountControl)"></shared-input-error>
     }
 
-    <p class="text-sm mt-1">Comision a cobrar: ${{holdAmount() === 0 ? '0' : holdAmount() | number}} MXN.</p>
+    <p class="text-sm mt-1">Comision a cobrar: ${{holdAmount() === 0 ? '5,000' : holdAmount() | number}} MXN.</p>
     <br>
 
     <input formControlName="acceptTerms" class="align-middle mr-2" type="checkbox" id="terms">

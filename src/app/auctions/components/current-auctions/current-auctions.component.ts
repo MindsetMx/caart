@@ -2,12 +2,14 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, input, signal } fro
 import { VehicleFilterService } from '../../services/vehicle-filter.service';
 import { VehicleAuction } from '@auctions/interfaces';
 import { RouterLink } from '@angular/router';
+import { AuctionCard2Component } from '../auction-card2/auction-card2.component';
 
 @Component({
   selector: 'current-auctions',
   standalone: true,
   imports: [
     RouterLink,
+    AuctionCard2Component
   ],
   templateUrl: './current-auctions.component.html',
   styleUrl: './current-auctions.component.css',
