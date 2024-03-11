@@ -21,6 +21,11 @@ export const routes: Routes = [
     loadComponent: () => import('./infoPages/pages/contact/contact.component').then((m) => m.ContactComponent),
   },
   {
+    path: 'preguntas-frecuentes',
+    canActivate: [VerifiedGuard],
+    loadComponent: () => import('./infoPages/pages/faq/faq.component').then((m) => m.FaqComponent),
+  },
+  {
     path: 'iniciar-sesion',
     canActivate: [VerifiedGuard, GuestGuard],
     loadComponent: () => import('./auth/components/sign-in/sign-in.component').then((m) => m.SignInComponent),

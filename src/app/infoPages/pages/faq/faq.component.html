@@ -1,0 +1,545 @@
+<section class="container mt-16">
+  <h1 class="font-optima font-bold text-center text-4xl">Preguntas frecuentes</h1>
+
+  <p class="text-center mb-12">Resolvemos tus dudas</p>
+
+  <h2 class="text-2xl mb-4">Preguntas generales</h2>
+
+  <div class="mx-auto max-w-7xl">
+    <dl class="space-y-5">
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <!-- Expand/collapse question button -->
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-0" aria-expanded="false" (click)="toggleAnswer(0, expandedGeneralQuestions)">
+            <span class="text-base font-semibold leading-7">¿Cuál es el proceso para participar en una
+              subasta?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedGeneralQuestions()[0]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+
+            </span>
+          </button>
+        </dt>
+        @if (expandedGeneralQuestions()[0]) {
+        <dd class="mt-2 pr-12" id="faq-0">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- More questions... -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-1" aria-expanded="false" (click)="toggleAnswer(1,expandedGeneralQuestions)">
+            <span class="text-base font-semibold leading-7">¿Cuáles son los requisitos para registrarme como usuario o
+              vendedor?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedGeneralQuestions()[1]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedGeneralQuestions()[1]) {
+        <dd class="mt-2 pr-12" id="faq-1">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- More questions... -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-2" aria-expanded="false" (click)="toggleAnswer(2, expandedGeneralQuestions)">
+            <span class="text-base font-semibold leading-7">¿Qué medidas de seguridad se implementan en las
+              transacciones?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedGeneralQuestions()[2]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedGeneralQuestions()[2]) {
+        <dd class="mt-2 pr-12" id="faq-2">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Cuál es la diferencia entre una subasta y las piezas de última oportunidad? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-3" aria-expanded="false" (click)="toggleAnswer(3, expandedGeneralQuestions)">
+            <span class="text-base font-semibold leading-7">¿Cuál es la diferencia entre una subasta y las piezas de
+              última oportunidad?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedGeneralQuestions()[3]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedGeneralQuestions()[3]) {
+        <dd class="mt-2 pr-12" id="faq-3">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Cómo puedo saber qué subastas hay en vivo? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-4" aria-expanded="false" (click)="toggleAnswer(4, expandedGeneralQuestions)">
+            <span class="text-base font-semibold leading-7">¿Cómo puedo saber qué subastas hay en vivo?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedGeneralQuestions()[4]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedGeneralQuestions()[4]) {
+        <dd class="mt-2 pr-12" id="faq-4">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+    </dl>
+  </div>
+
+
+  <h2 class="text-2xl mb-4 mt-12">Para compradores</h2>
+
+  <div class="mx-auto max-w-7xl">
+    <dl class="space-y-5">
+      <!-- Acabo de hacer una oferta, ¿por qué tengo un cargo en mi tarjeta de crédito? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-5" aria-expanded="false" (click)="toggleAnswer(0, expandedBuyerQuestions)">
+            <span class="text-base font-semibold leading-7">Acabo de hacer una oferta, ¿por qué tengo un cargo en mi
+              tarjeta de crédito?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedBuyerQuestions()[0]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedBuyerQuestions()[0]) {
+        <dd class="mt-2 pr-12" id="faq-5">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Es posible programar una visita presencial para revisar una pieza antes de ofertar? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-6" aria-expanded="false" (click)="toggleAnswer(1, expandedBuyerQuestions)">
+            <span class="text-base font-semibold leading-7">¿Es posible programar una visita presencial para revisar una
+              pieza antes de ofertar?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedBuyerQuestions()[1]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedBuyerQuestions()[1]) {
+        <dd class="mt-2 pr-12" id="faq-6">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- Una vez que hice mi oferta, ¿puedo cancelarla? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-7" aria-expanded="false" (click)="toggleAnswer(2, expandedBuyerQuestions)">
+            <span class="text-base font-semibold leading-7">Una vez que hice mi oferta, ¿puedo cancelarla?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedBuyerQuestions()[2]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedBuyerQuestions()[2]) {
+        <dd class="mt-2 pr-12" id="faq-7">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Hay alguna comisión para el comprador? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-8" aria-expanded="false" (click)="toggleAnswer(3, expandedBuyerQuestions)">
+            <span class="text-base font-semibold leading-7">¿Hay alguna comisión para el comprador?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedBuyerQuestions()[3]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedBuyerQuestions()[3]) {
+        <dd class="mt-2 pr-12" id="faq-8">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Cómo funciona el envío de mi pieza? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-9" aria-expanded="false" (click)="toggleAnswer(4, expandedBuyerQuestions)">
+            <span class="text-base font-semibold leading-7">¿Cómo funciona el envío de mi pieza?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedBuyerQuestions()[4]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedBuyerQuestions()[4]) {
+        <dd class="mt-2 pr-12" id="faq-9">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Puedo comprar una pieza que no llegó a la reserva? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-10" aria-expanded="false" (click)="toggleAnswer(5, expandedBuyerQuestions)">
+            <span class="text-base font-semibold leading-7">¿Puedo comprar una pieza que no llegó a la reserva?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedBuyerQuestions()[5]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedBuyerQuestions()[5]) {
+        <dd class="mt-2 pr-12" id="faq-10">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+    </dl>
+  </div>
+
+  <h2 class="text-2xl mb-4 mt-12">Para vendedores</h2>
+
+  <div class="mx-auto max-w-7xl mb-32">
+    <dl class="space-y-5">
+      <!-- ¿Puedo subastar una pieza si no estoy en México? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-11" aria-expanded="false" (click)="toggleAnswer(0, expandedSellerQuestions)">
+            <span class="text-base font-semibold leading-7">¿Puedo subastar una pieza si no estoy en México?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedSellerQuestions()[0]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedSellerQuestions()[0]) {
+        <dd class="mt-2 pr-12" id="faq-11">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Hay algún costo por la publicación de mi pieza? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-12" aria-expanded="false" (click)="toggleAnswer(1, expandedSellerQuestions)">
+            <span class="text-base font-semibold leading-7">¿Hay algún costo por la publicación de mi pieza?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedSellerQuestions()[1]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedSellerQuestions()[1]) {
+        <dd class="mt-2 pr-12" id="faq-12">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Cómo tomo las imágenes de mi pieza? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-13" aria-expanded="false" (click)="toggleAnswer(2, expandedSellerQuestions)">
+            <span class="text-base font-semibold leading-7">¿Cómo tomo las imágenes de mi pieza?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedSellerQuestions()[2]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedSellerQuestions()[2]) {
+        <dd class="mt-2 pr-12" id="faq-13">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- La subasta terminó y mi pieza sí se vendió, ¿qué sigue? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-14" aria-expanded="false" (click)="toggleAnswer(3, expandedSellerQuestions)">
+            <span class="text-base font-semibold leading-7">La subasta terminó y mi pieza sí se vendió, ¿qué
+              sigue?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedSellerQuestions()[3]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedSellerQuestions()[3]) {
+        <dd class="mt-2 pr-12" id="faq-14">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- La subasta terminó y mi pieza no se vendió, ¿qué sigue? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-15" aria-expanded="false" (click)="toggleAnswer(4, expandedSellerQuestions)">
+            <span class="text-base font-semibold leading-7">La subasta terminó y mi pieza no se vendió, ¿qué
+              sigue?</span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedSellerQuestions()[4]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedSellerQuestions()[4]) {
+        <dd class="mt-2 pr-12" id="faq-15">
+          <p class="text-base leading-7 text-gray-600">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
+            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
+            suscipit beatae nulla dolor.
+          </p>
+        </dd>
+        }
+      </div>
+    </dl>
+  </div>
+</section>
