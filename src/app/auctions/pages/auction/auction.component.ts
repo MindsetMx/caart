@@ -31,6 +31,7 @@ import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recentl
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
 import { BiddingConditionsService } from '@auctions/services/bidding-conditions.service';
+import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
 
 @Component({
   standalone: true,
@@ -50,6 +51,7 @@ import { BiddingConditionsService } from '@auctions/services/bidding-conditions.
     CommentComponent,
     RecentlyCompletedAuctionsComponent,
     AuctionSummaryComponent,
+    CurrentAuctionsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
@@ -149,6 +151,26 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
   constructor() {
     this.auctionId.set(this.#route.snapshot.paramMap.get('id'));
+
+    this.#route.paramMap.subscribe(params => {
+      let id = params.get('id');
+
+      this.auctionId.set(id);
+      this.getAuctionDetails(id);
+      this.getMetrics(id);
+
+      if (!this.auctionId2()) return;
+
+      this.eventSource?.close();
+
+      this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
+
+      this.eventSource.onmessage = (event) => {
+        if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
+          this.getSpecificAuctionDetails();
+        }
+      };
+    });
   }
 
   ngOnDestroy(): void {

@@ -17,7 +17,7 @@ export class CompletedAuctionsService {
     category?: string,
     range?: { yearFrom: number, yearTo: number },
     states?: string,
-    searchTerm?: string
+    searchTerm?: string,
   ): Observable<CompletedAuctions> {
     const url = `${this.#baseUrl}/auctions-cars/completed`;
 

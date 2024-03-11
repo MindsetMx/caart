@@ -114,15 +114,26 @@
     </div>
 
     <!-- reserveAmount input -->
+    @if (vehicleMemorabiliaForm.get('reserve')?.value === "1") {
     <div>
-      <label for="reserveAmount" class="block mb-1 text-sm">Monto de la reserva <span
+      <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva <span
           class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="reserveAmount" id="reserveAmount" type="text" mask="separator" thousandSeparator=","
-        sharedInput>
+      <div class="relative rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input formControlName="reserveAmount" type="text" class="pl-7 pr-12" name="price" id="reserveAmount"
+          mask="separator" thousandSeparator="," autocomplete="off" placeholder="0.00" aria-describedby="price-currency"
+          inputFormatter sharedInput>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
+        </div>
+      </div>
       @if (hasError('reserveAmount')) {
       <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
       }
     </div>
+    }
 
     <div class="col-span-2">
       <label class="text-sm cursor-pointer">

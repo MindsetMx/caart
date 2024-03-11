@@ -28,6 +28,7 @@ import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-me
 import { SpecificAuction, AuctionMetrics, GetComments } from '@auctions/interfaces';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
+import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
 
 @Component({
   selector: 'app-last-chance-detail',
@@ -48,7 +49,8 @@ import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recentl
     CommentComponent,
     SecondaryButtonDirective,
     TertiaryButtonDirective,
-    RecentlyCompletedAuctionsComponent
+    RecentlyCompletedAuctionsComponent,
+    CurrentAuctionsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './last-chance-detail.component.html',

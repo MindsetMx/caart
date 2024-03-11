@@ -24,7 +24,8 @@ export class VehicleFilterService {
     orderBy?: string,
     endsIn?: string,
     states?: string,
-    search?: string
+    search?: string,
+    excludeId?: string | null
   ): Observable<VehicleAuction> {
     const url = `${this.#baseUrl}/auctions-cars/live-auctions`;
 
@@ -41,6 +42,7 @@ export class VehicleFilterService {
     if (endsIn) { params = params.set('endingIn', endsIn); }
     if (states) { params = params.set('state', states); }
     if (search) { params = params.set('searchTerm', search); }
+    if (excludeId) { params = params.set('excludeId', excludeId); }
 
     return this.#http.get<VehicleAuction>(url, { params });
   }

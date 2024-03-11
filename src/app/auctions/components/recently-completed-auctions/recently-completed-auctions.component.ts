@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, effect, inject, signal, viewChild } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, effect, inject, input, signal, viewChild } from '@angular/core';
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -18,6 +18,8 @@ import { CompletedAuctions } from '@auctions/interfaces/completed-auctions';
 })
 export class RecentlyCompletedAuctionsComponent implements OnInit {
   auctionsEnded = viewChild.required<ElementRef>('auctionsEnded');
+
+  auctionId = input.required<string>();
 
   #completedAuctionsService = inject(CompletedAuctionsService);
 

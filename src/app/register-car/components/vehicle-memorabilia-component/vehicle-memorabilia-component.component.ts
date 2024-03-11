@@ -131,7 +131,7 @@ export class VehicleMemorabiliaComponentComponent {
       state: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
       reserve: new FormControl('', [Validators.required]),
-      reserveAmount: new FormControl('', [Validators.required]),
+      reserveAmount: new FormControl(''),
       photos: new FormControl([], [Validators.required]),
       videos: new FormControl([]),
       additionalInformation: new FormControl('', [Validators.required]),
