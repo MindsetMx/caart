@@ -2,8 +2,6 @@ import { Routes } from '@angular/router';
 
 import { AuthGuard, GuestGuard, UnverifiedGuard, VerifiedGuard, CompleteAccountGuard } from '@auth/guards';
 import { IncompleteAccountGuard } from '@auth/guards/incomplete-account.guard';
-import { MobileUserLiveAuctionRedirectGuard } from '@app/home/guards/mobile-user-live-auction-redirect.guard';
-import { AboutUsComponent } from '@app/infoPages/pages/about-us/about-us.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +14,11 @@ export const routes: Routes = [
     path: 'nosotros',
     canActivate: [VerifiedGuard],
     loadComponent: () => import('./infoPages/pages/about-us/about-us.component').then((m) => m.AboutUsComponent),
+  },
+  {
+    path: 'contacto',
+    canActivate: [VerifiedGuard],
+    loadComponent: () => import('./infoPages/pages/contact/contact.component').then((m) => m.ContactComponent),
   },
   {
     path: 'iniciar-sesion',

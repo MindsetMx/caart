@@ -1,0 +1,103 @@
+<section class="container mt-16">
+  <h1 class="font-optima font-bold text-4xl mb-6">Contacto</h1>
+
+  <div class="space-y-4">
+    <div>
+      <img class="inline-block w-6" src="assets/img/icons/location.svg" alt="">
+      <span class="inline-block align-middle ml-8">[Dirección]</span>
+    </div>
+    <div>
+      <img class="inline-block w-6" src="assets/img/icons/email.svg" alt="">
+      <span class="inline-block align-middle ml-8">contacto&#64;caart.com</span>
+    </div>
+
+    <div>
+      <img class="inline-block w-6" src="assets/img/icons/wp.svg" alt="">
+      <span class="inline-block align-middle ml-8">555-555-5555</span>
+    </div>
+
+    <div>
+      <img class="inline-block w-6" src="assets/img/icons/share2.svg" alt="">
+      <img class="inline-block ml-8" src="assets/img/icons/in.svg" alt="">
+      <img class="inline-block ml-2" src="assets/img/icons/fb.svg" alt="">
+      <img class="inline-block ml-2" src="assets/img/icons/pin.svg" alt="">
+      <img class="inline-block ml-2" src="assets/img/icons/tt.svg" alt="">
+      <img class="inline-block ml-2" src="assets/img/icons/yb.svg" alt="">
+    </div>
+  </div>
+
+  <p class="text-center mt-16">¿Tienes preguntas sobre nuestras subastas o sobre los servicios que ofrecemos?</p>
+  <p class="text-center">Encuentra las respuestas en la sección de <span class="underline">preguntas frecuentes.</span>
+  </p>
+
+  <h2 class="text-xl mt-12 mb-4">Ponte en contacto con nosotros</h2>
+
+  <form [formGroup]="contactForm" (ngSubmit)="contactFormSubmit()" class="space-y-4">
+    <div>
+      <label for="name" class="block mb-1 text-sm">Nombre/s <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input id="name" formControlName="name" autocomplete="given-name" type="text" sharedInput>
+      @if (hasError('name')) {
+      <shared-input-error [message]="getError('name')"></shared-input-error>
+      }
+    </div>
+
+    <!-- email -->
+    <div>
+      <label for="email" class="block mb-1 text-sm">Correo electrónico <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input id="email" formControlName="email" autocomplete="email" type="email" sharedInput>
+      @if (hasError('email')) {
+      <shared-input-error [message]="getError('email')"></shared-input-error>
+      }
+    </div>
+
+    <!-- phone -->
+    <div>
+      <label for="phone" class="block mb-1 text-sm">Teléfono <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input id="phone" formControlName="phone" autocomplete="tel" type="tel" sharedInput>
+      @if (hasError('phone')) {
+      <shared-input-error [message]="getError('phone')"></shared-input-error>
+      }
+    </div>
+
+    <!-- subject -->
+    <div>
+      <label for="subject" class="block mb-1 text-sm">Asunto <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input id="subject" formControlName="subject" autocomplete="subject" type="text" sharedInput>
+      @if (hasError('subject')) {
+      <shared-input-error [message]="getError('subject')"></shared-input-error>
+      }
+    </div>
+
+    <!-- message -->
+    <div class="col-span-2">
+      <label for="message" class="block mb-1 text-sm">Mensaje <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <textarea id="message" formControlName="message" autocomplete="message" rows="5" sharedInput></textarea>
+      @if (hasError('message')) {
+      <shared-input-error [message]="getError('message')"></shared-input-error>
+      }
+    </div>
+
+    <div class="flex justify-end">
+      <button type="submit" [disabled]="contactButtonIsDisabled()" [class.opacity-50]="contactButtonIsDisabled()"
+        width="w-fit" px="px-12" py="py-2" class="inline-flex justify-center items-center" sharedPrimaryButton>
+        @if (contactButtonIsDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Enviar
+        }
+      </button>
+    </div>
+  </form>
+
+  <!-- google maps -->
+  <div class="mt-16 mb-32">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3763.073394073073!2d-99.1693946850906!3d19.4273947868886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3f3f3f3f3f%3A0x3f3f3f3f3f3f3f3f!2sPlaza%20de%20la%20Constituci%C3%B3n%2C%20Centro%20Hist%C3%B3rico%20de%20la%20Ciudad%20de%20M%C3%A9xico%2C%20Centro%2C%2006000%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses-419!2smx!4v1629783940733!5m2!1ses-419!2smx"
+      width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </div>
+</section>
