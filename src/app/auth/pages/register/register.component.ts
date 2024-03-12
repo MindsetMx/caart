@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, WritableSignal, inject, signal, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, map, of, startWith } from 'rxjs';
+import { Router, RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
@@ -14,12 +17,10 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { onlyDigitsValidator } from '@shared/validations/onlyDigitsValidator';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { states } from '@shared/states';
 import { TelephonePrefixes } from '@app/register-car/interfaces';
 import { telephonePrefixes } from '@shared/telephone-prefixes';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { states } from '@shared/states';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'register',
@@ -40,7 +41,7 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './register.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnDestroy {
   @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() signInModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() mb: string = 'mb-32';
@@ -113,23 +114,28 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }, {
       validators: [this.#validatorsService.samePasswords('password', 'password2')]
     });
-  }
 
-  ngOnInit(): void {
     this.filteredStates = this.stateControl.valueChanges.pipe(
+      takeUntilDestroyed(),
       startWith(''),
       map(value => this._filter(value || '')),
     );
 
-    this.usernameControl.valueChanges.subscribe(() => {
+    this.usernameControl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(() => {
       this.checkUsernameAvailability();
     });
 
-    this.emailControl.valueChanges.subscribe(() => {
+    this.emailControl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(() => {
       this.checkEmailAvailability();
     });
 
-    this.phoneNumberControl.valueChanges.subscribe(() => {
+    this.phoneNumberControl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(() => {
       this.checkPhoneNumberAvailability();
     });
   }

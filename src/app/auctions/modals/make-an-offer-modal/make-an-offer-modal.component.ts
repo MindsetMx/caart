@@ -1,7 +1,8 @@
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, WritableSignal, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, OnInit, Output, WritableSignal, effect, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective } from 'ngx-mask';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { AppService } from '@app/app.service';
 import { BiddingConditionsService } from '@auctions/services/bidding-conditions.service';
@@ -43,6 +44,7 @@ export class MakeAnOfferModalComponent implements OnInit {
   holdAmount = signal<number>(0);
 
   makeAnOfferForm: FormGroup;
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   #biddingConditionsService = inject(BiddingConditionsService);
   #validatorsService = inject(ValidatorsService);
@@ -94,9 +96,10 @@ export class MakeAnOfferModalComponent implements OnInit {
   ngOnInit(): void {
     this.getBiddingConditions();
 
-    this.makeAnOfferForm.controls['offerAmount'].valueChanges.subscribe((value) => {
-      this.getBidConditions(value);
-    });
+    this.makeAnOfferForm.controls['offerAmount'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((value) => {
+        this.getBidConditions(value);
+      });
   }
 
   makeAnOffer(): void {
