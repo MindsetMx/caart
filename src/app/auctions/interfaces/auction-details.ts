@@ -9,28 +9,31 @@ export interface AuctionDetailsData {
 }
 
 export interface AuctionDetailsAttributes {
-  _id: string;
-  originalAuctionCarId: string;
-  isWithReserve: boolean;
-  reserveCommissionValue: number;
-  startDate: string;
-  endDate: string;
-  reserveAmount: number;
   __v: number;
-  status: string;
-  premium: boolean;
-  categories: string[];
-  bids: Bid[];
+  _id: string;
   auctionCarForm: AuctionCarForm;
+  bids: Bid[];
+  carHistory: CarHistory;
+  categories: string[];
+  endDate: string;
+  exteriorDetails: ExteriorDetails;
   extras: Extras;
   interiorDetails: InteriorDetails;
+  internalNumber: string;
+  isWithReserve: boolean;
   mechanicsDetails: MechanicsDetails;
-  exteriorDetails: ExteriorDetails;
-  carHistory: CarHistory;
+  originalAuctionCarId: string;
+  premium: boolean;
+  reserveAmount: number;
+  reserveCommissionValue: number;
+  startDate: string;
+  status: string;
 }
 
 export interface CarHistory {
   _id: string;
+  additionalCharges: string;
+  additionalInfo: string;
   content: string;
   originalAuctionCarId: string;
   createdAt: string;

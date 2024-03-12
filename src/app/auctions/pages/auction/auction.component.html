@@ -322,22 +322,27 @@
       <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
         <h3 class="font-semibold mb-2">Información adicional</h3>
 
-        <ul class="list-inside list-disc text-gray4">
+        <!-- <ul class="list-inside list-disc text-gray4">
           <li>Rines “X”</li>
           <li>Faros “X”</li>
           <li>Adaptación “X”</li>
           <li>Llanta “X”</li>
           <li>Polarizado “X”</li>
-        </ul>
+        </ul> -->
+        @if (auction().data) {
+        <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.additionalInfo"></div>
 
         <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
 
         <ul class="space-y-1">
           <li>
-            <span class="text-gray4">Lote #:</span>&nbsp;<span class="font-semibold">23456</span>
+            <span class="text-gray4">Lote #:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.internalNumber}}</span>
           </li>
           <li>
-            <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">CDMX, México</span>
+            <span class="text-gray4">Ubicación:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.city}},
+              {{auction().data.attributes.auctionCarForm.state}}</span>
           </li>
         </ul>
 
@@ -352,10 +357,14 @@
 
         <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
 
-        <ul class="list-inside list-disc text-gray4 mb-8">
+        <!-- <ul class="list-inside list-disc text-gray4 mb-8">
           <li>Tenencia: $1,000 MXN</li>
           <li>Comisión dealer: $3,100 MXN</li>
-        </ul>
+        </ul> -->
+
+        <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.carHistory.additionalCharges"></div>
+        }
+
 
         <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
           HACER UNA OFERTA

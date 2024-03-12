@@ -158,7 +158,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       this.auctionId.set(id);
       this.getAuctionDetails(id);
       this.getMetrics(id);
-      this.getComments();
     });
   }
 
