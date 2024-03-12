@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, WritableSignal, inject, signal } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
@@ -19,7 +19,8 @@ import { EmailForPasswordResetInputComponentModalComponent } from '@auth/modals/
     RouterModule,
     SignInModalComponent,
     RegisterModalComponent,
-    EmailForPasswordResetInputComponentModalComponent
+    EmailForPasswordResetInputComponentModalComponent,
+    RouterModule,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
