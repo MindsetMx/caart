@@ -48,17 +48,13 @@ export class EmailForPasswordResetInputComponentModalComponent {
 
     const isValid = this.#validatorsService.isValidForm(this.resetPasswordForm);
 
-    console.log('isValid', isValid);
-
     if (!isValid) {
       this.resetPasswordButtonIsDisabled.set(false);
       return;
     }
 
     this.#passwordResetService.requestPasswordReset$(this.resetPasswordForm.value.email).subscribe({
-      next: (response) => {
-        console.log('response', response);
-
+      next: () => {
         this.resetPasswordForm.reset();
         this.emitEmailForPasswordResetModalIsOpenChange(false);
 

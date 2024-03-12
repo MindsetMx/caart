@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, effect, inject, input, signal } from '@angular/core';
 import { VehicleFilterService } from '../../services/vehicle-filter.service';
 import { VehicleAuction } from '@auctions/interfaces';
 import { RouterLink } from '@angular/router';
@@ -20,6 +20,10 @@ export class CurrentAuctionsComponent implements OnInit {
   auctionId = input.required<string | null>();
 
   #vehicleFilterService = inject(VehicleFilterService);
+
+  auctionIdEffect = effect(() => {
+    this.getLiveAuctions();
+  });
 
   ngOnInit(): void {
     this.getLiveAuctions();

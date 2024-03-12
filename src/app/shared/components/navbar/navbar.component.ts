@@ -9,6 +9,7 @@ import { DropdownLink } from '@shared/interfaces/DropdownLink';
 import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.component';
 import { RegisterModalComponent } from '@auth/modals/register-modal/register-modal.component';
 import { EmailForPasswordResetInputComponentModalComponent } from '@auth/modals/email-for-password-reset-input-component-modal/email-for-password-reset-input-component-modal.component';
+import { UserData } from '@auth/interfaces';
 
 @Component({
   selector: 'shared-navbar',
@@ -57,12 +58,20 @@ export class NavbarComponent {
     },
   ];
 
+  get user(): UserData | null {
+    return this.authService.currentUser();
+  }
+
   get authStatus() {
     return this.authService.authStatus;
   }
 
   get isAuthenticated(): boolean {
     return this.authStatus() === AuthStatus.authenticated;
+  }
+
+  get profileImage(): string {
+    return 'https://ui-avatars.com/api/?name=' + this.user?.attributes.firstName + this.user?.attributes.lastName;
   }
 
   openSignInModal(): void {

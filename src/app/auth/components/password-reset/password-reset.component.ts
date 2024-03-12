@@ -59,9 +59,7 @@ export class PasswordResetComponent {
     }
 
     this.#passwordResetService.resetPassword$(this.token(), this.resetPasswordForm.value.newPassword).subscribe({
-      next: (response) => {
-        console.log('response', response);
-
+      next: () => {
         this.#router.navigate(['/iniciar-sesion']);
       },
       error: (error) => {

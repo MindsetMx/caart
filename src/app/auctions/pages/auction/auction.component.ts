@@ -123,22 +123,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   authStatusEffect = effect(() => {
     switch (this.authStatus) {
       case AuthStatus.authenticated:
-        this.getAuctionDetails(this.auctionId());
         this.getMetrics(this.auctionId());
 
-        if (!this.auctionId2()) return;
-
-        this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
-
-        this.eventSource.onmessage = (event) => {
-          if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
-            this.getSpecificAuctionDetails();
-          }
-        };
-
-        break;
-      case AuthStatus.notAuthenticated:
-        this.getAuctionDetails(this.auctionId());
         break;
     }
   });
@@ -146,6 +132,20 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   videoGalleryEffect = effect(() => {
     if (this.videoGallery) {
       this.initSwiperCarousel(this.videoGallery(), this.swiperParams);
+    }
+  });
+
+  auction2Effect = effect(() => {
+    if (this.auctionId2()) {
+      this.eventSource?.close();
+
+      this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
+
+      this.eventSource.onmessage = (event) => {
+        if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
+          this.getSpecificAuctionDetails();
+        }
+      };
     }
   });
 
@@ -158,18 +158,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       this.auctionId.set(id);
       this.getAuctionDetails(id);
       this.getMetrics(id);
-
-      if (!this.auctionId2()) return;
-
-      this.eventSource?.close();
-
-      this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
-
-      this.eventSource.onmessage = (event) => {
-        if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
-          this.getSpecificAuctionDetails();
-        }
-      };
+      this.getComments();
     });
   }
 
