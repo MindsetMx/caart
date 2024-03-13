@@ -27,6 +27,9 @@
       "@registerCarInterfaces/*": [
         "./src/app/register-car/interfaces/*"
       ],
+      "@account/*": [
+        "./src/app/account/*"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

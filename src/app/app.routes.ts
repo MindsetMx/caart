@@ -110,6 +110,11 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/components/password-reset/password-reset.component').then((m) => m.PasswordResetComponent),
   },
   {
+    path: 'configuracion-de-la-cuenta',
+    canActivate: [VerifiedGuard, AuthGuard],
+    loadComponent: () => import('./account/pages/account-settings/account-settings.component').then((m) => m.AccountSettingsComponent),
+  },
+  {
     path: 'dashboard',
     canActivate: [VerifiedGuard, AuthGuard],
     children: [

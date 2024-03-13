@@ -1,0 +1,85 @@
+<h2 class="font-optima text-2xl font-bold mb-4">Datos personales</h2>
+
+<div>
+  <form [formGroup]="personalDataForm" id="personalDataForm" (ngSubmit)="personalDataSubmit()"
+    class="grid grid-cols-2 gap-4">
+    <div>
+      <label for="firstName" class="block mb-1 text-sm">Nombre</label>
+      <input id="firstName" formControlName="firstName" autocomplete="given-name" type="text" sharedInput>
+      @if (hasError('firstName')) {
+      <shared-input-error [message]="getError('firstName')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="lastName" class="block mb-1 text-sm">Apellidos</label>
+      <input id="lastName" formControlName="lastName" autocomplete="family-name" type="text" sharedInput>
+      @if (hasError('lastName')) {
+      <shared-input-error [message]="getError('lastName')"></shared-input-error>
+      }
+
+    </div>
+    <!-- username -->
+    <div>
+      <label for="_username" class="block mb-1 text-sm">Nombre de usuario</label>
+      <input id="_username" formControlName="username" type="text" sharedInput>
+      @if (hasError('username')) {
+      <shared-input-error [message]="getError('username')"></shared-input-error>
+      }
+    </div>
+
+    <!-- sellerType -->
+    <div>
+      <label for="≈" class="block mb-1 text-sm">Tipo de vendedor</label>
+      <select id="sellerType" formControlName="sellerType" sharedInput>
+        <option value="Persona privada">Persona privada</option>
+        <option value="Dealer">Dealer</option>
+      </select>
+      @if (hasError('sellerType')) {
+      <shared-input-error [message]="getError('sellerType')"></shared-input-error>
+      }
+    </div>
+
+    <!-- country -->
+    <div>
+      <label for="country" class="block mb-1 text-sm">País</label>
+      <select id="country" formControlName="country" autocomplete="country" sharedInput>
+        @for (country of countries; track $index) {
+        <option value="{{country}}">{{country}}</option>
+        }
+      </select>
+      @if (hasError('country')) {
+      <shared-input-error [message]="getError('country')"></shared-input-error>
+      }
+    </div>
+
+    <!-- city -->
+    <div>
+      <label for="city" class="block mb-1 text-sm">Ciudad</label>
+      <input id="city" formControlName="city" autocomplete="address-level2" type="text" sharedInput>
+      @if (hasError('city')) {
+      <shared-input-error [message]="getError('city')"></shared-input-error>
+      }
+    </div>
+
+    <!-- state -->
+    <div>
+      <label for="state" class="block mb-1 text-sm">Estado</label>
+      <input id="state" formControlName="state" autocomplete="address-level1" type="text" sharedInput>
+      @if (hasError('state')) {
+      <shared-input-error [message]="getError('state')"></shared-input-error>
+      }
+    </div>
+  </form>
+
+  <div class="flex justify-end">
+    <button [disabled]="personalDataSubmitButtonIsDisabled()" [class.opacity-50]="personalDataSubmitButtonIsDisabled()"
+      form="personalDataForm" class="mt-8" type="submit" width="w-fit" py="py-2.5" sharedPrimaryButton>
+      @if (personalDataSubmitButtonIsDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
+      Guardar
+      }
+    </button>
+  </div>
+</div>
