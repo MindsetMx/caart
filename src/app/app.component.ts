@@ -1,6 +1,7 @@
 import { AuthService } from '@auth/services/auth.service';
 import { Component, OnDestroy, WritableSignal, effect, inject, signal } from '@angular/core';
 import { Router, RouterOutlet, } from '@angular/router';
+import { trigger, transition, query, animateChild } from '@angular/animations';
 
 import { AuthStatus } from '@auth/enums';
 import { FooterComponent } from '@shared/components/footer/footer.component';
@@ -8,7 +9,6 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { SignInComponent } from '@auth/components/sign-in/sign-in.component';
 import { NotificationComponent } from '@shared/components/notification/notification.component';
-import { trigger, transition, query, animateChild } from '@angular/animations';
 import { environments } from '@env/environments';
 import { UserData } from '@auth/interfaces';
 
@@ -50,13 +50,6 @@ export class AppComponent implements OnDestroy {
   authStatusChangedEffect = effect(() => {
     switch (this.#authService.authStatus()) {
       case AuthStatus.authenticated:
-        const url = localStorage.getItem('url');
-
-        if (url) {
-          this.#router.navigate([url]);
-          localStorage.removeItem('url');
-        }
-
         this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe/${this.user?.id}`);
 
         this.eventSource.onmessage = (event) => {

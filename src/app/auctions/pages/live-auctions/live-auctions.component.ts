@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { VehicleFilterResultsComponent } from '@app/auctions/components/vehicle-filter-results/vehicle-filter-results.component';
+import { MemorabiliaFilterResultsComponent } from '@auctions/components/memorabilia-filter-results/memorabilia-filter-results.component';
 
 @Component({
   standalone: true,
@@ -12,6 +13,7 @@ import { VehicleFilterResultsComponent } from '@app/auctions/components/vehicle-
     CommonModule,
     TabsWithIconsComponent,
     VehicleFilterResultsComponent,
+    MemorabiliaFilterResultsComponent,
   ],
   templateUrl: './live-auctions.component.html',
   styleUrl: './live-auctions.component.css',
@@ -36,17 +38,17 @@ export class LiveAuctionsComponent {
           id: 2,
           name: 'Automóviles',
           img: 'assets/img/registrar auto/car-sport-outline.svg',
-          current: true
+          current: false
         },
         {
           id: 3,
-          name: 'Arte',
+          name: 'Memorabilia',
           img: 'assets/img/registrar auto/milo-venus.svg',
-          current: false
+          current: true
         },
       ];
 
-    this.currentTab.set(this.tabs[1]);
+    this.currentTab.set(this.tabs[this.tabs.findIndex((tab) => tab.current)]);
 
     this.navigateWithQueryParams(this.currentTab().id);
   }

@@ -1,42 +1,41 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MemorabiliaFilterService } from '@auctions/services/memorabilia-filter.service';
 
-import { AuctionCardComponent } from '@app/auctions/components/auction-card/auction-card.component';
-import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
-import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { VehicleAuction } from '@app/auctions/interfaces';
-import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
-import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { AuctionFilterMenuComponent } from '../auction-filter-menu/auction-filter-menu.component';
+import { MemorabiliaAuction } from '@auctions/interfaces';
+import { MemorabiliaAuctionCardComponent } from '../memorabilia-auction-card/memorabilia-auction-card.component';
+import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { RouterModule } from '@angular/router';
+import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
 @Component({
-  selector: 'vehicle-filter-results',
+  selector: 'memorabilia-filter-results',
   standalone: true,
   imports: [
-    AuctionCardComponent,
-    AuctionFilterMenuComponent,
     CommonModule,
     FormsModule,
-    IntersectionDirective,
     MatFormFieldModule,
     MatSelectModule,
+    AuctionFilterMenuComponent,
+    MemorabiliaAuctionCardComponent,
+    IntersectionDirective,
     PrimaryButtonDirective,
-    // ReactiveFormsModule,
+    RouterModule,
     TertiaryButtonDirective,
     YearRangeComponent,
-    RouterModule
   ],
-  templateUrl: './vehicle-filter-results.component.html',
-  styleUrl: './vehicle-filter-results.component.css',
+  templateUrl: './memorabilia-filter-results.component.html',
+  styleUrl: './memorabilia-filter-results.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VehicleFilterResultsComponent implements OnInit {
+export class MemorabiliaFilterResultsComponent {
   currentPage = signal<number>(0);
   size = signal<number>(10);
 
@@ -117,9 +116,9 @@ export class VehicleFilterResultsComponent implements OnInit {
 
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
-  #vehicleFilterService = inject(VehicleFilterService);
+  #memorabiliaFilterService = inject(MemorabiliaFilterService);
 
-  auctions = signal<VehicleAuction | undefined>(undefined);
+  auctions = signal<MemorabiliaAuction | undefined>(undefined);
 
   ngOnInit(): void {
     this.getLiveAuctions(true);
@@ -128,7 +127,7 @@ export class VehicleFilterResultsComponent implements OnInit {
   getLiveAuctions(replace: boolean = false): void {
     this.currentPage.update((page) => page + 1);
 
-    this.#vehicleFilterService.getLiveAuctions$(
+    this.#memorabiliaFilterService.getLiveAuctions$(
       this.currentPage(),
       this.size(),
       this.auctionType().join(','),
@@ -141,7 +140,9 @@ export class VehicleFilterResultsComponent implements OnInit {
       this.states().join(','),
       this.search(),
     ).subscribe({
-      next: (auctions: VehicleAuction) => {
+      next: (auctions: any) => {
+        console.log(auctions);
+
         if (replace) {
           this.auctions.set(auctions);
           this.getLiveAuctions(false);

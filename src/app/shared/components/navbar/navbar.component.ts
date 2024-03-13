@@ -81,6 +81,7 @@ export class NavbarComponent {
   logout() {
     this.authService.logout();
     this.userDropdownIsOpen.set(false);
+    this.router.navigate(['/home']);
   }
 
   toggleMenu(): void {

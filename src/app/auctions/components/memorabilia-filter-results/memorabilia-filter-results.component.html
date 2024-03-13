@@ -1,0 +1,210 @@
+<h2 class="hidden md:block text-center font-optima font-bold text-3xl my-8">Subastas de Memorabilia</h2>
+
+<div class="grid lg:flex gap-4 mb-4">
+  <div class="w-full my-auto mt-4 md:mt-0">
+    <label for="search" class="sr-only">Buscar</label>
+    <div class="relative">
+      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+        <img class="h-7 w-7" src="assets/img/navbar/search-outline.svg" alt="ícono lupa">
+      </div>
+      <input [ngModel]="search()" (ngModelChange)="setSearch($event)" autocomplete="off"
+        class="block w-full rounded-full bg-gray1 py-3 pl-[3.25rem] pr-4 text-gray-900 placeholder:text-gray2 placeholder:font-montserrat focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        placeholder="Buscar" type="search">
+    </div>
+  </div>
+
+  <div class="hidden md:block w-fit">
+    <mat-form-field name="mat-form-field1">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select [ngModel]="orderBy()" (ngModelChange)="setOrderBy($event)">
+        @for (orderBy of orderByList; track $index) {
+        <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="hidden md:flex gap-4">
+    <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
+      class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
+      Última oportunidad
+    </a>
+    <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
+      sharedTertiaryButton>
+      Resultados
+    </a>
+  </div>
+
+  @if (isMobile) {
+  <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"
+    class="text-sm inline-flex justify-center bg-black" sharedPrimaryButton>
+    <img src="assets/img/icons/filter.svg" alt="ícono filtro" class="w-5 h-5 mr-2">
+    Filtros
+  </button>
+  }
+</div>
+
+@if (!isMobile) {
+<div class="flex gap-4">
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Tipo de listado</mat-label>
+    <mat-select [ngModel]="auctionType()" (ngModelChange)="setAuctionType($event)" multiple>
+      <mat-select-trigger>
+        {{auctionType()[0]}}
+        @if (auctionType().length > 1) {
+        <span>
+          (+{{auctionType().length - 1}} {{auctionType().length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (auction of auctionTypeList; track auction) {
+      <mat-option name="mat-option1" [value]="auction.value">{{auction.label}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Categoría</mat-label>
+    <mat-select [ngModel]="category()" (ngModelChange)="setCategory($event)" multiple>
+      <mat-select-trigger>
+        {{category()[0]}}
+        @if (category().length > 1) {
+        <span>
+          (+{{category().length - 1}} {{category().length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (category of categoryList; track category) {
+      <mat-option name="mat-option1" [value]="category.value">{{category.label}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Era</mat-label>
+    <mat-select [ngModel]="era()" (ngModelChange)="setEra($event)" multiple>
+      <mat-select-trigger>
+        {{era()[0]}}
+        @if (era().length > 1) {
+        <span>
+          (+{{era().length - 1}} {{era().length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (era of eraList; track era) {
+      <mat-option name="mat-option1" [value]="era.value">{{era.label}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div class="flex">
+    <year-range [ngModel]="yearRange()" (ngModelChange)="setYearRange($event)" class="w-max"></year-range>
+  </div>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Termina en</mat-label>
+    <mat-select [ngModel]="endsIn()" (ngModelChange)="setEndsIn($event)" multiple>
+      <mat-select-trigger>
+        {{endsIn()[0]}}
+        @if (endsIn().length > 1) {
+        <span>
+          (+{{endsIn().length - 1}} {{endsIn().length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (endsIn of endsInList; track endsIn) {
+      <mat-option name="mat-option1" [value]="endsIn.value">{{endsIn.label}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Oferta actual</mat-label>
+    <mat-select [ngModel]="currentOffer()" (ngModelChange)="setCurrentOffer($event)" multiple>
+      <mat-select-trigger>
+        {{currentOffer()[0]}}
+        @if (currentOffer().length > 1) {
+        <span>
+          (+{{currentOffer().length - 1}} {{currentOffer().length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (topping of currentOfferList; track topping) {
+      <mat-option name="mat-option1" [value]="topping.value">{{topping.label}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field name="mat-form-field1">
+    <mat-label>Estado</mat-label>
+    <mat-select [ngModel]="states()" (ngModelChange)="setStates($event)" multiple>
+      <mat-select-trigger>
+        {{states()[0]}}
+        @if (states().length > 1) {
+        <span>
+          (+{{states().length - 1}} {{states().length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (state of statesList; track state) {
+      <mat-option name="mat-option1" [value]="state.value">{{state.label}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+}
+
+<div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8 mt-4">
+  @if ( auctions()) {
+  @for (auction of auctions()?.data; track $index; let last = $last) {
+  @defer () {
+  @if (last) {
+  <memorabilia-auction-card [auction]="auction" intersection
+    (visible)="getLiveAuctions(false)"></memorabilia-auction-card>
+  }
+  @else {
+  <memorabilia-auction-card [auction]="auction"></memorabilia-auction-card>
+  }
+  } @placeholder (minimum 500ms) {
+  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+  @loading (after 100ms) {
+  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+  }
+  @empty {
+  <div class="col-span-3 mt-12">
+    <p class=" text-center text-gray4">No se encontraron resultados.</p>
+  </div>
+  }
+  }
+  @else {
+  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+
+</div>
+
+<auction-filter-menu [auctionTypeList]="auctionTypeList" [categoryList]="categoryList"
+  [currentOfferList]="currentOfferList" [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList"
+  [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen" (setAuctionTypeChange)="setAuctionType($event)"
+  (setCategoryChange)="setCategory($event)" (setCurrentOfferChange)="setCurrentOffer($event)"
+  (setEndsInChange)="setEndsIn($event)" (setEraChange)="setEra($event)" (setOrderByChange)="setOrderBy($event)"
+  (setStatesChange)="setStates($event)" (setYearRangeChange)="setYearRange($event)"></auction-filter-menu>
+
+<ng-template #auctionCardSkeleton>
+  @for (item of [].constructor(8); track $index) {
+  <div class="relative cursor-pointer">
+    <div class="w-full h-64 bg-gray-200 animate-pulse"></div>
+    <div class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
+      <div class="w-6 h-6 animate-pulse"></div>
+    </div>
+
+    <div class="mt-4">
+      <div class="font-optima font-semibold text-xl bg-gray-200 animate-pulse w-32 h-4 mb-2"></div>
+      <div class="text-gray4 bg-gray-200 animate-pulse w-20 h-4 mb-2"></div>
+      <div class="inline-block text-sm w-full px-4 py-1 rounded bg-gray-200 animate-pulse h-6"></div>
+      <div class="mt-1 flex items-center bg-gray1 animate-pulse rounded-md px-4 py-2 h-8"></div>
+    </div>
+  </div>
+  }
+</ng-template>

@@ -59,19 +59,11 @@ export class SignInComponent {
         this.loginForm.reset();
         this.errorMessage.set('');
 
-        this.redirectToPreviousUrlIfExists();
-        localStorage.removeItem('url');
-
-        const currentUrl = this.#router.url;
-        const currentUser = this.#authService.currentUser();
-
-        if (currentUrl === '/' && currentUser?.attributes?.accountVerified === false)
+        if (this.#authService.currentUser()?.attributes?.accountVerified) {
+          this.redirectToPreviousUrlIfExists();
+          localStorage.removeItem('url');
+        } else {
           this.#router.navigate(['/confirmacion']);
-
-        if (currentUrl === '/iniciar-sesion') {
-          this.#router.navigate(['/']);
-
-          return;
         }
 
         this.signInModalIsOpenChange.emit(false);
@@ -98,7 +90,7 @@ export class SignInComponent {
   redirectToPreviousUrlIfExists(): void {
     const url = localStorage.getItem('url');
 
-    if (url) { this.#router.navigate([url]) };
+    if (url) this.#router.navigate([url]);
   }
 
   togglePassword(): void {
