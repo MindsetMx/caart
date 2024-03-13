@@ -43,7 +43,7 @@ export class LiveAuctionsComponent {
         {
           id: 3,
           name: 'Memorabilia',
-          img: 'assets/img/registrar auto/milo-venus.svg',
+          img: 'assets/img/icons/memorabilia.svg',
           current: true
         },
       ];

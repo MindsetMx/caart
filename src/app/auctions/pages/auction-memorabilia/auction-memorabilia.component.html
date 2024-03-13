@@ -1,0 +1,355 @@
+<div class="container mt-4 mb-32">
+  @defer (when auction().data) {
+  <section>
+    <h1 class="font-optima font-semibold inline-block text-2xl md:text-3xl mr-4">
+      {{auction().data.attributes.auctionCarForm.title}}
+    </h1>
+
+    <span class="space-x-2 inline-block">
+      @if (auction().data.attributes.auctionCarForm.reserve === false) {
+      <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
+        Sin Reserva
+      </span>
+      }
+      @if (auction().data.attributes.premium) {
+      <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">
+        Premium
+      </span>
+      }
+    </span>
+
+    <div class="grid gap-y-4 md:flex mb-4 mt-8 w-full md:justify-between">
+      <div class="grid text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
+        @if(specificAuction().data && specificAuction().data.bids.length > 0) {
+        <div class="py-1">
+          <p class="font-bold">
+            {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+          </p>
+          <span class="hidden md:block text-gray4 text-sm">Oferta actual</span>
+        </div>
+        }
+        <div>
+          <div class="bg-gray1 rounded-lg px-3 py-1">
+            <countdown class="text-red2 font-bold" [config]="countdownConfig()"
+              [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
+            <br>
+            <span class="hidden md:block text-gray4 text-sm">
+              {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
+              a'}}
+            </span>
+          </div>
+        </div>
+        <div>
+          <div class="hidden md:block py-1">
+            <p class="inline lg:block font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</p>
+            <span class="text-gray4 text-sm"> Ofertas</span>
+          </div>
+          <div class="md:hidden">
+            <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-2 md:px-6" width="w-fit"
+              classes="font-optima font-semibold text-xs" sharedPrimaryButton>
+              HACER UNA OFERTA
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
+        <div>
+          <img class="inline-block w-7 h-7" src="assets/img/icons/share.svg" alt="">
+        </div>
+        <button (click)="followOrUnfollowAuction(auction().data.attributes.originalMemorabiliaId)">
+          <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block w-7 h-7"></shared-star>
+        </button>
+        <div class="col-span-2 md:col-span-1">
+          <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
+            classes="hidden md:block font-optima font-semibold text-xs" sharedPrimaryButton>
+            HACER UNA OFERTA
+          </button>
+          <div class="block md:hidden">
+            @if (specificAuction().data) {
+            <p class="inline lg:block font-bold">{{specificAuction().data.bids.length}}</p>
+            }
+            <span class="text-gray4 text-sm"> Ofertas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12 md:col-span-7">
+        <div class="flex h-full">
+          <a class="w-full" [href]="auction().data.attributes.auctionCarForm.photos[0]" data-fancybox="gallery">
+            <img class="h-fill object-cover w-full md:max-h-60 lg:max-h-80 xl:max-h-[25rem] 2xl:max-h-[30rem]"
+              [src]="auction().data.attributes.auctionCarForm.photos[0]" alt="">
+          </a>
+        </div>
+      </div>
+      <div class="hidden col-span-5 md:grid grid-cols-2 gap-4">
+        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[1]" data-fancybox="gallery">
+          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[1]" alt="">
+        </a>
+        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[2]" data-fancybox="gallery">
+          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[2]" alt="">
+        </a>
+        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[3]" data-fancybox="gallery">
+          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[3]" alt="">
+        </a>
+        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[4]" data-fancybox="gallery">
+          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[4]" alt="">
+        </a>
+        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[5]" data-fancybox="gallery">
+          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[5]" alt="">
+        </a>
+        <a class="flex h-full relative" [href]="auction().data.attributes.auctionCarForm.photos[6]"
+          data-fancybox="gallery">
+          <div class="flex absolute inset-0 overflow-hidden">
+            <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[6]" alt="">
+          </div>
+          <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
+          <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
+            Ver todas las fotos (10)
+          </div>
+        </a>
+        @for (item of auction().data.attributes.auctionCarForm.photos.slice(7); track $index) {
+        <a class="hidden" [href]="item" data-fancybox="gallery">
+          <img class="h-fill object-cover" [src]="item" alt="">
+        </a>
+        }
+      </div>
+    </div>
+  </section>
+  }
+
+  <div class="grid grid-cols-12 gap-4">
+    <div class="col-span-12 md:col-span-7">
+      <section class="flex justify-between mt-8">
+        <div class="underline">{{comments().data ? comments().data.length : 0}} comentarios</div>
+
+        @defer (when metrics().data) {
+        <div class="text-gray4 text-sm flex space-x-4">
+          <div class="flex items-center">
+            <img class="mr-2" src="assets/img/icons/eye-outline.svg">
+            {{metrics().data.attributes.visualizations | number}}
+          </div>
+          <div class="flex items-center">
+            <shared-star class="mr-2" classes="text-gray4 w-5 h-5"></shared-star>
+            {{metrics().data.attributes.followedCount | number}}
+          </div>
+        </div>
+        }
+      </section>
+
+      <hr class="my-4">
+
+      @defer (when auction().data) {
+      <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
+        <ul class="space-y-1">
+          <!-- <li>
+            <span class="text-gray4">Marca:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.brand}}</span>
+          </li>
+          <li>
+            <span class="text-gray4">Modelo:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.carModel}}</span>
+          </li>
+          <li>
+            <span class="text-gray4">Año:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.year}}</span>
+          </li> -->
+          <li>
+            <span class="text-gray4">VIN:</span>&nbsp;<span class="font-semibold">ZFHGSRUKS0083738</span>
+          </li>
+        </ul>
+
+        <ul class="space-y-1">
+          <!-- <li>
+            <span class="text-gray4">Km:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.kmInput | number}}</span>
+          </li>
+          <li>
+            <span class="text-gray4">Transmisión:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.transmissionType}}</span>
+          </li>
+          <li>
+            <span class="text-gray4">Color:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.exteriorColor}}</span>
+          </li> -->
+          <li>
+            <span class="text-gray4">Entregado en:</span>&nbsp;<span class="font-semibold">CDMX, México</span>
+          </li>
+        </ul>
+      </section>
+      }
+
+      <hr class="my-6">
+
+      <!-- @defer (when auction().data) {
+      <section>
+        <div [innerHTML]="auction().data.attributes.carHistory.content"></div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
+        <swiper-container init="false" #videoGallery>
+          @for (item of this.auction().data.attributes.exteriorDetails.exteriorVideos; track $index) {
+          <swiper-slide class="pb-12">
+            <a class="relative" [href]="item" data-fancybox="gallery2">
+              <img [src]="getPhotoFromVideoUrl(item)" alt="">
+              <img src="assets/img/icons/play-circle.svg" alt=""
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
+            </a>
+          </swiper-slide>
+          }
+        </swiper-container>
+      </section>
+      } -->
+
+      @defer (when auction().data) {
+
+      <section class="mt-12">
+        <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
+
+        <!-- <image-gallery [photos]="auction().data.attributes.exteriorDetails.exteriorPhotos"></image-gallery> -->
+      </section>
+
+      <section class="mt-12">
+        <h2 class="text-xl font-bold mb-6">Galería de fotos interiores</h2>
+
+        <!-- <image-gallery [photos]="auction().data.attributes.interiorDetails.interiorPhotos"></image-gallery> -->
+      </section>
+
+      <section class="mt-12">
+        <h2 class="text-xl font-bold mb-6">Galería de fotos mecánicas</h2>
+
+        <!-- <image-gallery [photos]="auction().data.attributes.mechanicsDetails.mechanicsPhotos"></image-gallery> -->
+      </section>
+
+      <!-- <auction-summary [auction]="auction()" [metrics]="metrics()"
+        (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
+      </auction-summary> -->
+
+      <section class="mt-12">
+        @defer (when comments().data) {
+        <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
+        }
+
+        @defer (when auction().data) {
+        <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
+          [auctionCarPublishId]="auction().data.attributes.originalMemorabiliaId" placeholder="Agregar un comentario"
+          (commentCreated)="getComments()"></comments-textarea>
+        }
+
+        <div class="mt-4">
+          <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
+          <span class="underline">Mantenme en la conversación por correo</span>
+        </div>
+
+        @for (comment of comments().data; track $index) {
+        <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalMemorabiliaId"
+          (commentCreated)="getComments()"></comment>
+        }
+      </section>
+      }
+
+      <recently-completed-auctions [auctionId]="auctionId()!"></recently-completed-auctions>
+    </div>
+    <div class="col-span-12 md:col-span-5">
+      <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <h3 class="font-semibold mb-2">Información adicional</h3>
+
+        @if (auction().data) {
+        <!-- <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.additionalInfo"></div> -->
+
+        <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
+
+        <ul class="space-y-1">
+          <!-- <li>
+            <span class="text-gray4">Lote #:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.internalNumber}}</span>
+          </li> -->
+          <li>
+            <span class="text-gray4">Ubicación:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.city}},
+              {{auction().data.attributes.auctionCarForm.state}}</span>
+          </li>
+        </ul>
+
+        <div class="my-4">
+          <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+          <span class="align-middle">John Smith</span>
+        </div>
+
+        <div>
+          <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+        </div>
+
+        <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
+
+        <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.carHistory.additionalCharges"></div> -->
+        }
+
+
+        <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
+          HACER UNA OFERTA
+        </button>
+      </section>
+
+      <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <h3 class="font-semibold mb-6">¿Tienes un auto y quieres venderlo?</h3>
+
+        <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
+      </section>
+
+      <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <div class="xl:flex items-center justify-between">
+          <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
+          <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold text-sm" width="w-fit" px="px-6"
+            sharedPrimaryButton>
+            HACER UNA OFERTA
+          </button>
+        </div>
+
+        @defer (when specificAuction().data) {
+        <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
+          @for (item of specificAuction().data.bids; track $index; let last = $last) {
+          <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0}">
+            <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+            <div class="text-gray4">
+              <p class="font-semibold text-black">
+                {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+              <p>{{item.userName}}</p>
+              <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
+            </div>
+          </div>
+
+          @if ($index !== 0 && !last) {
+          <hr>
+          }
+          }
+        </div>
+        }
+      </section>
+
+      <current-auctions [auctionId]="auctionId()"></current-auctions>
+    </div>
+  </div>
+</div>
+
+@defer (when makeAnOfferModalIsOpen()) {
+
+@if (offeredAmount()) {
+<auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
+  (offerMade)="getAuctionDetails(auction().data.attributes.originalMemorabiliaId);getSpecificAuctionDetails();getComments()"
+  [offerAmount]="offeredAmount()" [isOpen]="makeAnOfferModalIsOpen()"
+  (isOpenChange)="makeAnOfferModalIsOpenChanged($event)">
+</auction-make-an-offer-modal>
+}@else {
+<auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
+  (offerMade)="getAuctionDetails(auction().data.attributes.originalMemorabiliaId);getSpecificAuctionDetails();getComments()"
+  [isOpen]="makeAnOfferModalIsOpen()"
+  (isOpenChange)="makeAnOfferModalIsOpenChanged($event)"></auction-make-an-offer-modal>
+}
+}
+
+<payment-method-modal (paymentMethodAdded)="refreshPaymentMethods()"
+  [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>

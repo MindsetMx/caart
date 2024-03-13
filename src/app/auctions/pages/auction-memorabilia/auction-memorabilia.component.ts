@@ -10,29 +10,29 @@ import { switchMap } from 'rxjs';
 register();
 
 import { AppComponent } from '@app/app.component';
-import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
-import { AuctionDetailsService } from '@auctions/services/auction-details.service';
+import { AuctionMetrics, GetComments, SpecificAuction } from '@auctions/interfaces';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
-import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
-import { AuthService } from '@auth/services/auth.service';
-import { AuthStatus } from '@auth/enums';
-import { CommentComponent } from '@auctions/components/comment/comment.component';
 import { CommentsService } from '@auctions/services/comments.service';
-import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
-import { CountdownService } from '@shared/services/countdown.service';
-import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
+import { AuthStatus } from '@auth/enums';
+import { AuthService } from '@auth/services/auth.service';
 import { environments } from '@env/environments';
-import { GetComments } from '@auctions/interfaces/get-comments';
-import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
-import { InputDirective } from '@shared/directives/input.directive';
-import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
-import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { CountdownService } from '@shared/services/countdown.service';
 import { PaymentMethodsService } from '@shared/services/payment-methods.service';
-import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
-import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
+import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
+import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
+import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
+import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
+import { CommentComponent } from '@auctions/components/comment/comment.component';
+import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
+import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
+import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
+import { AuctionDetailsService } from '@auctions/services/auction-details.service';
+import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
 
 @Component({
+  selector: 'app-auction-memorabilia',
   standalone: true,
   imports: [
     CommonModule,
@@ -53,16 +53,16 @@ import { StarComponent } from '@shared/components/icons/star/star.component';
     CurrentAuctionsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './auction.component.html',
-  styleUrl: './auction.component.css',
+  templateUrl: './auction-memorabilia.component.html',
+  styleUrl: './auction-memorabilia.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionComponent implements AfterViewInit, OnDestroy {
+export class AuctionMemorabiliaComponent {
   readonly #baseUrl = environments.baseUrl;
 
   videoGallery = viewChild<ElementRef>('videoGallery');
 
-  auction = signal<AuctionDetails>({} as AuctionDetails);
+  auction = signal<AuctionMemorabiliaDetails>({} as AuctionMemorabiliaDetails);
   auctionId = signal<string | null>(null);
   auctionId2 = signal<string | null>(null);
   comments = signal<GetComments>({} as GetComments);
@@ -186,7 +186,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId).subscribe({
+    this.#commentsService.getComments(this.auction().data.attributes.originalMemorabiliaId).subscribe({
       next: (response) => {
         this.comments.set(response);
 
@@ -254,14 +254,16 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   getAuctionDetails(auctionId: string | null): void {
     if (!auctionId) return;
 
-    this.#auctionDetailsService.getAuctionDetails$(auctionId).pipe(
+    this.#auctionDetailsService.getMemorabiliaAuctionDetails$(auctionId).pipe(
       switchMap((auctionDetails) => {
+        console.log(auctionDetails);
+
         this.auction.set(auctionDetails);
         this.auctionId2.set(auctionDetails.data.id);
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
         }
-        return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
+        return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalMemorabiliaId);
       })
     ).subscribe({
       next: (specificAuctionDetails) => {
@@ -274,7 +276,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   getSpecificAuctionDetails(): void {
-    this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionCarId).subscribe({
+    this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalMemorabiliaId).subscribe({
       next: (specificAuctionDetails) => {
         this.specificAuction.set(specificAuctionDetails);
       },
@@ -350,5 +352,4 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     // and now initialize it
     swiperEl.nativeElement.initialize();
   }
-
 }

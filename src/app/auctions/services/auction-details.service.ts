@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
 import { environments } from '@env/environments';
+import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,11 @@ export class AuctionDetailsService {
     const url = `${this.#baseUrl}/auctions-cars/${id}/metrics`;
 
     return this.#http.get<AuctionMetrics>(url);
+  }
+
+  getMemorabiliaAuctionDetails$(id: string): Observable<AuctionMemorabiliaDetails> {
+    const url = `${this.#baseUrl}/auctions-memorabilia/${id}`;
+
+    return this.#http.get<AuctionMemorabiliaDetails>(url);
   }
 }
