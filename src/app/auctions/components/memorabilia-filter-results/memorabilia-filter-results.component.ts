@@ -140,9 +140,7 @@ export class MemorabiliaFilterResultsComponent {
       this.states().join(','),
       this.search(),
     ).subscribe({
-      next: (auctions: any) => {
-        console.log(auctions);
-
+      next: (auctions: MemorabiliaAuction) => {
         if (replace) {
           this.auctions.set(auctions);
           this.getLiveAuctions(false);
