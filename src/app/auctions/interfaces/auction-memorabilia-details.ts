@@ -13,6 +13,7 @@ export interface AuctionMemorabiliaDetailsData {
 export interface AuctionMemorabiliaDetailsAttributes {
   _id: string;
   originalMemorabiliaId: string;
+  hasAuthenticityCertificate: boolean;
   isWithReserve: boolean;
   startDate: string;
   endDate: string;

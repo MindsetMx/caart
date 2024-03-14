@@ -144,38 +144,37 @@
       @defer (when auction().data) {
       <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
         <ul class="space-y-1">
-          <!-- <li>
-            <span class="text-gray4">Marca:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.brand}}</span>
+          <li>
+            <span class="text-gray4">Dimensiones:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.dimensions}}</span>
           </li>
           <li>
-            <span class="text-gray4">Modelo:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.carModel}}</span>
+            <span class="text-gray4">Materiales:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.materials}}</span>
           </li>
           <li>
-            <span class="text-gray4">Año:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.year}}</span>
-          </li> -->
+            <span class="text-gray4">Firma:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.hasSignature ? 'Sí' : 'No'}}</span>
+          </li>
           <li>
-            <span class="text-gray4">VIN:</span>&nbsp;<span class="font-semibold">ZFHGSRUKS0083738</span>
+            <span class="text-gray4">Certificado de autenticidad:</span>&nbsp;
+            <span class="font-semibold">{{auction().data.attributes.auctionCarForm.hasAuthenticityCertificate ? 'Sí' :
+              'No'}}</span>
           </li>
         </ul>
 
         <ul class="space-y-1">
-          <!-- <li>
-            <span class="text-gray4">Km:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.kmInput | number}}</span>
+          <li>
+            <span class="text-gray4">Estado:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.state}}</span>
           </li>
           <li>
-            <span class="text-gray4">Transmisión:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.transmissionType}}</span>
+            <span class="text-gray4">Ciudad:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.city}}</span>
           </li>
           <li>
-            <span class="text-gray4">Color:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.exteriorColor}}</span>
-          </li> -->
-          <li>
-            <span class="text-gray4">Entregado en:</span>&nbsp;<span class="font-semibold">CDMX, México</span>
+            <span class="text-gray4">Estado de la memorabilia:</span>&nbsp;<span
+              class="font-semibold">{{auction().data.attributes.auctionCarForm.stateOfMemorabilia}}</span>
           </li>
         </ul>
       </section>
@@ -183,12 +182,12 @@
 
       <hr class="my-6">
 
-      <!-- @defer (when auction().data) {
+      @defer (when auction().data) {
       <section>
-        <div [innerHTML]="auction().data.attributes.carHistory.content"></div>
+        <div [innerHTML]="auction().data.attributes.carHistory.story"></div>
       </section>
 
-      <section>
+      <!-- <section>
         <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
         <swiper-container init="false" #videoGallery>
           @for (item of this.auction().data.attributes.exteriorDetails.exteriorVideos; track $index) {
@@ -201,28 +200,12 @@
           </swiper-slide>
           }
         </swiper-container>
-      </section>
-      } -->
+      </section> -->
+      }
 
       @defer (when auction().data) {
 
-      <section class="mt-12">
-        <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
 
-        <!-- <image-gallery [photos]="auction().data.attributes.exteriorDetails.exteriorPhotos"></image-gallery> -->
-      </section>
-
-      <section class="mt-12">
-        <h2 class="text-xl font-bold mb-6">Galería de fotos interiores</h2>
-
-        <!-- <image-gallery [photos]="auction().data.attributes.interiorDetails.interiorPhotos"></image-gallery> -->
-      </section>
-
-      <section class="mt-12">
-        <h2 class="text-xl font-bold mb-6">Galería de fotos mecánicas</h2>
-
-        <!-- <image-gallery [photos]="auction().data.attributes.mechanicsDetails.mechanicsPhotos"></image-gallery> -->
-      </section>
 
       <!-- <auction-summary [auction]="auction()" [metrics]="metrics()"
         (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
@@ -255,25 +238,7 @@
     </div>
     <div class="col-span-12 md:col-span-5">
       <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
-        <h3 class="font-semibold mb-2">Información adicional</h3>
-
         @if (auction().data) {
-        <!-- <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.additionalInfo"></div> -->
-
-        <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
-
-        <ul class="space-y-1">
-          <!-- <li>
-            <span class="text-gray4">Lote #:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.internalNumber}}</span>
-          </li> -->
-          <li>
-            <span class="text-gray4">Ubicación:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.city}},
-              {{auction().data.attributes.auctionCarForm.state}}</span>
-          </li>
-        </ul>
-
         <div class="my-4">
           <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
           <span class="align-middle">John Smith</span>
@@ -283,13 +248,11 @@
           <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
         </div>
 
-        <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
-
         <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.carHistory.additionalCharges"></div> -->
         }
 
 
-        <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
+        <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
           HACER UNA OFERTA
         </button>
       </section>

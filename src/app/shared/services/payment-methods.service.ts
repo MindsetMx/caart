@@ -16,6 +16,12 @@ export class PaymentMethodsService {
   getPaymentMethods$(): Observable<PaymentMethods> {
     const url = `${this.#baseUrl}/users/payment-methods`;
 
-    return this.#http.get<any>(url);
+    return this.#http.get<PaymentMethods>(url);
+  }
+
+  setDefaultPaymentMethod$(paymentMethodId: string): Observable<any> {
+    const url = `${this.#baseUrl}/users/set-default-payment-method`;
+
+    return this.#http.patch<any>(url, { paymentMethodId });
   }
 }

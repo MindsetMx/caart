@@ -1,0 +1,45 @@
+<h2 class="font-optima text-2xl font-bold mb-4">Métodos de pago</h2>
+
+@defer (when paymentMethods().data) {
+@if (paymentMethods().data.length > 0) {
+<fieldset class="mb-4">
+  <legend class="sr-only">Método de pago</legend>
+  <div class="space-y-6">
+    @for (paymentMethod of paymentMethods().data; track paymentMethod.id; let index = $index) {
+    <div class="flex items-center gap-4">
+      <input formControlName="paymentMethodId" [id]="index" [value]="paymentMethod.id" type="radio" class="h-6 w-6">
+      <label [for]="index" class="block leading-6">
+        @switch (paymentMethod.attributes.brand) {
+        @case ('visa') {
+        <img src="assets/img/icons/visa.svg" alt="Visa">
+        }
+        }
+        <p class="font-bold mt-2">
+          <span>{{paymentMethod.attributes.brand | titlecase}}</span> que termina en {{paymentMethod.attributes.last4}}
+        </p>
+        <p>Expira el {{paymentMethod.attributes.expMonth}}/{{paymentMethod.attributes.expYear}}</p>
+      </label>
+      <div class="ml-auto">
+        <button (click)="setDefaultPaymentMethod(paymentMethod.id, index)"
+          [disabled]="setPaymentMethodButtonIsDisabled()[index]">
+          <shared-star [shouldFill]="paymentMethod.attributes.isDefault ? true : false"
+            classes="inline-block w-7 h-7"></shared-star>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+</fieldset>
+} @else {
+<p>No tienes métodos de pago registrados</p>
+}
+}
+
+<div class="flex justify-end">
+  <button (click)="paymentMethodModalIsOpen.set(true)" type="button" width="w-fit" py="py-2.5" sharedTertiaryButton>
+    Agregar nuevo
+  </button>
+</div>
+
+<payment-method-modal [isOpen]="paymentMethodModalIsOpen"
+  (paymentMethodAdded)="getPaymentMethods()"></payment-method-modal>

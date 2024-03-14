@@ -7,3 +7,5 @@ export * from './bidding-conditions';
 export * from './bid-conditions';
 export * from './get-comments';
 export * from './memorabilia-auction';
+export * from './specific-memorabilia-auction';
+

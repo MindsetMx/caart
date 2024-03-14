@@ -10,7 +10,7 @@ import { switchMap } from 'rxjs';
 register();
 
 import { AppComponent } from '@app/app.component';
-import { AuctionMetrics, GetComments, SpecificAuction } from '@auctions/interfaces';
+import { AuctionMetrics, GetComments, SpecificAuction, SpecificMemorabiliaAuction } from '@auctions/interfaces';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
 import { CommentsService } from '@auctions/services/comments.service';
 import { AuthStatus } from '@auth/enums';
@@ -72,7 +72,7 @@ export class AuctionMemorabiliaComponent {
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
   paymentMethodId = signal<string>('');
   paymentMethodModalIsOpen = signal<boolean>(false);
-  specificAuction = signal<SpecificAuction>({} as SpecificAuction);
+  specificAuction = signal<SpecificMemorabiliaAuction>({} as SpecificMemorabiliaAuction);
   offeredAmount = signal<number | undefined>(undefined);
 
   #appComponent = inject(AppComponent);
@@ -263,10 +263,12 @@ export class AuctionMemorabiliaComponent {
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
         }
-        return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalMemorabiliaId);
+        return this.#auctionDetailsService.getSpecificMemorabiliaAuctionDetails$(auctionDetails.data.attributes.originalMemorabiliaId);
       })
     ).subscribe({
       next: (specificAuctionDetails) => {
+        console.log(specificAuctionDetails);
+
         this.specificAuction.set(specificAuctionDetails);
       },
       error: (error) => {
@@ -276,7 +278,7 @@ export class AuctionMemorabiliaComponent {
   }
 
   getSpecificAuctionDetails(): void {
-    this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalMemorabiliaId).subscribe({
+    this.#auctionDetailsService.getSpecificMemorabiliaAuctionDetails$(this.auction().data.attributes.originalMemorabiliaId).subscribe({
       next: (specificAuctionDetails) => {
         this.specificAuction.set(specificAuctionDetails);
       },
