@@ -50,7 +50,7 @@ export class CommentsTextareaComponent implements OnInit {
       text: ['', Validators.required],
       isBid: [false, Validators.required],
       isSeller: [this.isSeller() || this.user?.id === this.auctioneerUserId(), Validators.required],
-      auctionCarPublishId: [this.auctionCarPublishId(), Validators.required],
+      itemId: [this.auctionCarPublishId(), Validators.required],
       parentCommentId: [this.parentCommentId() || null],
     });
   }

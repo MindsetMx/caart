@@ -1,8 +1,9 @@
 import 'moment/locale/es';
-import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal } from '@angular/core';
-import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AuctionTypes } from '@auctions/enums/auction-types';
+import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
@@ -10,7 +11,7 @@ import { switchMap } from 'rxjs';
 register();
 
 import { AppComponent } from '@app/app.component';
-import { AuctionMetrics, GetComments, SpecificAuction, SpecificMemorabiliaAuction } from '@auctions/interfaces';
+import { AuctionMemorabiliaMetrics, GetComments, SpecificAuction, SpecificMemorabiliaAuction } from '@auctions/interfaces';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
 import { CommentsService } from '@auctions/services/comments.service';
 import { AuthStatus } from '@auth/enums';
@@ -69,7 +70,7 @@ export class AuctionMemorabiliaComponent {
   eventSource?: EventSource;
   isFollowing = signal<boolean | undefined>(undefined);
   makeAnOfferModalIsOpen = signal<boolean>(false);
-  metrics = signal<AuctionMetrics>({} as AuctionMetrics);
+  metrics = signal<AuctionMemorabiliaMetrics>({} as AuctionMemorabiliaMetrics);
   paymentMethodId = signal<string>('');
   paymentMethodModalIsOpen = signal<boolean>(false);
   specificAuction = signal<SpecificMemorabiliaAuction>({} as SpecificMemorabiliaAuction);
@@ -118,6 +119,10 @@ export class AuctionMemorabiliaComponent {
       },
     }
   };
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 
   authStatusEffect = effect(() => {
     switch (this.authStatus) {
@@ -240,8 +245,8 @@ export class AuctionMemorabiliaComponent {
   getMetrics(auctionId: string | null): void {
     if (!auctionId) return;
 
-    this.#auctionDetailsService.getMetrics$(auctionId).subscribe({
-      next: (metrics: AuctionMetrics) => {
+    this.#auctionDetailsService.getMemorabiliaMetrics$(auctionId).subscribe({
+      next: (metrics: AuctionMemorabiliaMetrics) => {
         this.metrics.set(metrics);
         this.isFollowing.set(metrics.data.attributes.isFollowing);
       },
@@ -256,8 +261,6 @@ export class AuctionMemorabiliaComponent {
 
     this.#auctionDetailsService.getMemorabiliaAuctionDetails$(auctionId).pipe(
       switchMap((auctionDetails) => {
-        console.log(auctionDetails);
-
         this.auction.set(auctionDetails);
         this.auctionId2.set(auctionDetails.data.id);
         if (this.authStatus === AuthStatus.authenticated) {
@@ -267,8 +270,6 @@ export class AuctionMemorabiliaComponent {
       })
     ).subscribe({
       next: (specificAuctionDetails) => {
-        console.log(specificAuctionDetails);
-
         this.specificAuction.set(specificAuctionDetails);
       },
       error: (error) => {

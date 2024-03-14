@@ -1,16 +1,16 @@
 <div class="mt-4 mb-4">
   <div class="px-2 py-1">
-    <p class="font-semibold">{{comment().createdBy}}</p>
-    <p>{{comment().text}}</p>
+    <p class="font-semibold">{{comment().attributes.createdBy}}</p>
+    <p>{{comment().attributes.text}}</p>
     <button (click)="likeComment()">
       <!-- <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt=""> -->
-      <thumbs-up-outline class="mr-2" [shouldFill]="comment().likedByMe ? true : false"></thumbs-up-outline>
+      <thumbs-up-outline class="mr-2" [shouldFill]="comment().attributes.likedByMe ? true : false"></thumbs-up-outline>
     </button>
-    <span class="align-middle">{{comment().likesCount}}</span>
+    <span class="align-middle">{{comment().attributes.likesCount}}</span>
     <button (click)="toggleReply()" class="text-gray4 align-middle ml-2" type="button">
       Responder
     </button>
-    <span class="align-middle text-gray4 ml-2">{{comment().dateCreated | date: 'MMM d, h:mm a'}}</span>
+    <span class="align-middle text-gray4 ml-2">{{comment().attributes.dateCreated | date: 'MMM d, h:mm a'}}</span>
   </div>
 
   @if (comment().relationships.responses.length > 0) {
@@ -40,7 +40,7 @@
   }
 
   @if (replyIsOpen()) {
-  <comments-textarea class="block mt-4" [auctionCarPublishId]="auctionCarPublishId()" [parentCommentId]="comment()._id"
+  <comments-textarea class="block mt-4" [auctionCarPublishId]="auctionCarPublishId()" [parentCommentId]="comment().id"
     placeholder="Agregar un comentario" (commentCreated)="emitCommentCreated()">
   </comments-textarea>
   }

@@ -240,7 +240,7 @@
         <image-gallery [photos]="auction().data.attributes.mechanicsDetails.mechanicsPhotos"></image-gallery>
       </section>
 
-      <auction-summary [auction]="auction()" [metrics]="metrics()"
+      <auction-summary [auction]="auction()" [metrics]="metrics()" [auctionType]="auctionType.car"
         (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
       </auction-summary>
 
@@ -442,12 +442,14 @@
 
 @if (offeredAmount()) {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
+  [auctionType]="auctionType.car"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
   [offerAmount]="offeredAmount()" [isOpen]="makeAnOfferModalIsOpen()"
   (isOpenChange)="makeAnOfferModalIsOpenChanged($event)">
 </auction-make-an-offer-modal>
 }@else {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
+  [auctionType]="auctionType.car"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
   [isOpen]="makeAnOfferModalIsOpen()"
   (isOpenChange)="makeAnOfferModalIsOpenChanged($event)"></auction-make-an-offer-modal>

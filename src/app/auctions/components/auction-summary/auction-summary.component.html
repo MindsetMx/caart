@@ -41,8 +41,8 @@
         {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
         a'}}
       </span>
-      <img class="inline align-bottom" src="assets/img/icons/notifications-outline.svg" alt="">
-      <span class="underline">Recuerdame por correo</span>
+      <!-- <img class="inline align-bottom" src="assets/img/icons/notifications-outline.svg" alt=""> -->
+      <!-- <span class="underline">Recuerdame por correo</span> -->
     </div>
   </div>
 
@@ -64,8 +64,8 @@
     </div>
     <div class="col-span-8 lg:col-span-9">
       <div class="lg:flex gap-4">
-        <input formControlName="offerAmount" class="font-normal" type="text" placeholder="Oferta $1,700,000 o más"
-          mask="separator" thousandSeparator="," sharedInput>
+        <input formControlName="offerAmount" class="font-normal" type="text"
+          placeholder="Oferta {{minimumNextBid()}} o más" mask="separator" thousandSeparator="," sharedInput>
         <button width="w-fit lg:w-[14rem]" px="px-6" py="py-1"
           classes="flex justify-center items-center text-xs xl:text-sm h-12 mt-2 lg:mt-0"
           [disabled]="isButtonMakeAnOfferDisabled()" [class.opacity-50]="isButtonMakeAnOfferDisabled()"

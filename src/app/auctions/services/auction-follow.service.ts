@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 import { FollowAuction } from '@auctions/interfaces/follow-auction';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
@@ -12,8 +13,8 @@ export class AuctionFollowService {
 
   #http = inject(HttpClient);
 
-  followAuction$(id: string): Observable<FollowAuction> {
-    const url = `${this.#baseUrl}/followed-auctions/${id}`;
+  followAuction$(id: string, type: AuctionTypes = AuctionTypes.car): Observable<FollowAuction> {
+    const url = `${this.#baseUrl}/followed-auctions/${type}/${id}`;
 
     return this.#http.post<FollowAuction>(url, {});
   }

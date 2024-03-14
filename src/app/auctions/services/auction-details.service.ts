@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
+import { AuctionDetails, AuctionMemorabiliaMetrics, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
 import { environments } from '@env/environments';
 import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
 import { SpecificMemorabiliaAuction } from '@auctions/interfaces/specific-memorabilia-auction';
@@ -43,5 +43,11 @@ export class AuctionDetailsService {
     const url = `${this.#baseUrl}/auctions-memorabilia/auction/${id}`;
 
     return this.#http.get<SpecificMemorabiliaAuction>(url);
+  }
+
+  getMemorabiliaMetrics$(id: string): Observable<AuctionMemorabiliaMetrics> {
+    const url = `${this.#baseUrl}/auctions-memorabilia/${id}/metrics`;
+
+    return this.#http.get<AuctionMemorabiliaMetrics>(url);
   }
 }

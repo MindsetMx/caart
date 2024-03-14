@@ -14,6 +14,8 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { AuctionComponent } from '@auctions/pages/auction/auction.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
+import { BiddingMemorabiliaConditionsService } from '@auctions/services/bidding-memorabilia-conditions.service';
 
 @Component({
   selector: 'auction-make-an-offer-modal',
@@ -34,6 +36,7 @@ import { AuctionComponent } from '@auctions/pages/auction/auction.component';
 })
 export class MakeAnOfferModalComponent implements OnInit {
   isOpen = input<boolean>(false);
+  auctionType = input.required<AuctionTypes>();
   @Output() isOpenChange = new EventEmitter<boolean>();
   @Output() offerMade = new EventEmitter();
   paymentMethodId = input.required<string>();
@@ -43,6 +46,8 @@ export class MakeAnOfferModalComponent implements OnInit {
   isButtonMakeAnOfferDisabled = signal<boolean>(false);
   holdAmount = signal<number>(0);
 
+  eventSource?: EventSource;
+
   makeAnOfferForm: FormGroup;
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
@@ -51,7 +56,7 @@ export class MakeAnOfferModalComponent implements OnInit {
   #makeBidService = inject(MakeBidService);
   #appService = inject(AppService);
   #formBuilder = inject(FormBuilder);
-  #auctionComponent = inject(AuctionComponent);
+  #biddingMemorabiliaConditionsService = inject(BiddingMemorabiliaConditionsService);
 
   offerAmountChangedEffect = effect(() => {
     this.offerAmountControl.setValue(this.offerAmount());
@@ -72,10 +77,17 @@ export class MakeAnOfferModalComponent implements OnInit {
       acceptTerms: [false, Validators.requiredTrue],
     });
 
-    if (this.#auctionComponent.eventSource) {
-      this.#auctionComponent.eventSource.onmessage = (event) => {
+    if (this.eventSource) {
+      this.eventSource.onmessage = (event) => {
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
-          this.getBiddingConditions();
+          switch (this.auctionType()) {
+            case AuctionTypes.car:
+              this.getBiddingConditions();
+              break;
+            case AuctionTypes.memorabilia:
+              this.getBiddingMemorabiliaConditions();
+              break;
+          }
         }
       }
     }
@@ -94,12 +106,26 @@ export class MakeAnOfferModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getBiddingConditions();
+    switch (this.auctionType()) {
+      case AuctionTypes.car:
+        this.getBiddingConditions();
 
-    this.makeAnOfferForm.controls['offerAmount'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        this.getBidConditions(value);
-      });
+        this.makeAnOfferForm.controls['offerAmount'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((value) => {
+            this.getBidConditions(value);
+          });
+
+        break;
+      case AuctionTypes.memorabilia:
+        this.getBiddingMemorabiliaConditions();
+
+        this.makeAnOfferForm.controls['offerAmount'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((value) => {
+            this.getBidMemorabiliaConditions(value);
+          });
+
+        break;
+    }
   }
 
   makeAnOffer(): void {
@@ -112,20 +138,43 @@ export class MakeAnOfferModalComponent implements OnInit {
       return;
     }
 
-    this.#makeBidService.makeBid$(this.auctionId(), this.offerAmountControl.value, this.paymentMethodControl.value).subscribe({
-      next: () => {
-        this.getBiddingConditions();
-        this.isOpenChange.emit(false);
+    switch (this.auctionType()) {
+      case AuctionTypes.car:
+        this.#makeBidService.makeBid$(this.auctionId(), this.offerAmountControl.value, this.paymentMethodControl.value).subscribe({
+          next: () => {
+            this.getBiddingConditions();
+            this.isOpenChange.emit(false);
 
-        this.offerMade.emit();
-        this.toastSuccess('Oferta realizada con éxito');
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    }).add(() => {
-      this.isButtonMakeAnOfferDisabled.set(false);
-    });
+            this.offerMade.emit();
+            this.toastSuccess('Oferta realizada con éxito');
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        }).add(() => {
+          this.isButtonMakeAnOfferDisabled.set(false);
+        });
+
+        break;
+
+      case AuctionTypes.memorabilia:
+        this.#makeBidService.makeMemorabiliaBid$(this.auctionId(), this.offerAmountControl.value, this.paymentMethodControl.value).subscribe({
+          next: () => {
+            this.getBiddingMemorabiliaConditions();
+            this.isOpenChange.emit(false);
+
+            this.offerMade.emit();
+            this.toastSuccess('Oferta realizada con éxito');
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        }).add(() => {
+          this.isButtonMakeAnOfferDisabled.set(false);
+        });
+
+        break;
+    }
   }
 
   getBiddingConditions(): void {
@@ -145,8 +194,34 @@ export class MakeAnOfferModalComponent implements OnInit {
     });
   }
 
+  getBiddingMemorabiliaConditions(): void {
+    this.#biddingMemorabiliaConditionsService.getBiddingConditions(this.auctionId()).subscribe({
+      next: (biddingConditions) => {
+        this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
+
+        this.offerAmount()
+          ? this.offerAmountControl.setValue(this.offerAmount())
+          : this.offerAmountControl.setValue(this.minimumNextBid());
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
   getBidConditions(userBidAmount: number): void {
     this.#biddingConditionsService.getBidConditions(this.auctionId(), userBidAmount).subscribe({
+      next: (bidConditions) => {
+        this.holdAmount.set(bidConditions.data.holdAmount);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  getBidMemorabiliaConditions(userBidAmount: number): void {
+    this.#biddingMemorabiliaConditionsService.getBidConditions(this.auctionId(), userBidAmount).subscribe({
       next: (bidConditions) => {
         this.holdAmount.set(bidConditions.data.holdAmount);
       },

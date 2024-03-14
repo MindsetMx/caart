@@ -14,6 +14,9 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { BiddingConditionsService } from '@auctions/services/bidding-conditions.service';
 import { AuthStatus } from '@auth/enums';
 import { AuthService } from '@auth/services/auth.service';
+import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
+import { BiddingMemorabiliaConditionsService } from '@auctions/services/bidding-memorabilia-conditions.service';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'auction-summary',
@@ -34,7 +37,8 @@ import { AuthService } from '@auth/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionSummaryComponent {
-  auction = input.required<AuctionDetails>();
+  auction = input.required<AuctionDetails | AuctionMemorabiliaDetails>();
+  auctionType = input.required<AuctionTypes>();
   metrics = input.required<AuctionMetrics>();
 
   @Output() makeAnOfferModalIsOpenChanged = new EventEmitter<number>();
@@ -47,6 +51,7 @@ export class AuctionSummaryComponent {
   #countdownService = inject(CountdownService);
   #validatorsService = inject(ValidatorsService);
   #biddingConditionsService = inject(BiddingConditionsService);
+  #biddingMemorabiliaConditionsService = inject(BiddingMemorabiliaConditionsService);
   #authService = inject(AuthService);
 
   minimumNextBidChangedEffect = effect(() => {
@@ -64,7 +69,15 @@ export class AuctionSummaryComponent {
   authStatusEffect = effect(() => {
     switch (this.authStatus) {
       case AuthStatus.authenticated:
-        this.getBiddingConditions();
+        switch (this.auctionType()) {
+          case AuctionTypes.car:
+            this.getBiddingConditions();
+            break;
+          case AuctionTypes.memorabilia:
+            this.getBiddingMemorabiliaConditions();
+            break;
+        }
+
         break;
     }
   });
@@ -91,6 +104,18 @@ export class AuctionSummaryComponent {
 
   getBiddingConditions(): void {
     this.#biddingConditionsService.getBiddingConditions(this.auction().data.id).subscribe({
+      next: (biddingConditions) => {
+        this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
+        this.offerAmountControl.setValue(this.minimumNextBid());
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  getBiddingMemorabiliaConditions(): void {
+    this.#biddingMemorabiliaConditionsService.getBiddingConditions(this.auction().data.id).subscribe({
       next: (biddingConditions) => {
         this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
         this.offerAmountControl.setValue(this.minimumNextBid());

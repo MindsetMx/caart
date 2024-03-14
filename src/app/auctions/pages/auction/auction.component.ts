@@ -31,6 +31,7 @@ import { PaymentMethodsService } from '@shared/services/payment-methods.service'
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   standalone: true,
@@ -118,6 +119,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       },
     }
   };
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 
   authStatusEffect = effect(() => {
     switch (this.authStatus) {

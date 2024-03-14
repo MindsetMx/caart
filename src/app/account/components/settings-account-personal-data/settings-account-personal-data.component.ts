@@ -59,9 +59,7 @@ export class SettingsAccountPersonalDataComponent {
     }
 
     this.#personalDataService.updateUserInfo(this.personalDataForm.value).subscribe({
-      next: (response) => {
-        console.log('response', response);
-
+      next: () => {
         this.toastSuccess('Los datos personales se han actualizado correctamente');
       },
       error: (error) => {
