@@ -1,9 +1,11 @@
 <header class="customBorder bg-white font-optima">
   <div class="container lg:divide-y lg:divide-gray3">
-    <div class="relative flex h-16 py-2 justify-between">
+    <div class="relative flex h-fit py-2 justify-between">
       <div class="relative z-10 flex px-2 lg:px-0">
         <div class="flex flex-shrink-0 items-center font-optima font-bold text-4xl">
-          <a routerLink="/home">CAART</a>
+          <a routerLink="/home">
+            <img class="h-10 w-auto" src="assets/img/icons/logo.svg" alt="logo">
+          </a>
         </div>
       </div>
       <div class="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
@@ -123,7 +125,7 @@
           </shared-dropdown>
         </div>
         } @else {
-        <img class="w-6 h-6 mr-6" src="assets/img/icons/star.svg" alt="ícono estrella">
+        <img class="w-5 h-5 mr-6" src="assets/img/icons/star.svg" alt="ícono estrella">
 
         <button (click)="openSignInModal()" routerLinkActive="router-link-active" type="button"
           class="font-semibold text-sm">
@@ -132,15 +134,17 @@
         }
       </div>
     </div>
-    <nav class="hidden lg:flex lg:justify-center lg:space-x-8 lg:py-2">
+    <nav class="hidden lg:flex lg:justify-center lg:space-x-8 lg:py-1">
       <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-900 hover:bg-gray-50 hover:text-gray-900" -->
       <!-- Inicio -->
       <a routerLink="/home" routerLinkActive="bg-gray-100 text-gray-900"
-        class="inline-flex items-center rounded-md py-2 px-3 font-semibold text-sm" aria-current="page">
+        class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 inline-flex items-center rounded-md py-2 px-3 text-sm font-semibold"
+        aria-current="page">
         INICIO
       </a>
       <a routerLink="/nosotros" routerLinkActive="bg-gray-100 text-gray-900"
-        class="inline-flex items-center rounded-md py-2 px-3 font-semibold text-sm" aria-current="page">
+        class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 inline-flex items-center rounded-md py-2 px-3 text-sm font-semibold"
+        aria-current="page">
         SOBRE NOSOTROS
       </a>
       <a routerLink="/como-funciona" routerLinkActive="bg-gray-100 text-gray-900"
