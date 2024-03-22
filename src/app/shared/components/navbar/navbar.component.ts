@@ -77,7 +77,7 @@ export class NavbarComponent {
   }
 
   get profileImage(): string {
-    return 'https://ui-avatars.com/api/?name=' + this.user?.attributes.firstName + this.user?.attributes.lastName;
+    return 'https://ui-avatars.com/api/?name=' + this.user?.attributes.firstName + ' ' + this.user?.attributes.lastName;
   }
 
   openSignInModal(): void {
