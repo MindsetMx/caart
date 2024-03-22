@@ -1,7 +1,8 @@
 <div class="mt-4 mb-4">
   <div class="px-2 py-1">
     <p class="font-semibold">{{comment().attributes.createdBy}}</p>
-    <p>{{comment().attributes.text}}</p>
+    <p [ngClass]="{'bg-green1/30 px-4 py-2 rounded-lg font-bold': comment().attributes.isBid}">
+      {{comment().attributes.text}}</p>
     <button (click)="likeComment()">
       <!-- <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt=""> -->
       <thumbs-up-outline class="mr-2" [shouldFill]="comment().attributes.likedByMe ? true : false"></thumbs-up-outline>

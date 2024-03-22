@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { NgxMaskDirective } from 'ngx-mask';
 
-import { AuctionDetails, AuctionMetrics } from '@auctions/interfaces';
+import { AuctionDetails, AuctionMetrics, SpecificAuction, SpecificMemorabiliaAuction } from '@auctions/interfaces';
 import { CountdownService } from '@shared/services/countdown.service';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { StarComponent } from '@shared/components/icons/star/star.component';
@@ -40,6 +40,7 @@ export class AuctionSummaryComponent {
   auction = input.required<AuctionDetails | AuctionMemorabiliaDetails>();
   auctionType = input.required<AuctionTypes>();
   metrics = input.required<AuctionMetrics>();
+  specificAuction = input.required<SpecificAuction | SpecificMemorabiliaAuction>();
 
   @Output() makeAnOfferModalIsOpenChanged = new EventEmitter<number>();
 

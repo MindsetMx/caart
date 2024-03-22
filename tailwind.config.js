@@ -14,6 +14,9 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        'xxs': '0.5rem',
+      },
       fontFamily: {
         montserrat: ["Montserrat"],
         optima: ["optima"],

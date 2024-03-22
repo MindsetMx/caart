@@ -14,11 +14,11 @@ export class CountdownService {
 
   getFormat(seconds: number): string {
     // return seconds >= 86400 ? 'd\'d\'' : 'HH:mm:ss';
-    return seconds >= 86400 ? 'd\' días\'' : 'HH:mm:ss';
+    return seconds >= 86400 ? 'd\' Días\'' : 'HH:mm:ss';
   }
 
   getFormat2(seconds: number): string {
     // 02 horas, 35 minutos, 00 segundos
-    return seconds >= 86400 ? 'd\' días, \'H\' horas, \'m\' minutos, \'s\' segundos\'' : 'HH:mm:ss';
+    return seconds >= 86400 ? 'd\' Días, \'H\' horas, \'m\' minutos, \'s\' segundos\'' : 'HH:mm:ss';
   }
 }

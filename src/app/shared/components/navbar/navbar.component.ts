@@ -10,11 +10,13 @@ import { SignInModalComponent } from '@auth/modals/sign-in-modal/sign-in-modal.c
 import { RegisterModalComponent } from '@auth/modals/register-modal/register-modal.component';
 import { EmailForPasswordResetInputComponentModalComponent } from '@auth/modals/email-for-password-reset-input-component-modal/email-for-password-reset-input-component-modal.component';
 import { UserData } from '@auth/interfaces';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'shared-navbar',
   standalone: true,
   imports: [
+    CommonModule,
     ClickOutsideDirective,
     DropdownComponent,
     RouterModule,
@@ -70,12 +72,20 @@ export class NavbarComponent {
     return this.authStatus() === AuthStatus.authenticated;
   }
 
+  get isNotAuthenticated(): boolean {
+    return this.authStatus() === AuthStatus.notAuthenticated;
+  }
+
   get profileImage(): string {
     return 'https://ui-avatars.com/api/?name=' + this.user?.attributes.firstName + this.user?.attributes.lastName;
   }
 
   openSignInModal(): void {
     this.signInModalIsOpen.set(true);
+  }
+
+  openRegisterModal(): void {
+    this.registerModalIsOpen.set(true);
   }
 
   logout() {
@@ -86,6 +96,10 @@ export class NavbarComponent {
 
   toggleMenu(): void {
     this.menuIsOpen.update((value) => !value);
+  }
+
+  closeMenu(): void {
+    this.menuIsOpen.set(false);
   }
 
   toggleCategoriesDropdown(isOpen?: boolean): void {

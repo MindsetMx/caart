@@ -11,3 +11,4 @@ export * from './specific-memorabilia-auction';
 export * from './bidding-memorabilia-conditions';
 export * from './bid-memorabilia-conditions';
 export * from './auction-memorabilia-metrics';
+export * from './auction-memorabilia-publications';

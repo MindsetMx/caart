@@ -66,6 +66,8 @@
       <div class="lg:flex gap-4">
         <input formControlName="offerAmount" class="font-normal" type="text"
           placeholder="Oferta {{minimumNextBid()}} o más" mask="separator" thousandSeparator="," sharedInput>
+        @defer (when specificAuction().data) {
+        @if (specificAuction().data.status === 'active') {
         <button width="w-fit lg:w-[14rem]" px="px-6" py="py-1"
           classes="flex justify-center items-center text-xs xl:text-sm h-12 mt-2 lg:mt-0"
           [disabled]="isButtonMakeAnOfferDisabled()" [class.opacity-50]="isButtonMakeAnOfferDisabled()"
@@ -76,6 +78,8 @@
           HACER OFERTA
           }
         </button>
+        }
+        }
       </div>
       @if (hasError('offerAmount')) {
       <shared-input-error [message]="getError('offerAmount')"></shared-input-error>

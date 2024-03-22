@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, effect, inject, signal } from '@angular/core';
 import { EMPTY, Observable, catchError, map } from 'rxjs';
 import { RouterLink } from '@angular/router';
 
@@ -11,6 +11,8 @@ import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-m
 import { environments } from '@env/environments';
 import { GeneralInfoService } from '@auth/services/general-info.service';
 import { UserData } from '@auth/interfaces';
+import { AuctionMemorabiliaService } from '@auctions/services/auction-memorabilia.service';
+import { AuctionMemorabiliaPublications } from '@auctions/interfaces';
 
 @Component({
   standalone: true,
@@ -26,12 +28,14 @@ import { UserData } from '@auth/interfaces';
 export class AuctionCarPublishesComponent implements OnInit {
   readonly baseUrl = environments.baseUrl;
 
+  #auctionMemorabiliaService = inject(AuctionMemorabiliaService);
   #auctionService = inject(AuctionService);
   #authService = inject(AuthService);
   #generalInfoService = inject(GeneralInfoService);
 
-  auctionCarPublishes: WritableSignal<AuctionCarPublicationsData[]> = signal([]);
-  completeRegisterModalIsOpen: WritableSignal<boolean> = signal(false);
+  auctionCarPublishes = signal<AuctionCarPublicationsData[]>([]);
+  auctionMemorabiliaPublishes = signal<AuctionMemorabiliaPublications>({} as AuctionMemorabiliaPublications);
+  completeRegisterModalIsOpen = signal<boolean>(false);
   hasGeneralInfo$: Observable<boolean> | undefined;
   publicationId = signal<string>('');
 
@@ -55,12 +59,19 @@ export class AuctionCarPublishesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAuctionCarPublishes();
+    this.getAuctionMemorabilia();
     this.getHasGeneralInfo();
   }
 
   getAuctionCarPublishes(): void {
     this.#auctionService.auctionCarPublications$().subscribe((auctionCarPublishes) => {
       this.auctionCarPublishes.set(auctionCarPublishes.data);
+    });
+  }
+
+  getAuctionMemorabilia(): void {
+    this.#auctionMemorabiliaService.getMemorabiliaPublications$().subscribe((auctionMemorabilia) => {
+      this.auctionMemorabiliaPublishes.set(auctionMemorabilia);
     });
   }
 

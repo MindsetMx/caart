@@ -15,7 +15,7 @@ import { AuctionDetails } from '@auctions/interfaces';
 export class ImageGalleryComponent {
   @Input({ required: true }) photos: string[] = [];
 
-  photoGalleryLength: number = 7;
+  photoGalleryLength: number = 1;
 
   isMobile = window.innerWidth < 768;
 

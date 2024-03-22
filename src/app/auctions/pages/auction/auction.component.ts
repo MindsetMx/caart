@@ -150,6 +150,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
           this.getSpecificAuctionDetails();
+          this.getAuctionDetails(this.auctionId());
+          this.getComments();
         }
       };
     }

@@ -12,7 +12,7 @@
 
     <!-- history textarea -->
     <div>
-      <label for="history" class="block mb-1 text-sm">Historia <span
+      <label for="history" class="block mb-1 text-sm">Descripción <span
           class="font-bold text-red-500 inline-block">*</span></label>
       <textarea formControlName="history" id="history" sharedInput></textarea>
       @if (hasError('history')) {
@@ -134,6 +134,21 @@
       }
     </div>
     }
+
+    <!-- stateOfMemorabilia -->
+    <div>
+      <label for="stateOfMemorabilia" class="block mb-1 text-sm">Estado de la memorabilia <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="stateOfMemorabilia" id="stateOfMemorabilia" sharedInput>
+        <option value="Excelente">Excelente</option>
+        <option value="Buena">Buena</option>
+        <option value="Regular">Regular</option>
+        <option value="Mala">Mala</option>
+      </select>
+      @if (hasError('stateOfMemorabilia')) {
+      <shared-input-error [message]="getError('stateOfMemorabilia')"></shared-input-error>
+      }
+    </div>
 
     <div class="col-span-2">
       <label class="text-sm cursor-pointer">

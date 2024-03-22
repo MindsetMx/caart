@@ -18,8 +18,9 @@
       }
     </span>
 
-    <div class="grid gap-y-4 md:flex mb-4 mt-8 w-full md:justify-between">
-      <div class="grid text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
+    <div class="grid gap-y-4 md:flex mb-4 mt-4 w-full md:justify-between">
+      <div
+        class="grid items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
         @if(specificAuction().data && specificAuction().data.bids.length > 0) {
         <div class="py-1">
           <p class="font-bold">
@@ -208,7 +209,7 @@
 
 
       <auction-summary [auction]="auction()" [metrics]="metrics()" [auctionType]="auctionType.memorabilia"
-        (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
+        [specificAuction]="specificAuction()" (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
       </auction-summary>
 
       <section class="mt-12">
