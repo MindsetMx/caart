@@ -1,84 +1,86 @@
 <div class="container mb-32">
   @defer (when auction().data) {
-  <section>
-    <!-- <div class="flex items-center"> -->
-    <div class="sticky md:static inset-0 z-10 bg-white pt-4 md:pb-0 pb-2">
-      <h1 class="font-optima font-semibold inline-block text-2xl md:text-3xl mr-4 mb-2">
-        {{auction().data.attributes.auctionCarForm.year}} {{auction().data.attributes.auctionCarForm.brand}}
-        {{auction().data.attributes.auctionCarForm.carModel}}
-      </h1>
-      <div
-        class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
-        @if(specificAuction().data && specificAuction().data.bids.length > 0) {
-        <div class="py-1">
-          <p class="font-bold">
-            {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-          </p>
+
+  <div class="sticky md:static inset-0 z-10 bg-white pt-4 md:pb-0 pb-2">
+    <h1 class="font-optima font-semibold inline-block text-2xl md:text-3xl mr-4 mb-2">
+      {{auction().data.attributes.auctionCarForm.year}} {{auction().data.attributes.auctionCarForm.brand}}
+      {{auction().data.attributes.auctionCarForm.carModel}}
+    </h1>
+    <div
+      class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
+      @if(specificAuction().data && specificAuction().data.bids.length > 0) {
+      <div class="py-1">
+        <p class="font-bold">
+          {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+        </p>
+        <span class="hidden md:block text-gray4 text-sm">
+          <!-- {{ (specificAuction().data.status === 'cancelled') ? 'Última oferta realizada' : 'Oferta actual'}} -->
+          @switch (specificAuction().data.status) {
+          @case ('cancelled') {
+          Última oferta realizada
+          }
+
+          @case ('completed') {
+          Vendido en
+          }
+
+          @default {
+          Oferta actual
+          }
+          }
+        </span>
+      </div>
+      }
+      @if (countdownConfig().leftTime! > 0) {
+      <div>
+        <div class="bg-gray1 rounded-lg px-3 py-1">
+          <countdown class="text-red2 font-bold" [config]="countdownConfig()"
+            [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
+          <br>
+          <!-- <span class="text-gray4 text-sm">Hoy 18:00 PM</span> -->
           <span class="hidden md:block text-gray4 text-sm">
-            <!-- {{ (specificAuction().data.status === 'cancelled') ? 'Última oferta realizada' : 'Oferta actual'}} -->
-            @switch (specificAuction().data.status) {
-            @case ('cancelled') {
-            Última oferta realizada
-            }
-
-            @case ('completed') {
-            Vendido en
-            }
-
-            @default {
-            Oferta actual
-            }
-            }
+            {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
+            a'}}
           </span>
         </div>
-        }
-        @if (countdownConfig().leftTime! > 0) {
-        <div>
-          <div class="bg-gray1 rounded-lg px-3 py-1">
-            <countdown class="text-red2 font-bold" [config]="countdownConfig()"
-              [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
-            <br>
-            <!-- <span class="text-gray4 text-sm">Hoy 18:00 PM</span> -->
-            <span class="hidden md:block text-gray4 text-sm">
-              {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
-              a'}}
-            </span>
-          </div>
-        </div>
-        }
-        <div>
-          <div class="hidden md:block py-1">
-            <!-- <p class="font-bold text-lg">18</p> -->
-            <p class="inline lg:block font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</p>
-            <span class="text-gray4 text-sm"> Ofertas</span>
-          </div>
-          @defer (when specificAuction().data) {
-          @if (specificAuction().data.status === 'active') {
-          <div class="md:hidden">
-            <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-              py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button>
-          </div>
-          }
-          }
+      </div>
+      }
+      <div>
+        <div class="hidden md:block py-1">
+          <!-- <p class="font-bold text-lg">18</p> -->
+          <p class="inline lg:block font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</p>
+          <span class="text-gray4 text-sm"> Ofertas</span>
         </div>
         @defer (when specificAuction().data) {
-        @switch (specificAuction().data.status) {
-        @case ('cancelled') {
-        <div class="py-1">
-          <p class="font-bold text-red2">Reserva no alcanzada</p>
+        @if (specificAuction().data.status === 'active') {
+        <div class="md:hidden">
+          <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
+            py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
+            HACER UNA OFERTA
+          </button>
         </div>
-        }
-        @case ('completed') {
-        <div class="py-1">
-          <p class="font-bold text-green1">Vendido</p>
-        </div>
-        }
         }
         }
       </div>
+      @defer (when specificAuction().data) {
+      @switch (specificAuction().data.status) {
+      @case ('cancelled') {
+      <div class="py-1">
+        <p class="font-bold text-red2">Reserva no alcanzada</p>
+      </div>
+      }
+      @case ('completed') {
+      <div class="py-1">
+        <p class="font-bold text-green1">Vendido</p>
+      </div>
+      }
+      }
+      }
     </div>
+  </div>
+
+  <section>
+    <!-- <div class="flex items-center"> -->
 
     @if (auction().data.attributes.auctionCarForm.reserve === false || auction().data.attributes.premium) {
     <span class="hidden space-x-2 md:inline-block">
@@ -328,7 +330,7 @@
       </section>
       }
 
-      <section class="md:hidden shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+      <section class="md:hidden mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
         <h3 class="font-semibold mb-2">Información adicional</h3>
 
         <!-- <ul class="list-inside list-disc text-gray4">
