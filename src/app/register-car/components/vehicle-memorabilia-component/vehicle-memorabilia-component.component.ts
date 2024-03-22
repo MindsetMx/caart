@@ -15,6 +15,7 @@ import { states } from '@shared/states';
 import { VehicleMemorabiliaService } from '@app/register-car/services/vehicle-memorabilia.service';
 import { AppService } from '@app/app.service';
 import { NgxMaskDirective } from 'ngx-mask';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'vehicle-memorabilia-component',
@@ -42,7 +43,7 @@ export class VehicleMemorabiliaComponentComponent {
 
   #validatorsService = inject(ValidatorsService);
   #vehicleMemorabiliaService = inject(VehicleMemorabiliaService);
-  #appService = inject(AppService);
+  #router = inject(Router);
 
   uppy?: Uppy;
 
@@ -157,7 +158,7 @@ export class VehicleMemorabiliaComponentComponent {
 
         this.uppy?.cancelAll();
 
-        this.toastSuccess('Memorabilia registrada con éxito');
+        this.#router.navigate(['registro-exitoso']);
       },
       error: (error) => {
         console.error(error);
@@ -175,9 +176,5 @@ export class VehicleMemorabiliaComponentComponent {
     if (!this.vehicleMemorabiliaForm) return undefined;
 
     return this.#validatorsService.getError(this.vehicleMemorabiliaForm, field);
-  }
-
-  toastSuccess(message: string): void {
-    this.#appService.toastSuccess(message);
   }
 }

@@ -104,7 +104,7 @@ export class CarExtrasComponent {
 
     this.#completeCarRegistrationService.saveCarExtras$(this.carExtrasForm).subscribe({
       next: () => {
-        this.#router.navigate(['/registro-exitoso-auto']);
+        this.#router.navigate(['/registro-completado']);
       },
       error: (error) => console.error(error),
     }).add(() => {

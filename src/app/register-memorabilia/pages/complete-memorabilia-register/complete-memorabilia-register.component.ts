@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, Signal, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApplyDiscountCode, AuctionTypes } from '@app/register-car/interfaces';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { CompleteMemorabiliaRegistrationService } from '@app/register-memorabilia/services/complete-memorabilia-registration.service';
@@ -35,6 +35,7 @@ export class CompleteMemorabiliaRegisterComponent implements OnInit {
   #validatorsService = inject(ValidatorsService);
   #completeMemorabiliaRegistrationService = inject(CompleteMemorabiliaRegistrationService);
   #generalInfoService = inject(GeneralInfoService);
+  #router = inject(Router);
 
   generalInformationForm: FormGroup;
 
@@ -84,10 +85,9 @@ export class CompleteMemorabiliaRegisterComponent implements OnInit {
 
     this.#completeMemorabiliaRegistrationService.saveGeneralInformation$(this.generalInformationForm)
       .subscribe({
-        // next: () => {
-        //   this.#completeCarRegistrationService.indexTargetStep.set(1);
-        //   this.#completeCarRegistrationService.indexCurrentStep.set(1);
-        // },
+        next: () => {
+          this.#router.navigate(['registro-completado']);
+        },
         error: (error) => {
           console.error(error);
         },

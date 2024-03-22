@@ -38,13 +38,13 @@ export class LiveAuctionsComponent {
           id: 2,
           name: 'Automóviles',
           img: 'assets/img/registrar auto/car-sport-outline.svg',
-          current: false
+          current: true
         },
         {
           id: 3,
           name: 'Memorabilia',
           img: 'assets/img/icons/memorabilia.svg',
-          current: true
+          current: false
         },
       ];
 
