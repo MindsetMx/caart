@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AuthService } from '@auth/services/auth.service';
 import { InputDirective } from '@shared/directives/input.directive';
@@ -60,8 +60,17 @@ export class SignInComponent {
         this.errorMessage.set('');
 
         if (this.#authService.currentUser()?.attributes?.accountVerified) {
-          this.redirectToPreviousUrlIfExists();
-          localStorage.removeItem('url');
+          const url = localStorage.getItem('url');
+
+          if (url) {
+            if (url) this.#router.navigate([url]);
+
+            localStorage.removeItem('url');
+          } else {
+            if (this.#router.url === '/iniciar-sesion') {
+              this.#router.navigate(['/home']);
+            }
+          }
         } else {
           this.#router.navigate(['/confirmacion']);
         }
@@ -85,12 +94,6 @@ export class SignInComponent {
   openEmailForPasswordResetModal(): void {
     this.signInModalIsOpenChange.emit(false);
     this.emailForPasswordResetModalIsOpenChange.emit(true);
-  }
-
-  redirectToPreviousUrlIfExists(): void {
-    const url = localStorage.getItem('url');
-
-    if (url) this.#router.navigate([url]);
   }
 
   togglePassword(): void {
