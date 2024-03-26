@@ -82,40 +82,13 @@
           <a class="w-full" [href]="auction().data.attributes.auctionCarForm.photos[0]" data-fancybox="gallery">
             <img class="h-fill object-cover w-full md:max-h-60 lg:max-h-80 xl:max-h-[25rem] 2xl:max-h-[30rem]"
               [src]="auction().data.attributes.auctionCarForm.photos[0]" alt="">
+            @for (item of auction().data.attributes.auctionCarForm.photos.slice(1); track $index) {
+            <a class="hidden" [href]="item" data-fancybox="gallery">
+              <img class="h-fill object-cover" [src]="item" alt="">
+            </a>
+            }
           </a>
         </div>
-      </div>
-      <div class="hidden col-span-5 md:grid grid-cols-2 gap-4">
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[1]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[1]" alt="">
-        </a>
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[2]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[2]" alt="">
-        </a>
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[3]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[3]" alt="">
-        </a>
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[4]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[4]" alt="">
-        </a>
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[5]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[5]" alt="">
-        </a>
-        <a class="flex h-full relative" [href]="auction().data.attributes.auctionCarForm.photos[6]"
-          data-fancybox="gallery">
-          <div class="flex absolute inset-0 overflow-hidden">
-            <img class="h-fill object-cover" [src]="auction().data.attributes.auctionCarForm.photos[6]" alt="">
-          </div>
-          <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
-          <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
-            Ver todas las fotos (10)
-          </div>
-        </a>
-        @for (item of auction().data.attributes.auctionCarForm.photos.slice(7); track $index) {
-        <a class="hidden" [href]="item" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="item" alt="">
-        </a>
-        }
       </div>
     </div>
   </section>
