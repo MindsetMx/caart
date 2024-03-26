@@ -4,7 +4,7 @@
   <div class="sticky md:static inset-0 z-10 bg-white pt-4 md:pb-0 pb-2">
     <h1 class="font-optima font-semibold inline-block text-2xl md:text-3xl mr-4 mb-2">
       {{auction().data.attributes.auctionCarForm.year}} {{auction().data.attributes.auctionCarForm.brand}}
-      {{auction().data.attributes.auctionCarForm.carModel}}
+      {{auction().data.attributes.auctionCarForm.carModel}} {{offeredAmount()}}
     </h1>
     <div
       class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
@@ -440,8 +440,8 @@
 
         @defer (when auction().data) {
         <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
-          [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId" placeholder="Agregar un comentario"
-          (commentCreated)="getComments()"></comments-textarea>
+          [auctionType]="auctionType.car" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
+          placeholder="Agregar un comentario" (commentCreated)="getComments()"></comments-textarea>
         }
 
         <!-- <div class="mt-4">
@@ -451,7 +451,7 @@
 
         @for (comment of comments().data; track $index) {
         <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
-          (commentCreated)="getComments()"></comment>
+          [auctionType]="auctionType.car" (commentCreated)="getComments()"></comment>
         }
 
         <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
@@ -641,14 +641,14 @@
 
 @if (offeredAmount()) {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
-  [auctionType]="auctionType.car"
+  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
   [offerAmount]="offeredAmount()" [isOpen]="makeAnOfferModalIsOpen()"
   (isOpenChange)="makeAnOfferModalIsOpenChanged($event)">
 </auction-make-an-offer-modal>
 }@else {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
-  [auctionType]="auctionType.car"
+  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
   [isOpen]="makeAnOfferModalIsOpen()"
   (isOpenChange)="makeAnOfferModalIsOpenChanged($event)"></auction-make-an-offer-modal>

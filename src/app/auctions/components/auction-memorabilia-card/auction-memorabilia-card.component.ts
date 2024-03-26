@@ -1,30 +1,31 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { VehicleAuctionData } from '@auctions/interfaces';
-import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
-import { CountdownService } from '@shared/services/countdown.service';
+import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { RouterLink } from '@angular/router';
+
+import { CountdownService } from '@shared/services/countdown.service';
+import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
+import { MemorabiliaAuctionData } from '@auctions/interfaces';
 
 @Component({
-  selector: 'auction-card2',
+  selector: 'auction-memorabilia-card',
   standalone: true,
   imports: [
     CommonModule,
-    CountdownModule,
-    FollowButtonComponent,
     RouterLink,
+    CountdownModule,
+    FollowButtonComponent
   ],
-  templateUrl: './auction-card2.component.html',
-  styleUrl: './auction-card2.component.css',
+  templateUrl: './auction-memorabilia-card.component.html',
+  styleUrl: './auction-memorabilia-card.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionCard2Component {
+export class AuctionMemorabiliaCardComponent {
   #countdownService = inject(CountdownService);
 
-  auction = input.required<VehicleAuctionData>();
+  auction = input.required<MemorabiliaAuctionData>();
 
-  countdownConfig(auction: VehicleAuctionData): CountdownConfig {
+  countdownConfig(auction: MemorabiliaAuctionData): CountdownConfig {
     let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);
     return {
       leftTime: leftTime,

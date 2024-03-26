@@ -29,9 +29,10 @@ import { SpecificAuction, AuctionMetrics, GetComments } from '@auctions/interfac
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
-  selector: 'app-last-chance-detail',
+  selector: 'last-chance-detail',
   standalone: true,
   imports: [
     CommonModule,
@@ -114,6 +115,10 @@ export class LastChanceDetailComponent implements AfterViewInit {
       },
     }
   };
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 
   authStatusEffect = effect(() => {
     switch (this.authStatus) {

@@ -31,6 +31,8 @@ import { AuctionSummaryComponent } from '@auctions/components/auction-summary/au
 import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
 import { AuctionDetailsService } from '@auctions/services/auction-details.service';
 import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
+import { CurrentMemorabiliaAuctionsComponent } from '@auctions/components/current-memorabilia-auctions/current-memorabilia-auctions.component';
+import { RecentlyCompletedMemorabiliaAuctionComponent } from '@auctions/components/recently-completed-memorabilia-auctions/recently-completed-memorabilia-auctions.component';
 
 @Component({
   selector: 'app-auction-memorabilia',
@@ -51,7 +53,9 @@ import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabi
     CommentComponent,
     RecentlyCompletedAuctionsComponent,
     AuctionSummaryComponent,
-    CurrentAuctionsComponent
+    CurrentAuctionsComponent,
+    CurrentMemorabiliaAuctionsComponent,
+    RecentlyCompletedMemorabiliaAuctionComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction-memorabilia.component.html',
@@ -75,6 +79,7 @@ export class AuctionMemorabiliaComponent {
   paymentMethodModalIsOpen = signal<boolean>(false);
   specificAuction = signal<SpecificMemorabiliaAuction>({} as SpecificMemorabiliaAuction);
   offeredAmount = signal<number | undefined>(undefined);
+  newOfferMade = signal<number>(0);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -147,9 +152,12 @@ export class AuctionMemorabiliaComponent {
 
       this.eventSource.onmessage = (event) => {
         console.log({ event: event });
+        this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
           this.getSpecificAuctionDetails();
+          this.getAuctionDetails(this.auctionId());
+          this.getComments();
         }
       };
     }
@@ -191,7 +199,7 @@ export class AuctionMemorabiliaComponent {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.originalMemorabiliaId).subscribe({
+    this.#commentsService.getComments(this.auction().data.attributes.originalMemorabiliaId, AuctionTypes.memorabilia).subscribe({
       next: (response) => {
         this.comments.set(response);
 

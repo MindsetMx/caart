@@ -1,0 +1,18 @@
+<div [routerLink]="['/subasta-memorabilia', auction().originalMemorabiliaId]" class="relative cursor-pointer">
+  <img class="w-full h-64 object-contain" [src]="auction().attributes.photos[0]" alt="">
+  <follow-button [auctionId]="auction().originalMemorabiliaId" class="absolute top-3 right-5">
+  </follow-button>
+
+  <div class="mt-4">
+    <p class="font-optima font-semibold text-xl">
+      {{auction().attributes.title}}
+    </p>
+    <p>Oferta: {{ auction().attributes.lastBid | currency:'USD':'symbol':'1.0-2' }}
+      MXN&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;<countdown
+        [ngClass]="{'text-red-500': countdownConfig(auction()).leftTime! <= 86400}"
+        [config]="countdownConfig(auction())">
+      </countdown>
+      <br>
+      <span class="text-gray4">{{auction().attributes.city}}, {{auction().attributes.state}}</span>
+  </div>
+</div>

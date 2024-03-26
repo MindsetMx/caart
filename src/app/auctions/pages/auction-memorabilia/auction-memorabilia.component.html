@@ -219,6 +219,7 @@
 
         @defer (when auction().data) {
         <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
+          [auctionType]="auctionType.memorabilia"
           [auctionCarPublishId]="auction().data.attributes.originalMemorabiliaId" placeholder="Agregar un comentario"
           (commentCreated)="getComments()"></comments-textarea>
         }
@@ -230,12 +231,12 @@
 
         @for (comment of comments().data; track $index) {
         <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalMemorabiliaId"
-          (commentCreated)="getComments()"></comment>
+          [auctionType]="auctionType.memorabilia" (commentCreated)="getComments()"></comment>
         }
       </section>
       }
 
-      <recently-completed-auctions [auctionId]="auctionId()!"></recently-completed-auctions>
+      <recently-completed-memorabilia-auctions [auctionId]="auctionId()!"></recently-completed-memorabilia-auctions>
     </div>
     <div class="col-span-12 md:col-span-5">
       <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
@@ -294,7 +295,7 @@
         }
       </section>
 
-      <current-auctions [auctionId]="auctionId()"></current-auctions>
+      <current-memorabilia-auctions [auctionId]="auctionId()"></current-memorabilia-auctions>
     </div>
   </div>
 </div>
@@ -303,14 +304,14 @@
 
 @if (offeredAmount()) {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
-  [auctionType]="auctionType.memorabilia"
+  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.memorabilia"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalMemorabiliaId);getSpecificAuctionDetails();getComments()"
   [offerAmount]="offeredAmount()" [isOpen]="makeAnOfferModalIsOpen()"
   (isOpenChange)="makeAnOfferModalIsOpenChanged($event)">
 </auction-make-an-offer-modal>
 }@else {
 <auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
-  [auctionType]="auctionType.memorabilia"
+  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.memorabilia"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalMemorabiliaId);getSpecificAuctionDetails();getComments()"
   [isOpen]="makeAnOfferModalIsOpen()"
   (isOpenChange)="makeAnOfferModalIsOpenChanged($event)"></auction-make-an-offer-modal>

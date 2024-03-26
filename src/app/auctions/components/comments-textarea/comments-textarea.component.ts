@@ -8,6 +8,7 @@ import { AutoResizeTextareaDirective, PrimaryButtonDirective } from '@shared/dir
 import { ValidatorsService } from '../../../shared/services/validators.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { AppComponent } from '@app/app.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'comments-textarea',
@@ -29,6 +30,8 @@ export class CommentsTextareaComponent implements OnInit {
   rows = input<number>(4);
   isSeller = input<boolean>();
   placeholder = input.required<string>();
+  auctionType = input.required<AuctionTypes>();
+
   @Output() commentCreated = new EventEmitter<void>();
 
   createCommentButtonIsDisabled = signal<boolean>(false);
@@ -75,7 +78,7 @@ export class CommentsTextareaComponent implements OnInit {
       return;
     }
 
-    this.#commentsService.createComment(this.createComment as FormGroup).subscribe({
+    this.#commentsService.createComment(this.createComment as FormGroup, this.auctionType()).subscribe({
       next: () => {
         this.createComment?.get('text')?.setValue('');
         this.commentCreated.emit();

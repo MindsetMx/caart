@@ -1,30 +1,29 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, effect, inject, input, signal, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, signal, viewChild } from '@angular/core';
+import { RecentlyCompletedMemorabiliaAuctionsService } from '../../services/recently-completed-memorabilia-auctions.service';
 import { register } from 'swiper/element/bundle';
+import { RecentlyCompletedMemorabiliaAuctions } from '@auctions/interfaces/recently-completed-memorabilia-auctions';
 register();
 
-import { CompletedAuctionsService } from '@auctions/services/completed-auctions.service';
-import { CompletedAuctions } from '@auctions/interfaces/completed-auctions';
-import { RecentlyCompletedCarAuctionsService } from '../../services/recently-completed-car-auctions.service';
-import { RecentlyCompletedCarAuctions } from '@auctions/interfaces';
-
 @Component({
-  selector: 'recently-completed-auctions',
+  selector: 'recently-completed-memorabilia-auctions',
   standalone: true,
   imports: [
+    CommonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './recently-completed-auctions.component.html',
-  styleUrl: './recently-completed-auctions.component.css',
+  templateUrl: './recently-completed-memorabilia-auctions.component.html',
+  styleUrl: './recently-completed-memorabilia-auctions.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecentlyCompletedAuctionsComponent implements OnInit {
+export class RecentlyCompletedMemorabiliaAuctionComponent {
   auctionsEnded = viewChild.required<ElementRef>('auctionsEnded');
 
   auctionId = input.required<string>();
 
-  #recentlyCompletedCarAuctionsService = inject(RecentlyCompletedCarAuctionsService);
+  #recentlyCompletedCarAuctionsService = inject(RecentlyCompletedMemorabiliaAuctionsService);
 
-  completedAuctions = signal<RecentlyCompletedCarAuctions>({} as RecentlyCompletedCarAuctions);
+  completedAuctions = signal<RecentlyCompletedMemorabiliaAuctions>({} as RecentlyCompletedMemorabiliaAuctions);
 
   auctionsEndedEffect = effect(() => {
     this.initSwiperCarousel(this.auctionsEnded(), this.swiperParams);
@@ -66,7 +65,7 @@ export class RecentlyCompletedAuctionsComponent implements OnInit {
   }
 
   getRecentlyCompletedCarAuctions(): void {
-    this.#recentlyCompletedCarAuctionsService.getRecentlyCompletedCarAuctions$(1, 10).subscribe({
+    this.#recentlyCompletedCarAuctionsService.getRecentlyCompletedMemorabiliaAuctions$(1, 10).subscribe({
       next: (recentlyCompletedCarAuctions) => {
         console.log(recentlyCompletedCarAuctions);
         this.completedAuctions.set(recentlyCompletedCarAuctions);

@@ -37,6 +37,8 @@ import { BiddingMemorabiliaConditionsService } from '@auctions/services/bidding-
 export class MakeAnOfferModalComponent implements OnInit {
   isOpen = input<boolean>(false);
   auctionType = input.required<AuctionTypes>();
+  newOfferMade = input.required<number>();
+
   @Output() isOpenChange = new EventEmitter<boolean>();
   @Output() offerMade = new EventEmitter();
   paymentMethodId = input.required<string>();
@@ -68,6 +70,19 @@ export class MakeAnOfferModalComponent implements OnInit {
 
   paymentMethodIdEffect = effect(() => {
     this.paymentMethodControl.setValue(this.paymentMethodId());
+  });
+
+  newOfferMadeChangedEffect = effect(() => {
+    if (this.newOfferMade()) {
+      switch (this.auctionType()) {
+        case AuctionTypes.car:
+          this.getBiddingConditions();
+          break;
+        case AuctionTypes.memorabilia:
+          this.getBiddingMemorabiliaConditions();
+          break;
+      }
+    }
   });
 
   constructor() {

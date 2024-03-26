@@ -4,6 +4,7 @@ import { GetCommentsData } from '@auctions/interfaces';
 import { CommentsService } from '@auctions/services/comments.service';
 import { CommentsTextareaComponent } from '../comments-textarea/comments-textarea.component';
 import { ThumbsUpOutlineComponent } from '@shared/components/icons/thumbs-up-outline/thumbs-up-outline.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'comment',
@@ -20,6 +21,7 @@ import { ThumbsUpOutlineComponent } from '@shared/components/icons/thumbs-up-out
 export class CommentComponent {
   comment = input.required<GetCommentsData>();
   auctionCarPublishId = input.required<string>();
+  auctionType = input.required<AuctionTypes>();
   @Output() commentCreated = new EventEmitter<void>();
 
   replyIsOpen = signal<boolean>(false);

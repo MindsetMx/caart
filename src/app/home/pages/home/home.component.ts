@@ -6,11 +6,13 @@ import { SecondaryButtonDirective } from '@shared/directives/secondary-button.di
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { VehicleFilterService } from '@auctions/services/vehicle-filter.service';
-import { VehicleAuction, VehicleAuctionData } from '@auctions/interfaces';
+import { MemorabiliaAuction, VehicleAuction, VehicleAuctionData } from '@auctions/interfaces';
 import { AuctionCard2Component } from '@auctions/components/auction-card2/auction-card2.component';
 import { CountdownService } from '@shared/services/countdown.service';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
+import { AuctionMemorabiliaCardComponent } from '@auctions/components/auction-memorabilia-card/auction-memorabilia-card.component';
+import { MemorabiliaFilterService } from '@auctions/services/memorabilia-filter.service';
 
 @Component({
   selector: 'home',
@@ -21,7 +23,8 @@ import { FollowButtonComponent } from '@shared/components/follow-button/follow-b
     CommonModule,
     AuctionCard2Component,
     CountdownModule,
-    FollowButtonComponent
+    FollowButtonComponent,
+    AuctionMemorabiliaCardComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -34,10 +37,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isMobile = window.innerWidth < 768;
 
   #vehicleFilterService = inject(VehicleFilterService);
+  #memorabiliaFilterService = inject(MemorabiliaFilterService);
 
   auctions = signal<VehicleAuction>({} as VehicleAuction);
+  memorabiliaAuctions = signal<MemorabiliaAuction>({} as MemorabiliaAuction);
 
-  currentIndex = signal(0);
+  currentIndex = signal<number>(0);
 
   #countdownService = inject(CountdownService);
 
@@ -48,6 +53,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getLiveAuctions();
+    this.getMemorabiliaLiveAuctions();
   }
 
   ngAfterViewInit(): void {
@@ -99,7 +105,32 @@ export class HomeComponent implements OnInit, AfterViewInit {
       'EndingSoonest'
     ).subscribe({
       next: (auctions: VehicleAuction) => {
+        console.log({ auctions });
+
         this.auctions.set(auctions);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  getMemorabiliaLiveAuctions(): void {
+    this.#memorabiliaFilterService.getLiveAuctions$(
+      1,
+      3,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      'EndingSoonest'
+    ).subscribe({
+      next: (auctions: MemorabiliaAuction) => {
+        console.log({ auctions });
+
+        this.memorabiliaAuctions.set(auctions);
+        return;
       },
       error: (err) => {
         console.error(err);

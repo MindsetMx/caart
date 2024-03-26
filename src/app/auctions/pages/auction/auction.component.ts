@@ -75,6 +75,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   paymentMethodModalIsOpen = signal<boolean>(false);
   specificAuction = signal<SpecificAuction>({} as SpecificAuction);
   offeredAmount = signal<number | undefined>(undefined);
+  newOfferMade = signal<number>(0);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -147,6 +148,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
       this.eventSource.onmessage = (event) => {
         console.log({ event: event });
+        this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
           this.getSpecificAuctionDetails();

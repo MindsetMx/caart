@@ -341,7 +341,7 @@
         }
 
         @defer (when auction().auctionCar) {
-        <comments-textarea [auctioneerUserId]="auction().auctionCar.userId"
+        <comments-textarea [auctioneerUserId]="auction().auctionCar.userId" [auctionType]="auctionType.car"
           [auctionCarPublishId]="auction().carHistory.originalAuctionCarId" placeholder="Agregar un comentario"
           (commentCreated)="getComments()"></comments-textarea>
         }
@@ -353,7 +353,7 @@
 
         @for (comment of comments().data; track $index) {
         <comment [comment]="comment" [auctionCarPublishId]="auction().carHistory.originalAuctionCarId"
-          (commentCreated)="getComments()"></comment>
+          [auctionType]="auctionType.car" (commentCreated)=" getComments()"></comment>
         }
 
         <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">

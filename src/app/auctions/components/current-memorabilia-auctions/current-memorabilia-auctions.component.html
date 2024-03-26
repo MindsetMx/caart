@@ -1,0 +1,26 @@
+<section class="mt-8 max-w-[22rem] xl:max-w-md ml-auto">
+  <h3 class="text-2xl font-semibold mb-4">Subastas del momento</h3>
+
+  <div class="space-y-6">
+    @for (auction of liveAuctions().data; track auction.id) {
+    <div [routerLink]="['/subasta', auction.originalMemorabiliaId]" class="relative cursor-pointer">
+      <img class="w-full h-64 object-contain" [src]="auction.attributes.photos[0]" alt="">
+      <follow-button [auctionId]="auction.originalMemorabiliaId" class="absolute top-3 right-5">
+      </follow-button>
+
+      <div class="mt-4">
+        <p class="font-optima font-semibold text-xl">
+          {{auction.attributes.title}}
+        </p>
+        <p>Oferta: {{ auction.attributes.lastBid | currency:'USD':'symbol':'1.0-2' }}
+          MXN&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;<countdown
+            [ngClass]="{'text-red-500': countdownConfig(auction).leftTime! <= 86400}"
+            [config]="countdownConfig(auction)">
+          </countdown>
+          <br>
+          <span class="text-gray4">{{auction.attributes.city}}, {{auction.attributes.state}}</span>
+      </div>
+    </div>
+    }
+  </div>
+</section>
