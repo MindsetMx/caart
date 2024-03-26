@@ -13,6 +13,7 @@ import { GeneralInfoService } from '@auth/services/general-info.service';
 import { UserData } from '@auth/interfaces';
 import { AuctionMemorabiliaService } from '@auctions/services/auction-memorabilia.service';
 import { AuctionMemorabiliaPublications } from '@auctions/interfaces';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   standalone: true,
@@ -38,6 +39,7 @@ export class AuctionCarPublishesComponent implements OnInit {
   completeRegisterModalIsOpen = signal<boolean>(false);
   hasGeneralInfo$: Observable<boolean> | undefined;
   publicationId = signal<string>('');
+  auctionType = signal<AuctionTypes>(AuctionTypes.car);
 
   authStatusChangeEffect = effect(() => {
     if (this.authStatus === AuthStatus.authenticated) {
@@ -55,6 +57,10 @@ export class AuctionCarPublishesComponent implements OnInit {
 
   get userIsNotAuthenticated(): boolean {
     return this.authStatus === AuthStatus.notAuthenticated;
+  }
+
+  get AuctionTypes(): typeof AuctionTypes {
+    return AuctionTypes;
   }
 
   ngOnInit(): void {
@@ -75,9 +81,10 @@ export class AuctionCarPublishesComponent implements OnInit {
     });
   }
 
-  openCompleteRegisterModal(publicationId: string): void {
+  openCompleteRegisterModal(publicationId: string, auctionType: AuctionTypes): void {
     this.completeRegisterModalIsOpen.set(true);
     this.publicationId.set(publicationId);
+    this.auctionType.set(auctionType);
   }
 
   getHasGeneralInfo(): void {

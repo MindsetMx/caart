@@ -21,7 +21,8 @@
           Completar información
         </button>
         }@else {
-        <button (click)="openCompleteRegisterModal(publication.id)" class="underline font-semibold text-lg">
+        <button (click)="openCompleteRegisterModal(publication.id, AuctionTypes.car)"
+          class="underline font-semibold text-lg">
           Completar información
         </button>
         }
@@ -54,7 +55,8 @@
           Completar información
         </button>
         }@else {
-        <button (click)="openCompleteRegisterModal(publication.id)" class="underline font-semibold text-lg">
+        <button (click)="openCompleteRegisterModal(publication.id,AuctionTypes.memorabilia)"
+          class="underline font-semibold text-lg">
           Completar información
         </button>
         }
@@ -67,4 +69,4 @@
 </section>
 
 <complete-register-modal (getHasGeneralInfo)="getHasGeneralInfo()" [isOpen]="completeRegisterModalIsOpen"
-  [publicationId]="publicationId()"></complete-register-modal>
+  [auctionType]="auctionType()" [publicationId]="publicationId()"></complete-register-modal>

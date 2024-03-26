@@ -11,6 +11,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'complete-register',
@@ -29,6 +30,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 export class CompleteRegisterComponent implements OnInit, OnDestroy {
   @Input() mb: string = 'mb-32';
   publicationId = input.required<string>();
+  auctionType = input.required<AuctionTypes>();
 
   @Output() completeRegisterModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -96,7 +98,14 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
 
         this.completeRegisterForm.reset();
 
-        this.#router.navigate(['/completar-registro-vehiculo', this.publicationId()]);
+        switch (this.auctionType()) {
+          case AuctionTypes.car:
+            this.#router.navigate(['/completar-registro-vehiculo', this.publicationId()]);
+            break;
+          case AuctionTypes.memorabilia:
+            this.#router.navigate(['/completar-registro-memorabilia', this.publicationId()]);
+            break;
+        }
 
         this.completeRegisterModalIsOpenChange.emit(false);
       },

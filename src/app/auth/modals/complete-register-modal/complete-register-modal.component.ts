@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, WritableSignal, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, input, signal } from '@angular/core';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 import { CompleteRegisterComponent } from '@auth/pages/complete-register/complete-register.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
@@ -15,8 +16,9 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompleteRegisterModalComponent {
-  @Input() isOpen: WritableSignal<boolean> = signal(false);
+  @Input() isOpen = signal<boolean>(false);
   publicationId = input.required<string>();
+  auctionType = input.required<AuctionTypes>();
 
   @Output() getHasGeneralInfo: EventEmitter<void> = new EventEmitter<void>();
 
