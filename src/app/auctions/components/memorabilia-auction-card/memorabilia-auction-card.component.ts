@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 import { MemorabiliaAuctionData } from '@auctions/interfaces';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { CountdownService } from '@shared/services/countdown.service';
@@ -23,6 +24,10 @@ export class MemorabiliaAuctionCardComponent {
   auction = input.required<MemorabiliaAuctionData>();
 
   #countdownService = inject(CountdownService);
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 
   countdownConfig(auction: MemorabiliaAuctionData): CountdownConfig {
     let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);

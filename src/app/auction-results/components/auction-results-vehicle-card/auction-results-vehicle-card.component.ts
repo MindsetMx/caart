@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { RouterLink } from '@angular/router';
 import { VehicleAuctionData } from '@app/auctions/interfaces';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'auction-results-vehicle-card',
@@ -19,4 +20,8 @@ import { VehicleAuctionData } from '@app/auctions/interfaces';
 })
 export class AuctionResultsVehicleCardComponent {
   auction = input.required<VehicleAuctionData>();
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 }

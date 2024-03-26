@@ -7,6 +7,7 @@ import { FollowButtonComponent } from '@shared/components/follow-button/follow-b
 import { VehicleAuctionData } from '@auctions/interfaces';
 import { PrimaryButtonDirective } from '@shared/directives';
 import { LastChanceVehiclesData } from '@app/last-chance/interfaces';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'last-chance-vehicle-card',
@@ -24,4 +25,8 @@ import { LastChanceVehiclesData } from '@app/last-chance/interfaces';
 })
 export class LastChanceVehicleCardComponent {
   auction = input.required<LastChanceVehiclesData>();
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 }

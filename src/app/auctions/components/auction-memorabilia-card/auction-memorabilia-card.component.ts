@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { CountdownService } from '@shared/services/countdown.service';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { MemorabiliaAuctionData } from '@auctions/interfaces';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'auction-memorabilia-card',
@@ -24,6 +25,10 @@ export class AuctionMemorabiliaCardComponent {
   #countdownService = inject(CountdownService);
 
   auction = input.required<MemorabiliaAuctionData>();
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 
   countdownConfig(auction: MemorabiliaAuctionData): CountdownConfig {
     let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);

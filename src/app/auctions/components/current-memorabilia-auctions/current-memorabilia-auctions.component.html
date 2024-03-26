@@ -5,7 +5,8 @@
     @for (auction of liveAuctions().data; track auction.id) {
     <div [routerLink]="['/subasta', auction.originalMemorabiliaId]" class="relative cursor-pointer">
       <img class="w-full h-64 object-contain" [src]="auction.attributes.photos[0]" alt="">
-      <follow-button [auctionId]="auction.originalMemorabiliaId" class="absolute top-3 right-5">
+      <follow-button [auctionId]="auction.originalMemorabiliaId" [auctionType]="auctionType.memorabilia"
+        class="absolute top-3 right-5">
       </follow-button>
 
       <div class="mt-4">

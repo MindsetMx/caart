@@ -1,6 +1,7 @@
 <div [routerLink]="['/ultima-oportunidad', auction().originalAuctionCarId]" class="relative cursor-pointer">
   <img class="w-full h-64 object-cover" [src]="auction().attributes.photos[0]" alt="">
-  <follow-button [auctionId]="auction().originalAuctionCarId" class="absolute top-3 right-5">
+  <follow-button [auctionId]="auction().originalAuctionCarId" [auctionType]="auctionType.car"
+    class="absolute top-3 right-5">
   </follow-button>
 
   <div class="mt-4">

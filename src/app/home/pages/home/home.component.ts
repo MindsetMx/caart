@@ -13,6 +13,7 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { AuctionMemorabiliaCardComponent } from '@auctions/components/auction-memorabilia-card/auction-memorabilia-card.component';
 import { MemorabiliaFilterService } from '@auctions/services/memorabilia-filter.service';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'home',
@@ -45,6 +46,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   currentIndex = signal<number>(0);
 
   #countdownService = inject(CountdownService);
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(): void {

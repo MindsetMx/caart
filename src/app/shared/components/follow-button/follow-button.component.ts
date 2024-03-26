@@ -21,6 +21,7 @@ import { StarComponent } from '../icons/star/star.component';
 })
 export class FollowButtonComponent implements OnInit {
   auctionId = input.required<string>();
+  auctionType = input.required<string>();
 
   isFollowing = signal<boolean | undefined>(undefined);
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);

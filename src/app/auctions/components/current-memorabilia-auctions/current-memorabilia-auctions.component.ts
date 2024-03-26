@@ -1,6 +1,7 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 import { MemorabiliaAuction, MemorabiliaAuctionData, VehicleAuctionData } from '@auctions/interfaces';
 import { MemorabiliaFilterService } from '@auctions/services/memorabilia-filter.service';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
@@ -31,6 +32,10 @@ export class CurrentMemorabiliaAuctionsComponent {
   auctionIdEffect = effect(() => {
     this.getMemorabiliaAuctions();
   });
+
+  get auctionType(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
 
   ngOnInit(): void {
     this.getMemorabiliaAuctions();
