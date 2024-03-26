@@ -218,7 +218,9 @@ export class RegisterComponent implements OnDestroy {
   }
 
   checkPhoneNumberAvailability(): void {
-    this.#authService.checkPhoneNumberAvailability$(this.registerForm.get('phoneNumber')?.value).subscribe({
+    const prefix = this.registerForm.get('prefix')?.value.replace('+', '%2B');
+
+    this.#authService.checkPhoneNumberAvailability$(prefix + this.phoneNumberControl.value).subscribe({
       next: (response) => {
         this.phoneNumberIsAvailable.set(response.available);
       },
