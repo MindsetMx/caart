@@ -1,0 +1,16 @@
+<shared-modal [verticalCenter]="true" [isOpen]="isOpen()" (isOpenChange)="isOpenChange.emit($event)">
+  <div class="container relative">
+    <h3 class="font-bold text-center text-lg mb-12">Subasta cancelada</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <section class="container">
+    No se alcanzó el precio de reserva, puedes encontrarlo en la sección de última oportunidad para comprarlo ahora.
+
+    <a [routerLink]="['/ultima-oportunidad', auctionId()]" class="mt-8 flex justify-center" sharedPrimaryButton>
+      Ir a última oportunidad
+    </a>
+  </section>
+
+</shared-modal>

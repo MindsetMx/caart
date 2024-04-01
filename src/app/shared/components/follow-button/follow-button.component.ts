@@ -7,6 +7,7 @@ import { AuctionFollowService } from '@auctions/services/auction-follow.service'
 import { AuthStatus } from '@auth/enums';
 import { AuthService } from '@auth/services/auth.service';
 import { StarComponent } from '../icons/star/star.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
 
 @Component({
   selector: 'follow-button',
@@ -21,7 +22,7 @@ import { StarComponent } from '../icons/star/star.component';
 })
 export class FollowButtonComponent implements OnInit {
   auctionId = input.required<string>();
-  auctionType = input.required<string>();
+  auctionType = input.required<AuctionTypes>();
 
   isFollowing = signal<boolean | undefined>(undefined);
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
@@ -37,14 +38,25 @@ export class FollowButtonComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authStatus === AuthStatus.authenticated) {
-      this.getMetrics();
+      this.getAuctionMetrics();
+    }
+  }
+
+  getAuctionMetrics() {
+    switch (this.auctionType()) {
+      case AuctionTypes.car:
+        this.getMetrics();
+        break;
+      case AuctionTypes.memorabilia:
+        this.getMemorabiliaMetrics();
+        break;
     }
   }
 
   followAuction(): void {
-    this.#auctionFollowService.followAuction$(this.auctionId()).subscribe({
+    this.#auctionFollowService.followAuction$(this.auctionId(), this.auctionType()).subscribe({
       next: (response) => {
-        this.getMetrics();
+        this.getAuctionMetrics();
         this.isFollowing.set(response.data.attributes.isFollowing);
       },
       error: (error) => {
@@ -54,9 +66,9 @@ export class FollowButtonComponent implements OnInit {
   }
 
   unfollowAuction(): void {
-    this.#auctionFollowService.unfollowAuction$(this.auctionId()).subscribe({
+    this.#auctionFollowService.unfollowAuction$(this.auctionId(), this.auctionType()).subscribe({
       next: (response) => {
-        this.getMetrics();
+        this.getAuctionMetrics();
         this.isFollowing.set(response.data.attributes.isFollowing);
       },
       error: (error) => {
@@ -86,6 +98,18 @@ export class FollowButtonComponent implements OnInit {
 
   getMetrics(): void {
     this.#auctionDetailsService.getMetrics$(this.auctionId()).subscribe({
+      next: (metrics: AuctionMetrics) => {
+        this.metrics.set(metrics);
+        this.isFollowing.set(metrics.data.attributes.isFollowing);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  getMemorabiliaMetrics(): void {
+    this.#auctionDetailsService.getMemorabiliaMetrics$(this.auctionId()).subscribe({
       next: (metrics: AuctionMetrics) => {
         this.metrics.set(metrics);
         this.isFollowing.set(metrics.data.attributes.isFollowing);

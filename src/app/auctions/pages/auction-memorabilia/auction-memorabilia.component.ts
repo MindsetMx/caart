@@ -213,7 +213,7 @@ export class AuctionMemorabiliaComponent {
   }
 
   followAuction(auctionId: string): void {
-    this.#auctionFollowService.followAuction$(auctionId).subscribe({
+    this.#auctionFollowService.followAuction$(auctionId, AuctionTypes.memorabilia).subscribe({
       next: (response) => {
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
@@ -225,7 +225,7 @@ export class AuctionMemorabiliaComponent {
   }
 
   unfollowAuction(auctionId: string): void {
-    this.#auctionFollowService.unfollowAuction$(auctionId).subscribe({
+    this.#auctionFollowService.unfollowAuction$(auctionId, AuctionTypes.memorabilia).subscribe({
       next: (response) => {
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);

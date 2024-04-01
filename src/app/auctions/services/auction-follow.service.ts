@@ -13,14 +13,14 @@ export class AuctionFollowService {
 
   #http = inject(HttpClient);
 
-  followAuction$(id: string, type: AuctionTypes = AuctionTypes.car): Observable<FollowAuction> {
+  followAuction$(id: string, type: AuctionTypes): Observable<FollowAuction> {
     const url = `${this.#baseUrl}/followed-auctions/${type}/${id}`;
 
     return this.#http.post<FollowAuction>(url, {});
   }
 
-  unfollowAuction$(id: string): Observable<FollowAuction> {
-    const url = `${this.#baseUrl}/followed-auctions/${id}`;
+  unfollowAuction$(id: string, type: AuctionTypes): Observable<FollowAuction> {
+    const url = `${this.#baseUrl}/followed-auctions/${type}/${id}`;
 
     return this.#http.delete<FollowAuction>(url);
   }

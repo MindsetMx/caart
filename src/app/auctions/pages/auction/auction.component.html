@@ -657,3 +657,7 @@
 
 <payment-method-modal (paymentMethodAdded)="refreshPaymentMethods()"
   [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>
+
+@defer (when auctionId()) {
+<auction-cancelled [isOpen]="auctionCancelledModalIsOpen()" [auctionId]="auctionId()!"></auction-cancelled>
+}

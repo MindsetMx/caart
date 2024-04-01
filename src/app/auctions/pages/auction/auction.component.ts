@@ -32,6 +32,7 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
 
 @Component({
   standalone: true,
@@ -51,7 +52,8 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
     CommentComponent,
     RecentlyCompletedAuctionsComponent,
     AuctionSummaryComponent,
-    CurrentAuctionsComponent
+    CurrentAuctionsComponent,
+    AuctionCancelledComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
@@ -76,6 +78,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   specificAuction = signal<SpecificAuction>({} as SpecificAuction);
   offeredAmount = signal<number | undefined>(undefined);
   newOfferMade = signal<number>(0);
+  auctionCancelledModalIsOpen = signal<boolean>(false);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -155,6 +158,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
           this.getAuctionDetails(this.auctionId());
           this.getComments();
         }
+
+        if (JSON.parse(event.data).type === 'CANCELADA') {
+          this.auctionCancelledModalIsOpen.set(true);
+        }
       };
     }
   });
@@ -209,7 +216,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   followAuction(auctionId: string): void {
-    this.#auctionFollowService.followAuction$(auctionId).subscribe({
+    this.#auctionFollowService.followAuction$(auctionId, AuctionTypes.car).subscribe({
       next: (response) => {
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
@@ -221,7 +228,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   unfollowAuction(auctionId: string): void {
-    this.#auctionFollowService.unfollowAuction$(auctionId).subscribe({
+    this.#auctionFollowService.unfollowAuction$(auctionId, AuctionTypes.car).subscribe({
       next: (response) => {
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
@@ -267,6 +274,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       switchMap((auctionDetails) => {
         this.auction.set(auctionDetails);
         this.auctionId2.set(auctionDetails.data.id);
+
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
         }

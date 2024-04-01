@@ -161,7 +161,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   }
 
   followAuction(auctionId: string): void {
-    this.#auctionFollowService.followAuction$(auctionId).subscribe({
+    this.#auctionFollowService.followAuction$(auctionId, AuctionTypes.car).subscribe({
       next: (response) => {
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
@@ -173,7 +173,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   }
 
   unfollowAuction(auctionId: string): void {
-    this.#auctionFollowService.unfollowAuction$(auctionId).subscribe({
+    this.#auctionFollowService.unfollowAuction$(auctionId, AuctionTypes.car).subscribe({
       next: (response) => {
         this.getMetrics(auctionId);
         this.isFollowing.set(response.data.attributes.isFollowing);
