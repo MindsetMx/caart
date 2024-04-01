@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, effect, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { AuctionCarPublicationsData } from '@app/auctions/interfaces/auction-car-publishes';
 import { AuctionService } from '@app/auctions/services/auction.service';
@@ -9,10 +10,10 @@ import { GeneralInfoService } from '@auth/services/general-info.service';
 import { EMPTY, Observable, catchError, map } from 'rxjs';
 
 @Component({
-  selector: 'app-publications',
   standalone: true,
   imports: [
     SidebarComponent,
+    RouterLink
   ],
   templateUrl: './publications.component.html',
   styleUrl: './publications.component.css',

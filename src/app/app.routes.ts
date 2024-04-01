@@ -131,6 +131,10 @@ export const routes: Routes = [
         path: 'solicitudes',
         loadComponent: () => import('./dashboard/pages/requests/requests.component').then((m) => m.RequestsComponent),
       },
+      {
+        path: 'publicar-autos',
+        loadComponent: () => import('./dashboard/pages/publish-cars/publish-cars.component').then((m) => m.PublishCarsComponent),
+      },
       { path: '**', redirectTo: 'publicaciones' }
     ]
   },

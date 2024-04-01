@@ -30,6 +30,9 @@
       "@account/*": [
         "./src/app/account/*"
       ],
+      "@dashboard/*": [
+        "./src/app/dashboard/*"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
