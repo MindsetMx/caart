@@ -98,7 +98,7 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu class="text-sm" #menu="matMenu">
-                    <button mat-menu-item>
+                    <button (click)="openAddCarHistoryModal(auction.auctionCarId)" mat-menu-item>
                       <!-- <mat-icon>dialpad</mat-icon> -->
                       <span>Agregar historia del auto</span>
                     </button>
@@ -118,3 +118,6 @@
   </div>
 
 </sidebar-layout>
+
+<add-car-history-modal [isOpen]="addCarHistoryModalIsOpen()" (isOpenChange)="closeAddCarHistoryModal()">
+</add-car-history-modal>
