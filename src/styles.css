@@ -7,6 +7,29 @@
 @import "../node_modules/@uppy/drag-drop/dist/style.min.css";
 
 @tailwind base;
+
+@layer base {
+  .no-tailwindcss-base {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: revert;
+      font-weight: revert;
+    }
+
+    ol,
+    ul {
+      list-style: revert;
+      margin: revert;
+      padding: revert;
+    }
+  }
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -107,4 +130,8 @@ select {
   .mdc-list-item__primary-text {
     @apply text-sm !important;
   }
+}
+
+.ck-editor__editable_inline {
+  min-height: 400px;
 }

@@ -41,11 +41,10 @@ export class ModalComponent {
   isOpen = input.required<boolean>();
   @Output() isOpenChange = new EventEmitter<boolean>();
 
-  @Input() modalMaxWidth: string = 'sm:max-w-xl';
+  @Input() modalMaxWidth: string = 'sm:max-w-lg';
   @Input() verticalCenter: boolean = false;
 
   closeModal(): void {
-    // this.isOpen.set(false);
     this.isOpenChange.emit(false);
   }
 }
