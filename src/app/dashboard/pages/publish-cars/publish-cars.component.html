@@ -94,6 +94,7 @@
                   </div>
                 </td>
                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                  @if (!auction.published) {
                   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
@@ -107,6 +108,7 @@
                       <span>Liberar auto para subasta en vivo</span>
                     </button>
                   </mat-menu>
+                  }
                 </td>
               </tr>
               }
@@ -119,9 +121,10 @@
 
 </sidebar-layout>
 
-<car-history-modal [isOpen]="addCarHistoryModalIsOpen()" (isOpenChange)="closeAddCarHistoryModal()">
+<car-history-modal [isOpen]="addCarHistoryModalIsOpen()" (isOpenChange)="closeAddCarHistoryModal()"
+  [originalAuctionCarId]="auctionCarId()">
 </car-history-modal>
 
 <release-car-for-live-auction-modal [isOpen]="releaseCarForLiveAuctionModalIsOpen()"
-  [originalAuctionCarId]="auctionCarId()"
+  (carReleaseForLiveAuction)="reloadAuctionCarInfo()" [originalAuctionCarId]="auctionCarId()"
   (isOpenChange)="closeReleaseCarForLiveAuctionModal()"></release-car-for-live-auction-modal>

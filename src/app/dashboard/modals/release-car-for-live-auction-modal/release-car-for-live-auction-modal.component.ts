@@ -34,6 +34,7 @@ export class ReleaseCarForLiveAuctionModalComponent {
   isOpen = input.required<boolean>();
   originalAuctionCarId = input.required<string>();
   isOpenChange = output<boolean>();
+  carReleaseForLiveAuction = output<string>();
 
   releaseCarForLiveAuctionForm: FormGroup;
   releaseCarForLiveAuctionSubmitButtonIsDisabled = signal<boolean>(false);
@@ -46,9 +47,10 @@ export class ReleaseCarForLiveAuctionModalComponent {
   categoriesList: { name: string, value: string }[] = [{ name: "Clásico", value: "classic" }, { name: "Eléctrico", value: "electric" }];
 
   originalAuctionCarIdEffect = effect(() => {
-    console.log(this.originalAuctionCarId());
-
-    this.originalAuctionCarIdControl.setValue(this.originalAuctionCarId());
+    this.releaseCarForLiveAuctionForm.reset();
+    if (this.isOpen()) {
+      this.originalAuctionCarIdControl.setValue(this.originalAuctionCarId());
+    }
   });
 
   get originalAuctionCarIdControl(): FormControl {
@@ -81,8 +83,9 @@ export class ReleaseCarForLiveAuctionModalComponent {
 
     this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.releaseCarForLiveAuctionForm).subscribe({
       next: (response) => {
-        console.log(response);
+        this.releaseCarForLiveAuctionForm.reset();
         this.emitIsOpenChange(false);
+        this.carReleaseForLiveAuction.emit(response);
 
         this.toastSuccess('Auto publicado en subasta en vivo');
       },

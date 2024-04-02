@@ -133,7 +133,7 @@ select {
 }
 
 .ck-editor__editable_inline {
-  min-height: 400px;
+  min-height: 200px;
 }
 
 .mat-mdc-form-field[name="mat-form-field1"] {

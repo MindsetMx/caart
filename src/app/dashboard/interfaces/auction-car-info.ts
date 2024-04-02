@@ -9,6 +9,7 @@ export interface AuctionCarInfoData {
   year: number;
   wizardSteps: AuctionCarInfoWizardSteps;
   paymentCompleted: boolean;
+  published: boolean;
   carHistoryExists: boolean;
 }
 

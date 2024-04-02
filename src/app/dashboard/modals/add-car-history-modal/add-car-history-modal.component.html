@@ -7,6 +7,35 @@
   </div>
 
   <section class="container no-tailwindcss-base">
-    <ckeditor [editor]="Editor" [config]="config"></ckeditor>
+    <form [formGroup]="addCarHistoryForm" (ngSubmit)="addCarHistory()" class="space-y-6">
+      <div>
+        <label for="title" class="block mb-1 text-sm">Contenido</label>
+        <ckeditor formControlName="content" [editor]="Editor" [config]="config"></ckeditor>
+        @if (hasError('content')) {
+        <shared-input-error [message]="getError('content')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Extract textarea-->
+      <div>
+        <label for="extract" class="block mb-1 text-sm">Extracto</label>
+        <textarea formControlName="extract" class="w-full h-40" sharedInput></textarea>
+        @if (hasError('extract')) {
+        <shared-input-error [message]="getError('extract')"></shared-input-error>
+        }
+      </div>
+
+      <button class="inline-flex justify-center items-center" type="submit"
+        [disabled]="addCarHistorySubmitButtonIsDisabled()" [class.opacity-50]="addCarHistorySubmitButtonIsDisabled()"
+        sharedPrimaryButton>
+        @if (addCarHistorySubmitButtonIsDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Agregar historia del auto
+        }
+      </button>
+    </form>
+
+
   </section>
 </shared-modal>

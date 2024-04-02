@@ -34,6 +34,10 @@ export class PublishCarsComponent {
 
   auctionCarId = signal<string>('');
 
+  reloadAuctionCarInfo(): void {
+    this.auctionCarInfo = this.#auctionCarService.auctionCarInfo;
+  }
+
   openAddCarHistoryModal(auctionId: string): void {
     this.auctionCarId.set(auctionId);
     this.addCarHistoryModalIsOpen.set(true);
