@@ -7,6 +7,7 @@ import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.componen
 import { AuctionCarService } from '../../services/auction-car.service';
 import { CommonModule } from '@angular/common';
 import { AddCarHistoryModalComponent } from '@app/dashboard/modals/add-car-history-modal/add-car-history-modal.component';
+import { ReleaseCarForLiveAuctionModalComponent } from '@app/dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
 
 @Component({
   standalone: true,
@@ -16,7 +17,8 @@ import { AddCarHistoryModalComponent } from '@app/dashboard/modals/add-car-histo
     MatMenuModule,
     MatIconModule,
     CommonModule,
-    AddCarHistoryModalComponent
+    AddCarHistoryModalComponent,
+    ReleaseCarForLiveAuctionModalComponent
   ],
   templateUrl: './publish-cars.component.html',
   styleUrl: './publish-cars.component.css',
@@ -28,13 +30,25 @@ export class PublishCarsComponent {
   auctionCarInfo = this.#auctionCarService.auctionCarInfo;
 
   addCarHistoryModalIsOpen = signal<boolean>(false);
+  releaseCarForLiveAuctionModalIsOpen = signal<boolean>(false);
+
+  auctionCarId = signal<string>('');
 
   openAddCarHistoryModal(auctionId: string): void {
-    // this.#auctionCarService.setAuctionId(auctionId);
+    this.auctionCarId.set(auctionId);
     this.addCarHistoryModalIsOpen.set(true);
   }
 
   closeAddCarHistoryModal(): void {
     this.addCarHistoryModalIsOpen.set(false);
+  }
+
+  openReleaseCarForLiveAuctionModal(auctionId: string): void {
+    this.auctionCarId.set(auctionId);
+    this.releaseCarForLiveAuctionModalIsOpen.set(true);
+  }
+
+  closeReleaseCarForLiveAuctionModal(): void {
+    this.releaseCarForLiveAuctionModalIsOpen.set(false);
   }
 }

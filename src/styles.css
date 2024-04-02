@@ -135,3 +135,45 @@ select {
 .ck-editor__editable_inline {
   min-height: 400px;
 }
+
+.mat-mdc-form-field[name="mat-form-field1"] {
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    @apply bg-gray1;
+  }
+
+  .mdc-line-ripple {
+    @apply hidden;
+  }
+
+  .mat-mdc-select-trigger {
+    @apply max-h-fit;
+    -webkit-font-smoothing: auto;
+  }
+
+  .mdc-text-field {
+    @apply px-3;
+  }
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label,
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label--float-above {
+    @apply text-black;
+  }
+
+  .mdc-text-field--outlined .mat-mdc-form-field-infix,
+  .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    @apply py-[11.75px];
+  }
+
+  .mat-mdc-form-field-infix {
+    @apply min-h-fit;
+  }
+
+  .mat-mdc-select {
+    @apply text-sm;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-mdc-form-field-bottom-align::before {
+    @apply hidden;
+  }
+}

@@ -1,0 +1,75 @@
+<shared-modal [isOpen]="isOpen()" (isOpenChange)="emitIsOpenChange($event)" [verticalCenter]="true">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Liberar auto para subasta en vivo</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <section class="container">
+    <form [formGroup]="releaseCarForLiveAuctionForm" (ngSubmit)="releaseCarForLiveAuction()" class="space-y-6">
+      <!-- startDate -->
+      <div>
+        <label for="startDate" class="block mb-1 text-sm">Fecha de inicio</label>
+        <input id="startDate" formControlName="startDate" type="date" sharedInput>
+        @if (hasError('startDate')) {
+        <shared-input-error [message]="getError('startDate')"></shared-input-error>
+        }
+      </div>
+
+      <!-- endDate -->
+      <div>
+        <label for="endDate" class="block mb-1 text-sm">Fecha de fin</label>
+        <input id="endDate" formControlName="endDate" type="date" sharedInput>
+        @if (hasError('endDate')) {
+        <shared-input-error [message]="getError('endDate')"></shared-input-error>
+        }
+      </div>
+
+      <!-- premium boolean -->
+      <div>
+        <label for="premium" class="block mb-1 text-sm">¿Subasta premium?</label>
+        <div class="flex items-center gap-x-4">
+          <div class="flex items-center">
+            <input id="premium" formControlName="premium" type="radio" value="true" sharedInput>
+            <label for="premium" class="block ml-1 text-sm">Sí</label>
+          </div>
+          <div class="flex items-center">
+            <input id="premium" formControlName="premium" type="radio" value="false" sharedInput>
+            <label for="premium" class="block ml-1 text-sm">No</label>
+          </div>
+        </div>
+        @if (hasError('premium')) {
+        <shared-input-error [message]="getError('premium')"></shared-input-error>
+        }
+      </div>
+
+      <!-- categories select -->
+      <div>
+        <label (click)="categoriesSelect.open()" for="categories" class="block mb-1 text-sm">Categorías</label>
+        <mat-form-field class="w-full" name="mat-form-field1">
+          <!-- <mat-label>Toppings</mat-label> -->
+          <mat-select #categoriesSelect formControlName="categories" multiple>
+            @for (category of categoriesList; track category) {
+            <mat-option [value]="category.value">{{ category.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        @if (hasError('categories')) {
+        <shared-input-error [message]="getError('categories')"></shared-input-error>
+        }
+      </div>
+
+      <button class="inline-flex justify-center items-center" type="submit"
+        [disabled]="releaseCarForLiveAuctionSubmitButtonIsDisabled()"
+        [class.opacity-50]="releaseCarForLiveAuctionSubmitButtonIsDisabled()" sharedPrimaryButton>
+        @if (releaseCarForLiveAuctionSubmitButtonIsDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Liberar auto
+        }
+      </button>
+    </form>
+
+  </section>
+
+</shared-modal>
