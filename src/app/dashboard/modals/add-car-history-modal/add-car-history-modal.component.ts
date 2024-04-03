@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import Editor from 'ckeditor5-custom-build/build/ckeditor';
+
 import { AppService } from '@app/app.service';
 import { AuctionCarService } from '@app/dashboard/services/auction-car.service';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
@@ -32,32 +32,35 @@ export class AddCarHistoryModalComponent {
   originalAuctionCarId = input.required<string>();
   isOpenChange = output<boolean>();
 
-  public Editor = ClassicEditor;
-  public config = {
-    placeholder: 'Ingrese la historia del auto...',
-    toolbar: [
-      'heading',
-      '|',
-      'bold',
-      'italic',
-      'underline',
-      'strikethrough',
-      '|',
-      'link',
-      'bulletedList',
-      'numberedList',
-      '|',
-      'outdent',
-      'indent',
-      '|',
-      'blockQuote',
-      'insertTable',
-      'mediaEmbed',
-      '|',
-      'undo',
-      'redo',
-    ],
-  }
+  public Editor = Editor;
+  // public config = {
+  //   placeholder: 'Ingrese la historia del auto...',
+  //   toolbar: {
+  //     items: [
+  //       'heading',
+  //       '|',
+  //       'bold',
+  //       'insertImage',
+  //       'italic',
+  //       'underline',
+  //       'strikethrough',
+  //       '|',
+  //       'link',
+  //       'bulletedList',
+  //       'numberedList',
+  //       '|',
+  //       'outdent',
+  //       'indent',
+  //       '|',
+  //       'blockQuote',
+  //       'insertTable',
+  //       'mediaEmbed',
+  //       '|',
+  //       'undo',
+  //       'redo',
+  //     ],
+  //   }
+  // }
 
   addCarHistoryForm: FormGroup;
   addCarHistorySubmitButtonIsDisabled = signal<boolean>(false);
