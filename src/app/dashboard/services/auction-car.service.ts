@@ -16,11 +16,9 @@ export class AuctionCarService {
   #http = inject(HttpClient);
   #appService = inject(AppService);
 
-  #dashboardInfo$(page: number = 1, size: number = 5, orderBy: string = 'brand', orderDirection: number = 1): Observable<AuctionCarInfo> {
+  dashboardInfo$(page: number = 1, size: number = 5, orderBy: string = 'brand', orderDirection: number = 1): Observable<AuctionCarInfo> {
     return this.#http.get<AuctionCarInfo>(`${this.#baseUrl}/auctions-cars/dashboard-info?page=${page}&size=${size}&orderBy=${orderBy}&orderDirection=${orderDirection}`);
   }
-
-  auctionCarInfo = toSignal(this.#dashboardInfo$());
 
   addCarHistory$(addCarHistoryForm: FormGroup): Observable<any> {
     const trimmedAddCarHistoryForm = this.#appService.trimObjectValues(addCarHistoryForm.value);

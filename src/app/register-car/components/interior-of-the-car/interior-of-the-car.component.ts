@@ -200,6 +200,8 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
           interiorPhotos,
           interiorVideos,
         });
+
+        window.scrollTo(0, 0);
       },
       error: (error) => {
         console.error(error);

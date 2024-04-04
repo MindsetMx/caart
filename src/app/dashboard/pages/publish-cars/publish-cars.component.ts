@@ -8,6 +8,7 @@ import { AuctionCarService } from '../../services/auction-car.service';
 import { CommonModule } from '@angular/common';
 import { AddCarHistoryModalComponent } from '@app/dashboard/modals/add-car-history-modal/add-car-history-modal.component';
 import { ReleaseCarForLiveAuctionModalComponent } from '@app/dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
+import { AuctionCarInfo } from '@app/dashboard/interfaces';
 
 @Component({
   standalone: true,
@@ -27,15 +28,21 @@ import { ReleaseCarForLiveAuctionModalComponent } from '@app/dashboard/modals/re
 export class PublishCarsComponent {
   #auctionCarService = inject(AuctionCarService);
 
-  auctionCarInfo = this.#auctionCarService.auctionCarInfo;
+  auctionCarInfo = signal<AuctionCarInfo>({} as AuctionCarInfo);
 
   addCarHistoryModalIsOpen = signal<boolean>(false);
   releaseCarForLiveAuctionModalIsOpen = signal<boolean>(false);
 
   auctionCarId = signal<string>('');
 
-  reloadAuctionCarInfo(): void {
-    this.auctionCarInfo = this.#auctionCarService.auctionCarInfo;
+  constructor() {
+    this.dashboardInfo();
+  }
+
+  dashboardInfo(): void {
+    this.#auctionCarService.dashboardInfo$().subscribe((auctionCarInfo) => {
+      this.auctionCarInfo.set(auctionCarInfo);
+    });
   }
 
   openAddCarHistoryModal(auctionId: string): void {

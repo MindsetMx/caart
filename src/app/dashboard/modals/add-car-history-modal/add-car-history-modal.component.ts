@@ -10,6 +10,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/car-photo-gallery.component';
 
 @Component({
   selector: 'car-history-modal',
@@ -21,7 +22,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
     InputDirective,
     SpinnerComponent,
     PrimaryButtonDirective,
-    InputErrorComponent
+    InputErrorComponent,
+    CarPhotoGalleryComponent
   ],
   templateUrl: './add-car-history-modal.component.html',
   styleUrl: './add-car-history-modal.component.css',
@@ -31,6 +33,9 @@ export class AddCarHistoryModalComponent {
   isOpen = input.required<boolean>();
   originalAuctionCarId = input.required<string>();
   isOpenChange = output<boolean>();
+  carReleaseForLiveAuction = output<void>();
+
+  carPhotoGalleryIsOpen = signal<boolean>(false);
 
   public Editor = Editor;
   // public config = {
@@ -102,6 +107,8 @@ export class AddCarHistoryModalComponent {
         this.addCarHistoryForm.reset();
         this.emitIsOpenChange(false);
 
+        this.carReleaseForLiveAuction.emit();
+
         this.toastSuccess('Historia del auto agregada');
       },
       error: (error) => {
@@ -114,6 +121,14 @@ export class AddCarHistoryModalComponent {
     });
 
     // this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.addCarHistoryForm).subscribe({
+  }
+
+  closeCarPhotoGallery(): void {
+    this.carPhotoGalleryIsOpen.set(false);
+  }
+
+  openCarPhotoGallery(): void {
+    this.carPhotoGalleryIsOpen.set(true);
   }
 
   emitIsOpenChange(isOpen: boolean): void {

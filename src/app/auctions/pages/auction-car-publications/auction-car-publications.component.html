@@ -16,6 +16,7 @@
           {{ publication.attributes.status }}
         </span>
 
+        @if (publication.attributes.status === 'Pendiente') {
         @if (hasGeneralInfo$ | async) {
         <button [routerLink]="['/completar-registro-vehiculo', publication.id]" class="underline font-semibold text-lg">
           Completar información
@@ -25,6 +26,7 @@
           class="underline font-semibold text-lg">
           Completar información
         </button>
+        }
         }
       </div>
     </div>

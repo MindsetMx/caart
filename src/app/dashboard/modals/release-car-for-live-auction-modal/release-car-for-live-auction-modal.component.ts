@@ -34,7 +34,7 @@ export class ReleaseCarForLiveAuctionModalComponent {
   isOpen = input.required<boolean>();
   originalAuctionCarId = input.required<string>();
   isOpenChange = output<boolean>();
-  carReleaseForLiveAuction = output<string>();
+  carReleaseForLiveAuction = output<void>();
 
   releaseCarForLiveAuctionForm: FormGroup;
   releaseCarForLiveAuctionSubmitButtonIsDisabled = signal<boolean>(false);
@@ -85,7 +85,7 @@ export class ReleaseCarForLiveAuctionModalComponent {
       next: (response) => {
         this.releaseCarForLiveAuctionForm.reset();
         this.emitIsOpenChange(false);
-        this.carReleaseForLiveAuction.emit(response);
+        this.carReleaseForLiveAuction.emit();
 
         this.toastSuccess('Auto publicado en subasta en vivo');
       },

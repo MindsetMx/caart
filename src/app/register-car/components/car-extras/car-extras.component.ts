@@ -11,6 +11,7 @@ import { CompleteCarRegistrationService } from '@app/register-car/services/compl
 import { Router } from '@angular/router';
 import { DecimalPipe, JsonPipe } from '@angular/common';
 import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'car-extras',
@@ -24,7 +25,8 @@ import { InputFormatterDirective } from '@shared/directives/input-formatter.dire
     SpinnerComponent,
     DecimalPipe,
     InputFormatterDirective,
-    JsonPipe
+    JsonPipe,
+    MatIcon
   ],
   templateUrl: './car-extras.component.html',
   styleUrl: './car-extras.component.css',
@@ -153,9 +155,21 @@ export class CarExtrasComponent {
 
         this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
         this.#changeDetectorRef.detectChanges();
+
+        window.scrollTo(0, 0);
       },
       error: (error) => console.error(error),
     });
+  }
+
+  removeAdditionalCharge(index: number): void {
+    console.log({ additionalChargesFormArray: this.additionalChargesFormArray.value });
+
+    console.log({ index });
+
+    this.additionalChargesFormArray.removeAt(index);
+
+    console.log({ additionalChargesFormArray: this.additionalChargesFormArray.value });
   }
 
   addAdditionalCharge(): void {

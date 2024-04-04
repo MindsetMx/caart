@@ -1,0 +1,83 @@
+<shared-modal [isOpen]="isOpen()" (isOpenChange)="emitIsOpenChange($event)" [verticalCenter]="true"
+  modalMaxWidth="sm:max-w-2xl">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Agregar historia del auto</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+
+  @defer (when carPhotoGallery() && carPhotoGallery().data && carPhotoGallery().data.registro &&
+  carPhotoGallery().data.registro.photos.length >
+  0) {
+  <h3 class="text-center font-bold text-lg mb-12">Registro</h3>
+  <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
+    @for (url of carPhotoGallery().data.registro.photos; track $index) {
+    <div class="relative h-fit">
+      <img [src]="url" class="w-full h-auto object-cover cursor-pointer rounded-lg">
+      <button
+        class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full shadow-md flex justify-center items-center"
+        (click)="copyImageUrl(url)">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+  }
+
+  @defer (when carPhotoGallery() && carPhotoGallery().data && carPhotoGallery().data.mecanicas &&
+  carPhotoGallery().data.mecanicas.photos.length >
+  0) {
+  <h3 class="text-center font-bold text-lg mb-12">Mecánicas</h3>
+  <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
+    @for (url of carPhotoGallery().data.mecanicas.photos; track $index) {
+    <div class="relative h-fit">
+      <img [src]="url" class="w-full h-auto object-cover cursor-pointer rounded-lg">
+      <button
+        class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full shadow-md flex justify-center items-center"
+        (click)="copyImageUrl(url)">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- interior -->
+  @defer (when carPhotoGallery() && carPhotoGallery().data && carPhotoGallery().data.interior &&
+  carPhotoGallery().data.interior.photos.length >
+  0) {
+  <h3 class="text-center font-bold text-lg mb-12">Interior</h3>
+  <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
+    @for (url of carPhotoGallery().data.interior.photos; track $index) {
+    <div class="relative h-fit">
+      <img [src]="url" class="w-full h-auto object-cover cursor-pointer rounded-lg">
+      <button
+        class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full shadow-md flex justify-center items-center"
+        (click)="copyImageUrl(url)">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- exterior -->
+  @defer (when carPhotoGallery() && carPhotoGallery().data && carPhotoGallery().data.exterior &&
+  carPhotoGallery().data.exterior.photos.length >
+  0) {
+  <h3 class="text-center font-bold text-lg mb-12">Exterior</h3>
+  <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
+    @for (url of carPhotoGallery().data.exterior.photos; track $index) {
+    <div class="relative h-fit">
+      <img [src]="url" class="w-full h-auto object-cover cursor-pointer rounded-lg">
+      <button
+        class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full shadow-md flex justify-center items-center"
+        (click)="copyImageUrl(url)">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+  }
+</shared-modal>

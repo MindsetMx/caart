@@ -91,6 +91,8 @@ export class GeneralInformationComponent implements OnInit {
         next: () => {
           this.#completeCarRegistrationService.indexTargetStep.set(1);
           this.#completeCarRegistrationService.indexCurrentStep.set(1);
+
+          window.scrollTo(0, 0);
         },
         error: (error) => {
           console.error(error);

@@ -205,8 +205,8 @@
 
   <!-- Cargos adicionales input -->
   <div class="col-span-2 grid gap-5" formArrayName="additionalCharges">
-    @for (charge of additionalChargesFormArrayControls; track i; let i = $index) {
-    <div class="grid grid-cols-2 gap-5" [formGroupName]="i">
+    @for (charge of additionalChargesFormArrayControls; track charge; let i = $index) {
+    <div class="flex gap-5" [formGroupName]="i">
       <div>
         <label for="chargeType" class="block text-sm mb-2">Cargos adicionales <span
             class="font-bold text-red-500 inline-block">*</span></label>
@@ -233,12 +233,18 @@
         <shared-input-error [message]="getError('amount',charge)"></shared-input-error>
         }
       </div>
+      <!-- eliminar cargo -->
+      <div class="flex items-center mt-5">
+        <button type="button" class="flex" (click)="removeAdditionalCharge(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </div>
     }
   </div>
 
-  <div (click)="addAdditionalCharge()" class="col-span-2">
-    <button type="button" class="underline">Añadir otro cargo</button>
+  <div class="col-span-2">
+    <button (click)="addAdditionalCharge()" type="button" class="underline">Añadir cargo</button>
   </div>
 
   <!-- ¿Algo más que nos quisieras comentar de tu auto? textarea -->

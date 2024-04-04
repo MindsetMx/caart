@@ -9,6 +9,11 @@
   <section class="container no-tailwindcss-base">
     <form [formGroup]="addCarHistoryForm" (ngSubmit)="addCarHistory()" class="space-y-6">
       <div>
+        <!-- seleccionar fotos de la galería -->
+        <button type="button" (click)="openCarPhotoGallery()" class="block mb-1 text-sm">
+          <span class="text-blue-500">Seleccionar fotos de la galería</span>
+        </button>
+
         <label for="title" class="block mb-1 text-sm">Contenido</label>
         <ckeditor formControlName="content" [editor]="Editor"></ckeditor>
         @if (hasError('content')) {
@@ -39,3 +44,7 @@
 
   </section>
 </shared-modal>
+
+<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeCarPhotoGallery()"
+  [auctionCarId]="originalAuctionCarId()">
+</car-photo-gallery>

@@ -12,9 +12,19 @@ import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
 import { CloudServices } from '@ckeditor/ckeditor5-cloud-services';
 import type { EditorConfig } from '@ckeditor/ckeditor5-core';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
+import { FindAndReplace } from '@ckeditor/ckeditor5-find-and-replace';
 import { FontBackgroundColor, FontColor, FontFamily, FontSize } from '@ckeditor/ckeditor5-font';
 import { Heading } from '@ckeditor/ckeditor5-heading';
-import { AutoImage, Image, ImageInsert, ImageUpload } from '@ckeditor/ckeditor5-image';
+import {
+	AutoImage,
+	Image,
+	ImageCaption,
+	ImageInsert,
+	ImageResize,
+	ImageStyle,
+	ImageToolbar,
+	ImageUpload
+} from '@ckeditor/ckeditor5-image';
 import { Indent } from '@ckeditor/ckeditor5-indent';
 import { Link } from '@ckeditor/ckeditor5-link';
 import { List } from '@ckeditor/ckeditor5-list';
@@ -37,13 +47,18 @@ class Editor extends ClassicEditor {
 		Bold,
 		CloudServices,
 		Essentials,
+		FindAndReplace,
 		FontBackgroundColor,
 		FontColor,
 		FontFamily,
 		FontSize,
 		Heading,
 		Image,
+		ImageCaption,
 		ImageInsert,
+		ImageResize,
+		ImageStyle,
+		ImageToolbar,
 		ImageUpload,
 		Indent,
 		Italic,
@@ -72,13 +87,14 @@ class Editor extends ClassicEditor {
 				'outdent',
 				'indent',
 				'|',
-				'blockQuote',
 				'imageInsert',
+				'blockQuote',
 				'insertTable',
 				'mediaEmbed',
 				'undo',
 				'redo',
 				'alignment',
+				'findAndReplace',
 				'fontBackgroundColor',
 				'fontColor',
 				'fontFamily',
@@ -86,6 +102,15 @@ class Editor extends ClassicEditor {
 			]
 		},
 		language: 'es',
+		image: {
+			toolbar: [
+				'imageTextAlternative',
+				'toggleImageCaption',
+				'imageStyle:inline',
+				'imageStyle:block',
+				'imageStyle:side'
+			]
+		},
 		table: {
 			contentToolbar: [
 				'tableColumn',

@@ -223,6 +223,8 @@ export class MechanicsComponent implements AfterViewInit {
           mechanicsPhotos,
           mechanicsVideos,
         });
+
+        window.scrollTo(0, 0);
       },
       error: (error) => console.error(error),
     });

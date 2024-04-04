@@ -10,7 +10,7 @@
       <!-- startDate -->
       <div>
         <label for="startDate" class="block mb-1 text-sm">Fecha de inicio</label>
-        <input id="startDate" formControlName="startDate" type="date" sharedInput>
+        <input id="startDate" formControlName="startDate" type="datetime-local" sharedInput>
         @if (hasError('startDate')) {
         <shared-input-error [message]="getError('startDate')"></shared-input-error>
         }
@@ -19,7 +19,7 @@
       <!-- endDate -->
       <div>
         <label for="endDate" class="block mb-1 text-sm">Fecha de fin</label>
-        <input id="endDate" formControlName="endDate" type="date" sharedInput>
+        <input id="endDate" formControlName="endDate" type="datetime-local" sharedInput>
         @if (hasError('endDate')) {
         <shared-input-error [message]="getError('endDate')"></shared-input-error>
         }
