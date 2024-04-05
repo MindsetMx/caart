@@ -5,6 +5,7 @@ import { AppService } from '@app/app.service';
 import { AuctionService } from '@app/auctions/services/auction.service';
 import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
 import { PublicationRequestsData } from '@app/auctions/interfaces/publication-requests';
+import { InputDirective } from '@shared/directives';
 
 @Component({
   selector: 'app-requests',
@@ -12,6 +13,7 @@ import { PublicationRequestsData } from '@app/auctions/interfaces/publication-re
   imports: [
     CommonModule,
     SidebarComponent,
+    InputDirective
   ],
   templateUrl: './requests.component.html',
   styleUrl: './requests.component.css',
@@ -28,8 +30,21 @@ export class RequestsComponent {
     this.getPublicationRequests();
   }
 
+  updatePublicationRequestStatus(id: string, status: Event): void {
+    const target = status.target as HTMLSelectElement;
+
+    switch (target.value) {
+      case 'accepted':
+        this.acceptPublicationRequest(id);
+        break;
+      case 'rejected':
+        this.rejectPublicationRequest(id);
+        break;
+    }
+  }
+
   getPublicationRequests(): void {
-    this.#auctionService.getPublicationRequests$().subscribe((response) => {
+    this.#auctionService.getAllAuctionCars$().subscribe((response) => {
       this.publicationRequests.set(response.data);
     });
   }
@@ -45,6 +60,16 @@ export class RequestsComponent {
       error: (error) => console.error(error),
     }).add(() => {
       this.acceptPublicationRequestButtonIsDisabled.set(false);
+    });
+  }
+
+  rejectPublicationRequest(id: string): void {
+    this.#auctionService.rejectPublicationRequest$(id).subscribe({
+      next: () => {
+        this.getPublicationRequests();
+        this.toastSuccess('Solicitud rechazada');
+      },
+      error: (error) => console.error(error),
     });
   }
 

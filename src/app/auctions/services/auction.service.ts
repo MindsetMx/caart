@@ -30,4 +30,17 @@ export class AuctionService {
     return this.#http.patch<any>(url, {});
   }
 
+  rejectPublicationRequest$(id: string): Observable<any> {
+    const url = `${this.#baseUrl}/auction-items/${id}/reject`;
+
+    return this.#http.patch<any>(url, {});
+  }
+
+  // auction-items/all-auction-cars
+  getAllAuctionCars$(): Observable<any> {
+    const url = `${this.#baseUrl}/auction-items/all-auction-cars`;
+
+    return this.#http.get<any>(url);
+  }
+
 }

@@ -27,7 +27,7 @@
       {{auction().attributes.extract}}
     </p>
 
-    <p class="mt-2">Vendido por <b>$4,000,000 MXN</b></p>
-    <span class="text-gray4">12/12/23</span>
+    <p class="mt-2">Vendido por <b>${{auction().attributes.lastBid | number}}</b></p>
+    <span class="text-gray4">{{auction().attributes.endDate | date:'dd/MM/yyyy'}}</span>
   </div>
 </div>

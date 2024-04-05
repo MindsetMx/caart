@@ -54,11 +54,17 @@
                 <!-- <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">Member</td> -->
                 @if (publication.attributes.status === 'Pendiente') {
                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                  <button [disabled]="acceptPublicationRequestButtonIsDisabled()"
+                  <!-- <button [disabled]="acceptPublicationRequestButtonIsDisabled()"
                     [class.opacity-50]="acceptPublicationRequestButtonIsDisabled()"
                     (click)="acceptPublicationRequest(publication.id)" class="text-indigo-600 hover:text-indigo-900">
                     Aceptar solicitud
-                  </button>
+                  </button> -->
+                  <!-- select aceptar o rechazar -->
+                  <select sharedInput (change)="updatePublicationRequestStatus(publication.id, $event)">
+                    <option value disabled selected>Selecciona una opción</option>
+                    <option value="accepted">Aceptar</option>
+                    <option value="rejected">Rechazar</option>
+                  </select>
                 </td>
                 }
               </tr>

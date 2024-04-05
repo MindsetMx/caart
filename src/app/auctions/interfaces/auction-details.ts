@@ -15,6 +15,7 @@ export interface AuctionDetailsAttributes {
   bids: Bid[];
   carHistory: CarHistory;
   categories: string[];
+  dataUser: dataUser;
   endDate: string;
   exteriorDetails: ExteriorDetails;
   extras: Extras;
@@ -29,6 +30,30 @@ export interface AuctionDetailsAttributes {
   startDate: string;
   status: string;
 }
+export interface dataUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  sellerType: string;
+  country: string;
+  city: string;
+  state: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
+  taxId: string;
+  streetAndNumber: string;
+  postalCode: string;
+  validationType: string;
+  validationImg: string[];
+  acceptTermsAndConditions: boolean;
+  accountVerified: boolean;
+  verificationCode: null;
+  verificationCodeExpires: null;
+  __v: number;
+  clientId: string;
+}
 
 export interface CarHistory {
   _id: string;
@@ -37,36 +62,38 @@ export interface CarHistory {
   content: string;
   originalAuctionCarId: string;
   createdAt: string;
+  extraInfo: string;
 }
 
 export interface AuctionCarForm {
+  __v: number;
   _id: string;
-  type: string;
+  acceptTerms: boolean;
   brand: string;
-  year: number;
   carModel: string;
-  exteriorColor: string;
-  interiorColor: string;
-  specificColor: string;
-  generalCondition: string;
-  transmissionType: string;
-  otherTransmission: null;
-  engine: string;
   city: string;
+  engine: string;
+  exteriorColor: string;
+  generalCondition: string;
+  howDidYouHearAboutUs: string;
+  interest: string;
+  interiorColor: string;
+  kmInput: number;
+  kmType: string;
+  lotNumber: string;
+  otherTransmission: null;
+  photos: string[];
   postalCode: string;
   reserve: boolean;
   reserveAmount: number;
-  kmType: string;
-  kmInput: number;
-  howDidYouHearAboutUs: string;
-  photos: string[];
-  videos: any[];
-  interest: string;
-  acceptTerms: boolean;
-  status: string;
-  userId: string;
-  __v: number;
+  specificColor: string;
   state: string;
+  status: string;
+  transmissionType: string;
+  type: string;
+  userId: string;
+  videos: any[];
+  year: number;
 }
 
 export interface Bid {

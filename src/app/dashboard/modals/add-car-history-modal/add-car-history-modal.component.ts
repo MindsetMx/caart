@@ -87,6 +87,7 @@ export class AddCarHistoryModalComponent {
       originalAuctionCarId: ['', Validators.required],
       content: ['', Validators.required],
       extract: ['', Validators.required],
+      extraInfo: ['', Validators.required],
     });
   }
 

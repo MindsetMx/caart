@@ -85,50 +85,50 @@
     <div class="grid grid-cols-12 gap-4">
       <div class="col-span-12 md:col-span-7">
         <div class="flex h-full">
-          <a class="w-full" [href]="auction().auctionCar.photos[0]" data-fancybox="gallery">
-            <img class="h-fill object-cover w-full md:max-h-60 lg:max-h-80 xl:max-h-[25rem] 2xl:max-h-[30rem]"
+          <a class="w-full flex" [href]="auction().auctionCar.photos[0]" data-fancybox="gallery">
+            <img class="object-cover w-full md:max-h-60 lg:max-h-80 xl:max-h-[30rem] 2xl:max-h-[35rem]"
               [src]="auction().auctionCar.photos[0]" alt="">
           </a>
         </div>
       </div>
       <div class="hidden col-span-5 md:grid grid-cols-2 gap-4">
         <a class="flex" [href]="auction().auctionCar.photos[1]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().auctionCar.photos[1]" alt="">
+          <img class="object-cover" [src]="auction().auctionCar.photos[1]" alt="">
         </a>
         <a class="flex" [href]="auction().auctionCar.photos[2]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().auctionCar.photos[2]" alt="">
+          <img class="object-cover" [src]="auction().auctionCar.photos[2]" alt="">
         </a>
-        <a class="flex" [href]="auction().auctionCar.photos[3]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().auctionCar.photos[3]" alt="">
+        <!-- <a class="flex" [href]="auction().auctionCar.photos[3]" data-fancybox="gallery">
+          <img class="object-cover" [src]="auction().auctionCar.photos[3]" alt="">
         </a>
         <a class="flex" [href]="auction().auctionCar.photos[4]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().auctionCar.photos[4]" alt="">
+          <img class="object-cover" [src]="auction().auctionCar.photos[4]" alt="">
+        </a> -->
+        <a class="flex" [href]="auction().auctionCar.photos[3]" data-fancybox="gallery">
+          <img class="object-cover" [src]="auction().auctionCar.photos[3]" alt="">
         </a>
-        <a class="flex" [href]="auction().auctionCar.photos[5]" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="auction().auctionCar.photos[5]" alt="">
-        </a>
-        <a class="flex h-full relative" [href]="auction().auctionCar.photos[6]" data-fancybox="gallery">
+        <a class="flex h-full relative" [href]="auction().auctionCar.photos[4]" data-fancybox="gallery">
           <div class="flex absolute inset-0 overflow-hidden">
-            <img class="h-fill object-cover" [src]="auction().auctionCar.photos[6]" alt="">
+            <img class="object-cover" [src]="auction().auctionCar.photos[4]" alt="">
           </div>
           <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
           <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
-            Ver todas las fotos (10)
+            Ver todas las fotos ({{auction().auctionCar.photos.length}})
           </div>
         </a>
-        @for (item of auction().auctionCar.photos.slice(7); track $index) {
+        @for (item of auction().auctionCar.photos.slice(5); track $index) {
         <a class="hidden" [href]="item" data-fancybox="gallery">
-          <img class="h-fill object-cover" [src]="item" alt="">
+          <img class="object-cover" [src]="item" alt="">
         </a>
         }
         <!-- <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
-          <img class="h-fill object-cover" src="assets/img/home/carousel/banner.png" alt="">
+          <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
         </a>
         <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
-          <img class="h-fill object-cover" src="assets/img/home/carousel/banner.png" alt="">
+          <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
         </a>
         <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
-          <img class="h-fill object-cover" src="assets/img/home/carousel/banner.png" alt="">
+          <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
         </a> -->
       </div>
     </div>
