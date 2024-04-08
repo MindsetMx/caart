@@ -6,6 +6,7 @@ import { AuctionService } from '@app/auctions/services/auction.service';
 import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
 import { PublicationRequestsData } from '@app/auctions/interfaces/publication-requests';
 import { InputDirective } from '@shared/directives';
+import { RequestsDetailsModalComponent } from '@app/dashboard/modals/requests-details-modal/requests-details-modal.component';
 
 @Component({
   selector: 'app-requests',
@@ -13,7 +14,8 @@ import { InputDirective } from '@shared/directives';
   imports: [
     CommonModule,
     SidebarComponent,
-    InputDirective
+    InputDirective,
+    RequestsDetailsModalComponent
   ],
   templateUrl: './requests.component.html',
   styleUrl: './requests.component.css',
@@ -25,6 +27,8 @@ export class RequestsComponent {
 
   publicationRequests = signal<PublicationRequestsData[]>([]);
   acceptPublicationRequestButtonIsDisabled = signal<boolean>(false);
+  requestsDetailsModalIsOpen = signal<boolean>(false);
+  publicationId = signal<string>('');
 
   ngOnInit(): void {
     this.getPublicationRequests();
@@ -41,6 +45,15 @@ export class RequestsComponent {
         this.rejectPublicationRequest(id);
         break;
     }
+  }
+
+  openRequestsDetailsModal(publicationId: string): void {
+    this.publicationId.set(publicationId);
+    this.requestsDetailsModalIsOpen.set(true);
+  }
+
+  closeRequestsDetailsModal(isOpen: boolean): void {
+    this.requestsDetailsModalIsOpen.set(isOpen);
   }
 
   getPublicationRequests(): void {

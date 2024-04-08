@@ -40,8 +40,18 @@ export class PublishCarsComponent {
   }
 
   dashboardInfo(): void {
-    this.#auctionCarService.dashboardInfo$().subscribe((auctionCarInfo) => {
-      this.auctionCarInfo.set(auctionCarInfo);
+    this.#auctionCarService.dashboardInfo$(
+      1,
+      50,
+      'brand',
+    ).subscribe((auctionCarInfo) => {
+      // this.auctionCarInfo.set(auctionCarInfo);
+
+      //reverser this.auctionCarInfo data
+      this.auctionCarInfo.set({
+        ...auctionCarInfo,
+        data: auctionCarInfo.data.reverse()
+      });
     });
   }
 

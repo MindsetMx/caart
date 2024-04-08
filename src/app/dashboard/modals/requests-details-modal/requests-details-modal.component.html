@@ -1,0 +1,35 @@
+<shared-modal [isOpen]="isOpen()" (isOpenChange)="emitIsOpenChange($event)" [verticalCenter]="true">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Detalles de la solicitud</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <section class="container">
+    @defer (when auction().data) {
+    <h4>
+      {{auction().data.attributes.brand}} {{auction().data.attributes.carModel}} ({{auction().data.attributes.year}})
+    </h4>
+    <p><b>Color exterior:</b> {{auction().data.attributes.exteriorColor}}</p>
+    <p><b>Color interior:</b> {{auction().data.attributes.interiorColor}}</p>
+    <p><b>Condición general:</b> {{auction().data.attributes.generalCondition}}</p>
+    <p><b>Tipo de transmisión:</b> {{auction().data.attributes.transmissionType}}</p>
+    <p><b>Motor:</b> {{auction().data.attributes.engine}}</p>
+    <p><b>Ciudad:</b> {{auction().data.attributes.city}}</p>
+    <p><b>Código postal:</b> {{auction().data.attributes.postalCode}}</p>
+    <p><b>Estado:</b> {{auction().data.attributes.state}}</p>
+    <p><b>Reserva:</b> {{auction().data.attributes.reserve ? 'Sí' : 'No'}}</p>
+    <p><b>Monto de la reserva:</b> {{auction().data.attributes.reserveAmount}}</p>
+    <p><b>Kilometraje:</b> {{auction().data.attributes.kmInput}} {{auction().data.attributes.kmType}}</p>
+    <p><b>¿Cómo supiste de nosotros?:</b> {{auction().data.attributes.howDidYouHearAboutUs}}</p>
+    <p><b>Número de lote:</b> {{auction().data.attributes.lotNumber}}</p>
+
+    <div class="grid grid-cols-2 gap-4 mt-8">
+      @for (photo of auction().data.attributes.photos; track $index) {
+      <img [src]="photo" alt="Foto del auto">
+      }
+    </div>
+    }
+  </section>
+
+</shared-modal>
