@@ -6,6 +6,7 @@ import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { VehicleFilterResultsComponent } from '@app/auctions/components/vehicle-filter-results/vehicle-filter-results.component';
 import { MemorabiliaFilterResultsComponent } from '@auctions/components/memorabilia-filter-results/memorabilia-filter-results.component';
+import { AllAuctionsFilterResultsComponent } from '@auctions/components/all-auctions-filter-results/all-auctions-filter-results.component';
 
 @Component({
   standalone: true,
@@ -14,6 +15,7 @@ import { MemorabiliaFilterResultsComponent } from '@auctions/components/memorabi
     TabsWithIconsComponent,
     VehicleFilterResultsComponent,
     MemorabiliaFilterResultsComponent,
+    AllAuctionsFilterResultsComponent
   ],
   templateUrl: './live-auctions.component.html',
   styleUrl: './live-auctions.component.css',
@@ -32,13 +34,13 @@ export class LiveAuctionsComponent {
           id: 1,
           name: 'Todo',
           img: 'assets/img/icons/apps-outline.svg',
-          current: false
+          current: true
         },
         {
           id: 2,
           name: 'Automóviles',
           img: 'assets/img/registrar auto/car-sport-outline.svg',
-          current: true
+          current: false
         },
         {
           id: 3,
