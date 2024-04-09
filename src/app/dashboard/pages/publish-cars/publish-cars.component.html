@@ -28,13 +28,14 @@
                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Info mecánica</th>
                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Extras</th>
                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Historia del auto</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Detalles</th>
                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                   <span class="sr-only">Acciones</span>
                 </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-              @for (auction of auctionCarInfo()?.data; track $index) {
+              @for (auction of auctionCarInfo().data; track $index) {
               <tr>
                 <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                   {{ auction.brand }} {{ auction.model }} {{ auction.year }}
@@ -93,13 +94,19 @@
                     <div>{{ auction.carHistoryExists ? 'Completado':'Pendiente' }}</div>
                   </div>
                 </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                  <button (click)="openAuctionCarDetailsModal(auction.auctionCarId)"
+                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-indigo-800 underline">
+                    Ver detalles
+                  </button>
+                </td>
                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                   @if (!auction.published) {
                   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu class="text-sm" #menu="matMenu">
-                    <button (click)="openAddCarHistoryModal(auction.auctionCarId)" mat-menu-item>
+                    <button [routerLink]="['/dashboard/agregar-historia-auto', auction.auctionCarId]" mat-menu-item>
                       <!-- <mat-icon>dialpad</mat-icon> -->
                       <span>Agregar historia del auto</span>
                     </button>
@@ -121,9 +128,8 @@
 
 </sidebar-layout>
 
-<car-history-modal [isOpen]="addCarHistoryModalIsOpen()" (isOpenChange)="closeAddCarHistoryModal()"
-  (carReleaseForLiveAuction)="dashboardInfo()" [originalAuctionCarId]="auctionCarId()">
-</car-history-modal>
+<auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"
+  [auctionCarId]="auctionCarId()"></auction-car-details-modal>
 
 <release-car-for-live-auction-modal [isOpen]="releaseCarForLiveAuctionModalIsOpen()"
   (carReleaseForLiveAuction)="dashboardInfo()" [originalAuctionCarId]="auctionCarId()"

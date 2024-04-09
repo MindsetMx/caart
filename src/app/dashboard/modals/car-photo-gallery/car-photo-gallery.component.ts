@@ -30,6 +30,8 @@ export class CarPhotoGalleryComponent {
   #appService = inject(AppService);
 
   auctionCarIdEffect = effect(() => {
+    console.log({ auctionCarId: this.auctionCarId() });
+
     if (this.auctionCarId()) {
       this.getAllCarMedia();
     }

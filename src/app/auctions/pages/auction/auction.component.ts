@@ -159,7 +159,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
           this.getComments();
         }
 
-        if (JSON.parse(event.data).type === 'CANCELADA') {
+        if (JSON.parse(event.data).type === 'CANCELLED') {
           this.auctionCancelledModalIsOpen.set(true);
         }
       };

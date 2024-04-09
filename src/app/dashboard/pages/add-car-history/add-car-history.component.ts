@@ -11,61 +11,31 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/car-photo-gallery.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
 
 @Component({
-  selector: 'car-history-modal',
   standalone: true,
   imports: [
-    ModalComponent,
     CKEditorModule,
     ReactiveFormsModule,
     InputDirective,
     SpinnerComponent,
     PrimaryButtonDirective,
     InputErrorComponent,
-    CarPhotoGalleryComponent
+    CarPhotoGalleryComponent,
+    SidebarComponent
   ],
-  templateUrl: './add-car-history-modal.component.html',
-  styleUrl: './add-car-history-modal.component.css',
+  templateUrl: './add-car-history.component.html',
+  styleUrl: './add-car-history.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddCarHistoryModalComponent {
-  isOpen = input.required<boolean>();
-  originalAuctionCarId = input.required<string>();
-  isOpenChange = output<boolean>();
-  carReleaseForLiveAuction = output<void>();
+export class AddCarHistoryComponent {
+  originalAuctionCarId = signal<string>('');
 
   carPhotoGalleryIsOpen = signal<boolean>(false);
 
   public Editor = Editor;
-  // public config = {
-  //   placeholder: 'Ingrese la historia del auto...',
-  //   toolbar: {
-  //     items: [
-  //       'heading',
-  //       '|',
-  //       'bold',
-  //       'insertImage',
-  //       'italic',
-  //       'underline',
-  //       'strikethrough',
-  //       '|',
-  //       'link',
-  //       'bulletedList',
-  //       'numberedList',
-  //       '|',
-  //       'outdent',
-  //       'indent',
-  //       '|',
-  //       'blockQuote',
-  //       'insertTable',
-  //       'mediaEmbed',
-  //       '|',
-  //       'undo',
-  //       'redo',
-  //     ],
-  //   }
-  // }
 
   addCarHistoryForm: FormGroup;
   addCarHistorySubmitButtonIsDisabled = signal<boolean>(false);
@@ -74,17 +44,14 @@ export class AddCarHistoryModalComponent {
   #validatorsService = inject(ValidatorsService);
   #auctionCarService = inject(AuctionCarService);
   #appService = inject(AppService);
-
-  originalAuctionCarIdEffect = effect(() => {
-    console.log({ originalAuctionCarId: this.originalAuctionCarId() });
-
-    this.addCarHistoryForm.reset();
-    this.addCarHistoryForm.get('originalAuctionCarId')?.setValue(this.originalAuctionCarId());
-  });
+  #activatedRoute = inject(ActivatedRoute);
+  #router = inject(Router);
 
   constructor() {
+    this.originalAuctionCarId.set(this.#activatedRoute.snapshot.paramMap.get('id')!);
+
     this.addCarHistoryForm = this.#formBuilder.group({
-      originalAuctionCarId: ['', Validators.required],
+      originalAuctionCarId: [this.originalAuctionCarId(), Validators.required],
       content: ['', Validators.required],
       extract: ['', Validators.required],
       extraInfo: ['', Validators.required],
@@ -106,9 +73,8 @@ export class AddCarHistoryModalComponent {
         console.log({ response });
 
         this.addCarHistoryForm.reset();
-        this.emitIsOpenChange(false);
 
-        this.carReleaseForLiveAuction.emit();
+        this.#router.navigate(['/dashboard/publicar-autos']);
 
         this.toastSuccess('Historia del auto agregada');
       },
@@ -130,10 +96,6 @@ export class AddCarHistoryModalComponent {
 
   openCarPhotoGallery(): void {
     this.carPhotoGalleryIsOpen.set(true);
-  }
-
-  emitIsOpenChange(isOpen: boolean): void {
-    this.isOpenChange.emit(isOpen);
   }
 
   hasError(field: string): boolean {

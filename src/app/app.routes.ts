@@ -135,6 +135,10 @@ export const routes: Routes = [
         path: 'publicar-autos',
         loadComponent: () => import('./dashboard/pages/publish-cars/publish-cars.component').then((m) => m.PublishCarsComponent),
       },
+      {
+        path: 'agregar-historia-auto/:id',
+        loadComponent: () => import('./dashboard/pages/add-car-history/add-car-history.component').then((m) => m.AddCarHistoryComponent),
+      },
       { path: '**', redirectTo: 'publicaciones' }
     ]
   },

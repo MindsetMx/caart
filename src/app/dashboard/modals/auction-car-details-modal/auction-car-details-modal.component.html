@@ -1,0 +1,188 @@
+<shared-modal [isOpen]="isOpen()" (isOpenChange)="emitIsOpenChange($event)" [verticalCenter]="true"
+  modalMaxWidth="sm:max-w-2xl">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Detalles del auto en subasta</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <section class="container">
+    @defer (when wizardData().data) {
+    <mat-tab-group>
+      <mat-tab label="Exterior">
+        <p class="mt-4"><b>ID:</b> {{wizardData().data.registerCarDetails._id}}</p>
+        <p><b>Tipo:</b> {{wizardData().data.registerCarDetails.type}}</p>
+        <p><b>Marca:</b> {{wizardData().data.registerCarDetails.brand}}</p>
+        <p><b>Año:</b> {{wizardData().data.registerCarDetails.year}}</p>
+        <p><b>Modelo:</b> {{wizardData().data.registerCarDetails.carModel}}</p>
+        <p><b>Color exterior:</b> {{wizardData().data.registerCarDetails.exteriorColor}}</p>
+        <p><b>Color interior:</b> {{wizardData().data.registerCarDetails.interiorColor}}</p>
+        <p><b>Color específico:</b> {{wizardData().data.registerCarDetails.specificColor}}</p>
+        <p><b>Condición general:</b> {{wizardData().data.registerCarDetails.generalCondition}}</p>
+        <p><b>Tipo de transmisión:</b> {{wizardData().data.registerCarDetails.transmissionType}}</p>
+        <p><b>Otra transmisión:</b> {{wizardData().data.registerCarDetails.otherTransmission}}</p>
+        <p><b>Motor:</b> {{wizardData().data.registerCarDetails.engine}}</p>
+        <p><b>Ciudad:</b> {{wizardData().data.registerCarDetails.city}}</p>
+        <p><b>Código postal:</b> {{wizardData().data.registerCarDetails.postalCode}}</p>
+        <p><b>Estado:</b> {{wizardData().data.registerCarDetails.state}}</p>
+        <p><b>Reserva:</b> {{wizardData().data.registerCarDetails.reserve}}</p>
+        <p><b>Monto de la reserva:</b> {{wizardData().data.registerCarDetails.reserveAmount}}</p>
+        <p><b>Tipo de KM:</b> {{wizardData().data.registerCarDetails.kmType}}</p>
+        <p><b>Entrada KM:</b> {{wizardData().data.registerCarDetails.kmInput}}</p>
+        <p><b>¿Cómo supiste de nosotros?:</b> {{wizardData().data.registerCarDetails.howDidYouHearAboutUs}}</p>
+        <p><b>Fotos:</b></p>
+        <div class="grid grid-cols-3 gap-4">
+          @for (photo of wizardData().data.registerCarDetails.photos; track $index) {
+          <img src="{{photo}}" alt="Foto {{ $index + 1 }}">
+          } @empty {
+          <p>No hay fotos</p>
+          }
+        </div>
+        <p><b>Videos:</b></p>
+        <div class="grid grid-cols-3 gap-4">
+          @for (video of wizardData().data.registerCarDetails.videos; track $index) {
+          <video [src]="video" controls></video>
+          } @empty {
+          <p>No hay videos</p>
+          }
+        </div>
+        <p><b>Interés:</b> {{wizardData().data.registerCarDetails.interest}}</p>
+        <p><b>Acepta términos:</b> {{wizardData().data.registerCarDetails.acceptTerms}}</p>
+        <p><b>Estado:</b> {{wizardData().data.registerCarDetails.status}}</p>
+        <p><b>ID de usuario:</b> {{wizardData().data.registerCarDetails.userId}}</p>
+        <p><b>Número de lote:</b> {{wizardData().data.registerCarDetails.lotNumber}}</p>
+      </mat-tab>
+      <mat-tab label="Extra">
+        <p class="mt-4"><b>ID:</b> {{wizardData().data.extrasDetails._id}}</p>
+        <p><b>originalAuctionCarId:</b> {{wizardData().data.extrasDetails.originalAuctionCarId}}</p>
+        @for (charge of wizardData().data.extrasDetails.additionalCharges; track $index) {
+        <p><b>Cargo:</b> {{charge.chargeType}} - {{charge.amount}}</p>
+        } @empty {
+        <p>No hay cargos adicionales</p>
+        }
+        <p><b>Cargador de batería:</b> {{wizardData().data.extrasDetails.batteryCharger ? 'Sí' : 'No'}}</p>
+        <p><b>Car Cover:</b> {{wizardData().data.extrasDetails.carCover ? 'Sí' : 'No'}}</p>
+        <p><b>Comentarios:</b> {{wizardData().data.extrasDetails.comments}}</p>
+        <p><b>Manuales:</b> {{wizardData().data.extrasDetails.manuals ? 'Sí' : 'No'}}</p>
+        <p><b>Número de llaves:</b> {{wizardData().data.extrasDetails.numberOfKeys}}</p>
+        <p><b>Otros:</b> {{wizardData().data.extrasDetails.others}}</p>
+        <p><b>Terms Conditions Accepted:</b> {{wizardData().data.extrasDetails.termsConditionsAccepted ? 'Sí' : 'No'}}
+        </p>
+        <p><b>Tire Inflator:</b> {{wizardData().data.extrasDetails.tireInflator ? 'Sí' : 'No'}}</p>
+        <p><b>Tool Box:</b> {{wizardData().data.extrasDetails.toolBox ? 'Sí' : 'No'}}</p>
+      </mat-tab>
+      <mat-tab label="Interior">
+        <p class="mt-4"><b>ID:</b> {{wizardData().data.interiorDetails._id}}</p>
+        <p><b>originalAuctionCarId:</b> {{wizardData().data.interiorDetails.originalAuctionCarId}}</p>
+        <p><b>Accesorios funcionando:</b> {{wizardData().data.interiorDetails.accessoriesFunctioning ? 'Sí' : 'No'}}</p>
+        <p><b>Comentarios:</b> {{wizardData().data.interiorDetails.comments}}</p>
+        <p><b>Color del interior:</b> {{wizardData().data.interiorDetails.interiorColor}}</p>
+        <p><b>Condición del interior:</b> {{wizardData().data.interiorDetails.interiorCondition}}</p>
+        <p><b>Modificaciones del interior:</b> {{wizardData().data.interiorDetails.interiorModifications ? 'Sí' : 'No'}}
+        </p>
+        <p><b>Imágenes: </b></p>
+        <div class="grid grid-cols-3 gap-4">
+          @for (photo of wizardData().data.interiorDetails.interiorPhotos; track $index) {
+          <img [src]="photo" alt="Foto del interior">
+          } @empty {
+          <p>No hay imágenes</p>
+          }
+        </div>
+        <p><b>Videos:</b></p>
+        <div class="grid grid-cols-3 gap-4">
+          @for (video of wizardData().data.interiorDetails.interiorVideos; track $index) {
+          <video [src]="video" controls></video>
+          } @empty {
+          <p>No hay videos</p>
+          }
+        </div>
+        <p><b>Material:</b> {{wizardData().data.interiorDetails.material}}</p>
+      </mat-tab>
+      <mat-tab label="Mecánica">
+        <p class="mt-4"><b>ID:</b> {{wizardData().data.mechanicsDetails._id}}</p>
+        <p><b>originalAuctionCarId:</b> {{wizardData().data.mechanicsDetails.originalAuctionCarId}}</p>
+        <p><b>Comentarios:</b> {{wizardData().data.mechanicsDetails.comments}}</p>
+        <p><b>Equipo extra:</b> {{wizardData().data.mechanicsDetails.extraEquipment ? 'Sí' : 'No'}}</p>
+        <p><b>Neumáticos o llantas extra:</b> {{wizardData().data.mechanicsDetails.extraTiresOrRims ? 'Sí' : 'No'}}</p>
+        <p><b>Equipo de fábrica:</b> {{wizardData().data.mechanicsDetails.factoryEquipment ? 'Sí' : 'No'}}</p>
+        <p><b>Tablero iluminado:</b> {{wizardData().data.mechanicsDetails.illuminatedDashboardSensor ? 'Sí' : 'No'}}</p>
+        <p><b>Mejora/modificación original:</b> {{wizardData().data.mechanicsDetails.improvementModificationOriginal ?
+          'Sí' : 'No'}}</p>
+        <p><b>Detalle del problema mecánico:</b> {{wizardData().data.mechanicsDetails.mechanicalProblemDetail ? 'Sí' :
+          'No'}}</p>
+        <p><b>Fotos:</b></p>
+        <div class="grid grid-cols-3 gap-4">
+          @for (photo of wizardData().data.mechanicsDetails.mechanicsPhotos; track $index) {
+          <img [src]="photo" alt="Foto mecánica">
+          } @empty {
+          <p>No hay fotos</p>
+          }
+        </div>
+        <p><b>Videos:</b></p>
+        <div class="grid grid-cols-3 gap-4">
+          @for (video of wizardData().data.mechanicsDetails.mechanicsVideos; track $index) {
+          <video [src]="video" controls></video>
+          } @empty {
+          <p>No hay videos</p>
+          }
+        </div>
+        <p><b>Llantas originales:</b> {{wizardData().data.mechanicsDetails.originalRims ? 'Sí' : 'No'}}</p>
+        <p><b>Motor/transmisión original:</b> {{wizardData().data.mechanicsDetails.originalTransmissionEngine ? 'Sí' :
+          'No'}}</p>
+        <p><b>Servicios realizados con fechas:</b> {{wizardData().data.mechanicsDetails.performedServicesWithDates}}</p>
+        <p><b>Neumático de repuesto:</b> {{wizardData().data.mechanicsDetails.spareTire ? 'Sí' : 'No'}}</p>
+        <p><b>Marca de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireBrand}}</p>
+        <p><b>Condición de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireCondition}}</p>
+        <p><b>Fecha de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireDate}}</p>
+        <p><b>Tamaño de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireSize}}</p>
+      </mat-tab>
+      <mat-tab label="Registro">
+        <div>
+          <p><b>ID:</b> {{ wizardData().data.registerCarDetails._id }}</p>
+          <p><b>Tipo:</b> {{ wizardData().data.registerCarDetails.type }}</p>
+          <p><b>Marca:</b> {{ wizardData().data.registerCarDetails.brand }}</p>
+          <p><b>Año:</b> {{ wizardData().data.registerCarDetails.year }}</p>
+          <p><b>Modelo:</b> {{ wizardData().data.registerCarDetails.carModel }}</p>
+          <p><b>Color exterior:</b> {{ wizardData().data.registerCarDetails.exteriorColor }}</p>
+          <p><b>Color interior:</b> {{ wizardData().data.registerCarDetails.interiorColor }}</p>
+          <p><b>Color específico:</b> {{ wizardData().data.registerCarDetails.specificColor }}</p>
+          <p><b>Condición general:</b> {{ wizardData().data.registerCarDetails.generalCondition }}</p>
+          <p><b>Tipo de transmisión:</b> {{ wizardData().data.registerCarDetails.transmissionType }}</p>
+          <p><b>Otra transmisión:</b> {{ wizardData().data.registerCarDetails.otherTransmission }}</p>
+          <p><b>Motor:</b> {{ wizardData().data.registerCarDetails.engine }}</p>
+          <p><b>Ciudad:</b> {{ wizardData().data.registerCarDetails.city }}</p>
+          <p><b>Código postal:</b> {{ wizardData().data.registerCarDetails.postalCode }}</p>
+          <p><b>Estado:</b> {{ wizardData().data.registerCarDetails.state }}</p>
+          <p><b>Reserva:</b> {{ wizardData().data.registerCarDetails.reserve }}</p>
+          <p><b>Monto de reserva:</b> {{ wizardData().data.registerCarDetails.reserveAmount }}</p>
+          <p><b>Tipo de KM:</b> {{ wizardData().data.registerCarDetails.kmType }}</p>
+          <p><b>Entrada KM:</b> {{ wizardData().data.registerCarDetails.kmInput }}</p>
+          <p><b>¿Cómo supiste de nosotros?:</b> {{ wizardData().data.registerCarDetails.howDidYouHearAboutUs }}</p>
+          <p><b>Fotos:</b></p>
+          <div class="grid grid-cols-3 gap-4">
+            @for (photo of wizardData().data.registerCarDetails.photos; track $index) {
+            <img [src]="photo" alt="Foto {{ $index + 1 }}">
+            } @empty {
+            <p>No hay fotos</p>
+            }
+          </div>
+          <p><b>Videos:</b></p>
+          <div class="grid grid-cols-3 gap-4">
+            @for (video of wizardData().data.registerCarDetails.videos; track $index) {
+            <video [src]="video" controls></video>
+            } @empty {
+            <p>No hay videos</p>
+            }
+          </div>
+          <p><b>Interés:</b> {{ wizardData().data.registerCarDetails.interest }}</p>
+          <p><b>Acepta términos:</b> {{ wizardData().data.registerCarDetails.acceptTerms }}</p>
+          <p><b>Estado:</b> {{ wizardData().data.registerCarDetails.status }}</p>
+          <p><b>ID de usuario:</b> {{ wizardData().data.registerCarDetails.userId }}</p>
+          <p><b>Número de lote:</b> {{ wizardData().data.registerCarDetails.lotNumber }}</p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    }
+  </section>
+</shared-modal>

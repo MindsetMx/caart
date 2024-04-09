@@ -6,9 +6,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
 import { AuctionCarService } from '../../services/auction-car.service';
 import { CommonModule } from '@angular/common';
-import { AddCarHistoryModalComponent } from '@app/dashboard/modals/add-car-history-modal/add-car-history-modal.component';
 import { ReleaseCarForLiveAuctionModalComponent } from '@app/dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
 import { AuctionCarInfo } from '@app/dashboard/interfaces';
+import { RouterLink } from '@angular/router';
+import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 
 @Component({
   standalone: true,
@@ -18,8 +19,9 @@ import { AuctionCarInfo } from '@app/dashboard/interfaces';
     MatMenuModule,
     MatIconModule,
     CommonModule,
-    AddCarHistoryModalComponent,
-    ReleaseCarForLiveAuctionModalComponent
+    ReleaseCarForLiveAuctionModalComponent,
+    RouterLink,
+    AuctionCarDetailsModalComponent
   ],
   templateUrl: './publish-cars.component.html',
   styleUrl: './publish-cars.component.css',
@@ -32,6 +34,7 @@ export class PublishCarsComponent {
 
   addCarHistoryModalIsOpen = signal<boolean>(false);
   releaseCarForLiveAuctionModalIsOpen = signal<boolean>(false);
+  auctionCarDetailsModalIsOpen = signal<boolean>(false);
 
   auctionCarId = signal<string>('');
 
@@ -55,6 +58,11 @@ export class PublishCarsComponent {
     });
   }
 
+  openAuctionCarDetailsModal(auctionId: string): void {
+    this.auctionCarId.set(auctionId);
+    this.auctionCarDetailsModalIsOpen.set(true);
+  }
+
   openAddCarHistoryModal(auctionId: string): void {
     this.auctionCarId.set(auctionId);
     this.addCarHistoryModalIsOpen.set(true);
@@ -71,5 +79,9 @@ export class PublishCarsComponent {
 
   closeReleaseCarForLiveAuctionModal(): void {
     this.releaseCarForLiveAuctionModalIsOpen.set(false);
+  }
+
+  closeAuctionCarDetailsModal(): void {
+    this.auctionCarDetailsModalIsOpen.set(false);
   }
 }
