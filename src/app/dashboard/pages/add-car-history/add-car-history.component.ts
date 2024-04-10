@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
 import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { CropCarHistoryImageModalComponent } from '@app/dashboard/modals/crop-car-history-image-modal/crop-car-history-image-modal.component';
 
 @Component({
   standalone: true,
@@ -26,7 +27,8 @@ import { MatMenuModule } from '@angular/material/menu';
     SidebarComponent,
     AuctionCarDetailsModalComponent,
     MatMenuModule,
-    InputDirective
+    InputDirective,
+    CropCarHistoryImageModalComponent
   ],
   templateUrl: './add-car-history.component.html',
   styleUrl: './add-car-history.component.css',
@@ -40,6 +42,7 @@ export class AddCarHistoryComponent {
   addCarHistoryForm: FormGroup;
   addCarHistorySubmitButtonIsDisabled = signal<boolean>(false);
   auctionCarDetailsModalIsOpen = signal<boolean>(false);
+  cropCarHistoryImageModalIsOpen = signal<boolean>(false);
 
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
@@ -108,6 +111,14 @@ export class AddCarHistoryComponent {
     });
 
     this.contentFormArray.push(nuevoContenido);
+  }
+
+  openCropCarHistoryImageModal(): void {
+    this.cropCarHistoryImageModalIsOpen.set(true);
+  }
+
+  closeCropCarHistoryImageModal(): void {
+    this.cropCarHistoryImageModalIsOpen.set(false);
   }
 
   openAuctionCarDetailsModal(): void {

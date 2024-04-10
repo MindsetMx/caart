@@ -35,7 +35,7 @@
             <button (click)="addContent('paragraph')" mat-menu-item>
               <span>Párrafo</span>
             </button>
-            <button (click)="openCarPhotoGallery()" mat-menu-item>
+            <button (click)="openCropCarHistoryImageModal()" mat-menu-item>
               <span>Imagen</span>
             </button>
           </mat-menu>
@@ -87,3 +87,7 @@
 
 <auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"
   [auctionCarId]="originalAuctionCarId()"></auction-car-details-modal>
+
+<crop-car-history-image-modal [isOpen]="cropCarHistoryImageModalIsOpen()"
+  (isOpenChange)="closeCropCarHistoryImageModal()">
+</crop-car-history-image-modal>
