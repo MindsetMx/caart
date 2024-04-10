@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import Editor from 'ckeditor5-custom-build/build/ckeditor';
 
 import { AppService } from '@app/app.service';
 import { AuctionCarService } from '@app/dashboard/services/auction-car.service';
@@ -18,7 +16,6 @@ import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-c
 @Component({
   standalone: true,
   imports: [
-    CKEditorModule,
     ReactiveFormsModule,
     InputDirective,
     SpinnerComponent,
@@ -36,8 +33,6 @@ export class AddCarHistoryComponent {
   originalAuctionCarId = signal<string>('');
 
   carPhotoGalleryIsOpen = signal<boolean>(false);
-
-  public Editor = Editor;
 
   addCarHistoryForm: FormGroup;
   addCarHistorySubmitButtonIsDisabled = signal<boolean>(false);

@@ -27,7 +27,6 @@
           </button>
 
           <label for="title" class="block mb-1 text-sm">Contenido</label>
-          <ckeditor formControlName="content" [editor]="Editor"></ckeditor>
           @if (hasError('content')) {
           <shared-input-error [message]="getError('content')"></shared-input-error>
           }
