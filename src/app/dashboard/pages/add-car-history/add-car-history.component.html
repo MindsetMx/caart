@@ -22,6 +22,10 @@
             <span class="text-blue-500">Seleccionar fotos de la galería</span>
           </button>
 
+          <button (click)="openAuctionCarDetailsModal()" class="block mb-1 text-sm text-blue-500">
+            Ver detalles del auto
+          </button>
+
           <label for="title" class="block mb-1 text-sm">Contenido</label>
           <ckeditor formControlName="content" [editor]="Editor"></ckeditor>
           @if (hasError('content')) {
@@ -67,3 +71,6 @@
 <car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeCarPhotoGallery()"
   [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
+
+<auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"
+  [auctionCarId]="originalAuctionCarId()"></auction-car-details-modal>

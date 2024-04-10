@@ -13,6 +13,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/car-photo-gallery.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
+import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 
 @Component({
   standalone: true,
@@ -24,7 +25,8 @@ import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.componen
     PrimaryButtonDirective,
     InputErrorComponent,
     CarPhotoGalleryComponent,
-    SidebarComponent
+    SidebarComponent,
+    AuctionCarDetailsModalComponent
   ],
   templateUrl: './add-car-history.component.html',
   styleUrl: './add-car-history.component.css',
@@ -39,6 +41,7 @@ export class AddCarHistoryComponent {
 
   addCarHistoryForm: FormGroup;
   addCarHistorySubmitButtonIsDisabled = signal<boolean>(false);
+  auctionCarDetailsModalIsOpen = signal<boolean>(false);
 
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
@@ -88,6 +91,14 @@ export class AddCarHistoryComponent {
     });
 
     // this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.addCarHistoryForm).subscribe({
+  }
+
+  openAuctionCarDetailsModal(): void {
+    this.auctionCarDetailsModalIsOpen.set(true);
+  }
+
+  closeAuctionCarDetailsModal(): void {
+    this.auctionCarDetailsModalIsOpen.set(false);
   }
 
   closeCarPhotoGallery(): void {
