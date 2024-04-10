@@ -26,27 +26,41 @@
             Ver detalles del auto
           </button>
 
-          <label for="title" class="block mb-1 text-sm">Contenido</label>
+
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" type="button">
+            <img class="w-8 h-8" src="assets/img/icons/add-circle.svg" alt="">
+            <!-- <mat-icon>more_vert</mat-icon> -->
+          </button>
+          <mat-menu #menu="matMenu">
+            <button (click)="addContent('paragraph')" mat-menu-item>
+              <span>Párrafo</span>
+            </button>
+            <button (click)="openCarPhotoGallery()" mat-menu-item>
+              <span>Imagen</span>
+            </button>
+          </mat-menu>
+
+
+          <div formArrayName="content" class="space-y-4">
+            @for (charge of contentFormArrayControls; track charge; let i = $index) {
+            <div [formGroupName]="i">
+              @switch (charge.value.type) {
+              @case ('paragraph') {
+              <textarea formControlName="text" cols="30" rows="10" sharedInput></textarea>
+              }
+              @case ('image') {
+
+              }
+              }
+            </div>
+            }
+          </div>
+
+          <!-- <label for="title" class="block mb-1 text-sm">Contenido</label>
+          <textarea cols="30" rows="10"></textarea> -->
+
           @if (hasError('content')) {
           <shared-input-error [message]="getError('content')"></shared-input-error>
-          }
-        </div>
-
-        <!-- Extract textarea-->
-        <div>
-          <label for="extract" class="block mb-1 text-sm">Extracto</label>
-          <textarea formControlName="extract" class="w-full h-40" sharedInput></textarea>
-          @if (hasError('extract')) {
-          <shared-input-error [message]="getError('extract')"></shared-input-error>
-          }
-        </div>
-
-        <!-- extraInfo -->
-        <div>
-          <label for="extraInfo" class="block mb-1 text-sm">Información extra</label>
-          <textarea formControlName="extraInfo" class="w-full h-40" sharedInput></textarea>
-          @if (hasError('extraInfo')) {
-          <shared-input-error [message]="getError('extraInfo')"></shared-input-error>
           }
         </div>
 

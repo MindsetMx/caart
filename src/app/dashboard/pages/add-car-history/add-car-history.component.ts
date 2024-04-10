@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AppService } from '@app/app.service';
 import { AuctionCarService } from '@app/dashboard/services/auction-car.service';
@@ -12,6 +12,7 @@ import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/ca
 import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
 import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   standalone: true,
@@ -23,7 +24,9 @@ import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-c
     InputErrorComponent,
     CarPhotoGalleryComponent,
     SidebarComponent,
-    AuctionCarDetailsModalComponent
+    AuctionCarDetailsModalComponent,
+    MatMenuModule,
+    InputDirective
   ],
   templateUrl: './add-car-history.component.html',
   styleUrl: './add-car-history.component.css',
@@ -45,14 +48,20 @@ export class AddCarHistoryComponent {
   #activatedRoute = inject(ActivatedRoute);
   #router = inject(Router);
 
+  get contentFormArray(): FormArray {
+    return this.addCarHistoryForm.get('content') as FormArray;
+  }
+
+  get contentFormArrayControls(): FormGroup[] {
+    return this.contentFormArray.controls as FormGroup[];
+  }
+
   constructor() {
     this.originalAuctionCarId.set(this.#activatedRoute.snapshot.paramMap.get('id')!);
 
     this.addCarHistoryForm = this.#formBuilder.group({
       originalAuctionCarId: [this.originalAuctionCarId(), Validators.required],
-      content: ['', Validators.required],
-      extract: ['', Validators.required],
-      extraInfo: ['', Validators.required],
+      content: this.#formBuilder.array([])
     });
   }
 
@@ -86,6 +95,19 @@ export class AddCarHistoryComponent {
     });
 
     // this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.addCarHistoryForm).subscribe({
+  }
+
+  removeContent(index: number): void {
+    this.contentFormArray.removeAt(index);
+  }
+
+  addContent(type: string): void {
+    const nuevoContenido = this.#formBuilder.group({
+      type: [type, Validators.required],
+      text: ['', Validators.required]
+    });
+
+    this.contentFormArray.push(nuevoContenido);
   }
 
   openAuctionCarDetailsModal(): void {
