@@ -58,27 +58,22 @@
         </div> -->
       </div>
 
-      <div class="grid grid-cols-2 md:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
+      <div class="grid grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
         <div>
           <img class="inline-block mr-2 w-7 h-7" src="assets/img/icons/share.svg" alt="">
-          <span class="underline">Compartir</span>
         </div>
         <button (click)="followOrUnfollowAuction(auction().carHistory.originalAuctionCarId)">
           <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block mr-2 w-7 h-7"></shared-star>
-          <span class="underline">
-            {{isFollowing() ? 'Dejar de seguir' : 'Seguir'}}
-          </span>
         </button>
-        <div class="col-span-2 md:col-span-1">
-          <button rounded="rounded-xl" px="px-6" width="w-fit" class="font-optima font-semibold mb-2 md:mb-0"
-            sharedTertiaryButton>
-            HACER UNA OFERTA
-          </button>
-          <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-6" width="w-fit"
-            classes="font-optima font-semibold text-sm md:ml-4" sharedPrimaryButton>
-            COMPRAR AHORA
-          </button>
-        </div>
+        <button rounded="rounded-xl" px="px-6" width="w-fit" class="font-optima font-semibold mb-2 md:mb-0 text-xs"
+          sharedTertiaryButton>
+          HACER UNA OFERTA
+        </button>
+        <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-6" width="w-fit"
+          classes="font-optima font-semibold text-sm md:ml-4 text-xs" sharedPrimaryButton>
+          COMPRAR AHORA
+        </button>
+
       </div>
     </div>
 
