@@ -16,4 +16,8 @@ export class CarPhotoGalleryService {
   getAllCarMedia$(auctionCarId: string): Observable<GetAllCarMedia> {
     return this.#http.get<GetAllCarMedia>(`${this.#baseUrl}/auctions-cars/all-media?auctionCarId=${auctionCarId}`);
   }
+
+  getImagesPublish$(auctionCarId: string): Observable<any> {
+    return this.#http.get<any>(`${this.#baseUrl}/auctions-cars/images-publish?auctionCarId=${auctionCarId}`);
+  }
 }

@@ -32,20 +32,20 @@
             <!-- <mat-icon>more_vert</mat-icon> -->
           </button>
           <mat-menu #menu="matMenu">
-            <button (click)="addContent('paragraph')" mat-menu-item>
+            <button (click)="addContent('text')" mat-menu-item>
               <span>Párrafo</span>
             </button>
-            <button (click)="openCropCarHistoryImageModal()" mat-menu-item>
+            <button (click)="openCarPhotoGallery()" mat-menu-item>
               <span>Imagen</span>
             </button>
           </mat-menu>
 
 
-          <div formArrayName="content" class="space-y-4">
-            @for (charge of contentFormArrayControls; track charge; let i = $index) {
+          <div formArrayName="blocks" class="space-y-4">
+            @for (block of blocksFormArrayControls; track block; let i = $index) {
             <div [formGroupName]="i">
-              @switch (charge.value.type) {
-              @case ('paragraph') {
+              @switch (block.value.type) {
+              @case ('text') {
               <textarea formControlName="text" cols="30" rows="10" sharedInput></textarea>
               }
               @case ('image') {
@@ -59,8 +59,26 @@
           <!-- <label for="title" class="block mb-1 text-sm">Contenido</label>
           <textarea cols="30" rows="10"></textarea> -->
 
-          @if (hasError('content')) {
-          <shared-input-error [message]="getError('content')"></shared-input-error>
+          @if (hasError('blocks')) {
+          <shared-input-error [message]="getError('blocks')"></shared-input-error>
+          }
+        </div>
+
+        <!-- Extract textarea-->
+        <div>
+          <label for="extract" class="block mb-1 text-sm">Extracto</label>
+          <textarea formControlName="extract" class="w-full h-40" sharedInput></textarea>
+          @if (hasError('extract')) {
+          <shared-input-error [message]="getError('extract')"></shared-input-error>
+          }
+        </div>
+
+        <!-- extraInfo -->
+        <div>
+          <label for="extraInfo" class="block mb-1 text-sm">Información extra</label>
+          <textarea formControlName="extraInfo" class="w-full h-40" sharedInput></textarea>
+          @if (hasError('extraInfo')) {
+          <shared-input-error [message]="getError('extraInfo')"></shared-input-error>
           }
         </div>
 
@@ -88,6 +106,6 @@
 <auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"
   [auctionCarId]="originalAuctionCarId()"></auction-car-details-modal>
 
-<crop-car-history-image-modal [isOpen]="cropCarHistoryImageModalIsOpen()"
+<!-- <crop-car-history-image-modal [isOpen]="cropCarHistoryImageModalIsOpen()"
   (isOpenChange)="closeCropCarHistoryImageModal()">
-</crop-car-history-image-modal>
+</crop-car-history-image-modal> -->

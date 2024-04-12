@@ -51,12 +51,12 @@ export class AddCarHistoryComponent {
   #activatedRoute = inject(ActivatedRoute);
   #router = inject(Router);
 
-  get contentFormArray(): FormArray {
-    return this.addCarHistoryForm.get('content') as FormArray;
+  get blocksFormArray(): FormArray {
+    return this.addCarHistoryForm.get('blocks') as FormArray;
   }
 
-  get contentFormArrayControls(): FormGroup[] {
-    return this.contentFormArray.controls as FormGroup[];
+  get blocksFormArrayControls(): FormGroup[] {
+    return this.blocksFormArray.controls as FormGroup[];
   }
 
   constructor() {
@@ -64,7 +64,9 @@ export class AddCarHistoryComponent {
 
     this.addCarHistoryForm = this.#formBuilder.group({
       originalAuctionCarId: [this.originalAuctionCarId(), Validators.required],
-      content: this.#formBuilder.array([])
+      blocks: this.#formBuilder.array([]),
+      extract: ['', Validators.required],
+      extraInfo: ['', Validators.required],
     });
   }
 
@@ -101,16 +103,16 @@ export class AddCarHistoryComponent {
   }
 
   removeContent(index: number): void {
-    this.contentFormArray.removeAt(index);
+    this.blocksFormArray.removeAt(index);
   }
 
   addContent(type: string): void {
     const nuevoContenido = this.#formBuilder.group({
       type: [type, Validators.required],
-      text: ['', Validators.required]
+      content: ['', Validators.required]
     });
 
-    this.contentFormArray.push(nuevoContenido);
+    this.blocksFormArray.push(nuevoContenido);
   }
 
   openCropCarHistoryImageModal(): void {

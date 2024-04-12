@@ -43,7 +43,7 @@
     <div class="flex min-h-full items-end justify-center p-4 text-center sm:p-0"
       [ngClass]="verticalCenter? 'items-center': 'items-end'">
       <div
-        class="relative overflow-hidden rounded-lg bg-white w-full pt-5 text-left shadow-xl sm:my-8 pb-4  sm:w-full {{modalMaxWidth}}">
+        class="relative overflow-hidden rounded-lg bg-white w-full pt-5 text-left shadow-xl sm:my-8 sm:w-full {{modalMaxWidth}}">
         <div class="absolute z-10 right-0 top-0 pr-4 pt-4 block">
           <button (click)="closeModal()" type="button"
             class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -54,7 +54,7 @@
             </svg>
           </button>
         </div>
-        <div>
+        <div class="pb-4">
           <ng-content></ng-content>
         </div>
         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">

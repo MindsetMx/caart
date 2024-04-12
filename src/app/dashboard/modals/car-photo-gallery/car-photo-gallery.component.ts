@@ -3,17 +3,18 @@ import { ChangeDetectionStrategy, Component, effect, inject, input, output, sign
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CarPhotoGalleryService } from '../../services/car-photo-gallery.service';
 import { GetAllCarMedia } from '@app/dashboard/interfaces';
-import { MatIcon } from '@angular/material/icon';
 import { AppService } from '@app/app.service';
 import { JsonPipe } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CropCarHistoryImageModalComponent } from '../crop-car-history-image-modal/crop-car-history-image-modal.component';
 
 @Component({
   selector: 'car-photo-gallery',
   standalone: true,
   imports: [
     ModalComponent,
-    MatIcon,
-    JsonPipe
+    ReactiveFormsModule,
+    CropCarHistoryImageModalComponent
   ],
   templateUrl: './car-photo-gallery.component.html',
   styleUrl: './car-photo-gallery.component.css',
@@ -25,6 +26,8 @@ export class CarPhotoGalleryComponent {
   isOpenChange = output<boolean>();
 
   carPhotoGallery = signal<GetAllCarMedia>({} as GetAllCarMedia);
+  cropCarHistoryImageModalIsOpen = signal<boolean>(false);
+  selectedImage: FormControl = new FormControl();
 
   #carPhotoGalleryService = inject(CarPhotoGalleryService);
   #appService = inject(AppService);
@@ -37,12 +40,6 @@ export class CarPhotoGalleryComponent {
     }
   });
 
-  copyImageUrl(imageUrl: string): void {
-    navigator.clipboard.writeText(imageUrl);
-
-    this.toastSuccess('URL copiada al portapapeles');
-  }
-
   getAllCarMedia(): void {
     this.#carPhotoGalleryService.getAllCarMedia$(this.auctionCarId()).subscribe({
       next: (response) => {
@@ -53,6 +50,20 @@ export class CarPhotoGalleryComponent {
         console.error(error);
       }
     });
+  }
+
+  selectImage(): void {
+    this.closeModal();
+
+    this.cropCarHistoryImageModalIsOpen.set(true);
+  }
+
+  closeCropCarHistoryImageModal(): void {
+    this.cropCarHistoryImageModalIsOpen.set(false);
+  }
+
+  closeModal(): void {
+    this.emitIsOpenChange(false);
   }
 
   emitIsOpenChange(isOpen: boolean): void {

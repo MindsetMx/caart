@@ -6,5 +6,30 @@
     <hr class="absolute w-full -bottom-4">
   </div>
 
+  <div class="container w-full">
+    @defer (on timer(4500ms)) {
+    <!-- @defer(when config && imageUrl()) { -->
+    <angular-cropper #angularCropper [cropperOptions]="config" [imageUrl]="imageUrl()" (export)="resultImageFun($event)"
+      (ready)="checkstatus($event)">
+    </angular-cropper>
+    }
 
+    <!-- <div footer>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat aliquam at molestias sequi id obcaecati
+      voluptatem.
+      Saepe facilis sapiente vero asperiores earum, porro nesciunt aliquid quam sed dolorum vitae doloremque.
+    </div> -->
+
+  </div>
+
+  <div class="w-full bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" footer>
+    <button type="button" (click)="cropImage()"
+      class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">
+      Recortar
+    </button>
+    <button type="button" (click)="closeModal()"
+      class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+      Cancelar
+    </button>
+  </div>
 </shared-modal>
