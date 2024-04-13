@@ -139,6 +139,11 @@ export const routes: Routes = [
         path: 'agregar-historia-auto/:id',
         loadComponent: () => import('./dashboard/pages/add-car-history/add-car-history.component').then((m) => m.AddCarHistoryComponent),
       },
+      {
+        // auction-image-assignment-and-reorder
+        path: 'asignar-y-reordenar-imagenes-subasta/:id',
+        loadComponent: () => import('./dashboard/pages/auction-image-assignment-and-reorder/auction-image-assignment-and-reorder.component').then((m) => m.AuctionImageAssignmentAndReorderComponent),
+      },
       { path: '**', redirectTo: 'publicaciones' }
     ]
   },

@@ -24,6 +24,8 @@ export class CarPhotoGalleryComponent {
   isOpen = input.required<boolean>();
   auctionCarId = input.required<string>();
   isOpenChange = output<boolean>();
+  cropImage = input<boolean>(false);
+  selectedImageChange = output<string>();
 
   carPhotoGallery = signal<GetAllCarMedia>({} as GetAllCarMedia);
   cropCarHistoryImageModalIsOpen = signal<boolean>(false);
@@ -53,9 +55,15 @@ export class CarPhotoGalleryComponent {
   }
 
   selectImage(): void {
-    this.closeModal();
 
-    this.cropCarHistoryImageModalIsOpen.set(true);
+    if (this.cropImage()) {
+      this.closeModal();
+
+      this.cropCarHistoryImageModalIsOpen.set(true);
+    } else {
+      this.selectedImageChange.emit(this.selectedImage.value);
+      this.closeModal();
+    }
   }
 
   closeCropCarHistoryImageModal(): void {

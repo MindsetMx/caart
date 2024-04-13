@@ -1,0 +1,95 @@
+<sidebar-layout>
+  <div class="px-4 sm:px-6 lg:px-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h1 class="text-base font-semibold leading-6 text-gray-900">Asignación y reorden de imágenes</h1>
+        <!-- <p class="mt-2 text-sm text-gray-700">
+
+        </p> -->
+      </div>
+      <!-- <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <button type="button"
+          class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add
+          user</button>
+      </div> -->
+    </div>
+
+    <div class="mt-4 space-y-4">
+      <div>
+        <h2 class="mb-2">Foto principal</h2>
+        <button type="button" (click)="openModal(carPhotoGalleryIsOpen)"
+          class="h-36 w-36 border border-gray-300 rounded-lg">Foto
+          principal</button>
+      </div>
+
+      <div>
+        <h2 class="mb-2">Fotos slider principal</h2>
+        <div class="" cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (photo of mainPhotoSlider; track photo) {
+          <div class="example-box" cdkDrag>{{photo}}</div>
+          }
+        </div>
+      </div>
+
+      <!-- Fotos mecánicas -->
+      @defer (when imagesPublish().data && imagesPublish().data.fotosMecanicas) {
+      <div>
+        <h2 class="mb-2">Fotos mecánicas</h2>
+        <div class="" cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (photo of imagesPublish().data.fotosMecanicas; track photo) {
+          <div class="example-box" cdkDrag>
+            <!-- {{photo}} -->
+            <img [src]="photo" alt="photo" class="h-36 w-36 object-cover">
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Fotos interiores -->
+      @defer (when imagesPublish().data && imagesPublish().data.fotosInterior) {
+      <div>
+        <h2 class="mb-2">Fotos interiores</h2>
+        <div class="" cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (photo of imagesPublish().data.fotosInterior; track photo) {
+          <div class="example-box" cdkDrag>
+            <!-- {{photo}} -->
+            <img [src]="photo" alt="photo" class="h-36 w-36 object-cover">
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Fotos exteriores -->
+      @defer (when imagesPublish().data && imagesPublish().data.fotosExterior) {
+      <div>
+        <h2 class="mb-2">Fotos exteriores</h2>
+        <div class="" cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (photo of imagesPublish().data.fotosExterior; track photo) {
+          <div class="example-box" cdkDrag>
+            <!-- {{photo}} -->
+            <img [src]="photo" alt="photo" class="h-36 w-36 object-cover">
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+
+  </div>
+
+</sidebar-layout>
+
+<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeModal(carPhotoGalleryIsOpen)"
+  (selectedImageChange)="setMainPhoto($event)" [cropImage]="true" [auctionCarId]="originalAuctionCarId()">
+</car-photo-gallery>
+
+<car-photo-gallery [isOpen]="selectMechanicImageModalIsOpen()"
+  (isOpenChange)="closeModal(selectMechanicImageModalIsOpen)" (selectedImageChange)="setMainSliderImages($event)"
+  [cropImage]="true" [auctionCarId]="originalAuctionCarId()">
+</car-photo-gallery>
