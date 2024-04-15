@@ -2,33 +2,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
+import { UploadCroppedImage } from '@app/dashboard/interfaces/upload-cropped-image';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CloudinaryCroppedImageService {
-  cloudinaryUrl = 'https://api.cloudinary.com/v1_1/dv7skd1y3/upload';
-  uploadPreset = 'if8y72iv';
+  readonly #cloudflareApiUrl = environments.cloudflareApiUrl;
+  readonly #cloudflareToken = environments.cloudfareToken;
 
   #http = inject(HttpClient);
 
-  // uploadImage$(base64Image: string): Observable<any> {
-  //   const pureBase64Data = base64Image.split(',')[1];
+  uploadImage$(image: Blob | null): Observable<UploadCroppedImage> {
+    const formData = new FormData();
+    formData.append('file', image as Blob);
 
-  //   console.log({ pureBase64Data });
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.#cloudflareToken}`
+    });
 
-  //   const formData = new FormData();
-  //   formData.append('file', pureBase64Data);
-  //   formData.append('upload_preset', this.uploadPreset);
-
-  //   const headers = new HttpHeaders({
-  //     'X-Requested-With': 'XMLHttpRequest',
-  //   });
-
-  //   return this.#http.post(this.cloudinaryUrl, formData, { headers });
-  // }
-
-  uploadImage$(formData: FormData): Observable<any> {
-    return this.#http.post(this.cloudinaryUrl, formData);
+    return this.#http.post<UploadCroppedImage>(this.#cloudflareApiUrl, formData, { headers });
   }
 }

@@ -7,23 +7,16 @@
   </div>
 
   <div class="container w-full">
-    @defer (on timer(5000ms)) {
-    <!-- @defer(when config && imageUrl()) { -->
-    <angular-cropper #angularCropper [cropperOptions]="config" [imageUrl]="imageUrl()" (export)="resultImageFun($event)"
-      (ready)="checkstatus($event)">
-    </angular-cropper>
-    }
+    <!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
 
-    <!-- <div footer>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat aliquam at molestias sequi id obcaecati
-      voluptatem.
-      Saepe facilis sapiente vero asperiores earum, porro nesciunt aliquid quam sed dolorum vitae doloremque.
-    </div> -->
-
+    <image-cropper [imageURL]="imageUrl()" [maintainAspectRatio]="true" [aspectRatio]="4 / 3" format="png"
+      (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded($event)" (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"></image-cropper>
   </div>
 
   <div class="w-full bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" footer>
-    <button type="button" (click)="cropImage()"
+    <button [disabled]="cropImageButtonIsDisabled()" [class.opacity-50]="cropImageButtonIsDisabled()" type="button"
+      (click)="cropImage()"
       class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">
       Recortar
     </button>

@@ -28,7 +28,7 @@ import { PrimaryButtonDirective } from '@shared/directives';
   ],
   templateUrl: './auction-image-assignment-and-reorder.component.html',
   styleUrl: './auction-image-assignment-and-reorder.component.css',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionImageAssignmentAndReorderComponent {
   originalAuctionCarId = signal<string>('');

@@ -1,11 +1,23 @@
 import { HttpHeaders, type HttpInterceptorFn } from '@angular/common/http';
+import { environments } from '@env/environments';
+
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${localStorage.getItem('token')}`
-  });
+  let baseUrl = environments.baseUrl;
 
-  const authReq = req.clone({ headers });
+  const excludedUrls = [
+    `${baseUrl}/login`,
+    `${baseUrl}/register`,
+    `${environments.cloudflareApiUrl}`,
+  ];
 
-  return next(authReq);
+  if (excludedUrls.some((url) => req.url.includes(url))) {
+    return next(req);
+  }
+
+  const header = req.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+
+  const reqWithHeader = req.clone({ headers: header });
+
+  return next(reqWithHeader);
 };

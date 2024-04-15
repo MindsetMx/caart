@@ -55,7 +55,6 @@ export class CarPhotoGalleryComponent {
   }
 
   selectImage(): void {
-
     if (this.cropImage()) {
       this.closeModal();
 
@@ -64,6 +63,10 @@ export class CarPhotoGalleryComponent {
       this.selectedImageChange.emit(this.selectedImage.value);
       this.closeModal();
     }
+  }
+
+  croppedImageChange(croppedImage: string): void {
+    this.selectedImageChange.emit(croppedImage);
   }
 
   closeCropCarHistoryImageModal(): void {

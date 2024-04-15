@@ -93,5 +93,6 @@
 </shared-modal>
 
 <crop-car-history-image-modal [isOpen]="cropCarHistoryImageModalIsOpen()"
-  (isOpenChange)="closeCropCarHistoryImageModal()" [imageUrl]="selectedImage.value">
+  (croppedImageChange)="croppedImageChange($event)" (isOpenChange)="closeCropCarHistoryImageModal()"
+  [imageUrl]="selectedImage.value">
 </crop-car-history-image-modal>
