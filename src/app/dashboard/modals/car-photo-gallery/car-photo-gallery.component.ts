@@ -23,8 +23,8 @@ import { CropCarHistoryImageModalComponent } from '../crop-car-history-image-mod
 export class CarPhotoGalleryComponent {
   isOpen = input.required<boolean>();
   auctionCarId = input.required<string>();
-  isOpenChange = output<boolean>();
   cropImage = input<boolean>(false);
+  isOpenChange = output<boolean>();
   selectedImageChange = output<string>();
 
   carPhotoGallery = signal<GetAllCarMedia>({} as GetAllCarMedia);

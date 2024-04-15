@@ -14,82 +14,107 @@
       </div> -->
     </div>
 
-    <div class="mt-4 space-y-4">
+    <form class="mt-4 space-y-4" [formGroup]="auctionImagesForm" (submit)="saveImages()">
+      <h2 class="mb-2">Foto principal</h2>
       <div>
-        <h2 class="mb-2">Foto principal</h2>
-        <button type="button" (click)="openModal(carPhotoGalleryIsOpen)"
-          class="h-36 w-36 border border-gray-300 rounded-lg">Foto
-          principal</button>
+        <div class="grid grid-cols-4 gap-4">
+          @if(fotoPrincipal.value) {
+          <img [src]="fotoPrincipal.value" class="cell object-contain" />
+          }@else {
+          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoPrincipal', true)" class="cell">
+            Foto principal
+          </button>
+          }
+        </div>
+        @if (hasError('fotoPrincipal')) {
+        <shared-input-error [message]="getError('fotoPrincipal')"></shared-input-error>
+        }
       </div>
 
       <div>
         <h2 class="mb-2">Fotos slider principal</h2>
-        <div class="" cdkDropList cdkDropListOrientation="horizontal" class="example-list"
-          (cdkDropListDropped)="drop($event)">
-          @for (photo of mainPhotoSlider; track photo) {
-          <div class="example-box" cdkDrag>{{photo}}</div>
+        <div class="board" cdkDropListGroup>
+          @for (imageUrl of fotosSliderPrincipal.value; track i; let i = $index) {
+          <div>
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosSliderPrincipal)"
+              [cdkDropListData]=" {imageUrl, index: i}">
+              @if (imageUrl) {
+              <img cdkDrag [src]="imageUrl" class="cell object-contain" />
+              } @else {
+              <button cdkDrag type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', false, i)"
+                class="cell">
+                Subir foto
+              </button>
+              }
+            </div>
+            @if (formArrayHasError(fotosSliderPrincipal, i)) {
+            <shared-input-error [message]="getErrorFromFormArray(fotosSliderPrincipal, i)"></shared-input-error>
+            }
+          </div>
           }
         </div>
       </div>
 
-      <!-- Fotos mecánicas -->
-      @defer (when imagesPublish().data && imagesPublish().data.fotosMecanicas) {
       <div>
         <h2 class="mb-2">Fotos mecánicas</h2>
-        <div class="" cdkDropList cdkDropListOrientation="horizontal" class="example-list"
-          (cdkDropListDropped)="drop($event)">
-          @for (photo of imagesPublish().data.fotosMecanicas; track photo) {
-          <div class="example-box" cdkDrag>
-            <!-- {{photo}} -->
-            <img [src]="photo" alt="photo" class="h-36 w-36 object-cover">
+        <div class="board" cdkDropListGroup>
+          @for (imageUrl of fotosMecanicas.value; track i; let i = $index) {
+          <div>
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosMecanicas)"
+              [cdkDropListData]="{imageUrl, index: i}">
+              <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+            </div>
+            @if (formArrayHasError(fotosMecanicas, i)) {
+            <shared-input-error [message]="getErrorFromFormArray(fotosMecanicas, i)"></shared-input-error>
+            }
           </div>
           }
         </div>
       </div>
-      }
 
-      <!-- Fotos interiores -->
-      @defer (when imagesPublish().data && imagesPublish().data.fotosInterior) {
       <div>
         <h2 class="mb-2">Fotos interiores</h2>
-        <div class="" cdkDropList cdkDropListOrientation="horizontal" class="example-list"
-          (cdkDropListDropped)="drop($event)">
-          @for (photo of imagesPublish().data.fotosInterior; track photo) {
-          <div class="example-box" cdkDrag>
-            <!-- {{photo}} -->
-            <img [src]="photo" alt="photo" class="h-36 w-36 object-cover">
+        <div class="board" cdkDropListGroup>
+          @for (imageUrl of fotosInterior.value; track i; let i = $index) {
+          <div>
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosInterior)"
+              [cdkDropListData]="{imageUrl, index: i}">
+              <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+            </div>
+            @if (formArrayHasError(fotosInterior, i)) {
+            <shared-input-error [message]="getErrorFromFormArray(fotosInterior, i)"></shared-input-error>
+            }
           </div>
           }
         </div>
       </div>
-      }
 
-      <!-- Fotos exteriores -->
-      @defer (when imagesPublish().data && imagesPublish().data.fotosExterior) {
       <div>
         <h2 class="mb-2">Fotos exteriores</h2>
-        <div class="" cdkDropList cdkDropListOrientation="horizontal" class="example-list"
-          (cdkDropListDropped)="drop($event)">
-          @for (photo of imagesPublish().data.fotosExterior; track photo) {
-          <div class="example-box" cdkDrag>
-            <!-- {{photo}} -->
-            <img [src]="photo" alt="photo" class="h-36 w-36 object-cover">
+        <div class="board" cdkDropListGroup>
+          @for (imageUrl of fotosExterior.value; track i; let i = $index) {
+          <div>
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosExterior)"
+              [cdkDropListData]="{imageUrl, index: i}">
+              <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+            </div>
+            @if (formArrayHasError(fotosExterior, i)) {
+            <shared-input-error [message]="getErrorFromFormArray(fotosExterior, i)"></shared-input-error>
+            }
           </div>
           }
         </div>
       </div>
-      }
-    </div>
+
+      <button type="submit" sharedPrimaryButton>
+        Guardar cambios
+      </button>
+    </form>
 
   </div>
 
 </sidebar-layout>
 
 <car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeModal(carPhotoGalleryIsOpen)"
-  (selectedImageChange)="setMainPhoto($event)" [cropImage]="true" [auctionCarId]="originalAuctionCarId()">
-</car-photo-gallery>
-
-<car-photo-gallery [isOpen]="selectMechanicImageModalIsOpen()"
-  (isOpenChange)="closeModal(selectMechanicImageModalIsOpen)" (selectedImageChange)="setMainSliderImages($event)"
-  [cropImage]="true" [auctionCarId]="originalAuctionCarId()">
+  (selectedImageChange)="setImage($event)" [cropImage]="cropImage()" [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
