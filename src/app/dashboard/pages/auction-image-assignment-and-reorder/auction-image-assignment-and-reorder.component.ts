@@ -11,6 +11,7 @@ import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.componen
 import { ValidatorsService } from '@shared/services/validators.service';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives';
+import { AppService } from '@app/app.service';
 
 @Component({
   standalone: true,
@@ -44,6 +45,7 @@ export class AuctionImageAssignmentAndReorderComponent {
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
+  #appService = inject(AppService);
 
   get fotoPrincipal(): FormControl {
     return this.auctionImagesForm.get('fotoPrincipal') as FormControl;
@@ -88,6 +90,17 @@ export class AuctionImageAssignmentAndReorderComponent {
       this.saveImagesButtonIsDisabled.set(false);
       return;
     }
+
+    this.#auctionImageAssigmentAndReorderService.saveImagesPublish$(this.originalAuctionCarId(), this.auctionImagesForm).subscribe({
+      next: () => {
+        this.toastSuccess('Las imágenes se han guardado correctamente');
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    }).add(() => {
+      this.saveImagesButtonIsDisabled.set(false);
+    });
   }
 
   setImage(imageUrl: string) {
@@ -160,6 +173,14 @@ export class AuctionImageAssignmentAndReorderComponent {
     this.formFieldName.set(formFieldName);
     varName.set(true);
     this.cropImage.set(cropImage);
+  }
+
+  toastSuccess(message: string): void {
+    this.#appService.toastSuccess(message);
+  }
+
+  toastError(message: string): void {
+    this.#appService.toastError(message);
   }
 
   hasError(field: string, form: FormGroup = this.auctionImagesForm): boolean {
