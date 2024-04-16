@@ -2,25 +2,26 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { UploadCroppedImage } from '@app/dashboard/interfaces/upload-cropped-image';
+import { SafeUrl } from '@angular/platform-browser';
+import { UploadImageDirect } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CloudinaryCroppedImageService {
-  readonly #cloudflareApiUrl = environments.cloudflareApiUrl;
-  readonly #cloudflareToken = environments.cloudfareToken;
-
   #http = inject(HttpClient);
 
-  uploadImage$(image: Blob | null): Observable<UploadCroppedImage> {
+  uploadImage$(image: File, url: string): Observable<any> {
     const formData = new FormData();
-    formData.append('file', image as Blob);
+    formData.append('file', image, image.name);
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.#cloudflareToken}`
-    });
+    return this.#http.post<any>(url, formData);
+  }
 
-    return this.#http.post<UploadCroppedImage>(this.#cloudflareApiUrl, formData, { headers });
+  uploadImageDirect$(): Observable<UploadImageDirect> {
+    const form = new FormData();
+    form.append("requireSignedURLs", "false");
+
+    return this.#http.post<UploadImageDirect>('https://caart.com.mx/back/auctions-cars/get-url-image', form);
   }
 }

@@ -2,7 +2,11 @@ import { ChangeDetectionStrategy, Component, inject, input, output, signal } fro
 import { SafeUrl } from '@angular/platform-browser';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CloudinaryCroppedImageService } from '../../services/cloudinary-cropped-image.service';
-import { ImageCroppedEvent, ImageCropperModule, LoadedImage } from 'ngx-image-cropper';
+import { ImageCroppedEvent, ImageCropperModule, ImageTransform, LoadedImage, base64ToFile } from 'ngx-image-cropper';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { FormsModule } from '@angular/forms';
+import { InputDirective } from '@shared/directives';
+import { switchMap } from 'rxjs';
 
 
 @Component({
@@ -10,7 +14,10 @@ import { ImageCroppedEvent, ImageCropperModule, LoadedImage } from 'ngx-image-cr
   standalone: true,
   imports: [
     ModalComponent,
-    ImageCropperModule
+    ImageCropperModule,
+    SpinnerComponent,
+    FormsModule,
+    InputDirective
   ],
   templateUrl: './crop-car-history-image-modal.component.html',
   styleUrl: './crop-car-history-image-modal.component.css',
@@ -22,7 +29,13 @@ export class CropCarHistoryImageModalComponent {
   isOpenChange = output<boolean>();
   croppedImageChange = output<string>();
 
-  croppedImage?: Blob | null;
+  scale = 1;
+  scaleStep = .01;
+  transform: ImageTransform = {
+    translateUnit: 'px'
+  };
+
+  croppedImage?: File;
   cropImageButtonIsDisabled = signal<boolean>(false);
 
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
@@ -30,8 +43,24 @@ export class CropCarHistoryImageModalComponent {
   resultImage = signal<HTMLCanvasElement>({} as HTMLCanvasElement);
 
   imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.blob;
-    // event.blob can be used to upload the cropped image
+    console.log({ event });
+
+    let croppedImageBlob = event.blob;
+
+    if (!croppedImageBlob) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      let base64data = reader.result;
+      console.log(base64data);
+
+      this.croppedImage = new File([base64ToFile(base64data as string)], 'cropped-image.png', { type: 'image/png' });
+
+      console.log({ croppedImage: this.croppedImage });
+
+      return this.croppedImage;
+    }
+    reader.readAsDataURL(croppedImageBlob);
   }
 
   cropImage(): void {
@@ -39,11 +68,40 @@ export class CropCarHistoryImageModalComponent {
 
     if (!this.croppedImage) return;
 
-    this.#cloudinaryCroppedImageService.uploadImage$(this.croppedImage).subscribe((response) => {
-      this.emitIsOpenChange(false);
-      this.croppedImageChange.emit(response.result.variants[0]);
-      this.cropImageButtonIsDisabled.set(false);
-    });
+    // this.#cloudinaryCroppedImageService.uploadImage$(this.croppedImage).subscribe((response) => {
+    //   this.emitIsOpenChange(false);
+    //   this.croppedImageChange.emit(response.result.variants[0]);
+    //   this.cropImageButtonIsDisabled.set(false);
+    // });
+
+    this.#cloudinaryCroppedImageService.uploadImageDirect$()
+      .pipe(
+        switchMap((response) =>
+          this.#cloudinaryCroppedImageService.uploadImage$(this.croppedImage!, response.result.uploadURL)
+        )
+      ).subscribe((response) => {
+        console.log({ response });
+
+        this.emitIsOpenChange(false);
+        this.croppedImageChange.emit(response.result.variants[0]);
+        this.cropImageButtonIsDisabled.set(false);
+      });
+  }
+
+  zoomOut() {
+    this.scale -= this.scaleStep;
+    this.transform = {
+      ...this.transform,
+      scale: this.scale
+    };
+  }
+
+  zoomIn() {
+    this.scale += this.scaleStep;
+    this.transform = {
+      ...this.transform,
+      scale: this.scale
+    };
   }
 
   imageLoaded(image: LoadedImage) {

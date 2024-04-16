@@ -150,15 +150,29 @@
       }
     </div>
 
+    <!-- Images -->
     <div class="col-span-2">
       <label class="text-sm cursor-pointer">
-        Fotos/vídeos
+        Imágenes
         <span class="font-bold text-red-500 inline-block">*</span></label>
 
-      <div #uppyDashboard></div>
+      <div #uppyDashboardImages></div>
 
       @if (hasError('photos')) {
       <shared-input-error [message]="getError('photos')"></shared-input-error>
+      }
+    </div>
+
+    <!-- Vídeos -->
+    <div class="col-span-2">
+      <label class="text-sm cursor-pointer">
+        Vídeos
+        <span class="font-bold text-red-500 inline-block">*</span></label>
+
+      <div #uppyDashboardVideos></div>
+
+      @if (hasError('videos')) {
+      <shared-input-error [message]="getError('videos')"></shared-input-error>
       }
     </div>
 

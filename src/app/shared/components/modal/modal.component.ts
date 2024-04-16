@@ -43,6 +43,7 @@ export class ModalComponent {
 
   @Input() modalMaxWidth: string = 'sm:max-w-lg';
   @Input() verticalCenter: boolean = false;
+  @Input() scrollable: boolean = false;
 
   closeModal(): void {
     this.isOpenChange.emit(false);

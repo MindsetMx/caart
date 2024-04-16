@@ -19,7 +19,9 @@
       <div>
         <div class="grid grid-cols-4 gap-4">
           @if(fotoPrincipal.value) {
-          <img [src]="fotoPrincipal.value" class="cell object-contain" />
+          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoPrincipal', true)">
+            <img [src]="fotoPrincipal.value" class="cell object-contain" />
+          </button>
           }@else {
           <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoPrincipal', true)" class="cell">
             Foto principal
@@ -39,7 +41,10 @@
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosSliderPrincipal)"
               [cdkDropListData]=" {imageUrl, index: i}">
               @if (imageUrl) {
-              <img cdkDrag [src]="imageUrl" class="cell object-contain" />
+              <button type="button" class="w-full"
+                (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', false, i)">
+                <img cdkDrag [src]="imageUrl" class="cell object-contain" />
+              </button>
               } @else {
               <button cdkDrag type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', false, i)"
                 class="cell">
@@ -62,7 +67,10 @@
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosMecanicas)"
               [cdkDropListData]="{imageUrl, index: i}">
-              <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+              <button type="button" class="w-full"
+                (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)">
+                <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+              </button>
             </div>
             @if (formArrayHasError(fotosMecanicas, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosMecanicas, i)"></shared-input-error>
@@ -79,7 +87,10 @@
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosInterior)"
               [cdkDropListData]="{imageUrl, index: i}">
-              <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+              <button type="button" class="w-full"
+                (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)">
+                <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+              </button>
             </div>
             @if (formArrayHasError(fotosInterior, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosInterior, i)"></shared-input-error>
@@ -96,7 +107,10 @@
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosExterior)"
               [cdkDropListData]="{imageUrl, index: i}">
-              <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+              <button type="button" class="w-full"
+                (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)">
+                <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+              </button>
             </div>
             @if (formArrayHasError(fotosExterior, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosExterior, i)"></shared-input-error>

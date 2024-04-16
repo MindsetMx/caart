@@ -9,16 +9,35 @@
   <div class="container w-full">
     <!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
 
-    <image-cropper [imageURL]="imageUrl()" [maintainAspectRatio]="true" [aspectRatio]="4 / 3" format="png"
-      (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded($event)" (cropperReady)="cropperReady()"
-      (loadImageFailed)="loadImageFailed()"></image-cropper>
+    <image-cropper [imageURL]="imageUrl()" [maintainAspectRatio]="true" [aspectRatio]="16 / 9" [(transform)]="transform"
+      [alignImage]="'center'" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded($event)"
+      (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+
+    <div class="flex gap-x-4 justify-center mt-4">
+      <button (click)="zoomOut()"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        Zoom -
+      </button>
+      <button (click)="zoomIn()"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        Zoom +
+      </button>
+      <!-- scale input -->
+    </div>
+    <div class="flex justify-center mt-4">
+      <input type="number" [(ngModel)]="scaleStep" class="text-center" width="w-fit" sharedInput />
+    </div>
   </div>
 
   <div class="w-full bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" footer>
     <button [disabled]="cropImageButtonIsDisabled()" [class.opacity-50]="cropImageButtonIsDisabled()" type="button"
       (click)="cropImage()"
       class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">
+      @if (cropImageButtonIsDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
       Recortar
+      }
     </button>
     <button type="button" (click)="closeModal()"
       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">

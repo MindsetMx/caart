@@ -16,6 +16,7 @@ import { VehicleMemorabiliaService } from '@app/register-car/services/vehicle-me
 import { AppService } from '@app/app.service';
 import { NgxMaskDirective } from 'ngx-mask';
 import { Router } from '@angular/router';
+import { environments } from '@env/environments';
 
 @Component({
   selector: 'vehicle-memorabilia-component',
@@ -35,7 +36,10 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VehicleMemorabiliaComponentComponent {
-  uppyDashboard = viewChild.required<ElementRef>('uppyDashboard');
+  readonly #cloudflareToken = environments.cloudflareToken;
+
+  uppyDashboardImages = viewChild.required<ElementRef>('uppyDashboardImages');
+  uppyDashboardVideos = viewChild.required<ElementRef>('uppyDashboardVideos');
 
   vehicleMemorabiliaForm: FormGroup;
   isButtonRegisterMemorabiliaDisabled = signal(false);
@@ -55,20 +59,16 @@ export class VehicleMemorabiliaComponentComponent {
     return this.vehicleMemorabiliaForm.get('videos') as FormControl;
   }
 
-  uppyDashboardEffect = effect(() => {
+  uppDashboardImagesEffect = effect(() => {
     this.uppy = new Uppy({
       debug: true,
       autoProceed: true,
       locale: Spanish,
-      meta: {
-        upload_preset: 'if8y72iv',
-        api_key: '218199524155838',
-      },
       restrictions: {
         // maxFileSize: 1000000,
         // maxNumberOfFiles: 20,
         minNumberOfFiles: 1,
-        allowedFileTypes: ['image/*', 'video/*'],
+        allowedFileTypes: ['image/*'],
       },
     }).use(Dashboard,
       {
@@ -79,44 +79,87 @@ export class VehicleMemorabiliaComponentComponent {
         showProgressDetails: true,
         inline: true,
         hideProgressAfterFinish: true,
-        target: this.uppyDashboard().nativeElement,
+        target: this.uppyDashboardImages().nativeElement,
         proudlyDisplayPoweredByUppy: false,
         locale: {
           strings: {
-            dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
+            dropPasteFiles: 'Arrastra y suelta tus imágenes aquí o %{browse}',
           }
         }
       })
       .use(XHRUpload, {
-        endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/upload',
+        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
         formData: true,
         fieldName: 'file',
         headers: {
-          'X-Requested-With': 'XMLHttpRequest',
+          'Authorization': `Bearer ${this.#cloudflareToken}`,
         },
-        allowedMetaFields: ['upload_preset', 'api_key'],
       })
       .on('complete', (result) => {
         result.successful.forEach(file => {
           const url = file.uploadURL;
-
-          if (file?.type?.includes('image')) {
-            this.photos.setValue([...this.photos.value, url]);
-          } else if (file?.type?.includes('video')) {
-            this.videos.setValue([...this.videos.value, url]);
-          }
-          this.uppyDashboard().nativeElement.click();
+          this.photos.setValue([...this.photos.value, url]);
+          this.uppyDashboardImages().nativeElement.click();
 
           file.meta['uploadURL'] = url;
         });
       }).on('file-removed', (file) => {
         const urlToRemove = file.meta['uploadURL'];
 
-        if (file?.type?.includes('image')) {
-          this.photos.setValue(this.photos.value.filter((url: string) => url !== urlToRemove));
-        } else if (file?.type?.includes('video')) {
-          this.videos.setValue(this.videos.value.filter((url: string) => url !== urlToRemove));
+        this.photos.setValue(this.photos.value.filter((url: string) => url !== urlToRemove));
+      });
+  });
+
+  uppyDashboardVideosEffect = effect(() => {
+    this.uppy = new Uppy({
+      debug: true,
+      autoProceed: true,
+      locale: Spanish,
+      restrictions: {
+        // maxFileSize: 1000000,
+        // maxNumberOfFiles: 20,
+        minNumberOfFiles: 1,
+        allowedFileTypes: ['video/*'],
+      },
+    }).use(Dashboard,
+      {
+        height: 300,
+        hideUploadButton: true,
+        hideCancelButton: true,
+        showRemoveButtonAfterComplete: true,
+        showProgressDetails: true,
+        inline: true,
+        hideProgressAfterFinish: true,
+        target: this.uppyDashboardVideos().nativeElement,
+        proudlyDisplayPoweredByUppy: false,
+        locale: {
+          strings: {
+            dropPasteFiles: 'Arrastra y suelta tus videos aquí o %{browse}',
+          }
         }
+      })
+      .use(XHRUpload, {
+        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/stream`,
+        formData: true,
+        fieldName: 'file',
+        headers: {
+          'Authorization': `Bearer ${this.#cloudflareToken}`,
+        },
+      })
+      .on('complete', (result) => {
+        result.successful.forEach(file => {
+          const url = file.uploadURL;
+
+          this.videos.setValue([...this.videos.value, url]);
+
+          this.uppyDashboardVideos().nativeElement.click();
+
+          file.meta['uploadURL'] = url;
+        });
+      }).on('file-removed', (file) => {
+        const urlToRemove = file.meta['uploadURL'];
+
+        this.videos.setValue(this.videos.value.filter((url: string) => url !== urlToRemove));
       });
   });
 

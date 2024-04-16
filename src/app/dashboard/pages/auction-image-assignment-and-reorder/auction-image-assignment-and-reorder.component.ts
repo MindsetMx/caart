@@ -117,6 +117,21 @@ export class AuctionImageAssignmentAndReorderComponent {
           this.fotosSliderPrincipal.at(this.index()!).patchValue(imageUrl);
         }
         break;
+      case 'fotosMecanicas':
+        if (this.index() !== undefined) {
+          this.fotosMecanicas.at(this.index()!).patchValue(imageUrl);
+        }
+        break;
+      case 'fotosInterior':
+        if (this.index() !== undefined) {
+          this.fotosInterior.at(this.index()!).patchValue(imageUrl);
+        }
+        break;
+      case 'fotosExterior':
+        if (this.index() !== undefined) {
+          this.fotosExterior.at(this.index()!).patchValue(imageUrl);
+        }
+        break;
       default:
         this.auctionImagesForm.patchValue({
           [this.formFieldName()]: imageUrl
