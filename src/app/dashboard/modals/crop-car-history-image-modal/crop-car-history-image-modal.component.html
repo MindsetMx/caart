@@ -13,7 +13,13 @@
       [alignImage]="'center'" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded($event)"
       (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
 
-    <div class="flex gap-x-4 justify-center mt-4">
+
+    <div class="grid grid-cols-2 gap-4 mt-4">
+      <div class="col-span-2 mx-auto">
+        <label for="scaleStep" class="block text-sm text-center">Escala</label>
+        <input type="number" [(ngModel)]="scaleStep" class="text-center" width="w-fit" sharedInput />
+      </div>
+
       <button (click)="zoomOut()"
         class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
         Zoom -
@@ -22,10 +28,24 @@
         class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
         Zoom +
       </button>
-      <!-- scale input -->
-    </div>
-    <div class="flex justify-center mt-4">
-      <input type="number" [(ngModel)]="scaleStep" class="text-center" width="w-fit" sharedInput />
+
+      <button (click)="moveLeft()"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        Mover a la izquierda
+      </button>
+      <button (click)="moveRight()"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        Mover a la derecha
+      </button>
+
+      <button (click)="moveTop()"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        Mover arriba
+      </button>
+      <button (click)="moveBottom()"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        Mover abajo
+      </button>
     </div>
   </div>
 

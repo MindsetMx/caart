@@ -81,7 +81,8 @@
   }
 
   <div class="w-full bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" footer>
-    <button type="button" (click)="selectImage()"
+    <button type="button" (click)="selectImage()" [disabled]="!selectedImage.value"
+      [ngClass]="{'opacity-50': !selectedImage.value}"
       class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">
       Seleccionar
     </button>

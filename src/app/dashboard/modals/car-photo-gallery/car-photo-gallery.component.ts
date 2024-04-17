@@ -4,7 +4,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CarPhotoGalleryService } from '../../services/car-photo-gallery.service';
 import { GetAllCarMedia } from '@app/dashboard/interfaces';
 import { AppService } from '@app/app.service';
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, NgClass } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CropCarHistoryImageModalComponent } from '../crop-car-history-image-modal/crop-car-history-image-modal.component';
 
@@ -14,7 +14,8 @@ import { CropCarHistoryImageModalComponent } from '../crop-car-history-image-mod
   imports: [
     ModalComponent,
     ReactiveFormsModule,
-    CropCarHistoryImageModalComponent
+    CropCarHistoryImageModalComponent,
+    NgClass
   ],
   templateUrl: './car-photo-gallery.component.html',
   styleUrl: './car-photo-gallery.component.css',

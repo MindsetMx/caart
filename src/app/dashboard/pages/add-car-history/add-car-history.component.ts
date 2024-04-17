@@ -14,6 +14,7 @@ import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.componen
 import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CropCarHistoryImageModalComponent } from '@app/dashboard/modals/crop-car-history-image-modal/crop-car-history-image-modal.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -28,7 +29,8 @@ import { CropCarHistoryImageModalComponent } from '@app/dashboard/modals/crop-ca
     AuctionCarDetailsModalComponent,
     MatMenuModule,
     InputDirective,
-    CropCarHistoryImageModalComponent
+    CropCarHistoryImageModalComponent,
+    JsonPipe
   ],
   templateUrl: './add-car-history.component.html',
   styleUrl: './add-car-history.component.css',
@@ -64,7 +66,7 @@ export class AddCarHistoryComponent {
 
     this.addCarHistoryForm = this.#formBuilder.group({
       originalAuctionCarId: [this.originalAuctionCarId(), Validators.required],
-      blocks: this.#formBuilder.array([]),
+      blocks: this.#formBuilder.array([], Validators.required),
       extract: ['', Validators.required],
       extraInfo: ['', Validators.required],
     });
@@ -100,6 +102,18 @@ export class AddCarHistoryComponent {
     });
 
     // this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.addCarHistoryForm).subscribe({
+  }
+
+  setImage(image: string): void {
+    console.log({ blocksFormArrayControls: this.blocksFormArrayControls });
+
+    this.addContent('image');
+
+    const lastBlockIndex = this.blocksFormArrayControls.length - 1;
+
+    console.log({ lastBlockIndex });
+
+    this.blocksFormArrayControls[lastBlockIndex].get('content')?.setValue(image);
   }
 
   removeContent(index: number): void {
@@ -147,6 +161,18 @@ export class AddCarHistoryComponent {
     if (!this.addCarHistoryForm) return undefined;
 
     return this.#validatorsService.getError(this.addCarHistoryForm, field);
+  }
+
+  formArrayHasError(formArray: FormArray, index: number): boolean {
+    if (!this.addCarHistoryForm) return false;
+
+    return this.#validatorsService.formArrayHasError(formArray, index);
+  }
+
+  getErrorFromFormArray(formArray: FormArray, index: number): string | undefined {
+    if (!this.addCarHistoryForm) return undefined;
+
+    return this.#validatorsService.getErrorFromFormArray(formArray, index);
   }
 
   toastSuccess(message: string): void {

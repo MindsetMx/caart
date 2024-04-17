@@ -29,11 +29,13 @@ export class CropCarHistoryImageModalComponent {
   isOpenChange = output<boolean>();
   croppedImageChange = output<string>();
 
-  scale = 1;
-  scaleStep = .01;
-  transform: ImageTransform = {
+  scale = signal<number>(1);
+  scaleStep = signal<number>(0.01);
+  translateH = signal<number>(0);
+  translateV = signal<number>(0);
+  transform = signal<ImageTransform>({
     translateUnit: 'px'
-  };
+  });
 
   croppedImage?: File;
   cropImageButtonIsDisabled = signal<boolean>(false);
@@ -42,9 +44,7 @@ export class CropCarHistoryImageModalComponent {
 
   resultImage = signal<HTMLCanvasElement>({} as HTMLCanvasElement);
 
-  imageCropped(event: ImageCroppedEvent) {
-    console.log({ event });
-
+  imageCropped(event: ImageCroppedEvent): void {
     let croppedImageBlob = event.blob;
 
     if (!croppedImageBlob) return;
@@ -52,14 +52,12 @@ export class CropCarHistoryImageModalComponent {
     const reader = new FileReader();
     reader.onloadend = () => {
       let base64data = reader.result;
-      console.log(base64data);
 
       this.croppedImage = new File([base64ToFile(base64data as string)], 'cropped-image.png', { type: 'image/png' });
 
-      console.log({ croppedImage: this.croppedImage });
-
       return this.croppedImage;
     }
+
     reader.readAsDataURL(croppedImageBlob);
   }
 
@@ -88,29 +86,64 @@ export class CropCarHistoryImageModalComponent {
       });
   }
 
-  zoomOut() {
-    this.scale -= this.scaleStep;
-    this.transform = {
-      ...this.transform,
-      scale: this.scale
-    };
+  moveLeft(): void {
+    this.translateH.update((translateH) => translateH + 1);
+
+    this.transform.set({
+      ...this.transform(),
+      translateH: this.translateH()
+    });
+  }
+  moveRight(): void {
+    this.translateH.update((translateH) => translateH - 1);
+
+    this.transform.set({
+      ...this.transform(),
+      translateH: this.translateH()
+    });
   }
 
-  zoomIn() {
-    this.scale += this.scaleStep;
-    this.transform = {
-      ...this.transform,
-      scale: this.scale
-    };
+  moveTop(): void {
+    this.translateV.update((translateV) => translateV + 1);
+
+    this.transform.set({
+      ...this.transform(),
+      translateV: this.translateV()
+    });
   }
 
-  imageLoaded(image: LoadedImage) {
+  moveBottom(): void {
+    this.translateV.update((translateV) => translateV - 1);
+
+    this.transform.set({
+      ...this.transform(),
+      translateV: this.translateV()
+    });
+  }
+
+  zoomOut(): void {
+    this.scale.set(this.scale() - this.scaleStep());
+    this.transform.set({
+      ...this.transform(),
+      scale: this.scale()
+    });
+  }
+
+  zoomIn(): void {
+    this.scale.set(this.scale() + this.scaleStep());
+    this.transform.set({
+      ...this.transform(),
+      scale: this.scale()
+    });
+  }
+
+  imageLoaded(image: LoadedImage): void {
     // show cropper
   }
-  cropperReady() {
+  cropperReady(): void {
     // cropper ready
   }
-  loadImageFailed() {
+  loadImageFailed(): void {
     // show message
   }
 

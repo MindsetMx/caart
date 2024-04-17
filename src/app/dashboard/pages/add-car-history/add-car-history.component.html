@@ -40,16 +40,15 @@
             </button>
           </mat-menu>
 
-
           <div formArrayName="blocks" class="space-y-4">
             @for (block of blocksFormArrayControls; track block; let i = $index) {
             <div [formGroupName]="i">
               @switch (block.value.type) {
               @case ('text') {
-              <textarea formControlName="text" cols="30" rows="10" sharedInput></textarea>
+              <textarea formControlName="content" cols="30" rows="10" sharedInput></textarea>
               }
               @case ('image') {
-
+              <img [src]="block.value.content" class="object-contain w-96">
               }
               }
             </div>
@@ -92,15 +91,13 @@
           }
         </button>
       </form>
-
-
     </section>
   </div>
 
 </sidebar-layout>
 
 <car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeCarPhotoGallery()" [cropImage]="true"
-  [auctionCarId]="originalAuctionCarId()">
+  (selectedImageChange)="setImage($event)" [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
 
 <auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"

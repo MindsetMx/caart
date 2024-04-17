@@ -17,7 +17,7 @@
     <form class="mt-4 space-y-4" [formGroup]="auctionImagesForm" (submit)="saveImages()">
       <h2 class="mb-2">Foto principal</h2>
       <div>
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           @if(fotoPrincipal.value) {
           <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoPrincipal', true)">
             <img [src]="fotoPrincipal.value" class="cell object-contain" />
@@ -33,6 +33,7 @@
         }
       </div>
 
+      @defer (when fotosSliderPrincipal) {
       <div>
         <h2 class="mb-2">Fotos slider principal</h2>
         <div class="board" cdkDropListGroup>
@@ -59,7 +60,9 @@
           }
         </div>
       </div>
+      }
 
+      @defer (when fotosMecanicas) {
       <div>
         <h2 class="mb-2">Fotos mecánicas</h2>
         <div class="board" cdkDropListGroup>
@@ -67,61 +70,128 @@
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosMecanicas)"
               [cdkDropListData]="{imageUrl, index: i}">
-              <button type="button" class="w-full"
+              @if (imageUrl) {
+              <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)">
-                <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+                <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
+
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosMecanicas, i)"
+                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+                  <mat-icon class="text-red-500">delete</mat-icon>
+                </button>
               </button>
+              } @else {
+              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)" class="cell">
+                Subir foto
+              </button>
+              }
             </div>
             @if (formArrayHasError(fotosMecanicas, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosMecanicas, i)"></shared-input-error>
             }
           </div>
           }
-        </div>
-      </div>
+          <!-- agregar nueva foto mecánica -->
+          <button type="button" (click)="addPhoto(fotosMecanicas)" class="cell">
+            <mat-icon class="text-gray-500">add</mat-icon>
+          </button>
 
+        </div>
+        @if (hasError('fotosMecanicas')) {
+        <shared-input-error message="El campo debe tener al menos 5 imágenes"></shared-input-error>
+        }
+      </div>
+      }
+
+      @defer (when fotosInterior) {
       <div>
-        <h2 class="mb-2">Fotos interiores</h2>
+        <h2 class="mb-2">Fotos interior</h2>
         <div class="board" cdkDropListGroup>
           @for (imageUrl of fotosInterior.value; track i; let i = $index) {
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosInterior)"
               [cdkDropListData]="{imageUrl, index: i}">
-              <button type="button" class="w-full"
+              @if (imageUrl) {
+              <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)">
-                <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+                <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
+
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosInterior, i)"
+                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+                  <mat-icon class="text-red-500">delete</mat-icon>
+                </button>
               </button>
+              } @else {
+              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)" class="cell">
+                Subir foto
+              </button>
+              }
             </div>
             @if (formArrayHasError(fotosInterior, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosInterior, i)"></shared-input-error>
             }
           </div>
           }
-        </div>
-      </div>
+          <!-- agregar nueva foto interior -->
+          <button type="button" (click)="addPhoto(fotosInterior)" class="cell">
+            <mat-icon class="text-gray-500">add</mat-icon>
+          </button>
 
+        </div>
+        @if (hasError('fotosInterior')) {
+        <shared-input-error message="El campo debe tener al menos 5 imágenes"></shared-input-error>
+        }
+      </div>
+      }
+
+      @defer (when fotosExterior) {
       <div>
-        <h2 class="mb-2">Fotos exteriores</h2>
+        <h2 class="mb-2">Fotos exterior</h2>
         <div class="board" cdkDropListGroup>
           @for (imageUrl of fotosExterior.value; track i; let i = $index) {
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosExterior)"
               [cdkDropListData]="{imageUrl, index: i}">
-              <button type="button" class="w-full"
+              @if (imageUrl) {
+              <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)">
-                <img cdkDrag [src]="imageUrl" class="cell w-full h-40 object-contain" />
+                <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
+
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosExterior, i)"
+                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+                  <mat-icon class="text-red-500">delete</mat-icon>
+                </button>
               </button>
+              } @else {
+              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)" class="cell">
+                Subir foto
+              </button>
+              }
             </div>
             @if (formArrayHasError(fotosExterior, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosExterior, i)"></shared-input-error>
             }
           </div>
           }
-        </div>
-      </div>
+          <!-- agregar nueva foto exterior -->
+          <button type="button" (click)="addPhoto(fotosExterior)" class="cell">
+            <mat-icon class="text-gray-500">add</mat-icon>
+          </button>
 
-      <button type="submit" sharedPrimaryButton>
+        </div>
+        @if (hasError('fotosExterior')) {
+        <shared-input-error message="El campo debe tener al menos 5 imágenes"></shared-input-error>
+        }
+      </div>
+      }
+
+      <button type="submit" [class.opacity-50]="saveImagesButtonIsDisabled()" [disabled]="saveImagesButtonIsDisabled()"
+        class="flex items-center justify-center" sharedPrimaryButton>
+        @if (saveImagesButtonIsDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
         Guardar cambios
+        }
       </button>
     </form>
 
@@ -132,3 +202,7 @@
 <car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeModal(carPhotoGalleryIsOpen)"
   (selectedImageChange)="setImage($event)" [cropImage]="cropImage()" [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
+
+<auction-image-deletion-confirmation-modal (isOpenChange)="closeDeleteImageModal()" (deleteImageChange)="removePhoto()"
+  [isOpen]="deleteImageModalIsOpen()"
+  [isButtonSubmitDisabled]="deleteImageSubmitButtonIsDisabled()"></auction-image-deletion-confirmation-modal>

@@ -12,6 +12,9 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { PrimaryButtonDirective } from '@shared/directives';
 import { AppService } from '@app/app.service';
+import { MatIcon } from '@angular/material/icon';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { AuctionImageDeletionConfirmationModalComponent } from '@app/dashboard/modals/auction-image-deletion-confirmation-modal/auction-image-deletion-confirmation-modal.component';
 
 @Component({
   standalone: true,
@@ -25,7 +28,10 @@ import { AppService } from '@app/app.service';
     InputErrorComponent,
     ReactiveFormsModule,
     PrimaryButtonDirective,
-    CommonModule
+    CommonModule,
+    MatIcon,
+    SpinnerComponent,
+    AuctionImageDeletionConfirmationModalComponent
   ],
   templateUrl: './auction-image-assignment-and-reorder.component.html',
   styleUrl: './auction-image-assignment-and-reorder.component.css',
@@ -39,7 +45,10 @@ export class AuctionImageAssignmentAndReorderComponent {
   saveImagesButtonIsDisabled = signal<boolean>(false);
   formFieldName = signal<string>('');
   index = signal<number | undefined>(undefined);
+  formArray = signal<FormArray | undefined>(undefined);
   cropImage = signal<boolean>(false);
+  deleteImageModalIsOpen = signal<boolean>(false);
+  deleteImageSubmitButtonIsDisabled = signal<boolean>(false);
 
   #activatedRoute = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
@@ -74,10 +83,6 @@ export class AuctionImageAssignmentAndReorderComponent {
 
     this.auctionImagesForm = this.#formBuilder.group({
       fotoPrincipal: ['', Validators.required],
-      fotosSliderPrincipal: this.#formBuilder.array([], Validators.required),
-      fotosMecanicas: this.#formBuilder.array([], Validators.required),
-      fotosInterior: this.#formBuilder.array([], Validators.required),
-      fotosExterior: this.#formBuilder.array([], Validators.required),
     });
   }
 
@@ -101,6 +106,31 @@ export class AuctionImageAssignmentAndReorderComponent {
     }).add(() => {
       this.saveImagesButtonIsDisabled.set(false);
     });
+  }
+
+  openDeleteImageModal(event: Event, formArray: FormArray, index: number): void {
+    event.stopPropagation();
+
+    this.index.set(index);
+    this.formArray.set(formArray);
+    this.deleteImageModalIsOpen.set(true);
+  }
+
+  removePhoto(): void {
+    this.deleteImageSubmitButtonIsDisabled.set(true);
+
+    this.formArray()!.removeAt(this.index()!);
+
+    this.deleteImageModalIsOpen.set(false);
+    this.deleteImageSubmitButtonIsDisabled.set(false);
+  }
+
+  addPhoto(formArray: FormArray): void {
+    formArray.push(this.#formBuilder.control('', Validators.required));
+  }
+
+  closeDeleteImageModal(): void {
+    this.deleteImageModalIsOpen.set(false);
   }
 
   setImage(imageUrl: string) {
@@ -160,13 +190,13 @@ export class AuctionImageAssignmentAndReorderComponent {
         )));
         this.auctionImagesForm.setControl('fotosMecanicas', this.#formBuilder.array(response.data.fotosMecanicas.map(
           (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        )));
+        ), Validators.minLength(5)));
         this.auctionImagesForm.setControl('fotosInterior', this.#formBuilder.array(response.data.fotosInterior.map(
           (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        )));
+        ), Validators.minLength(5)));
         this.auctionImagesForm.setControl('fotosExterior', this.#formBuilder.array(response.data.fotosExterior.map(
           (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        )));
+        ), Validators.minLength(5)));
       },
       error: (error) => {
         console.error(error);
