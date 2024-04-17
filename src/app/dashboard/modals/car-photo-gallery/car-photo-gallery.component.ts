@@ -25,6 +25,7 @@ export class CarPhotoGalleryComponent {
   isOpen = input.required<boolean>();
   auctionCarId = input.required<string>();
   cropImage = input<boolean>(false);
+  aspectRatio = input<number>(16 / 9);
   isOpenChange = output<boolean>();
   selectedImageChange = output<string>();
 

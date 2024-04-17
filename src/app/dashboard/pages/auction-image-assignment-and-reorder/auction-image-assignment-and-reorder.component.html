@@ -43,7 +43,7 @@
               [cdkDropListData]=" {imageUrl, index: i}">
               @if (imageUrl) {
               <button type="button" class="w-full"
-                (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', false, i)">
+                (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', true, i)">
                 <img cdkDrag [src]="imageUrl" class="cell object-contain" />
               </button>
               } @else {
@@ -199,8 +199,9 @@
 
 </sidebar-layout>
 
-<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeModal(carPhotoGalleryIsOpen)"
-  (selectedImageChange)="setImage($event)" [cropImage]="cropImage()" [auctionCarId]="originalAuctionCarId()">
+<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" [aspectRatio]="aspectRatio()"
+  (isOpenChange)="closeModal(carPhotoGalleryIsOpen)" (selectedImageChange)="setImage($event)" [cropImage]="cropImage()"
+  [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
 
 <auction-image-deletion-confirmation-modal (isOpenChange)="closeDeleteImageModal()" (deleteImageChange)="removePhoto()"

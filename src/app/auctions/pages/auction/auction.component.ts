@@ -33,6 +33,8 @@ import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recentl
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
+import { AuctionImageAssigmentAndReorderService } from '@app/dashboard/services/auction-image-assigment-and-reorder.service';
+import { ImagesPublish } from '@app/dashboard/interfaces/images-publish';
 
 @Component({
   standalone: true,
@@ -79,6 +81,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   offeredAmount = signal<number | undefined>(undefined);
   newOfferMade = signal<number>(0);
   auctionCancelledModalIsOpen = signal<boolean>(false);
+  imagesPublish = signal<ImagesPublish>({} as ImagesPublish);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -88,6 +91,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   #countdownService = inject(CountdownService);
   #paymentMethodsService = inject(PaymentMethodsService);
   #route = inject(ActivatedRoute);
+  #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -174,7 +178,9 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
       this.auctionId.set(id);
       this.getAuctionDetails(id);
+      this.getImagesPublish(id!);
     });
+
   }
 
   ngOnDestroy(): void {
@@ -190,6 +196,17 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     Fancybox.bind("[data-fancybox='gallery4']");
     Fancybox.bind("[data-fancybox='gallery5']");
     Fancybox.bind("[data-fancybox='gallery6']");
+  }
+
+  getImagesPublish(originalAuctionCarId: string): void {
+    this.#auctionImageAssigmentAndReorderService.imagesPublish$(originalAuctionCarId).subscribe({
+      next: (response: ImagesPublish) => {
+        this.imagesPublish.set(response);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   makeAnOfferModalIsOpenChanged(isOpen: boolean): void {

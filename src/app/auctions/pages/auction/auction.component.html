@@ -212,7 +212,7 @@
     </div>
 
     <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-12 md:col-span-7">
+      <div class="col-span-12 md:col-span-8">
         <div class="flex h-full">
           <a class="w-full flex" [href]="auction().data.attributes.auctionCarForm.photos[0]" data-fancybox="gallery">
             <img class="h-full object-cover w-full md:max-h-60 lg:max-h-80 xl:max-h-[30rem] 2xl:max-h-[35rem]"
@@ -220,37 +220,54 @@
           </a>
         </div>
       </div>
-      <div class="hidden col-span-5 md:grid grid-cols-2 gap-4">
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[1]" data-fancybox="gallery">
-          <img class="object-cover" [src]="auction().data.attributes.auctionCarForm.photos[1]" alt="">
+      <div class="hidden col-span-4 md:grid grid-cols-2 gap-4">
+        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[0]" data-fancybox="gallery">
+          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[0]" alt="">
         </a>
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[2]" data-fancybox="gallery">
-          <img class="object-cover" [src]="auction().data.attributes.auctionCarForm.photos[2]" alt="">
+        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[1]" data-fancybox="gallery">
+          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[1]" alt="">
         </a>
-        <!-- <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[3]" data-fancybox="gallery">
-          <img class="object-cover" [src]="auction().data.attributes.auctionCarForm.photos[3]" alt="">
+        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[2]" data-fancybox="gallery">
+          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[2]" alt="">
         </a>
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[4]" data-fancybox="gallery">
-          <img class="object-cover" [src]="auction().data.attributes.auctionCarForm.photos[4]" alt="">
-        </a> -->
-        <a class="flex" [href]="auction().data.attributes.auctionCarForm.photos[3]" data-fancybox="gallery">
-          <img class="object-cover" [src]="auction().data.attributes.auctionCarForm.photos[3]" alt="">
+        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[3]" data-fancybox="gallery">
+          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[3]" alt="">
         </a>
-        <a class="flex h-full relative" [href]="auction().data.attributes.auctionCarForm.photos[4]"
-          data-fancybox="gallery">
+        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[4]" data-fancybox="gallery">
+          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[4]" alt="">
+        </a>
+        <a class="flex h-full relative" [href]="imagesPublish().data.fotosSliderPrincipal[5]" data-fancybox="gallery">
           <div class="flex absolute inset-0 overflow-hidden">
-            <img class="object-cover" [src]="auction().data.attributes.auctionCarForm.photos[4]" alt="">
+            <img class="object-cover w-full" [src]="imagesPublish().data.fotosSliderPrincipal[5]" alt="">
           </div>
           <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
           <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
-            Ver todas las fotos ({{auction().data.attributes.auctionCarForm.photos.length}})
+            Ver todas las fotos ({{imagesPublish().data.fotosSliderPrincipal.length +
+            imagesPublish().data.fotosMecanicas.length + imagesPublish().data.fotosInterior.length +
+            imagesPublish().data.fotosExterior.length}})
           </div>
         </a>
-        @for (item of auction().data.attributes.auctionCarForm.photos.slice(5); track $index) {
+        @for (item of imagesPublish().data.fotosSliderPrincipal.slice(6); track $index) {
         <a class="hidden" [href]="item" data-fancybox="gallery">
-          <img class="object-cover" [src]="item" alt="">
+          <img class="object-cover h-full" [src]="item" alt="">
         </a>
         }
+        @for (item of imagesPublish().data.fotosExterior; track $index) {
+        <a class="hidden" [href]="item" data-fancybox="gallery">
+          <img class="object-cover h-full" [src]="item" alt="">
+        </a>
+        }
+        @for (item of imagesPublish().data.fotosInterior; track $index) {
+        <a class="hidden" [href]="item" data-fancybox="gallery">
+          <img class="object-cover h-full" [src]="item" alt="">
+        </a>
+        }
+        @for (item of imagesPublish().data.fotosMecanicas; track $index) {
+        <a class="hidden" [href]="item" data-fancybox="gallery">
+          <img class="object-cover h-full" [src]="item" alt="">
+        </a>
+        }
+
         <!-- <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
           <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
         </a>

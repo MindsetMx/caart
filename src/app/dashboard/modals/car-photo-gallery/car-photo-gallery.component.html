@@ -93,7 +93,7 @@
   </div>
 </shared-modal>
 
-<crop-car-history-image-modal [isOpen]="cropCarHistoryImageModalIsOpen()"
+<crop-car-history-image-modal [isOpen]="cropCarHistoryImageModalIsOpen()" [aspectRatio]="aspectRatio()"
   (croppedImageChange)="croppedImageChange($event)" (isOpenChange)="closeCropCarHistoryImageModal()"
   [imageUrl]="selectedImage.value">
 </crop-car-history-image-modal>

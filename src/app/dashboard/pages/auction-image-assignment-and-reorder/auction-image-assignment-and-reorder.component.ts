@@ -49,6 +49,7 @@ export class AuctionImageAssignmentAndReorderComponent {
   cropImage = signal<boolean>(false);
   deleteImageModalIsOpen = signal<boolean>(false);
   deleteImageSubmitButtonIsDisabled = signal<boolean>(false);
+  aspectRatio = signal<number>(16 / 9);
 
   #activatedRoute = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
@@ -209,11 +210,15 @@ export class AuctionImageAssignmentAndReorderComponent {
   }
 
   openModal(varName: WritableSignal<boolean>, formFieldName: string, cropImage: boolean, index?: number): void {
-    console.log({ index });
+    if (cropImage) {
+      (formFieldName === 'fotosSliderPrincipal')
+        ? this.aspectRatio.set(1.5 / 1)
+        : this.aspectRatio.set(16 / 9);
+    }
+
     (index !== undefined)
       ? this.index.set(index)
       : this.index.set(undefined);
-    console.log({ index: this.index() });
 
     this.formFieldName.set(formFieldName);
     varName.set(true);

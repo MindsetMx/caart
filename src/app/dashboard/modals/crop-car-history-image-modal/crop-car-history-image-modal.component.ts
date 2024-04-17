@@ -26,6 +26,7 @@ import { switchMap } from 'rxjs';
 export class CropCarHistoryImageModalComponent {
   isOpen = input.required<boolean>();
   imageUrl = input.required<string>();
+  aspectRatio = input<number>(16 / 9);
   isOpenChange = output<boolean>();
   croppedImageChange = output<string>();
 
@@ -36,6 +37,7 @@ export class CropCarHistoryImageModalComponent {
   transform = signal<ImageTransform>({
     translateUnit: 'px'
   });
+
 
   croppedImage?: File;
   cropImageButtonIsDisabled = signal<boolean>(false);
