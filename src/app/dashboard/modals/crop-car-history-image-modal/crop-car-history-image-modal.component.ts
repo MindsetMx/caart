@@ -74,8 +74,6 @@ export class CropCarHistoryImageModalComponent {
           this.#cloudinaryCroppedImageService.uploadImage$(this.croppedImage!, response.result.uploadURL)
         )
       ).subscribe((response) => {
-        console.log({ response });
-
         this.emitIsOpenChange(false);
         this.croppedImageChange.emit(response.result.variants[0]);
         this.cropImageButtonIsDisabled.set(false);

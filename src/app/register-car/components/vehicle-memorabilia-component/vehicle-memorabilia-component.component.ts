@@ -6,6 +6,7 @@ import Spanish from '@uppy/locales/lib/es_ES';
 import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
+import AwsS3Multipart from '@uppy/aws-s3-multipart';
 
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -88,6 +89,7 @@ export class VehicleMemorabiliaComponentComponent {
         }
       })
       .use(XHRUpload, {
+        allowedMetaFields: ['requireSignedURLs'],
         endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
         formData: true,
         fieldName: 'file',
@@ -96,8 +98,8 @@ export class VehicleMemorabiliaComponentComponent {
         },
       })
       .on('complete', (result) => {
-        result.successful.forEach(file => {
-          const url = file.uploadURL;
+        result.successful.forEach((file: any) => {
+          const url = file.response.body.result.variants[0];
           this.photos.setValue([...this.photos.value, url]);
           this.uppyDashboardImages().nativeElement.click();
 
@@ -147,14 +149,11 @@ export class VehicleMemorabiliaComponentComponent {
         },
       })
       .on('complete', (result) => {
-        result.successful.forEach(file => {
-          const url = file.uploadURL;
-
+        result.successful.forEach((file: any) => {
+          const url = file.response.body.result.preview;
           this.videos.setValue([...this.videos.value, url]);
 
           this.uppyDashboardVideos().nativeElement.click();
-
-          file.meta['uploadURL'] = url;
         });
       }).on('file-removed', (file) => {
         const urlToRemove = file.meta['uploadURL'];
