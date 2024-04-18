@@ -9,10 +9,12 @@
   <div class="container w-full">
     <!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
 
+    @defer (on timer(100ms)) {
     <image-cropper [imageURL]="imageUrl()" [maintainAspectRatio]="true" [aspectRatio]="aspectRatio()"
       [(transform)]="transform" [alignImage]="'center'" format="png" (imageCropped)="imageCropped($event)"
       (imageLoaded)="imageLoaded($event)" (cropperReady)="cropperReady()"
       (loadImageFailed)="loadImageFailed()"></image-cropper>
+    }
 
 
     <div class="grid grid-cols-2 gap-4 mt-4">

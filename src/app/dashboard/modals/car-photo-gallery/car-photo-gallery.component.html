@@ -7,8 +7,7 @@
   </div>
 
   @defer (when carPhotoGallery() && carPhotoGallery().data && carPhotoGallery().data.registro &&
-  carPhotoGallery().data.registro.photos.length >
-  0) {
+  carPhotoGallery().data.registro.photos.length > 0) {
   <h3 class="text-center font-bold text-lg mb-12">Registro</h3>
   <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
     @for (url of carPhotoGallery().data.registro.photos; track $index) {

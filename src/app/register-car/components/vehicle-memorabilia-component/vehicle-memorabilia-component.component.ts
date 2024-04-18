@@ -6,7 +6,6 @@ import Spanish from '@uppy/locales/lib/es_ES';
 import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
-import AwsS3Multipart from '@uppy/aws-s3-multipart';
 
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';

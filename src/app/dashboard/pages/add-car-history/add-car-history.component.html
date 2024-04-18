@@ -27,7 +27,7 @@
               @switch (block.value.type) {
               @case ('text') {
               <!-- delete button -->
-              <div class="flex gap-x-2">
+              <div class="md:flex">
                 <textarea formControlName="content" cols="30" rows="10" sharedInput></textarea>
 
                 <button (click)="deleteBlock(i)">

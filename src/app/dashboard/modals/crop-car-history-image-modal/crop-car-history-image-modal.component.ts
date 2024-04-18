@@ -38,7 +38,6 @@ export class CropCarHistoryImageModalComponent {
     translateUnit: 'px'
   });
 
-
   croppedImage?: File;
   cropImageButtonIsDisabled = signal<boolean>(false);
 
