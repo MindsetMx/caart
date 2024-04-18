@@ -68,12 +68,6 @@ export class CropCarHistoryImageModalComponent {
 
     if (!this.croppedImage) return;
 
-    // this.#cloudinaryCroppedImageService.uploadImage$(this.croppedImage).subscribe((response) => {
-    //   this.emitIsOpenChange(false);
-    //   this.croppedImageChange.emit(response.result.variants[0]);
-    //   this.cropImageButtonIsDisabled.set(false);
-    // });
-
     this.#cloudinaryCroppedImageService.uploadImageDirect$()
       .pipe(
         switchMap((response) =>

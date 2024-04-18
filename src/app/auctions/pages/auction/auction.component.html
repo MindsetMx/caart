@@ -394,7 +394,12 @@
           <li>Comisión dealer: $3,100 MXN</li>
         </ul> -->
 
-        <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.carHistory.additionalCharges"></div>
+        <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.extras.additionalCharges"></div> -->
+        <ol class="list-inside list-disc mb-8">
+          @for (item of auction().data.attributes.extras.additionalCharges; track $index) {
+          <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+          }
+        </ol>
         }
 
         @defer (when specificAuction().data) {
@@ -409,8 +414,25 @@
       <hr class="my-6">
 
       @defer (when auction().data) {
-      <section>
-        <div class="break-words" [innerHTML]="auction().data.attributes.carHistory.content"></div>
+      <section class="space-y-4">
+        <!-- <div class="break-words" [innerHTML]="auction().data.attributes.carHistory.content"></div> -->
+        <!-- <pre>
+          {{auction().data.attributes.carHistory | json}}
+        </pre> -->
+
+        @for (item of auction().data.attributes.carHistory.blocks; track $index) {
+        @switch (item.type) {
+        @case ('text') {
+        <p>
+          {{item.content}}
+        </p>
+        }
+
+        @case ('image') {
+        <img class="w-full" [src]="item.content" alt="">
+        }
+        }
+        }
       </section>
 
       <section>
@@ -572,7 +594,12 @@
           <li>Comisión dealer: $3,100 MXN</li>
         </ul> -->
 
-        <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.carHistory.additionalCharges"></div>
+        <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.extras.additionalCharges"></div> -->
+        <ol class="list-inside list-disc mb-8">
+          @for (item of auction().data.attributes.extras.additionalCharges; track $index) {
+          <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+          }
+        </ol>
         }
 
         @defer (when specificAuction().data) {

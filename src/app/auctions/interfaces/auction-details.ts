@@ -57,12 +57,18 @@ export interface dataUser {
 
 export interface CarHistory {
   _id: string;
-  additionalCharges: string;
-  additionalInfo: string;
-  content: string;
+  blocks: Block[];
   originalAuctionCarId: string;
-  createdAt: string;
+  extract: string;
   extraInfo: string;
+  createdAt: Date;
+  __v: number;
+}
+
+export interface Block {
+  type: string;
+  content: string;
+  _id: string;
 }
 
 export interface AuctionCarForm {

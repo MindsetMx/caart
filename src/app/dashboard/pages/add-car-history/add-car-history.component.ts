@@ -15,6 +15,7 @@ import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-c
 import { MatMenuModule } from '@angular/material/menu';
 import { CropCarHistoryImageModalComponent } from '@app/dashboard/modals/crop-car-history-image-modal/crop-car-history-image-modal.component';
 import { JsonPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   standalone: true,
@@ -30,7 +31,8 @@ import { JsonPipe } from '@angular/common';
     MatMenuModule,
     InputDirective,
     CropCarHistoryImageModalComponent,
-    JsonPipe
+    JsonPipe,
+    MatIcon
   ],
   templateUrl: './add-car-history.component.html',
   styleUrl: './add-car-history.component.css',
@@ -104,6 +106,10 @@ export class AddCarHistoryComponent {
     // this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.addCarHistoryForm).subscribe({
   }
 
+  deleteBlock(index: number): void {
+    this.blocksFormArray.removeAt(index);
+  }
+
   setImage(image: string): void {
     console.log({ blocksFormArrayControls: this.blocksFormArrayControls });
 
@@ -153,14 +159,12 @@ export class AddCarHistoryComponent {
     this.carPhotoGalleryIsOpen.set(true);
   }
 
-  hasError(field: string): boolean {
-    return this.#validatorsService.hasError(this.addCarHistoryForm, field);
+  hasError(field: string, form: FormGroup = this.addCarHistoryForm): boolean {
+    return this.#validatorsService.hasError(form, field);
   }
 
-  getError(field: string): string | undefined {
-    if (!this.addCarHistoryForm) return undefined;
-
-    return this.#validatorsService.getError(this.addCarHistoryForm, field);
+  getError(field: string, form: FormGroup = this.addCarHistoryForm): string | undefined {
+    return this.#validatorsService.getError(form, field);
   }
 
   formArrayHasError(formArray: FormArray, index: number): boolean {

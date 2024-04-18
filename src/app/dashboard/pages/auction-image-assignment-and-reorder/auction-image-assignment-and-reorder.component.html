@@ -47,7 +47,7 @@
                 <img cdkDrag [src]="imageUrl" class="cell object-contain" />
               </button>
               } @else {
-              <button cdkDrag type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', false, i)"
+              <button cdkDrag type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', true, i)"
                 class="cell">
                 Subir foto
               </button>
@@ -81,8 +81,14 @@
                 </button>
               </button>
               } @else {
-              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)" class="cell">
+              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)"
+                class="cell relative">
                 Subir foto
+
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosMecanicas, i)"
+                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+                  <mat-icon class="text-red-500">delete</mat-icon>
+                </button>
               </button>
               }
             </div>
@@ -122,8 +128,14 @@
                 </button>
               </button>
               } @else {
-              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)" class="cell">
+              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)"
+                class="cell relative">
                 Subir foto
+
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosInterior, i)"
+                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+                  <mat-icon class="text-red-500">delete</mat-icon>
+                </button>
               </button>
               }
             </div>
@@ -163,8 +175,14 @@
                 </button>
               </button>
               } @else {
-              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)" class="cell">
+              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)"
+                class="cell relative">
                 Subir foto
+
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosExterior, i)"
+                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+                  <mat-icon class="text-red-500">delete</mat-icon>
+                </button>
               </button>
               }
             </div>

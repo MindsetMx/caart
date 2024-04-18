@@ -1,3 +1,7 @@
 :host {
   display: block;
 }
+
+.size-10 {
+  @apply w-10 h-10 !important;
+}
