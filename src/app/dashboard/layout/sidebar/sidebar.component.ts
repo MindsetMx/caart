@@ -54,6 +54,10 @@ export class SidebarComponent {
     return this.#authService.currentUser();
   }
 
+  get profileImage(): string {
+    return 'https://ui-avatars.com/api/?name=' + this.user?.attributes.firstName + ' ' + this.user?.attributes.lastName;
+  }
+
   openSidebar(): void {
     this.sideBarIsOpen.set(true);
   }
