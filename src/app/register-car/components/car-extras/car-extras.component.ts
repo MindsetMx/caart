@@ -52,19 +52,19 @@ export class CarExtrasComponent {
   constructor() {
     this.carExtrasForm = this.#fb.group({
       // serviceHistory: ['', Validators.required],
-      toolBox: ['true', Validators.required],
-      carCover: ['true', Validators.required],
-      batteryCharger: ['true', Validators.required],
-      manuals: ['true', Validators.required],
+      toolBox: ['', Validators.required],
+      carCover: ['', Validators.required],
+      batteryCharger: ['', Validators.required],
+      manuals: ['', Validators.required],
       // spareTire: ['', Validators.required],
-      tireInflator: ['true', Validators.required],
-      numberOfKeys: ['2', Validators.required],
-      others: ['others', Validators.required],
+      tireInflator: ['', Validators.required],
+      numberOfKeys: ['', Validators.required],
+      others: ['', Validators.required],
       additionalCharges: this.#fb.array(
         [
           this.#fb.group({
-            chargeType: ['chargeType', Validators.required],
-            amount: [100, Validators.required],
+            chargeType: ['', Validators.required],
+            amount: ['', Validators.required],
           },
             {
               validators: Validators.required,
@@ -76,8 +76,8 @@ export class CarExtrasComponent {
           validators: Validators.required,
         }
       ),
-      comments: ['comments', Validators.required],
-      termsConditionsAccepted: ['true', Validators.required],
+      comments: ['', Validators.required],
+      termsConditionsAccepted: ['', Validators.required],
       originalAuctionCarId: [this.originalAuctionCarId, Validators.required],
     });
   }
@@ -136,31 +136,25 @@ export class CarExtrasComponent {
           batteryCharger,
           manuals,
           tireInflator,
-          // numberOfKeys,
-          // others,
-          // comments,
-          // termsConditionsAccepted,
+          numberOfKeys,
+          others,
+          // additionalCharges,
+          comments,
+          termsConditionsAccepted,
         });
 
-        const filteredResponse = Object.fromEntries(
-          Object.entries(carExtras).filter(([key, value]) => value !== null && value !== undefined && value !== '' && (!Array.isArray(value) || value.length > 0))
-        );
 
-        this.carExtrasForm.patchValue(filteredResponse);
+        const additionalCharges = carExtras.data.attributes.additionalCharges;
 
-        // const additionalCharges = carExtras.data.attributes.additionalCharges;
+        const aditionalChargesFormGroups = additionalCharges.map((additionalCharge: any) => {
+          return this.#fb.group({
+            chargeType: [additionalCharge.chargeType, Validators.required],
+            amount: [additionalCharge.amount, Validators.required],
+          });
+        });
 
-        // const aditionalChargesFormGroups = additionalCharges.map((additionalCharge: any) => {
-        //   return this.#fb.group({
-        //     chargeType: [additionalCharge.chargeType, Validators.required],
-        //     amount: [additionalCharge.amount, Validators.required],
-        //   });
-        // });
-
-        // this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
-        // this.#changeDetectorRef.detectChanges();
-
-        window.scrollTo(0, 0);
+        this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
+        this.#changeDetectorRef.detectChanges();
       },
       error: (error) => console.error(error),
     });

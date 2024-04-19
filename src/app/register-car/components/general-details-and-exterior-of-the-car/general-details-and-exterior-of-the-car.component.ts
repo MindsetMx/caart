@@ -67,37 +67,27 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
       year: [{ value: '', disabled: true }, [Validators.required, Validators.min(1500), Validators.max(this.currentYear)]],
       carModel: [{ value: '', disabled: true }, [Validators.required]],
       // mileage: ['', [Validators.required]],
-      odometerVerified: ['true', [Validators.required]],
+      odometerVerified: ['', [Validators.required]],
       transmissionType: [{ value: '', disabled: true }, [Validators.required]],
       otherTransmission: [{ value: '', disabled: true }],
       // sellerType: ['', [Validators.required]],
-      VIN: ['KNDJ23AU4N7154467', [Validators.required]],
-      warranties: ['false', [Validators.required]],
+      VIN: ['', [Validators.required]],
+      warranties: ['', [Validators.required]],
       wichWarranties: [''],
-      invoiceType: ['invoice', [Validators.required]],
-      invoiceDetails: ['invoiceDetails', [Validators.required]],
-      carHistory: ['carHistory', [Validators.required]],
+      invoiceType: ['', [Validators.required]],
+      invoiceDetails: ['', [Validators.required]],
+      carHistory: ['', [Validators.required]],
       exteriorColor: [{ value: '', disabled: true }, [Validators.required]],
       specificColor: [{ value: '', disabled: true }, [Validators.required]],
-      accident: ['false', [Validators.required]],
-      raced: ['false', [Validators.required]],
-      originalPaint: ['false', [Validators.required]],
-      paintMeter: ['false', [Validators.required]],
-      exteriorModified: ['false', [Validators.required]],
-      exteriorCondition: ['excellent', [Validators.required]],
-      detailComments: ['detailComments', [Validators.required]],
-      exteriorPhotos: [[
-        'https://res.cloudinary.com/dfadvv7yu/image/upload/v1712270165/TEST_tgelx6.jpg',
-        'https://res.cloudinary.com/dfadvv7yu/image/upload/v1712270165/TEST_tgelx6.jpg',
-        'https://res.cloudinary.com/dfadvv7yu/image/upload/v1712270165/TEST_tgelx6.jpg',
-        'https://res.cloudinary.com/dfadvv7yu/image/upload/v1712270165/TEST_tgelx6.jpg',
-      ], [Validators.required]],
-      exteriorVideos: [[
-        'https://res.cloudinary.com/dfadvv7yu/video/upload/v1712181677/hn9zgzlougnrb8n38tf6.mp4',
-        'https://res.cloudinary.com/dfadvv7yu/video/upload/v1712181677/hn9zgzlougnrb8n38tf6.mp4',
-        'https://res.cloudinary.com/dfadvv7yu/video/upload/v1712181677/hn9zgzlougnrb8n38tf6.mp4',
-        'https://res.cloudinary.com/dfadvv7yu/video/upload/v1712181677/hn9zgzlougnrb8n38tf6.mp4',
-      ]],
+      accident: ['', [Validators.required]],
+      raced: ['', [Validators.required]],
+      originalPaint: ['', [Validators.required]],
+      paintMeter: ['', [Validators.required]],
+      exteriorModified: ['', [Validators.required]],
+      exteriorCondition: ['', [Validators.required]],
+      detailComments: ['', [Validators.required]],
+      exteriorPhotos: [[], [Validators.required]],
+      exteriorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId(), [Validators.required]],
     });
   }
@@ -308,8 +298,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
         next: () => {
           this.#completeCarRegistrationService.indexTargetStep.set(2);
           this.#completeCarRegistrationService.indexCurrentStep.set(2);
-
-          window.scrollTo(0, 0);
         },
         error: (error) => {
           this.kmInputControl.disable();
@@ -336,9 +324,11 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
           brand,
           year,
           carModel,
+          // mileage,
           odometerVerified,
           transmissionType,
           otherTransmission,
+          // sellerType,
           warranties,
           wichWarranties,
           invoiceType,
@@ -357,13 +347,34 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit, After
           exteriorVideos,
         } = response;
 
-        console.log(response);
-
-        const filteredResponse = Object.fromEntries(
-          Object.entries(response).filter(([key, value]) => value !== null && value !== undefined && value !== '' && (!Array.isArray(value) || value.length > 0))
-        );
-
-        this.exteriorOfTheCarForm.patchValue(filteredResponse);
+        this.exteriorOfTheCarForm.patchValue({
+          VIN,
+          kmInput,
+          brand,
+          year,
+          carModel,
+          // mileage,
+          odometerVerified,
+          transmissionType,
+          otherTransmission,
+          // sellerType,
+          warranties,
+          wichWarranties,
+          invoiceType,
+          invoiceDetails,
+          carHistory,
+          exteriorColor,
+          specificColor,
+          accident,
+          raced,
+          originalPaint,
+          paintMeter,
+          exteriorModified,
+          exteriorCondition,
+          detailComments,
+          exteriorPhotos,
+          exteriorVideos,
+        });
 
         this.previewImagesCarExterior.set(exteriorPhotos);
       },

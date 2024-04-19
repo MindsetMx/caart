@@ -57,23 +57,13 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
   constructor() {
     this.interiorOfTheCarForm = this.#fb.group({
       interiorColor: [{ value: '', disabled: true }, [Validators.required]],
-      material: ['material', [Validators.required]],
-      interiorCondition: ['excellent', [Validators.required]],
-      interiorModifications: ['false', [Validators.required]],
-      accessoriesFunctioning: ['false', [Validators.required]],
-      comments: ['comments', [Validators.required]],
-      interiorPhotos: [[
-        'https://res.cloudinary.com/dfadvv7yu/image/upload/v1712270165/TEST_tgelx6.jpg',
-        'https://res.cloudinary.com/dfadvv7yu/image/upload/v1712270165/TEST_tgelx6.jpg',
-        'https://res.cloudinary.com/dfadvv7yu/image/upload/v1712270165/TEST_tgelx6.jpg',
-        'https://res.cloudinary.com/dfadvv7yu/image/upload/v1712270165/TEST_tgelx6.jpg',
-      ], [Validators.required]],
-      interiorVideos: [[
-        'https://res.cloudinary.com/dfadvv7yu/video/upload/v1712181677/hn9zgzlougnrb8n38tf6.mp4',
-        'https://res.cloudinary.com/dfadvv7yu/video/upload/v1712181677/hn9zgzlougnrb8n38tf6.mp4',
-        'https://res.cloudinary.com/dfadvv7yu/video/upload/v1712181677/hn9zgzlougnrb8n38tf6.mp4',
-        'https://res.cloudinary.com/dfadvv7yu/video/upload/v1712181677/hn9zgzlougnrb8n38tf6.mp4',
-      ]],
+      material: ['', [Validators.required]],
+      interiorCondition: ['', [Validators.required]],
+      interiorModifications: ['', [Validators.required]],
+      accessoriesFunctioning: ['', [Validators.required]],
+      comments: ['', [Validators.required]],
+      interiorPhotos: [[], [Validators.required]],
+      interiorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId, [Validators.required]],
     });
   }
@@ -245,24 +235,16 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
         } = interiorOfTheCar;
 
 
-        // this.interiorOfTheCarForm.patchValue({
-        //   interiorColor,
-        //   material,
-        //   interiorCondition,
-        //   interiorModifications,
-        //   accessoriesFunctioning,
-        //   comments,
-        //   interiorPhotos,
-        //   interiorVideos,
-        // });
-
-        const filteredResponse = Object.fromEntries(
-          Object.entries(interiorOfTheCar).filter(([key, value]) => value !== null && value !== undefined && value !== '' && (!Array.isArray(value) || value.length > 0))
-        );
-
-        this.interiorOfTheCarForm.patchValue(filteredResponse);
-
-        window.scrollTo(0, 0);
+        this.interiorOfTheCarForm.patchValue({
+          interiorColor,
+          material,
+          interiorCondition,
+          interiorModifications,
+          accessoriesFunctioning,
+          comments,
+          interiorPhotos,
+          interiorVideos,
+        });
       },
       error: (error) => {
         console.error(error);
