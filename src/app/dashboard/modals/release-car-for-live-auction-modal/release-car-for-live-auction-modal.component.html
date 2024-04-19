@@ -7,6 +7,15 @@
 
   <section class="container">
     <form [formGroup]="releaseCarForLiveAuctionForm" (ngSubmit)="releaseCarForLiveAuction()" class="space-y-6">
+      <!-- title -->
+      <div>
+        <label for="title" class="block mb-1 text-sm">Título</label>
+        <input id="title" formControlName="title" type="text" sharedInput>
+        @if (hasError('title')) {
+        <shared-input-error [message]="getError('title')"></shared-input-error>
+        }
+      </div>
+
       <!-- startDate -->
       <div>
         <label for="startDate" class="block mb-1 text-sm">Fecha de inicio</label>

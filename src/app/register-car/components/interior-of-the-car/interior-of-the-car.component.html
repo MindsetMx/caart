@@ -1,6 +1,7 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Interior del auto</h1>
 
 <h2 class="text-xl font-bold mb-5">Interior del auto</h2>
+
 <form [formGroup]="interiorOfTheCarForm" (ngSubmit)="exteriorOfTheCarFormSubmit()"
   class="grid grid-cols-2 items-end gap-5">
 
@@ -77,16 +78,29 @@
     }
   </div>
 
-  <!-- Fotos/vídeos del interior del auto -->
+  <!-- Fotos del interior del auto -->
   <div class="col-span-2">
-    <label id="uppyDashboard" for="interiorImagesOrVideos" class="text-sm cursor-pointer">
-      Fotos/vídeos del interior del auto
+    <label id="uppyDashboardImages" for="interiorImages" class="text-sm cursor-pointer">
+      Fotos del interior del auto
       <span class="font-bold text-red-500 inline-block">*</span></label>
 
-    <div id="uppyDashboard" #uppyDashboard></div>
+    <div id="uppyDashboardImages" #uppyDashboardImages></div>
 
     @if (hasError('interiorPhotos')) {
     <shared-input-error [message]="getError('interiorPhotos')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Videos del interior del auto -->
+  <div class="col-span-2">
+    <label id="uppyDashboardVideos" for="interiorVideos" class="text-sm cursor-pointer">
+      Videos del interior del auto
+      <span class="font-bold text-red-500 inline-block">*</span></label>
+
+    <div id="uppyDashboardVideos" #uppyDashboardVideos></div>
+
+    @if (hasError('interiorVideos')) {
+    <shared-input-error [message]="getError('interiorVideos')"></shared-input-error>
     }
   </div>
 

@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
+import { TentativeTitle } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,11 @@ export class ReleaseCarForLiveAuctionService {
     const url = `${this.#baseUrl}/auctions-cars`;
 
     return this.#http.post<any>(url, trimmedReleaseCarForLiveAuctionForm);
+  }
+
+  getTentativeTitle$(auctionItemId: string): Observable<TentativeTitle> {
+    const url = `${this.#baseUrl}/auction-items/${auctionItemId}/tentative-title`;
+
+    return this.#http.get<TentativeTitle>(url);
   }
 }

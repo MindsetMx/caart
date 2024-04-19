@@ -118,6 +118,7 @@ export interface ExteriorDetails {
   _id: string;
   originalAuctionCarId: string;
   __v: number;
+  VIN: string;
   accident: boolean;
   brand: string;
   carHistory: string;

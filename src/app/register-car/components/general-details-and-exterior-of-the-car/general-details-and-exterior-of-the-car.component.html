@@ -1,6 +1,7 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Generales y exterior del auto</h1>
 
 <h2 class="text-xl font-bold mb-5">Información general del automóvil</h2>
+
 <form [formGroup]="exteriorOfTheCarForm" (ngSubmit)="exteriorOfTheCarFormSubmit()"
   class="grid grid-cols-2 gap-5 items-end">
 
@@ -297,18 +298,31 @@
     }
   </div> -->
 
-  <!-- Fotos/vídeos del exterior del auto -->
+  <!-- Fotos del exterior del auto -->
   <div class="col-span-2">
     <label for="exteriorImagesOrVideos" class="text-sm cursor-pointer">
-      Fotos/vídeos del exterior del auto
+      Fotos del exterior del auto
       <span class="font-bold text-red-500 inline-block">*</span></label>
 
-    <div id="uppyDashboard" #uppyDashboard></div>
+    <div id="uppyDashboard" #uppyDashboardImages></div>
 
     @if (hasError('exteriorPhotos')) {
     <shared-input-error [message]="getError('exteriorPhotos')"></shared-input-error>
     }
 
+  </div>
+
+  <!-- Videos del exterior del auto -->
+  <div class="col-span-2">
+    <label for="exteriorImagesOrVideos" class="text-sm cursor-pointer">
+      Videos del exterior del auto
+      <span class="font-bold text-red-500 inline-block">*</span></label>
+
+    <div id="uppyDashboard" #uppyDashboardVideos></div>
+
+    @if (hasError('exteriorVideos')) {
+    <shared-input-error [message]="getError('exteriorVideos')"></shared-input-error>
+    }
   </div>
 
   <div class="col-span-2">

@@ -303,10 +303,21 @@
           <p class="text-xl font-bold mb-2">Subir fotos del auto <span
               class="font-bold text-red-500 inline-block">*</span></p>
 
-          <div #uppyDashboard></div>
+          <div #uppyDashboardImages></div>
 
           @if (hasError('photos')) {
           <shared-input-error [message]="getError('photos')"></shared-input-error>
+          }
+        </div>
+
+        <div class="col-span-2">
+          <p class="text-xl font-bold mb-2">Subir video del auto <span
+              class="font-bold text-red-500 inline-block">*</span></p>
+
+          <div #uppyDashboardVideos></div>
+
+          @if (hasError('videos')) {
+          <shared-input-error [message]="getError('videos')"></shared-input-error>
           }
         </div>
 

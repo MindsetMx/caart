@@ -153,6 +153,8 @@ export class VehicleMemorabiliaComponentComponent {
           this.videos.setValue([...this.videos.value, url]);
 
           this.uppyDashboardVideos().nativeElement.click();
+
+          file.meta['uploadURL'] = url;
         });
       }).on('file-removed', (file) => {
         const urlToRemove = file.meta['uploadURL'];

@@ -28,6 +28,7 @@ import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { VehicleMemorabiliaComponentComponent } from '@app/register-car/components/vehicle-memorabilia-component/vehicle-memorabilia-component.component';
+import { environments } from '@env/environments';
 
 @Component({
   selector: 'register-car',
@@ -52,7 +53,10 @@ import { VehicleMemorabiliaComponentComponent } from '@app/register-car/componen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterCarComponent implements OnInit, OnDestroy {
-  uppyDashboard = viewChild<ElementRef>('uppyDashboard');
+  readonly #cloudflareToken = environments.cloudflareToken;
+
+  uppyDashboardImages = viewChild.required<ElementRef>('uppyDashboardImages');
+  uppyDashboardVideos = viewChild.required<ElementRef>('uppyDashboardVideos');
 
   #appComponent = inject(AppComponent);
   #fb = inject(FormBuilder);
@@ -130,20 +134,16 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   }
 
   brandsChangeEffect = effect(() => {
-    if (this.uppyDashboard()) {
+    if (this.uppyDashboardImages()) {
       this.uppy = new Uppy({
         debug: true,
         autoProceed: true,
         locale: Spanish,
-        meta: {
-          upload_preset: 'if8y72iv',
-          api_key: '218199524155838',
-        },
         restrictions: {
           // maxFileSize: 1000000,
           // maxNumberOfFiles: 20,
           minNumberOfFiles: 1,
-          allowedFileTypes: ['image/*', 'video/*'],
+          allowedFileTypes: ['image/*'],
         },
       }).use(Dashboard,
         {
@@ -154,7 +154,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
           showProgressDetails: true,
           inline: true,
           hideProgressAfterFinish: true,
-          target: this.uppyDashboard()?.nativeElement,
+          target: this.uppyDashboardImages()?.nativeElement,
           proudlyDisplayPoweredByUppy: false,
           locale: {
             strings: {
@@ -163,35 +163,82 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
           }
         })
         .use(XHRUpload, {
-          endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/upload',
+          endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
           formData: true,
           fieldName: 'file',
           headers: {
-            'X-Requested-With': 'XMLHttpRequest',
+            'Authorization': `Bearer ${this.#cloudflareToken}`,
           },
-          allowedMetaFields: ['upload_preset', 'api_key'],
+          allowedMetaFields: ['requireSignedURLs'],
         })
         .on('complete', (result) => {
-          result.successful.forEach(file => {
-            const url = file.uploadURL;
+          result.successful.forEach((file: any) => {
+            const url = file.response.body.result.variants[0];
 
-            if (file?.type?.includes('image')) {
-              this.photosControl.setValue([...this.photosControl.value, url]);
-            } else if (file?.type?.includes('video')) {
-              this.videosControl.setValue([...this.videosControl.value, url]);
-            }
-            this.uppyDashboard()?.nativeElement.click();
+            this.photosControl.setValue([...this.photosControl.value, url]);
+
+            this.uppyDashboardImages()?.nativeElement.click();
 
             file.meta['uploadURL'] = url;
           });
         }).on('file-removed', (file) => {
           const urlToRemove = file.meta['uploadURL'];
 
-          if (file?.type?.includes('image')) {
-            this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
-          } else if (file?.type?.includes('video')) {
-            this.videosControl.setValue(this.videosControl.value.filter((url: string) => url !== urlToRemove));
+          this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
+        });
+    }
+
+    if (this.uppyDashboardVideos()) {
+      this.uppy = new Uppy({
+        debug: true,
+        autoProceed: true,
+        locale: Spanish,
+        restrictions: {
+          // maxFileSize: 1000000,
+          // maxNumberOfFiles: 20,
+          minNumberOfFiles: 1,
+          allowedFileTypes: ['video/*'],
+        },
+      }).use(Dashboard,
+        {
+          height: 300,
+          hideUploadButton: true,
+          hideCancelButton: true,
+          showRemoveButtonAfterComplete: true,
+          showProgressDetails: true,
+          inline: true,
+          hideProgressAfterFinish: true,
+          target: this.uppyDashboardVideos()?.nativeElement,
+          proudlyDisplayPoweredByUppy: false,
+          locale: {
+            strings: {
+              dropPasteFiles: 'Arrastra y suelta tus videos aquí o %{browse}',
+            }
           }
+        })
+        .use(XHRUpload, {
+          endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/stream`,
+          formData: true,
+          fieldName: 'file',
+          headers: {
+            'Authorization': `Bearer ${this.#cloudflareToken}`,
+          },
+          allowedMetaFields: ['requireSignedURLs'],
+        })
+        .on('complete', (result) => {
+          result.successful.forEach((file: any) => {
+            const url = file.response.body.result.preview;
+
+            this.videosControl.setValue([...this.videosControl.value, url]);
+
+            this.uppyDashboardVideos()?.nativeElement.click();
+
+            file.meta['uploadURL'] = url;
+          });
+        }).on('file-removed', (file) => {
+          const urlToRemove = file.meta['uploadURL'];
+
+          this.videosControl.setValue(this.videosControl.value.filter((url: string) => url !== urlToRemove));
         });
     }
   });

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, effect, inject, signal, viewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
@@ -14,6 +14,7 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { JsonPipe } from '@angular/common';
+import { environments } from '@env/environments';
 
 @Component({
   selector: 'interior-of-the-car',
@@ -33,7 +34,10 @@ import { JsonPipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InteriorOfTheCarComponent implements AfterViewInit {
-  @ViewChild('uppyDashboard') uppyDashboard!: ElementRef;
+  readonly #cloudflareToken = environments.cloudflareToken;
+
+  uppyDashboardImages = viewChild.required<ElementRef>('uppyDashboardImages');
+  uppyDashboardVideos = viewChild.required<ElementRef>('uppyDashboardVideos');
 
   #validatorsService = inject(ValidatorsService);
   #fb = inject(FormBuilder);
@@ -99,15 +103,11 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
       debug: true,
       autoProceed: true,
       locale: Spanish,
-      meta: {
-        upload_preset: 'if8y72iv',
-        api_key: '218199524155838',
-      },
       restrictions: {
         // maxFileSize: 1000000,
         // maxNumberOfFiles: 20,
         minNumberOfFiles: 1,
-        allowedFileTypes: ['image/*', 'video/*'],
+        allowedFileTypes: ['image/*'],
       },
     }).use(Dashboard,
       {
@@ -118,7 +118,7 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
         showProgressDetails: true,
         inline: true,
         hideProgressAfterFinish: true,
-        target: this.uppyDashboard.nativeElement,
+        target: this.uppyDashboardImages().nativeElement,
         proudlyDisplayPoweredByUppy: false,
         locale: {
           strings: {
@@ -127,35 +127,80 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
         }
       })
       .use(XHRUpload, {
-        endpoint: 'https://api.cloudinary.com/v1_1/dv7skd1y3/upload',
+        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
         formData: true,
         fieldName: 'file',
         headers: {
-          'X-Requested-With': 'XMLHttpRequest',
+          'Authorization': `Bearer ${this.#cloudflareToken}`,
         },
-        allowedMetaFields: ['upload_preset', 'api_key'],
+        allowedMetaFields: ['requireSignedURLs'],
       })
       .on('complete', (result) => {
-        result.successful.forEach(file => {
-          const url = file.uploadURL;
+        result.successful.forEach((file: any) => {
+          const url = file.response.body.result.variants[0];
 
-          if (file?.type?.includes('image')) {
-            this.interiorPhotos.setValue([...this.interiorPhotos.value, url]);
-          } else if (file?.type?.includes('video')) {
-            this.interiorVideos.setValue([...this.interiorVideos.value, url]);
-          }
-          this.uppyDashboard.nativeElement.click();
+          this.interiorPhotos.setValue([...this.interiorPhotos.value, url]);
+
+          this.uppyDashboardImages().nativeElement.click();
 
           file.meta['uploadURL'] = url;
         });
       }).on('file-removed', (file) => {
         const urlToRemove = file.meta['uploadURL'];
 
-        if (file?.type?.includes('image')) {
-          this.interiorPhotos.setValue(this.interiorPhotos.value.filter((url: string) => url !== urlToRemove));
-        } else if (file?.type?.includes('video')) {
-          this.interiorVideos.setValue(this.interiorVideos.value.filter((url: string) => url !== urlToRemove));
+        this.interiorPhotos.setValue(this.interiorPhotos.value.filter((url: string) => url !== urlToRemove));
+      });
+
+    this.uppy = new Uppy({
+      debug: true,
+      autoProceed: true,
+      locale: Spanish,
+      restrictions: {
+        // maxFileSize: 1000000,
+        // maxNumberOfFiles: 20,
+        minNumberOfFiles: 1,
+        allowedFileTypes: ['video/*'],
+      },
+    }).use(Dashboard,
+      {
+        height: 300,
+        hideUploadButton: true,
+        hideCancelButton: true,
+        showRemoveButtonAfterComplete: true,
+        showProgressDetails: true,
+        inline: true,
+        hideProgressAfterFinish: true,
+        target: this.uppyDashboardVideos().nativeElement,
+        proudlyDisplayPoweredByUppy: false,
+        locale: {
+          strings: {
+            dropPasteFiles: 'Arrastra y suelta tus videos aquí o %{browse}',
+          }
         }
+      })
+      .use(XHRUpload, {
+        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/stream`,
+        formData: true,
+        fieldName: 'file',
+        headers: {
+          'Authorization': `Bearer ${this.#cloudflareToken}`,
+        },
+        allowedMetaFields: ['requireSignedURLs'],
+      })
+      .on('complete', (result) => {
+        result.successful.forEach((file: any) => {
+          const url = file.response.body.result.preview;
+
+          this.interiorVideos.setValue([...this.interiorVideos.value, url]);
+
+          this.uppyDashboardVideos().nativeElement.click();
+
+          file.meta['uploadURL'] = url;
+        });
+      }).on('file-removed', (file) => {
+        const urlToRemove = file.meta['uploadURL'];
+
+        this.interiorVideos.setValue(this.interiorVideos.value.filter((url: string) => url !== urlToRemove));
       });
   }
 

@@ -50,6 +50,7 @@ export class ReleaseCarForLiveAuctionModalComponent {
     this.releaseCarForLiveAuctionForm.reset();
     if (this.isOpen()) {
       this.originalAuctionCarIdControl.setValue(this.originalAuctionCarId());
+      this.getTentativeTitle();
     }
   });
 
@@ -60,6 +61,7 @@ export class ReleaseCarForLiveAuctionModalComponent {
   constructor() {
     this.releaseCarForLiveAuctionForm = this.#formBuilder.group({
       originalAuctionCarId: ['', Validators.required],
+      title: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       premium: ['', Validators.required],
@@ -96,6 +98,17 @@ export class ReleaseCarForLiveAuctionModalComponent {
       }
     }).add(() => {
       this.releaseCarForLiveAuctionSubmitButtonIsDisabled.set(false);
+    });
+  }
+
+  getTentativeTitle(): void {
+    this.#releaseCarForLiveAuctionService.getTentativeTitle$(this.originalAuctionCarIdControl.value).subscribe({
+      next: (tentativeTitle) => {
+        this.releaseCarForLiveAuctionForm.patchValue({ title: tentativeTitle.data.attributes.year + ' ' + tentativeTitle.data.attributes.brand + ' ' + tentativeTitle.data.attributes.carModel });
+      },
+      error: (error) => {
+        console.error(error);
+      }
     });
   }
 
