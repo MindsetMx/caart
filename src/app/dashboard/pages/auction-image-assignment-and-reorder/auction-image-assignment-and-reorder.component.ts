@@ -61,6 +61,10 @@ export class AuctionImageAssignmentAndReorderComponent {
     return this.auctionImagesForm.get('fotoPrincipal') as FormControl;
   }
 
+  get fotoCatalogo(): FormControl {
+    return this.auctionImagesForm.get('fotoCatalogo') as FormControl;
+  }
+
   get fotosSliderPrincipal(): FormArray {
     return this.auctionImagesForm.get('fotosSliderPrincipal') as FormArray;
   }
@@ -84,6 +88,7 @@ export class AuctionImageAssignmentAndReorderComponent {
 
     this.auctionImagesForm = this.#formBuilder.group({
       fotoPrincipal: ['', Validators.required],
+      fotoCatalogo: ['', Validators.required],
     });
   }
 
@@ -186,6 +191,7 @@ export class AuctionImageAssignmentAndReorderComponent {
     this.#auctionImageAssigmentAndReorderService.imagesPublish$(this.originalAuctionCarId()).subscribe({
       next: (response: ImagesPublish) => {
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(response.data.fotoPrincipal, Validators.required));
+        this.auctionImagesForm.setControl('fotoCatalogo', this.#formBuilder.control(response.data.fotoCatalogo, Validators.required));
         this.auctionImagesForm.setControl('fotosSliderPrincipal', this.#formBuilder.array(response.data.fotosSliderPrincipal.map(
           (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
         )));
@@ -211,9 +217,17 @@ export class AuctionImageAssignmentAndReorderComponent {
 
   openModal(varName: WritableSignal<boolean>, formFieldName: string, cropImage: boolean, index?: number): void {
     if (cropImage) {
-      (formFieldName === 'fotosSliderPrincipal')
-        ? this.aspectRatio.set(1.5 / 1)
-        : this.aspectRatio.set(16 / 9);
+      switch (formFieldName) {
+        case 'fotoCatalogo':
+          this.aspectRatio.set(16 / 11);
+          break;
+        case 'fotosSliderPrincipal':
+          this.aspectRatio.set(1.5 / 1);
+          break;
+        default:
+          this.aspectRatio.set(16 / 9);
+          break;
+      }
     }
 
     (index !== undefined)

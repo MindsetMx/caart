@@ -33,6 +33,25 @@
         }
       </div>
 
+      <!-- fotoCatalogo -->
+      <h2 class="mb-2">Foto portada catálogo</h2>
+      <div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          @if(fotoCatalogo.value) {
+          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoCatalogo', true)">
+            <img [src]="fotoCatalogo.value" class="cell object-contain" />
+          </button>
+          }@else {
+          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoCatalogo', true)" class="cell">
+            Foto portada catálogo
+          </button>
+          }
+        </div>
+        @if (hasError('fotoCatalogo')) {
+        <shared-input-error [message]="getError('fotoCatalogo')"></shared-input-error>
+        }
+      </div>
+
       @defer (when fotosSliderPrincipal) {
       <div>
         <h2 class="mb-2">Fotos slider principal</h2>

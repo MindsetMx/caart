@@ -17,6 +17,7 @@ export interface AuctionDetailsAttributes {
   categories: string[];
   dataUser: dataUser;
   endDate: string;
+  title: string;
   exteriorDetails: ExteriorDetails;
   extras: Extras;
   interiorDetails: InteriorDetails;

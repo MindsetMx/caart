@@ -1,127 +1,31 @@
-<div class="container mb-32">
-  @defer (when auction().data) {
-
-  <div class="sticky md:static inset-0 z-10 bg-white pt-4 md:pb-0 pb-2">
-    <h1 class="font-optima font-semibold inline-block text-2xl md:text-3xl mr-4 mb-2">
-      {{auction().data.attributes.auctionCarForm.year}} {{auction().data.attributes.auctionCarForm.brand}}
-      {{auction().data.attributes.auctionCarForm.carModel}} {{offeredAmount()}}
-    </h1>
-    <div
-      class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
-      @if(specificAuction().data && specificAuction().data.bids.length > 0) {
-      <div class="py-1">
-        <p class="font-bold">
-          {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-        </p>
-        <span class="hidden md:block text-gray4 text-sm">
-          <!-- {{ (specificAuction().data.status === 'cancelled') ? 'Última oferta realizada' : 'Oferta actual'}} -->
-          @switch (specificAuction().data.status) {
-          @case ('cancelled') {
-          Última oferta realizada
+<div class="mb-32">
+  <div class="sticky inset-0 z-10 bg-white pt-4 pb-2">
+    <div class="container">
+      <h1 class="font-lato font-black flex text-2xl md:text-4xl mr-4 mb-2">
+        {{auction().data.attributes.title}}
+        @if (auction().data.attributes.auctionCarForm.reserve === false || auction().data.attributes.premium) {
+        <span class="hidden space-x-2 md:flex md:items-center ml-4">
+          @if (auction().data.attributes.auctionCarForm.reserve === false) {
+          <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
+            Sin Reserva
+          </span>
           }
-
-          @case ('completed') {
-          Vendido en
-          }
-
-          @default {
-          Oferta actual
-          }
+          @if (auction().data.attributes.premium) {
+          <span
+            class="inline-block text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
+            Premium
+          </span>
           }
         </span>
-      </div>
-      }
-      @if (countdownConfig().leftTime! > 0) {
-      <div>
-        <div class="bg-gray1 rounded-lg px-3 py-1">
-          <countdown class="text-red2 font-bold" [config]="countdownConfig()"
-            [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
-          <br>
-          <!-- <span class="text-gray4 text-sm">Hoy 18:00 PM</span> -->
-          <span class="hidden md:block text-gray4 text-sm">
-            {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
-            a'}}
-          </span>
-        </div>
-      </div>
-      }
-      <div>
-        <div class="hidden md:block py-1">
-          <!-- <p class="font-bold text-lg">18</p> -->
-          <p class="inline lg:block font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</p>
-          <span class="text-gray4 text-sm"> Ofertas</span>
-        </div>
-        @defer (when specificAuction().data) {
-        @if (specificAuction().data.status === 'active') {
-        <div class="md:hidden">
-          <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-            py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-            HACER UNA OFERTA
-          </button>
-        </div>
         }
-        }
-      </div>
-      @defer (when specificAuction().data) {
-      @switch (specificAuction().data.status) {
-      @case ('cancelled') {
-      <div class="py-1">
-        <p class="font-bold text-red2">Reserva no alcanzada</p>
-      </div>
-      }
-      @case ('completed') {
-      <div class="py-1">
-        <p class="font-bold text-green1">Vendido</p>
-      </div>
-      }
-      }
-      }
-    </div>
-  </div>
-
-  <section>
-    <!-- <div class="flex items-center"> -->
-
-    @if (auction().data.attributes.auctionCarForm.reserve === false || auction().data.attributes.premium) {
-    <span class="hidden space-x-2 md:inline-block">
-      @if (auction().data.attributes.auctionCarForm.reserve === false) {
-      <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
-        Sin Reserva
-      </span>
-      }
-      @if (auction().data.attributes.premium) {
-      <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">
-        Premium
-      </span>
-      }
-    </span>
-    }
-    <!-- </div> -->
-
-    <div class="grid gap-y-4 md:flex mb-4 w-full md:justify-between">
+      </h1>
       <div
-        class="hidden md:grid items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
+        class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
         @if(specificAuction().data && specificAuction().data.bids.length > 0) {
         <div class="py-1">
           <p class="font-bold">
             {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
           </p>
-          <span class="hidden md:block text-gray4 text-sm">
-            <!-- {{ (specificAuction().data.status === 'cancelled') ? 'Última oferta realizada' : 'Oferta actual'}} -->
-            @switch (specificAuction().data.status) {
-            @case ('cancelled') {
-            Última oferta realizada
-            }
-
-            @case ('completed') {
-            Vendido en
-            }
-
-            @default {
-            Oferta actual
-            }
-            }
-          </span>
         </div>
         }
         @if (countdownConfig().leftTime! > 0) {
@@ -130,7 +34,6 @@
             <countdown class="text-red2 font-bold" [config]="countdownConfig()"
               [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
             <br>
-            <!-- <span class="text-gray4 text-sm">Hoy 18:00 PM</span> -->
             <span class="hidden md:block text-gray4 text-sm">
               {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
               a'}}
@@ -159,530 +62,609 @@
         @switch (specificAuction().data.status) {
         @case ('cancelled') {
         <div class="py-1">
-          <p class="font-bold text-red2">Reserva no alcanzada</p>
+          <!-- Reserva no alcanzada -->
+          <p class="font-bold border border-red-700 bg-[#f0aeae] text-red-700 px-2 py-1 rounded-xl text-xs">
+            Reserva no alcanzada
+          </p>
         </div>
         }
         @case ('completed') {
         <div class="py-1">
-          <p class="font-bold text-green1">Vendido</p>
+          <p class="font-bold border border-green-700 bg-[#b6f0ae] text-green-700 px-2 py-1 rounded-xl text-xs">
+            Vendido
+          </p>
         </div>
         }
         }
         }
       </div>
-
-      <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
-        <span class="md:hidden space-x-2 inline-block">
-          @if (auction().data.attributes.auctionCarForm.reserve === false) {
-          <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
-            Sin Reserva
-          </span>
+      <div class="grid gap-y-4 md:flex w-full md:justify-between">
+        <div
+          class="hidden md:grid items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
+          @if(specificAuction().data && specificAuction().data.bids.length > 0) {
+          <div class="py-1">
+            <p class="text-xl">
+              {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+            </p>
+          </div>
           }
-          @if (auction().data.attributes.premium) {
-          <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">
-            Premium
-          </span>
+          <div>
+            <div class="hidden md:block py-1 ml-4">
+              <!-- <p class="font-bold text-lg">18</p> -->
+              <p class="inline lg:block text-xl">
+                <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</span>
+                Ofertas
+              </p>
+            </div>
+            @defer (when specificAuction().data) {
+            @if (specificAuction().data.status === 'active') {
+            <div class="md:hidden">
+              <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
+                py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
+                HACER UNA OFERTA
+              </button>
+            </div>
+            }
+            }
+          </div>
+          @if (countdownConfig().leftTime! > 0) {
+          <div>
+            <div class="ml-4">
+              <countdown class="text-red2 font-bold text-xl" [config]="countdownConfig()"
+                [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
+              <br>
+              <!-- <span class="hidden md:block text-gray4 text-sm">
+                {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
+                a'}}
+              </span> -->
+            </div>
+          </div>
           }
-        </span>
-
-        <div class="ml-auto">
-          <img class="inline-block w-7 h-7" src="assets/img/icons/share.svg" alt="">
+          @defer (when specificAuction().data) {
+          @switch (specificAuction().data.status) {
+          @case ('cancelled') {
+          <div class="py-1">
+            <!-- Reserva no alcanzada -->
+            <p class="font-bold ml-4 border border-red-700 bg-[#f0aeae] text-red-700 px-6 py-1 rounded-xl">
+              Reserva no alcanzada
+            </p>
+          </div>
+          }
+          @case ('completed') {
+          <div class="py-1">
+            <p class="font-bold ml-4 border border-green-700 bg-[#b6f0ae] text-green-700 px-6 py-1 rounded-xl">
+              Vendido
+            </p>
+          </div>
+          }
+          }
+          }
         </div>
-        <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionCarId)">
-          <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block w-7 h-7"></shared-star>
-        </button>
-        <div class="col-span-2 md:col-span-1">
+        <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
+          <span class="md:hidden space-x-2 inline-block">
+            @if (auction().data.attributes.auctionCarForm.reserve === false) {
+            <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
+              Sin Reserva
+            </span>
+            }
+            @if (auction().data.attributes.premium) {
+            <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">
+              Premium
+            </span>
+            }
+          </span>
+          <div class="ml-auto">
+            <img class="inline-block w-7 h-7" src="assets/img/icons/share.svg" alt="">
+          </div>
+          <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionCarId)">
+            <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block w-7 h-7"></shared-star>
+          </button>
+          <div class="col-span-2 md:col-span-1">
+            @defer (when specificAuction().data) {
+            @if (specificAuction().data.status === 'active') {
+            <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
+              classes="hidden md:block font-lato font-semibold text-xs" sharedPrimaryButton>
+              OFERTAR
+            </button>
+            }
+            }
+            <div class="block md:hidden">
+              <!-- <p class="font-bold text-lg">18</p> -->
+              @if (specificAuction().data) {
+              <p class="inline lg:block font-bold">{{specificAuction().data.bids.length}}</p>
+              }
+              <span class="text-gray4 text-sm"> Ofertas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    @defer (when auction().data) {
+
+    <section>
+      <!-- <div class="flex items-center"> -->
+      <!-- </div> -->
+
+      <div class="grid grid-cols-12 gap-4">
+        <div class="col-span-12 md:col-span-8">
+          <div class="flex h-full">
+            <a class="w-full flex" [href]="auction().data.attributes.auctionCarForm.photos[0]" data-fancybox="gallery">
+              <img class="h-full object-cover w-full md:max-h-60 lg:max-h-80 xl:max-h-[30rem] 2xl:max-h-[35rem]"
+                [src]="auction().data.attributes.auctionCarForm.photos[0]" alt="">
+            </a>
+          </div>
+        </div>
+        <div class="hidden col-span-4 md:grid grid-cols-2 gap-4">
+          <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[0]" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[0]" alt="">
+          </a>
+          <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[1]" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[1]" alt="">
+          </a>
+          <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[2]" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[2]" alt="">
+          </a>
+          <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[3]" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[3]" alt="">
+          </a>
+          <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[4]" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[4]" alt="">
+          </a>
+          <a class="flex h-full relative" [href]="imagesPublish().data.fotosSliderPrincipal[5]" data-fancybox="gallery">
+            <div class="flex absolute inset-0 overflow-hidden">
+              <img class="object-cover w-full" [src]="imagesPublish().data.fotosSliderPrincipal[5]" alt="">
+            </div>
+            <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
+            <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
+              Ver todas las fotos (
+              {{
+              1 +
+              imagesPublish().data.fotosSliderPrincipal.length +
+              imagesPublish().data.fotosMecanicas.length + imagesPublish().data.fotosInterior.length +
+              imagesPublish().data.fotosExterior.length
+              }})
+            </div>
+          </a>
+          @for (item of imagesPublish().data.fotosSliderPrincipal.slice(6); track $index) {
+          <a class="hidden" [href]="item" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="item" alt="">
+          </a>
+          }
+          @for (item of imagesPublish().data.fotosExterior; track $index) {
+          <a class="hidden" [href]="item" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="item" alt="">
+          </a>
+          }
+          @for (item of imagesPublish().data.fotosInterior; track $index) {
+          <a class="hidden" [href]="item" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="item" alt="">
+          </a>
+          }
+          @for (item of imagesPublish().data.fotosMecanicas; track $index) {
+          <a class="hidden" [href]="item" data-fancybox="gallery">
+            <img class="object-cover h-full" [src]="item" alt="">
+          </a>
+          }
+
+          <!-- <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
+            <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
+          </a>
+          <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
+            <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
+          </a>
+          <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
+            <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
+          </a> -->
+        </div>
+      </div>
+    </section>
+    }
+
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12 md:col-span-7">
+        <section class="flex justify-between mt-4">
+          <!-- <div class="underline">5 Comentarios</div> -->
+          @defer (when comments().data) {
+          <div class="underline">{{comments().data.length}} Comentarios</div>
+          }
+          <!-- @defer (when comments().data) {
+          <div class="underline">{{comments().data.length}} Comentarios</div>
+          } -->
+
+          @defer (when metrics().data) {
+          <div class="text-gray4 text-sm flex space-x-4">
+            <div class="flex items-center">
+              <img class="mr-2" src="assets/img/icons/eye-outline.svg">
+              {{metrics().data.attributes.visualizations | number}}
+            </div>
+            <div class="flex items-center">
+              <shared-star class="mr-2" classes="text-gray4 w-5 h-5"></shared-star>
+              {{metrics().data.attributes.followedCount | number}}
+            </div>
+          </div>
+          }
+        </section>
+
+        <hr class="my-4">
+
+        @defer (when auction().data) {
+        <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
+          <ul class="space-y-1">
+            <li>
+              <span class="text-gray4">Marca:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.brand}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Modelo:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.carModel}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Año:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.year}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">VIN:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.exteriorDetails.VIN}}</span>
+            </li>
+          </ul>
+
+          <ul class="space-y-1">
+            <li>
+              <!-- <span class="text-gray4">Km:</span>&nbsp;<span class="font-semibold">19,914</span> -->
+              <span class="text-gray4">Km:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.kmInput | number}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Transmisión:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.transmissionType}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Color:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.exteriorColor}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Entregado en:</span>&nbsp;<span class="font-semibold">CDMX, México</span>
+            </li>
+          </ul>
+        </section>
+        }
+
+        <section class="md:hidden mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+          <h3 class="font-semibold mb-2">Información adicional</h3>
+
+          <!-- <ul class="list-inside list-disc text-gray4">
+            <li>Rines “X”</li>
+            <li>Faros “X”</li>
+            <li>Adaptación “X”</li>
+            <li>Llanta “X”</li>
+            <li>Polarizado “X”</li>
+          </ul> -->
+          @if (auction().data) {
+          <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
+
+          <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
+
+          <ul class="space-y-1">
+            <li>
+              <span class="text-gray4">Lote #:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.lotNumber}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Ubicación:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.city}},
+                {{auction().data.attributes.auctionCarForm.state}}</span>
+            </li>
+          </ul>
+
+          <div class="my-4">
+            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+            <!-- <span class="align-middle">John Smith</span> -->
+            <span class="align-middle">{{auction().data.attributes.dataUser.username}}</span>
+          </div>
+
+          <div>
+            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+          </div>
+
+          <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
+
+          <!-- <ul class="list-inside list-disc text-gray4 mb-8">
+            <li>Tenencia: $1,000 MXN</li>
+            <li>Comisión dealer: $3,100 MXN</li>
+          </ul> -->
+
+          <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.extras.additionalCharges"></div> -->
+          <ol class="list-inside list-disc mb-8">
+            @for (item of auction().data.attributes.extras.additionalCharges; track $index) {
+            <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+            }
+          </ol>
+          }
+
           @defer (when specificAuction().data) {
           @if (specificAuction().data.status === 'active') {
-          <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
-            classes="hidden md:block font-optima font-semibold text-xs" sharedPrimaryButton>
+          <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
             HACER UNA OFERTA
           </button>
           }
           }
-          <div class="block md:hidden">
-            <!-- <p class="font-bold text-lg">18</p> -->
-            @if (specificAuction().data) {
-            <p class="inline lg:block font-bold">{{specificAuction().data.bids.length}}</p>
+        </section>
+
+        <hr class="my-6">
+
+        @defer (when auction().data) {
+        <section class="space-y-4">
+          <!-- <div class="break-words" [innerHTML]="auction().data.attributes.carHistory.content"></div> -->
+          <!-- <pre>
+            {{auction().data.attributes.carHistory | json}}
+          </pre> -->
+
+          @for (item of auction().data.attributes.carHistory.blocks; track $index) {
+          @switch (item.type) {
+          @case ('text') {
+          <p>
+            {{item.content}}
+          </p>
+          }
+
+          @case ('image') {
+          <img class="w-full" [src]="item.content" alt="">
+          }
+          }
+          }
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
+          <swiper-container init="false" #videoGallery>
+            @for (item of this.auction().data.attributes.exteriorDetails.exteriorVideos; track $index) {
+            <swiper-slide class="pb-12">
+              <a class="relative" [href]="item" data-fancybox="gallery2">
+                <img [src]="getPhotoFromVideoUrl(item)" alt="">
+                <img src="assets/img/icons/play-circle.svg" alt=""
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
+              </a>
+            </swiper-slide>
             }
-            <span class="text-gray4 text-sm"> Ofertas</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-12 md:col-span-8">
-        <div class="flex h-full">
-          <a class="w-full flex" [href]="auction().data.attributes.auctionCarForm.photos[0]" data-fancybox="gallery">
-            <img class="h-full object-cover w-full md:max-h-60 lg:max-h-80 xl:max-h-[30rem] 2xl:max-h-[35rem]"
-              [src]="auction().data.attributes.auctionCarForm.photos[0]" alt="">
-          </a>
-        </div>
-      </div>
-      <div class="hidden col-span-4 md:grid grid-cols-2 gap-4">
-        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[0]" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[0]" alt="">
-        </a>
-        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[1]" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[1]" alt="">
-        </a>
-        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[2]" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[2]" alt="">
-        </a>
-        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[3]" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[3]" alt="">
-        </a>
-        <a class="flex" [href]="imagesPublish().data.fotosSliderPrincipal[4]" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="imagesPublish().data.fotosSliderPrincipal[4]" alt="">
-        </a>
-        <a class="flex h-full relative" [href]="imagesPublish().data.fotosSliderPrincipal[5]" data-fancybox="gallery">
-          <div class="flex absolute inset-0 overflow-hidden">
-            <img class="object-cover w-full" [src]="imagesPublish().data.fotosSliderPrincipal[5]" alt="">
-          </div>
-          <div aria-hidden="true" class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
-          <div class="absolute inset-0 flex justify-center items-center underline text-white text-xs lg:text-sm">
-            Ver todas las fotos ({{imagesPublish().data.fotosSliderPrincipal.length +
-            imagesPublish().data.fotosMecanicas.length + imagesPublish().data.fotosInterior.length +
-            imagesPublish().data.fotosExterior.length}})
-          </div>
-        </a>
-        @for (item of imagesPublish().data.fotosSliderPrincipal.slice(6); track $index) {
-        <a class="hidden" [href]="item" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="item" alt="">
-        </a>
-        }
-        @for (item of imagesPublish().data.fotosExterior; track $index) {
-        <a class="hidden" [href]="item" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="item" alt="">
-        </a>
-        }
-        @for (item of imagesPublish().data.fotosInterior; track $index) {
-        <a class="hidden" [href]="item" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="item" alt="">
-        </a>
-        }
-        @for (item of imagesPublish().data.fotosMecanicas; track $index) {
-        <a class="hidden" [href]="item" data-fancybox="gallery">
-          <img class="object-cover h-full" [src]="item" alt="">
-        </a>
-        }
-
-        <!-- <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
-          <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
-        </a>
-        <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
-          <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
-        </a>
-        <a class="hidden" href="assets/img/home/carousel/banner.png" data-fancybox="gallery">
-          <img class="object-cover" src="assets/img/home/carousel/banner.png" alt="">
-        </a> -->
-      </div>
-    </div>
-  </section>
-  }
-
-  <div class="grid grid-cols-12 gap-4">
-    <div class="col-span-12 md:col-span-7">
-      <section class="flex justify-between mt-4">
-        <!-- <div class="underline">5 Comentarios</div> -->
-        @defer (when comments().data) {
-        <div class="underline">{{comments().data.length}} Comentarios</div>
-        }
-        <!-- @defer (when comments().data) {
-        <div class="underline">{{comments().data.length}} Comentarios</div>
-        } -->
-
-        @defer (when metrics().data) {
-        <div class="text-gray4 text-sm flex space-x-4">
-          <div class="flex items-center">
-            <img class="mr-2" src="assets/img/icons/eye-outline.svg">
-            {{metrics().data.attributes.visualizations | number}}
-          </div>
-          <div class="flex items-center">
-            <shared-star class="mr-2" classes="text-gray4 w-5 h-5"></shared-star>
-            {{metrics().data.attributes.followedCount | number}}
-          </div>
-        </div>
-        }
-      </section>
-
-      <hr class="my-4">
-
-      @defer (when auction().data) {
-      <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
-        <ul class="space-y-1">
-          <li>
-            <span class="text-gray4">Marca:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.brand}}</span>
-          </li>
-          <li>
-            <span class="text-gray4">Modelo:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.carModel}}</span>
-          </li>
-          <li>
-            <span class="text-gray4">Año:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.year}}</span>
-          </li>
-          <li>
-            <span class="text-gray4">VIN:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.exteriorDetails.VIN}}</span>
-          </li>
-        </ul>
-
-        <ul class="space-y-1">
-          <li>
-            <!-- <span class="text-gray4">Km:</span>&nbsp;<span class="font-semibold">19,914</span> -->
-            <span class="text-gray4">Km:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.kmInput | number}}</span>
-          </li>
-          <li>
-            <span class="text-gray4">Transmisión:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.transmissionType}}</span>
-          </li>
-          <li>
-            <span class="text-gray4">Color:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.exteriorColor}}</span>
-          </li>
-          <li>
-            <span class="text-gray4">Entregado en:</span>&nbsp;<span class="font-semibold">CDMX, México</span>
-          </li>
-        </ul>
-      </section>
-      }
-
-      <section class="md:hidden mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
-        <h3 class="font-semibold mb-2">Información adicional</h3>
-
-        <!-- <ul class="list-inside list-disc text-gray4">
-          <li>Rines “X”</li>
-          <li>Faros “X”</li>
-          <li>Adaptación “X”</li>
-          <li>Llanta “X”</li>
-          <li>Polarizado “X”</li>
-        </ul> -->
-        @if (auction().data) {
-        <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
-
-        <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
-
-        <ul class="space-y-1">
-          <li>
-            <span class="text-gray4">Lote #:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.lotNumber}}</span>
-          </li>
-          <li>
-            <span class="text-gray4">Ubicación:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.city}},
-              {{auction().data.attributes.auctionCarForm.state}}</span>
-          </li>
-        </ul>
-
-        <div class="my-4">
-          <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
-          <!-- <span class="align-middle">John Smith</span> -->
-          <span class="align-middle">{{auction().data.attributes.dataUser.username}}</span>
-        </div>
-
-        <div>
-          <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
-        </div>
-
-        <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
-
-        <!-- <ul class="list-inside list-disc text-gray4 mb-8">
-          <li>Tenencia: $1,000 MXN</li>
-          <li>Comisión dealer: $3,100 MXN</li>
-        </ul> -->
-
-        <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.extras.additionalCharges"></div> -->
-        <ol class="list-inside list-disc mb-8">
-          @for (item of auction().data.attributes.extras.additionalCharges; track $index) {
-          <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
-          }
-        </ol>
-        }
-
-        @defer (when specificAuction().data) {
-        @if (specificAuction().data.status === 'active') {
-        <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
-          HACER UNA OFERTA
-        </button>
-        }
-        }
-      </section>
-
-      <hr class="my-6">
-
-      @defer (when auction().data) {
-      <section class="space-y-4">
-        <!-- <div class="break-words" [innerHTML]="auction().data.attributes.carHistory.content"></div> -->
-        <!-- <pre>
-          {{auction().data.attributes.carHistory | json}}
-        </pre> -->
-
-        @for (item of auction().data.attributes.carHistory.blocks; track $index) {
-        @switch (item.type) {
-        @case ('text') {
-        <p>
-          {{item.content}}
-        </p>
-        }
-
-        @case ('image') {
-        <img class="w-full" [src]="item.content" alt="">
-        }
-        }
-        }
-      </section>
-
-      <section>
-        <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
-        <swiper-container init="false" #videoGallery>
-          @for (item of this.auction().data.attributes.exteriorDetails.exteriorVideos; track $index) {
-          <swiper-slide class="pb-12">
-            <a class="relative" [href]="item" data-fancybox="gallery2">
-              <img [src]="getPhotoFromVideoUrl(item)" alt="">
-              <img src="assets/img/icons/play-circle.svg" alt=""
-                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
-            </a>
-          </swiper-slide>
-          }
-        </swiper-container>
-      </section>
-      }
-
-      @defer (when auction().data) {
-
-      <section class="mt-6">
-        <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
-
-        <image-gallery [photos]="auction().data.attributes.exteriorDetails.exteriorPhotos"></image-gallery>
-      </section>
-
-      <section class="mt-6">
-        <h2 class="text-xl font-bold mb-6">Galería de fotos interiores</h2>
-
-        <image-gallery [photos]="auction().data.attributes.interiorDetails.interiorPhotos"></image-gallery>
-      </section>
-
-      <section class="mt-6">
-        <h2 class="text-xl font-bold mb-6">Galería de fotos mecánicas</h2>
-
-        <image-gallery [photos]="auction().data.attributes.mechanicsDetails.mechanicsPhotos"></image-gallery>
-      </section>
-
-      <auction-summary class="hidden md:block" [auction]="auction()" [metrics]="metrics()"
-        [specificAuction]="specificAuction()" [auctionType]="auctionType.car"
-        (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
-      </auction-summary>
-
-      <section class="mt-6">
-        @defer (when comments().data) {
-        <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
+          </swiper-container>
+        </section>
         }
 
         @defer (when auction().data) {
-        <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
-          [auctionType]="auctionType.car" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
-          placeholder="Agregar un comentario" (commentCreated)="getComments()"></comments-textarea>
-        }
 
-        <!-- <div class="mt-4">
-          <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
-          <span class="underline">Mantenme en la conversación por correo</span>
-        </div> -->
+        <section class="mt-6">
+          <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
 
-        @for (comment of comments().data; track $index) {
-        <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
-          [auctionType]="auctionType.car" (commentCreated)="getComments()"></comment>
-        }
+          <image-gallery [photos]="auction().data.attributes.exteriorDetails.exteriorPhotos"></image-gallery>
+        </section>
 
-        <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
-          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-            Nov 15 a las 03:38 PM
-          </div>
-          <div class="md:col-span-9 mb-4 md:mb-0">
-            <div class="px-2 py-1 rounded-lg bg-gray1">
-              <p class="font-semibold">John Smith (Vendedor)</p>
-              <p>19,914 km</p>
-              <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-              <span class="align-middle">2</span>
-            </div>
-          </div>
+        <section class="mt-6">
+          <h2 class="text-xl font-bold mb-6">Galería de fotos interiores</h2>
 
-          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-            Nov 15 a las 02:54 PM
-          </div>
-          <div class="md:col-span-9 mb-4 md:mb-0">
-            <div class="px-2 py-1">
-              <p class="font-semibold">Andrés Gallardo</p>
-              <p>¿Qué kilometraje tiene el auto?</p>
-              <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-              <span class="align-middle">0</span>
-            </div>
-          </div>
+          <image-gallery [photos]="auction().data.attributes.interiorDetails.interiorPhotos"></image-gallery>
+        </section>
 
-          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-            Nov 15 a las 02:38 PM
-          </div>
-          <div class="md:col-span-9 mb-4 md:mb-0">
-            <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
-              Nueva puja de $215,000 por Adam Smith
-            </div>
-          </div>
+        <section class="mt-6">
+          <h2 class="text-xl font-bold mb-6">Galería de fotos mecánicas</h2>
 
-          <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-            Nov 15 a las 11:43 AM
-          </div>
-          <div class="md:col-span-9 mb-4 md:mb-0">
-            <div class="px-2 py-1">
-              <p class="font-semibold">Andrés Gallardo</p>
-              <p>El color es magnifico</p>
-              <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-              <span class="align-middle">0</span>
-            </div>
-          </div>
-        </div> -->
-      </section>
-      }
+          <image-gallery [photos]="auction().data.attributes.mechanicsDetails.mechanicsPhotos"></image-gallery>
+        </section>
 
-      <recently-completed-auctions class="hidden md:block" [auctionId]="auctionId()!"></recently-completed-auctions>
-    </div>
-    <div class="col-span-12 md:col-span-5">
-      <section
-        class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
-        <h3 class="font-semibold mb-2">Información adicional</h3>
+        <auction-summary class="hidden md:block" [auction]="auction()" [metrics]="metrics()"
+          [specificAuction]="specificAuction()" [auctionType]="auctionType.car"
+          (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
+        </auction-summary>
 
-        <!-- <ul class="list-inside list-disc text-gray4">
-          <li>Rines “X”</li>
-          <li>Faros “X”</li>
-          <li>Adaptación “X”</li>
-          <li>Llanta “X”</li>
-          <li>Polarizado “X”</li>
-        </ul> -->
-        @if (auction().data) {
-        <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
-
-        <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
-
-        <ul class="space-y-1">
-          <li>
-            <span class="text-gray4">Lote #:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.lotNumber}}</span>
-          </li>
-          <li>
-            <span class="text-gray4">Ubicación:</span>&nbsp;<span
-              class="font-semibold">{{auction().data.attributes.auctionCarForm.city}},
-              {{auction().data.attributes.auctionCarForm.state}}</span>
-          </li>
-        </ul>
-
-        <div class="my-4">
-          <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
-          <!-- <span class="align-middle">John Smith</span> -->
-          <span class="align-middle">{{auction().data.attributes.dataUser.username}}</span>
-        </div>
-
-        <div>
-          <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
-        </div>
-
-        <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
-
-        <!-- <ul class="list-inside list-disc text-gray4 mb-8">
-          <li>Tenencia: $1,000 MXN</li>
-          <li>Comisión dealer: $3,100 MXN</li>
-        </ul> -->
-
-        <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.extras.additionalCharges"></div> -->
-        <ol class="list-inside list-disc mb-8">
-          @for (item of auction().data.attributes.extras.additionalCharges; track $index) {
-          <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+        <section class="mt-6">
+          @defer (when comments().data) {
+          <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
           }
-        </ol>
+
+          @defer (when auction().data) {
+          <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
+            [auctionType]="auctionType.car" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
+            placeholder="Agregar un comentario" (commentCreated)="getComments()"></comments-textarea>
+          }
+
+          <!-- <div class="mt-4">
+            <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
+            <span class="underline">Mantenme en la conversación por correo</span>
+          </div> -->
+
+          @for (comment of comments().data; track $index) {
+          <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
+            [auctionType]="auctionType.car" (commentCreated)="getComments()"></comment>
+          }
+
+          <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
+            <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+              Nov 15 a las 03:38 PM
+            </div>
+            <div class="md:col-span-9 mb-4 md:mb-0">
+              <div class="px-2 py-1 rounded-lg bg-gray1">
+                <p class="font-semibold">John Smith (Vendedor)</p>
+                <p>19,914 km</p>
+                <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                <span class="align-middle">2</span>
+              </div>
+            </div>
+
+            <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+              Nov 15 a las 02:54 PM
+            </div>
+            <div class="md:col-span-9 mb-4 md:mb-0">
+              <div class="px-2 py-1">
+                <p class="font-semibold">Andrés Gallardo</p>
+                <p>¿Qué kilometraje tiene el auto?</p>
+                <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                <span class="align-middle">0</span>
+              </div>
+            </div>
+
+            <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+              Nov 15 a las 02:38 PM
+            </div>
+            <div class="md:col-span-9 mb-4 md:mb-0">
+              <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
+                Nueva puja de $215,000 por Adam Smith
+              </div>
+            </div>
+
+            <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+              Nov 15 a las 11:43 AM
+            </div>
+            <div class="md:col-span-9 mb-4 md:mb-0">
+              <div class="px-2 py-1">
+                <p class="font-semibold">Andrés Gallardo</p>
+                <p>El color es magnifico</p>
+                <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                <span class="align-middle">0</span>
+              </div>
+            </div>
+          </div> -->
+        </section>
         }
 
-        @defer (when specificAuction().data) {
-        @if (specificAuction().data.status === 'active') {
-        <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
-          HACER UNA OFERTA
-        </button>
-        }
-        }
-      </section>
+        <recently-completed-auctions class="hidden md:block" [auctionId]="auctionId()!"></recently-completed-auctions>
+      </div>
+      <div class="col-span-12 md:col-span-5">
+        <section
+          class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+          <h3 class="font-semibold mb-2">Información adicional</h3>
 
-      <section
-        class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
-        <h3 class="font-semibold mb-6">¿Tienes un auto y quieres venderlo?</h3>
+          <!-- <ul class="list-inside list-disc text-gray4">
+            <li>Rines “X”</li>
+            <li>Faros “X”</li>
+            <li>Adaptación “X”</li>
+            <li>Llanta “X”</li>
+            <li>Polarizado “X”</li>
+          </ul> -->
+          @if (auction().data) {
+          <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
 
-        <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
-      </section>
+          <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
 
-      <section
-        class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
-        <div class="xl:flex items-center justify-between">
-          <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
+          <ul class="space-y-1">
+            <li>
+              <span class="text-gray4">Lote #:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.lotNumber}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Ubicación:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionCarForm.city}},
+                {{auction().data.attributes.auctionCarForm.state}}</span>
+            </li>
+          </ul>
+
+          <div class="my-4">
+            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+            <!-- <span class="align-middle">John Smith</span> -->
+            <span class="align-middle">{{auction().data.attributes.dataUser.username}}</span>
+          </div>
+
+          <div>
+            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+          </div>
+
+          <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
+
+          <!-- <ul class="list-inside list-disc text-gray4 mb-8">
+            <li>Tenencia: $1,000 MXN</li>
+            <li>Comisión dealer: $3,100 MXN</li>
+          </ul> -->
+
+          <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.extras.additionalCharges"></div> -->
+          <ol class="list-inside list-disc mb-8">
+            @for (item of auction().data.attributes.extras.additionalCharges; track $index) {
+            <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+            }
+          </ol>
+          }
+
           @defer (when specificAuction().data) {
           @if (specificAuction().data.status === 'active') {
-          <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold text-sm" width="w-fit" px="px-6"
-            sharedPrimaryButton>
+          <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
             HACER UNA OFERTA
           </button>
           }
           }
-        </div>
+        </section>
 
-        @defer (when specificAuction().data) {
-        <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
-          <!-- <div class="flex gap-x-4 p-4 bg-green1/30 rounded-xl">
-              <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-              <div class="text-gray4">
-                <p class="font-semibold text-black">$215,000</p>
-                <p>Adam Smith</p>
-                <span>Hace 2 minutos</span>
-              </div>
-            </div> -->
-          @for (item of specificAuction().data.bids; track $index; let last = $last) {
-          <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0}">
-            <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-            <div class="text-gray4">
-              <p class="font-semibold text-black">
-                {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-                <!-- <p>Jorge Sanders</p> -->
-              <p>{{item.userName}}</p>
-              <!-- <span>Hace 10 minutos</span> -->
-              <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
-            </div>
+        <section
+          class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+          <h3 class="font-semibold mb-6">¿Tienes un auto y quieres venderlo?</h3>
+
+          <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
+        </section>
+
+        <section
+          class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+          <div class="xl:flex items-center justify-between">
+            <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
+            @defer (when specificAuction().data) {
+            @if (specificAuction().data.status === 'active') {
+            <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold text-sm" width="w-fit" px="px-6"
+              sharedPrimaryButton>
+              HACER UNA OFERTA
+            </button>
+            }
+            }
           </div>
 
-          @if ($index !== 0 && !last) {
-          <hr>
-          }
-
-          <!-- <div class="flex gap-x-4 p-4 rounded-xl">
+          @defer (when specificAuction().data) {
+          <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
+            <!-- <div class="flex gap-x-4 p-4 bg-green1/30 rounded-xl">
+                <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+                <div class="text-gray4">
+                  <p class="font-semibold text-black">$215,000</p>
+                  <p>Adam Smith</p>
+                  <span>Hace 2 minutos</span>
+                </div>
+              </div> -->
+            @for (item of specificAuction().data.bids; track $index; let last = $last) {
+            <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0}">
               <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
               <div class="text-gray4">
-                <p class="font-semibold text-black">$200,000</p>
-                <p>Jorge Sanders</p>
-                <span>Hace 10 minutos</span>
+                <p class="font-semibold text-black">
+                  {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+                  <!-- <p>Jorge Sanders</p> -->
+                <p>{{item.userName}}</p>
+                <!-- <span>Hace 10 minutos</span> -->
+                <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
               </div>
             </div>
-            <hr>
-            <div class="flex gap-x-4 p-4 rounded-xl">
-              <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-              <div class="text-gray4">
-                <p class="font-semibold text-black">$150,000</p>
-                <p>Adam Smith</p>
-                <span>Hace 10 minutos</span>
-              </div>
-            </div> -->
-          }
-        </div>
-        }
-      </section>
 
-      <current-auctions class="hidden md:block" [auctionId]="auctionId()"></current-auctions>
+            @if ($index !== 0 && !last) {
+            <hr>
+            }
+
+            <!-- <div class="flex gap-x-4 p-4 rounded-xl">
+                <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+                <div class="text-gray4">
+                  <p class="font-semibold text-black">$200,000</p>
+                  <p>Jorge Sanders</p>
+                  <span>Hace 10 minutos</span>
+                </div>
+              </div>
+              <hr>
+              <div class="flex gap-x-4 p-4 rounded-xl">
+                <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+                <div class="text-gray4">
+                  <p class="font-semibold text-black">$150,000</p>
+                  <p>Adam Smith</p>
+                  <span>Hace 10 minutos</span>
+                </div>
+              </div> -->
+            }
+          </div>
+          }
+        </section>
+
+        <current-auctions class="hidden md:block" [auctionId]="auctionId()"></current-auctions>
+      </div>
     </div>
   </div>
 </div>

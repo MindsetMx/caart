@@ -15,7 +15,7 @@ export interface CompletedAuctionsAttributes {
   premium: boolean;
   lastBid: number;
   endDate: string;
-  photos: string[];
+  cover: string;
   brand: string;
   model: string;
   year: number;

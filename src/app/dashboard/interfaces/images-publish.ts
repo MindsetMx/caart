@@ -4,6 +4,7 @@ export interface ImagesPublish {
 
 export interface ImagesPublishData {
   fotoPrincipal: string;
+  fotoCatalogo: string;
   fotosSliderPrincipal: string[];
   fotosMecanicas: string[];
   fotosInterior: string[];

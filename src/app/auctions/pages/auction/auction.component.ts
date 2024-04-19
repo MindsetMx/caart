@@ -214,8 +214,9 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   getPhotoFromVideoUrl(videoUrl: string): string {
-    const videoId = videoUrl.split('/').pop()?.split('.').shift();
-    return `https://res.cloudinary.com/dfadvv7yu/video/upload/so_0,w_1920,h_1080,c_fill/${videoId}.jpg`;
+    const videoId = videoUrl.split('/').slice(-2, -1)[0];
+
+    return `https://videodelivery.net/${videoId}/thumbnails/thumbnail.jpg`;
   }
 
   getComments(): void {

@@ -17,7 +17,7 @@ export interface VehicleAuctionAttributes {
   extract: string;
   lastBid: number;
   model: string;
-  photos: string[];
+  cover: string;
   premium: boolean;
   reserve: boolean;
   state: string;
