@@ -10,7 +10,8 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     `${baseUrl}/register`,
     `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
     `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/stream`,
-    `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v2/direct_upload`
+    `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v2/direct_upload`,
+    `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
   ];
 
   if (excludedUrls.some((url) => req.url.includes(url)) || req.url.startsWith('https://upload.imagedelivery.net/')) {

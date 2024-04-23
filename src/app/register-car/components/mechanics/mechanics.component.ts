@@ -15,6 +15,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 import { environments } from '@env/environments';
 import { JsonPipe } from '@angular/common';
+import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'mechanics',
@@ -32,7 +33,7 @@ import { JsonPipe } from '@angular/common';
   styleUrl: './mechanics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MechanicsComponent implements AfterViewInit {
+export class MechanicsComponent {
   readonly #cloudflareToken = environments.cloudflareToken;
 
   uppyDashboardImages = viewChild.required<ElementRef>('uppyDashboardImages');
@@ -41,17 +42,132 @@ export class MechanicsComponent implements AfterViewInit {
   #validatorsService = inject(ValidatorsService);
   #fb = inject(FormBuilder);
   #completeCarRegistrationService = inject(CompleteCarRegistrationService);
+  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
 
   mechanicsForm: FormGroup;
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   previewImagesCarDetails: WritableSignal<string[]> = signal(['', '']);
   previewImagesCarExterior: WritableSignal<string[]> = signal(['', '']);
+  token = signal<string>('');
 
-  uppy?: Uppy;
+  uppyImages?: Uppy;
+  uppyVideos?: Uppy;
 
   originalAuctionCarIdChangedEffect = effect(() => {
     this.getMechanics();
+  });
+
+  uppyDashboardImagesEffect = effect(() => {
+    if (this.uppyDashboardImages() && this.token()) {
+      this.uppyImages = new Uppy({
+        debug: true,
+        autoProceed: true,
+        locale: Spanish,
+        restrictions: {
+          // maxFileSize: 1000000,
+          // maxNumberOfFiles: 20,
+          minNumberOfFiles: 1,
+          allowedFileTypes: ['image/*'],
+        },
+      }).use(Dashboard,
+        {
+          height: 300,
+          hideUploadButton: true,
+          hideCancelButton: true,
+          showRemoveButtonAfterComplete: true,
+          showProgressDetails: true,
+          inline: true,
+          hideProgressAfterFinish: true,
+          target: this.uppyDashboardImages().nativeElement,
+          proudlyDisplayPoweredByUppy: false,
+          locale: {
+            strings: {
+              dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
+            }
+          }
+        })
+        .use(XHRUpload, {
+          endpoint: 'https://batch.imagedelivery.net/images/v1',
+          formData: true,
+          fieldName: 'file',
+          allowedMetaFields: [],
+          limit: 1,
+          headers: {
+            'Authorization': `Bearer ${this.token()}`,
+          },
+        })
+        .on('complete', (result) => {
+          result.successful.forEach((file: any) => {
+            const url = file.response.body.result.variants[0];
+
+            this.mechanicsPhotos.setValue([...this.mechanicsPhotos.value, url]);
+
+            this.uppyDashboardImages().nativeElement.click();
+
+            file.meta['uploadURL'] = url;
+          });
+        }).on('file-removed', (file) => {
+          const urlToRemove = file.meta['uploadURL'];
+
+          this.mechanicsPhotos.setValue(this.mechanicsPhotos.value.filter((url: string) => url !== urlToRemove));
+        });
+    }
+  });
+
+  uppyDashboardVideosEffect = effect(() => {
+    this.uppyVideos = new Uppy({
+      debug: true,
+      autoProceed: true,
+      locale: Spanish,
+      restrictions: {
+        // maxFileSize: 1000000,
+        // maxNumberOfFiles: 20,
+        minNumberOfFiles: 1,
+        allowedFileTypes: ['video/*'],
+      },
+    }).use(Dashboard,
+      {
+        height: 300,
+        hideUploadButton: true,
+        hideCancelButton: true,
+        showRemoveButtonAfterComplete: true,
+        showProgressDetails: true,
+        inline: true,
+        hideProgressAfterFinish: true,
+        target: this.uppyDashboardVideos().nativeElement,
+        proudlyDisplayPoweredByUppy: false,
+        locale: {
+          strings: {
+            dropPasteFiles: 'Arrastra y suelta tus videos aquí o %{browse}',
+          }
+        }
+      })
+      .use(XHRUpload, {
+        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/stream`,
+        formData: true,
+        fieldName: 'file',
+        limit: 1,
+        headers: {
+          'Authorization': `Bearer ${this.#cloudflareToken}`,
+        },
+        allowedMetaFields: ['requireSignedURLs'],
+      })
+      .on('complete', (result) => {
+        result.successful.forEach((file: any) => {
+          const url = file.response.body.result.preview;
+
+          this.mechanicsVideos.setValue([...this.mechanicsVideos.value, url]);
+
+          this.uppyDashboardVideos().nativeElement.click();
+
+          file.meta['uploadURL'] = url;
+        });
+      }).on('file-removed', (file) => {
+        const urlToRemove = file.meta['uploadURL'];
+
+        this.mechanicsVideos.setValue(this.mechanicsVideos.value.filter((url: string) => url !== urlToRemove));
+      });
   });
 
   constructor() {
@@ -86,112 +202,8 @@ export class MechanicsComponent implements AfterViewInit {
       // servicesDoneWithDates: ['', [Validators.required]],
       // improvementOrModification: ['', [Validators.required]],
     });
-  }
 
-  ngAfterViewInit(): void {
-    this.uppy = new Uppy({
-      debug: true,
-      autoProceed: true,
-      locale: Spanish,
-      restrictions: {
-        // maxFileSize: 1000000,
-        // maxNumberOfFiles: 20,
-        minNumberOfFiles: 1,
-        allowedFileTypes: ['image/*'],
-      },
-    }).use(Dashboard,
-      {
-        height: 300,
-        hideUploadButton: true,
-        hideCancelButton: true,
-        showRemoveButtonAfterComplete: true,
-        showProgressDetails: true,
-        inline: true,
-        hideProgressAfterFinish: true,
-        target: this.uppyDashboardImages().nativeElement,
-        proudlyDisplayPoweredByUppy: false,
-        locale: {
-          strings: {
-            dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
-          }
-        }
-      })
-      .use(XHRUpload, {
-        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
-        formData: true,
-        fieldName: 'file',
-        headers: {
-          'Authorization': `Bearer ${this.#cloudflareToken}`,
-        },
-        allowedMetaFields: ['requireSignedURLs'],
-      })
-      .on('complete', (result) => {
-        result.successful.forEach((file: any) => {
-          const url = file.response.body.result.variants[0];
-
-          this.mechanicsPhotos.setValue([...this.mechanicsPhotos.value, url]);
-
-          this.uppyDashboardImages().nativeElement.click();
-
-          file.meta['uploadURL'] = url;
-        });
-      }).on('file-removed', (file) => {
-        const urlToRemove = file.meta['uploadURL'];
-
-        this.mechanicsPhotos.setValue(this.mechanicsPhotos.value.filter((url: string) => url !== urlToRemove));
-      });
-
-    this.uppy = new Uppy({
-      debug: true,
-      autoProceed: true,
-      locale: Spanish,
-      restrictions: {
-        // maxFileSize: 1000000,
-        // maxNumberOfFiles: 20,
-        minNumberOfFiles: 1,
-        allowedFileTypes: ['video/*'],
-      },
-    }).use(Dashboard,
-      {
-        height: 300,
-        hideUploadButton: true,
-        hideCancelButton: true,
-        showRemoveButtonAfterComplete: true,
-        showProgressDetails: true,
-        inline: true,
-        hideProgressAfterFinish: true,
-        target: this.uppyDashboardVideos().nativeElement,
-        proudlyDisplayPoweredByUppy: false,
-        locale: {
-          strings: {
-            dropPasteFiles: 'Arrastra y suelta tus videos aquí o %{browse}',
-          }
-        }
-      })
-      .use(XHRUpload, {
-        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/stream`,
-        formData: true,
-        fieldName: 'file',
-        headers: {
-          'Authorization': `Bearer ${this.#cloudflareToken}`,
-        },
-        allowedMetaFields: ['requireSignedURLs'],
-      })
-      .on('complete', (result) => {
-        result.successful.forEach((file: any) => {
-          const url = file.response.body.result.preview;
-
-          this.mechanicsVideos.setValue([...this.mechanicsVideos.value, url]);
-
-          this.uppyDashboardVideos().nativeElement.click();
-
-          file.meta['uploadURL'] = url;
-        });
-      }).on('file-removed', (file) => {
-        const urlToRemove = file.meta['uploadURL'];
-
-        this.mechanicsVideos.setValue(this.mechanicsVideos.value.filter((url: string) => url !== urlToRemove));
-      });
+    this.batchTokenDirect();
   }
 
   get mechanicsPhotos(): FormControl {
@@ -272,6 +284,18 @@ export class MechanicsComponent implements AfterViewInit {
       },
       error: (error) => console.error(error),
     });
+  }
+
+  batchTokenDirect(): void {
+    this.#cloudinaryCroppedImageService.batchTokenDirect$().
+      subscribe({
+        next: (response) => {
+          this.token.set(response.result.token);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
   }
 
   hasError(field: string): boolean {

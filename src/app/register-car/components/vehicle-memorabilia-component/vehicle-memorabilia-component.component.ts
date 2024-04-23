@@ -17,6 +17,7 @@ import { AppService } from '@app/app.service';
 import { NgxMaskDirective } from 'ngx-mask';
 import { Router } from '@angular/router';
 import { environments } from '@env/environments';
+import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'vehicle-memorabilia-component',
@@ -44,12 +45,16 @@ export class VehicleMemorabiliaComponentComponent {
   vehicleMemorabiliaForm: FormGroup;
   isButtonRegisterMemorabiliaDisabled = signal(false);
   states = signal<string[]>(states);
+  uploadImageUrl = signal<string>('');
+  initializated: boolean = false;
 
   #validatorsService = inject(ValidatorsService);
   #vehicleMemorabiliaService = inject(VehicleMemorabiliaService);
   #router = inject(Router);
+  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
 
-  uppy?: Uppy;
+  uppyImages?: Uppy;
+  uppyVideos?: Uppy;
 
   get photos(): FormControl {
     return this.vehicleMemorabiliaForm.get('photos') as FormControl;
@@ -59,60 +64,71 @@ export class VehicleMemorabiliaComponentComponent {
     return this.vehicleMemorabiliaForm.get('videos') as FormControl;
   }
 
-  uppDashboardImagesEffect = effect(() => {
-    this.uppy = new Uppy({
-      debug: true,
-      autoProceed: true,
-      locale: Spanish,
-      restrictions: {
-        // maxFileSize: 1000000,
-        // maxNumberOfFiles: 20,
-        minNumberOfFiles: 1,
-        allowedFileTypes: ['image/*'],
-      },
-    }).use(Dashboard,
-      {
-        height: 300,
-        hideUploadButton: true,
-        hideCancelButton: true,
-        showRemoveButtonAfterComplete: true,
-        showProgressDetails: true,
-        inline: true,
-        hideProgressAfterFinish: true,
-        target: this.uppyDashboardImages().nativeElement,
-        proudlyDisplayPoweredByUppy: false,
-        locale: {
-          strings: {
-            dropPasteFiles: 'Arrastra y suelta tus imágenes aquí o %{browse}',
-          }
-        }
-      })
-      .use(XHRUpload, {
-        allowedMetaFields: ['requireSignedURLs'],
-        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
-        formData: true,
-        fieldName: 'file',
-        headers: {
-          'Authorization': `Bearer ${this.#cloudflareToken}`,
-        },
-      })
-      .on('complete', (result) => {
-        result.successful.forEach((file: any) => {
-          const url = file.response.body.result.variants[0];
-          this.photos.setValue([...this.photos.value, url]);
-          this.uppyDashboardImages().nativeElement.click();
-
-          file.meta['uploadURL'] = url;
+  uppyDashboardImagesEffect = effect(() => {
+    if (this.uploadImageUrl() && this.uppyDashboardImages()) {
+      if (this.initializated) {
+        this.uppyImages?.getPlugin('XHRUpload')?.setOptions({
+          endpoint: this.uploadImageUrl(),
         });
-      }).on('file-removed', (file) => {
-        const urlToRemove = file.meta['uploadURL'];
 
-        this.photos.setValue(this.photos.value.filter((url: string) => url !== urlToRemove));
-      });
+        return;
+      }
+
+      this.uppyImages = new Uppy({
+        debug: true,
+        autoProceed: true,
+        locale: Spanish,
+        restrictions: {
+          // maxFileSize: 1000000,
+          // maxNumberOfFiles: 20,
+          minNumberOfFiles: 1,
+          allowedFileTypes: ['image/*'],
+        },
+      }).use(Dashboard,
+        {
+          height: 300,
+          hideUploadButton: true,
+          hideCancelButton: true,
+          showRemoveButtonAfterComplete: true,
+          showProgressDetails: true,
+          inline: true,
+          hideProgressAfterFinish: true,
+          target: this.uppyDashboardImages()?.nativeElement,
+          proudlyDisplayPoweredByUppy: false,
+          locale: {
+            strings: {
+              dropPasteFiles: 'Arrastra y suelta tus imágenes aquí o %{browse}',
+            }
+          }
+        })
+        .use(XHRUpload, {
+          endpoint: this.uploadImageUrl(),
+          formData: true,
+          fieldName: 'file',
+          allowedMetaFields: [],
+        })
+        .on('complete', (result) => {
+          result.successful.forEach((file: any) => {
+            const url = file.response.body.result.variants[0];
+            this.photos.setValue([...this.photos.value, url]);
+            this.uppyDashboardImages()?.nativeElement.click();
+
+            file.meta['uploadURL'] = url;
+
+            this.uploadImageDirect();
+          });
+        }).on('file-removed', (file) => {
+          const urlToRemove = file.meta['uploadURL'];
+
+          this.photos.setValue(this.photos.value.filter((url: string) => url !== urlToRemove));
+        });
+
+      this.initializated = true;
+    }
   });
 
   uppyDashboardVideosEffect = effect(() => {
-    this.uppy = new Uppy({
+    this.uppyVideos = new Uppy({
       debug: true,
       autoProceed: true,
       locale: Spanish,
@@ -131,7 +147,7 @@ export class VehicleMemorabiliaComponentComponent {
         showProgressDetails: true,
         inline: true,
         hideProgressAfterFinish: true,
-        target: this.uppyDashboardVideos().nativeElement,
+        target: this.uppyDashboardVideos()?.nativeElement,
         proudlyDisplayPoweredByUppy: false,
         locale: {
           strings: {
@@ -152,7 +168,7 @@ export class VehicleMemorabiliaComponentComponent {
           const url = file.response.body.result.preview;
           this.videos.setValue([...this.videos.value, url]);
 
-          this.uppyDashboardVideos().nativeElement.click();
+          this.uppyDashboardVideos()?.nativeElement.click();
 
           file.meta['uploadURL'] = url;
         });
@@ -181,6 +197,8 @@ export class VehicleMemorabiliaComponentComponent {
       videos: new FormControl([]),
       additionalInformation: new FormControl('', [Validators.required]),
     });
+
+    this.uploadImageDirect();
   }
 
   registerVehicleMemorabilia(): void {
@@ -199,7 +217,8 @@ export class VehicleMemorabiliaComponentComponent {
         this.photos.setValue([]);
         this.videos.setValue([]);
 
-        this.uppy?.cancelAll();
+        // this.uppyImages?.cancelAll();
+        // this.uppyVideos?.cancelAll();
 
         this.#router.navigate(['registro-exitoso']);
       },
@@ -208,6 +227,17 @@ export class VehicleMemorabiliaComponentComponent {
       }
     }).add(() => {
       this.isButtonRegisterMemorabiliaDisabled.set(false);
+    });
+  }
+
+  uploadImageDirect(): void {
+    this.#cloudinaryCroppedImageService.uploadImageDirect$().subscribe({
+      next: (response) => {
+        this.uploadImageUrl.set(response.result.uploadURL);
+      },
+      error: (error) => {
+        console.error(error);
+      }
     });
   }
 

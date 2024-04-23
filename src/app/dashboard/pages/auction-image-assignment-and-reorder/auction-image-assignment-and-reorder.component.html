@@ -89,7 +89,6 @@
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosMecanicas)"
               [cdkDropListData]="{imageUrl, index: i}">
-              @if (imageUrl) {
               <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)">
                 <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
@@ -99,17 +98,6 @@
                   <mat-icon class="text-red-500">delete</mat-icon>
                 </button>
               </button>
-              } @else {
-              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)"
-                class="cell relative">
-                Subir foto
-
-                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosMecanicas, i)"
-                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
-                  <mat-icon class="text-red-500">delete</mat-icon>
-                </button>
-              </button>
-              }
             </div>
             @if (formArrayHasError(fotosMecanicas, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosMecanicas, i)"></shared-input-error>
@@ -117,7 +105,9 @@
           </div>
           }
           <!-- agregar nueva foto mecánica -->
-          <button type="button" (click)="addPhoto(fotosMecanicas)" class="cell">
+          <button type="button"
+            (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, fotosMecanicas.length, true)"
+            class="cell">
             <mat-icon class="text-gray-500">add</mat-icon>
           </button>
 
@@ -128,6 +118,7 @@
       </div>
       }
 
+      <!-- fotosInterior -->
       @defer (when fotosInterior) {
       <div>
         <h2 class="mb-2">Fotos interior</h2>
@@ -136,7 +127,6 @@
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosInterior)"
               [cdkDropListData]="{imageUrl, index: i}">
-              @if (imageUrl) {
               <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)">
                 <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
@@ -146,17 +136,6 @@
                   <mat-icon class="text-red-500">delete</mat-icon>
                 </button>
               </button>
-              } @else {
-              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)"
-                class="cell relative">
-                Subir foto
-
-                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosInterior, i)"
-                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
-                  <mat-icon class="text-red-500">delete</mat-icon>
-                </button>
-              </button>
-              }
             </div>
             @if (formArrayHasError(fotosInterior, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosInterior, i)"></shared-input-error>
@@ -164,7 +143,8 @@
           </div>
           }
           <!-- agregar nueva foto interior -->
-          <button type="button" (click)="addPhoto(fotosInterior)" class="cell">
+          <button type="button"
+            (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, fotosInterior.length, true)" class="cell">
             <mat-icon class="text-gray-500">add</mat-icon>
           </button>
 
@@ -175,6 +155,7 @@
       </div>
       }
 
+      <!-- fotosExterior -->
       @defer (when fotosExterior) {
       <div>
         <h2 class="mb-2">Fotos exterior</h2>
@@ -183,7 +164,6 @@
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosExterior)"
               [cdkDropListData]="{imageUrl, index: i}">
-              @if (imageUrl) {
               <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)">
                 <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
@@ -193,17 +173,6 @@
                   <mat-icon class="text-red-500">delete</mat-icon>
                 </button>
               </button>
-              } @else {
-              <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)"
-                class="cell relative">
-                Subir foto
-
-                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosExterior, i)"
-                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
-                  <mat-icon class="text-red-500">delete</mat-icon>
-                </button>
-              </button>
-              }
             </div>
             @if (formArrayHasError(fotosExterior, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosExterior, i)"></shared-input-error>
@@ -211,7 +180,8 @@
           </div>
           }
           <!-- agregar nueva foto exterior -->
-          <button type="button" (click)="addPhoto(fotosExterior)" class="cell">
+          <button type="button"
+            (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, fotosExterior.length, true)" class="cell">
             <mat-icon class="text-gray-500">add</mat-icon>
           </button>
 
@@ -237,7 +207,8 @@
 </sidebar-layout>
 
 <car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" [aspectRatio]="aspectRatio()"
-  (isOpenChange)="closeModal(carPhotoGalleryIsOpen)" (selectedImageChange)="setImage($event)" [cropImage]="cropImage()"
+  [allowMultipleSelection]="allowMultipleSelection()" (isOpenChange)="closeModal(carPhotoGalleryIsOpen)"
+  (selectedImageChange)="setImage($event)" (selectedImagesChange)="setImages($event)" [cropImage]="cropImage()"
   [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
 

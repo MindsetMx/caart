@@ -85,9 +85,7 @@ export class AddCarHistoryComponent {
     }
 
     this.#auctionCarService.addCarHistory$(this.addCarHistoryForm).subscribe({
-      next: (response) => {
-        console.log({ response });
-
+      next: () => {
         this.addCarHistoryForm.reset();
 
         this.#router.navigate(['/dashboard/publicar-autos']);
@@ -111,13 +109,9 @@ export class AddCarHistoryComponent {
   }
 
   setImage(image: string): void {
-    console.log({ blocksFormArrayControls: this.blocksFormArrayControls });
-
     this.addContent('image');
 
     const lastBlockIndex = this.blocksFormArrayControls.length - 1;
-
-    console.log({ lastBlockIndex });
 
     this.blocksFormArrayControls[lastBlockIndex].get('content')?.setValue(image);
   }

@@ -110,8 +110,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       'EndingSoonest'
     ).subscribe({
       next: (auctions: VehicleAuction) => {
-        console.log({ auctions });
-
         this.auctions.set(auctions);
       },
       error: (err) => {
@@ -132,8 +130,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       'EndingSoonest'
     ).subscribe({
       next: (auctions: MemorabiliaAuction) => {
-        console.log({ auctions });
-
         this.memorabiliaAuctions.set(auctions);
         return;
       },

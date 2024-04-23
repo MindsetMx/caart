@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
-import { UploadImageDirect } from '../interfaces';
+import { BatchToken, UploadImageDirect } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +23,9 @@ export class CloudinaryCroppedImageService {
     form.append("requireSignedURLs", "false");
 
     return this.#http.post<UploadImageDirect>('https://caart.com.mx/back/auctions-cars/get-url-image', form);
+  }
+
+  batchTokenDirect$(): Observable<BatchToken> {
+    return this.#http.get<BatchToken>('https://caart.com.mx/back/auctions-cars/batch-token');
   }
 }

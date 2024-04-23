@@ -146,28 +146,24 @@ export class CarExtrasComponent {
 
         const additionalCharges = carExtras.data.attributes.additionalCharges;
 
-        const aditionalChargesFormGroups = additionalCharges.map((additionalCharge: any) => {
-          return this.#fb.group({
-            chargeType: [additionalCharge.chargeType, Validators.required],
-            amount: [additionalCharge.amount, Validators.required],
+        if (Array.isArray(additionalCharges)) {
+          const aditionalChargesFormGroups = additionalCharges.map((additionalCharge: any) => {
+            return this.#fb.group({
+              chargeType: [additionalCharge.chargeType, Validators.required],
+              amount: [additionalCharge.amount, Validators.required],
+            });
           });
-        });
 
-        this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
-        this.#changeDetectorRef.detectChanges();
+          this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
+          this.#changeDetectorRef.detectChanges();
+        }
       },
       error: (error) => console.error(error),
     });
   }
 
   removeAdditionalCharge(index: number): void {
-    console.log({ additionalChargesFormArray: this.additionalChargesFormArray.value });
-
-    console.log({ index });
-
     this.additionalChargesFormArray.removeAt(index);
-
-    console.log({ additionalChargesFormArray: this.additionalChargesFormArray.value });
   }
 
   addAdditionalCharge(): void {

@@ -29,6 +29,7 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { VehicleMemorabiliaComponentComponent } from '@app/register-car/components/vehicle-memorabilia-component/vehicle-memorabilia-component.component';
 import { environments } from '@env/environments';
+import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'register-car',
@@ -55,8 +56,8 @@ import { environments } from '@env/environments';
 export class RegisterCarComponent implements OnInit, OnDestroy {
   readonly #cloudflareToken = environments.cloudflareToken;
 
-  uppyDashboardImages = viewChild.required<ElementRef>('uppyDashboardImages');
-  uppyDashboardVideos = viewChild.required<ElementRef>('uppyDashboardVideos');
+  uppyDashboardImages = viewChild<ElementRef>('uppyDashboardImages');
+  uppyDashboardVideos = viewChild<ElementRef>('uppyDashboardVideos');
 
   #appComponent = inject(AppComponent);
   #fb = inject(FormBuilder);
@@ -64,11 +65,13 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
   #authService = inject(AuthService);
+  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
 
   brands = signal<string[]>([]);
   filteredBrands?: Observable<string[]>;
   states = signal<string[]>(states);
   filteredStates?: Observable<string[]>;
+  token = signal<string>('');
 
   colors = signal<Colors[]>([]);
   carRegisterForm: FormGroup;
@@ -83,7 +86,8 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   unformattedKm?: string;
   formattedKm?: string;
 
-  uppy?: Uppy;
+  uppyImages?: Uppy;
+  uppyVideos?: Uppy;
 
   get stateControl(): FormControl {
     return this.carRegisterForm.get('state') as FormControl;
@@ -133,14 +137,14 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
     return this.carRegisterForm.get('videos') as FormControl;
   }
 
-  brandsChangeEffect = effect(() => {
+  uploadImageUrlEffect = effect(() => {
     if (this.uppyDashboardImages()) {
-      this.uppy = new Uppy({
+      this.uppyImages = new Uppy({
         debug: true,
         autoProceed: true,
         locale: Spanish,
         restrictions: {
-          // maxFileSize: 1000000,
+          maxFileSize: 10000000,
           // maxNumberOfFiles: 20,
           minNumberOfFiles: 1,
           allowedFileTypes: ['image/*'],
@@ -163,13 +167,14 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
           }
         })
         .use(XHRUpload, {
-          endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
+          endpoint: 'https://batch.imagedelivery.net/images/v1',
           formData: true,
           fieldName: 'file',
+          allowedMetaFields: [],
+          limit: 1,
           headers: {
-            'Authorization': `Bearer ${this.#cloudflareToken}`,
-          },
-          allowedMetaFields: ['requireSignedURLs'],
+            'Authorization': 'Bearer ' + this.token(),
+          }
         })
         .on('complete', (result) => {
           result.successful.forEach((file: any) => {
@@ -187,9 +192,11 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
           this.photosControl.setValue(this.photosControl.value.filter((url: string) => url !== urlToRemove));
         });
     }
+  });
 
+  uppyDashboardVideosEffect = effect(() => {
     if (this.uppyDashboardVideos()) {
-      this.uppy = new Uppy({
+      this.uppyVideos = new Uppy({
         debug: true,
         autoProceed: true,
         locale: Spanish,
@@ -220,6 +227,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
           endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/stream`,
           formData: true,
           fieldName: 'file',
+          limit: 1,
           headers: {
             'Authorization': `Bearer ${this.#cloudflareToken}`,
           },
@@ -270,6 +278,8 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       acceptTerms: ['', Validators.required],
     });
 
+    this.batchTokenDirect();
+
     this.tabs =
       [
         {
@@ -311,7 +321,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
         this.reserveAmountControl.clearValidators();
       }
 
-      this.carRegisterForm.updateValueAndValidity();
+      this.reserveAmountControl.updateValueAndValidity();
     });
 
     this.transmisionValueChangesSubscription = this.transmisionControl.valueChanges.subscribe((value) => {
@@ -321,13 +331,25 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
         this.carRegisterForm.get('otherTransmission')?.clearValidators();
       }
 
-      this.carRegisterForm.updateValueAndValidity();
+      this.carRegisterForm.get('otherTransmission')?.updateValueAndValidity();
     });
   }
 
   ngOnDestroy(): void {
     this.reserveValueChangesSubscription?.unsubscribe();
     this.transmisionValueChangesSubscription?.unsubscribe();
+  }
+
+  batchTokenDirect(): void {
+    this.#cloudinaryCroppedImageService.batchTokenDirect$().
+      subscribe({
+        next: (response) => {
+          this.token.set(response.result.token);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
   }
 
   private _filter(value: string): string[] {
@@ -385,18 +407,19 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
   }
 
   getBrands(): void {
-    this.#registerCarService.getBrands$().subscribe({
-      next: (response: Brands) => {
-        this.brands.set(response.data);
-        this.filteredBrands = this.brandControl.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value || '')),
-        );
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    this.#registerCarService.getBrands$().
+      subscribe({
+        next: (response: Brands) => {
+          this.brands.set(response.data);
+          this.filteredBrands = this.brandControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filter(value || '')),
+          );
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
   }
 
   getColors(): void {

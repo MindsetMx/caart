@@ -67,7 +67,6 @@ export class RecentlyCompletedMemorabiliaAuctionComponent {
   getRecentlyCompletedCarAuctions(): void {
     this.#recentlyCompletedCarAuctionsService.getRecentlyCompletedMemorabiliaAuctions$(1, 10).subscribe({
       next: (recentlyCompletedCarAuctions) => {
-        console.log(recentlyCompletedCarAuctions);
         this.completedAuctions.set(recentlyCompletedCarAuctions);
       },
       error: (error) => {

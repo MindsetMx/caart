@@ -39,7 +39,7 @@
 
     @switch (currentSubastaAutomovilesType()) {
     @case (subastaAutomovilesType.AUTOMOVILES) {
-    @defer (when brands().length > 0 && states().length > 0) {
+    @defer (when brands().length > 0) {
     <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" (click)="showModalBasedOnUserStatus()">
       <div class="grid grid-cols-2 gap-4" [ngClass]="{'pointer-events-none': userIsNotAuthenticated}">
         <div>

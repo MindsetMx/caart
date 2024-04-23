@@ -50,6 +50,7 @@ export class AuctionImageAssignmentAndReorderComponent {
   deleteImageModalIsOpen = signal<boolean>(false);
   deleteImageSubmitButtonIsDisabled = signal<boolean>(false);
   aspectRatio = signal<number>(16 / 9);
+  allowMultipleSelection = signal<boolean>(false);
 
   #activatedRoute = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
@@ -140,10 +141,6 @@ export class AuctionImageAssignmentAndReorderComponent {
   }
 
   setImage(imageUrl: string) {
-    console.log({ imageUrl });
-    console.log({ formFieldName: this.formFieldName() });
-    console.log({ index: this.index() });
-
     switch (this.formFieldName()) {
       case 'fotoPrincipal':
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(imageUrl, Validators.required));
@@ -172,6 +169,22 @@ export class AuctionImageAssignmentAndReorderComponent {
         this.auctionImagesForm.patchValue({
           [this.formFieldName()]: imageUrl
         });
+        break;
+    }
+  }
+
+  setImages(images: string[]) {
+    switch (this.formFieldName()) {
+      case 'fotosMecanicas':
+        images.forEach((imageUrl) => this.fotosMecanicas.push(this.#formBuilder.control(imageUrl, Validators.required)));
+        break;
+      case 'fotosInterior':
+        images.forEach((imageUrl) => this.fotosInterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
+        break;
+      case 'fotosExterior':
+        images.forEach((imageUrl) => this.fotosExterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
+        break;
+      default:
         break;
     }
   }
@@ -215,7 +228,9 @@ export class AuctionImageAssignmentAndReorderComponent {
     varName.set(false);
   }
 
-  openModal(varName: WritableSignal<boolean>, formFieldName: string, cropImage: boolean, index?: number): void {
+  openModal(varName: WritableSignal<boolean>, formFieldName: string, cropImage: boolean, index?: number, allowMultipleSelection?: boolean): void {
+    console.log('openModal', formFieldName, cropImage, index, allowMultipleSelection);
+
     if (cropImage) {
       switch (formFieldName) {
         case 'fotoCatalogo':
@@ -233,6 +248,12 @@ export class AuctionImageAssignmentAndReorderComponent {
     (index !== undefined)
       ? this.index.set(index)
       : this.index.set(undefined);
+
+    (allowMultipleSelection !== undefined)
+      ? this.allowMultipleSelection.set(allowMultipleSelection)
+      : this.allowMultipleSelection.set(false);
+
+    console.log('allowMultipleSelection', this.allowMultipleSelection());
 
     this.formFieldName.set(formFieldName);
     varName.set(true);

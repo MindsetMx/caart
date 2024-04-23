@@ -98,9 +98,6 @@ export class CompleteMemorabiliaRegisterComponent implements OnInit {
 
   getWizardSteps(): void {
     this.#completeMemorabiliaRegistrationService.wizardSteps$(this.publicationId).subscribe({
-      next: (wizardSteps) => {
-        console.log(wizardSteps);
-      },
       error: (error) => {
         console.error(error);
       },

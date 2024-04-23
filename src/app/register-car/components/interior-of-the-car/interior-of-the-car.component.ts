@@ -15,6 +15,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { JsonPipe } from '@angular/common';
 import { environments } from '@env/environments';
+import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'interior-of-the-car',
@@ -33,7 +34,7 @@ import { environments } from '@env/environments';
   styleUrl: './interior-of-the-car.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InteriorOfTheCarComponent implements AfterViewInit {
+export class InteriorOfTheCarComponent {
   readonly #cloudflareToken = environments.cloudflareToken;
 
   uppyDashboardImages = viewChild.required<ElementRef>('uppyDashboardImages');
@@ -42,106 +43,80 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
   #validatorsService = inject(ValidatorsService);
   #fb = inject(FormBuilder);
   #completeCarRegistrationService = inject(CompleteCarRegistrationService);
+  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
 
   interiorOfTheCarForm: FormGroup;
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   previewImagesCarInterior: WritableSignal<string[]> = signal(['', '']);
+  token = signal<string>('');
 
-  uppy?: Uppy;
+  uppyImages?: Uppy;
+  uppyVideos?: Uppy;
 
   originalAuctionCarIdChangedEffect = effect(() => {
     this.getInteriorOfTheCar();
   });
 
-  constructor() {
-    this.interiorOfTheCarForm = this.#fb.group({
-      interiorColor: [{ value: '', disabled: true }, [Validators.required]],
-      material: ['', [Validators.required]],
-      interiorCondition: ['', [Validators.required]],
-      interiorModifications: ['', [Validators.required]],
-      accessoriesFunctioning: ['', [Validators.required]],
-      comments: ['', [Validators.required]],
-      interiorPhotos: [[], [Validators.required]],
-      interiorVideos: [[]],
-      originalAuctionCarId: [this.originalAuctionCarId, [Validators.required]],
-    });
-  }
-
-  get interiorColorControl(): FormControl {
-    return this.interiorOfTheCarForm.get('interiorColor') as FormControl;
-  }
-
-  get interiorPhotos(): FormControl {
-    return this.interiorOfTheCarForm.get('interiorPhotos') as FormControl;
-  }
-
-  get interiorVideos(): FormControl {
-    return this.interiorOfTheCarForm.get('interiorVideos') as FormControl;
-  }
-
-  get originalAuctionCarId(): string {
-    return this.#completeCarRegistrationService.originalAuctionCarId();
-  }
-
-  get photosOrVideosInteriorOfTheCarFormArray(): FormArray {
-    return this.interiorOfTheCarForm.get('interiorImagesOrVideos') as FormArray;
-  }
-
-  ngAfterViewInit(): void {
-    this.uppy = new Uppy({
-      debug: true,
-      autoProceed: true,
-      locale: Spanish,
-      restrictions: {
-        // maxFileSize: 1000000,
-        // maxNumberOfFiles: 20,
-        minNumberOfFiles: 1,
-        allowedFileTypes: ['image/*'],
-      },
-    }).use(Dashboard,
-      {
-        height: 300,
-        hideUploadButton: true,
-        hideCancelButton: true,
-        showRemoveButtonAfterComplete: true,
-        showProgressDetails: true,
-        inline: true,
-        hideProgressAfterFinish: true,
-        target: this.uppyDashboardImages().nativeElement,
-        proudlyDisplayPoweredByUppy: false,
-        locale: {
-          strings: {
-            dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
-          }
-        }
-      })
-      .use(XHRUpload, {
-        endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/images/v1`,
-        formData: true,
-        fieldName: 'file',
-        headers: {
-          'Authorization': `Bearer ${this.#cloudflareToken}`,
+  uppyDashboardImagesEffect = effect(() => {
+    if (this.uppyDashboardImages() && this.token()) {
+      this.uppyImages = new Uppy({
+        debug: true,
+        autoProceed: true,
+        locale: Spanish,
+        restrictions: {
+          maxFileSize: 10000000,
+          // maxNumberOfFiles: 20,
+          minNumberOfFiles: 1,
+          allowedFileTypes: ['image/*'],
         },
-        allowedMetaFields: ['requireSignedURLs'],
-      })
-      .on('complete', (result) => {
-        result.successful.forEach((file: any) => {
-          const url = file.response.body.result.variants[0];
+      }).use(Dashboard,
+        {
+          height: 300,
+          hideUploadButton: true,
+          hideCancelButton: true,
+          showRemoveButtonAfterComplete: true,
+          showProgressDetails: true,
+          inline: true,
+          hideProgressAfterFinish: true,
+          target: this.uppyDashboardImages().nativeElement,
+          proudlyDisplayPoweredByUppy: false,
+          locale: {
+            strings: {
+              dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
+            }
+          }
+        })
+        .use(XHRUpload, {
+          endpoint: 'https://batch.imagedelivery.net/images/v1',
+          formData: true,
+          fieldName: 'file',
+          allowedMetaFields: [],
+          limit: 1,
+          headers: {
+            'Authorization': `Bearer ${this.token()}`,
+          },
+        })
+        .on('complete', (result) => {
+          result.successful.forEach((file: any) => {
+            const url = file.response.body.result.variants[0];
 
-          this.interiorPhotos.setValue([...this.interiorPhotos.value, url]);
+            this.interiorPhotos.setValue([...this.interiorPhotos.value, url]);
 
-          this.uppyDashboardImages().nativeElement.click();
+            this.uppyDashboardImages().nativeElement.click();
 
-          file.meta['uploadURL'] = url;
+            file.meta['uploadURL'] = url;
+          });
+        }).on('file-removed', (file) => {
+          const urlToRemove = file.meta['uploadURL'];
+
+          this.interiorPhotos.setValue(this.interiorPhotos.value.filter((url: string) => url !== urlToRemove));
         });
-      }).on('file-removed', (file) => {
-        const urlToRemove = file.meta['uploadURL'];
+    }
+  });
 
-        this.interiorPhotos.setValue(this.interiorPhotos.value.filter((url: string) => url !== urlToRemove));
-      });
-
-    this.uppy = new Uppy({
+  uppyDashboardVideosEffect = effect(() => {
+    this.uppyVideos = new Uppy({
       debug: true,
       autoProceed: true,
       locale: Spanish,
@@ -172,6 +147,7 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
         endpoint: `https://api.cloudflare.com/client/v4/accounts/${environments.cloudflareAccountId}/stream`,
         formData: true,
         fieldName: 'file',
+        limit: 1,
         headers: {
           'Authorization': `Bearer ${this.#cloudflareToken}`,
         },
@@ -192,6 +168,42 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
 
         this.interiorVideos.setValue(this.interiorVideos.value.filter((url: string) => url !== urlToRemove));
       });
+  });
+
+  constructor() {
+    this.interiorOfTheCarForm = this.#fb.group({
+      interiorColor: [{ value: '', disabled: true }, [Validators.required]],
+      material: ['', [Validators.required]],
+      interiorCondition: ['', [Validators.required]],
+      interiorModifications: ['', [Validators.required]],
+      accessoriesFunctioning: ['', [Validators.required]],
+      comments: ['', [Validators.required]],
+      interiorPhotos: [[], [Validators.required]],
+      interiorVideos: [[]],
+      originalAuctionCarId: [this.originalAuctionCarId, [Validators.required]],
+    });
+
+    this.batchTokenDirect();
+  }
+
+  get interiorColorControl(): FormControl {
+    return this.interiorOfTheCarForm.get('interiorColor') as FormControl;
+  }
+
+  get interiorPhotos(): FormControl {
+    return this.interiorOfTheCarForm.get('interiorPhotos') as FormControl;
+  }
+
+  get interiorVideos(): FormControl {
+    return this.interiorOfTheCarForm.get('interiorVideos') as FormControl;
+  }
+
+  get originalAuctionCarId(): string {
+    return this.#completeCarRegistrationService.originalAuctionCarId();
+  }
+
+  get photosOrVideosInteriorOfTheCarFormArray(): FormArray {
+    return this.interiorOfTheCarForm.get('interiorImagesOrVideos') as FormArray;
   }
 
   exteriorOfTheCarFormSubmit(): void {
@@ -250,6 +262,18 @@ export class InteriorOfTheCarComponent implements AfterViewInit {
         console.error(error);
       }
     });
+  }
+
+  batchTokenDirect(): void {
+    this.#cloudinaryCroppedImageService.batchTokenDirect$().
+      subscribe({
+        next: (response) => {
+          this.token.set(response.result.token);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
   }
 
   hasError(field: string): boolean {
