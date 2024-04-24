@@ -192,7 +192,7 @@
 
         @defer (when auction().data) {
         <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
-          [auctionType]="auctionType.memorabilia"
+          [auctionType]="auctionType.memorabilia" [auctionTypeComment]="auctionTypesComments.active"
           [auctionCarPublishId]="auction().data.attributes.originalMemorabiliaId" placeholder="Agregar un comentario"
           (commentCreated)="getComments()"></comments-textarea>
         }
@@ -204,7 +204,8 @@
 
         @for (comment of comments().data; track $index) {
         <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalMemorabiliaId"
-          [auctionType]="auctionType.memorabilia" (commentCreated)="getComments()"></comment>
+          [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.memorabilia"
+          (commentCreated)="getComments()"></comment>
         }
       </section>
       }

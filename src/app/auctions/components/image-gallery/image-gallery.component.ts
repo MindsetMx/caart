@@ -14,6 +14,7 @@ import { AuctionDetails } from '@auctions/interfaces';
 })
 export class ImageGalleryComponent {
   @Input({ required: true }) photos: string[] = [];
+  index = input.required<number>();
 
   photoGalleryLength: number = 1;
 

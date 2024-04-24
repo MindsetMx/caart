@@ -30,6 +30,7 @@ import { StarComponent } from '@shared/components/icons/star/star.component';
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { AuctionTypesComments } from '@auctions/enums';
 
 @Component({
   selector: 'last-chance-detail',
@@ -120,6 +121,14 @@ export class LastChanceDetailComponent implements AfterViewInit {
     return AuctionTypes;
   }
 
+  get auctionTypesComments(): typeof AuctionTypesComments {
+    return AuctionTypesComments;
+  }
+
+  get auctionTypeComment(): typeof AuctionTypesComments {
+    return AuctionTypesComments;
+  }
+
   authStatusEffect = effect(() => {
     switch (this.authStatus) {
       case AuthStatus.authenticated:
@@ -150,7 +159,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().carHistory.originalAuctionCarId).subscribe({
+    this.#commentsService.getComments(this.auction().carHistory.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.active).subscribe({
       next: (response) => {
         this.comments.set(response);
       },

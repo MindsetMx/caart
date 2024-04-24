@@ -217,19 +217,19 @@
       <section class="mt-12">
         <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
 
-        <image-gallery [photos]="auction().exteriorDetails.exteriorPhotos"></image-gallery>
+        <image-gallery [photos]="auction().exteriorDetails.exteriorPhotos" [index]="3"></image-gallery>
       </section>
 
       <section class="mt-12">
         <h2 class="text-xl font-bold mb-6">Galería de fotos interiores</h2>
 
-        <image-gallery [photos]="auction().interiorDetails.interiorPhotos"></image-gallery>
+        <image-gallery [photos]="auction().interiorDetails.interiorPhotos" [index]="4"></image-gallery>
       </section>
 
       <section class="mt-12">
         <h2 class="text-xl font-bold mb-6">Galería de fotos mecánicas</h2>
 
-        <image-gallery [photos]="auction().mechanicsDetails.mechanicsPhotos"></image-gallery>
+        <image-gallery [photos]="auction().mechanicsDetails.mechanicsPhotos" [index]="5"></image-gallery>
       </section>
 
       <section class="shadow mt-12 rounded-xl border border-gray3 px-6 py-6">
@@ -338,7 +338,7 @@
         @defer (when auction().auctionCar) {
         <comments-textarea [auctioneerUserId]="auction().auctionCar.userId" [auctionType]="auctionType.car"
           [auctionCarPublishId]="auction().carHistory.originalAuctionCarId" placeholder="Agregar un comentario"
-          (commentCreated)="getComments()"></comments-textarea>
+          (commentCreated)="getComments()" [auctionTypeComment]="auctionTypeComment.lastChance"></comments-textarea>
         }
 
         <div class="mt-4">
@@ -348,7 +348,8 @@
 
         @for (comment of comments().data; track $index) {
         <comment [comment]="comment" [auctionCarPublishId]="auction().carHistory.originalAuctionCarId"
-          [auctionType]="auctionType.car" (commentCreated)=" getComments()"></comment>
+          [auctionType]="auctionType.car" (commentCreated)=" getComments()"
+          [auctionTypeComment]="auctionTypeComment.lastChance"></comment>
         }
 
         <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">

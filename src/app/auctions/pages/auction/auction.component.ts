@@ -35,6 +35,7 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
 import { AuctionImageAssigmentAndReorderService } from '@app/dashboard/services/auction-image-assigment-and-reorder.service';
 import { ImagesPublish } from '@app/dashboard/interfaces/images-publish';
+import { AuctionTypesComments } from '@auctions/enums';
 
 @Component({
   standalone: true,
@@ -95,6 +96,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
+  }
+
+  get auctionTypesComments(): typeof AuctionTypesComments {
+    return AuctionTypesComments;
   }
 
   get swiperParams(): any {
@@ -220,7 +225,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId).subscribe({
+    this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.active).subscribe({
       next: (response) => {
         this.comments.set(response);
 

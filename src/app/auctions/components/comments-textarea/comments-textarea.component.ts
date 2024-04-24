@@ -9,6 +9,7 @@ import { ValidatorsService } from '../../../shared/services/validators.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { AppComponent } from '@app/app.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { AuctionTypesComments } from '@auctions/enums';
 
 @Component({
   selector: 'comments-textarea',
@@ -31,6 +32,7 @@ export class CommentsTextareaComponent implements OnInit {
   isSeller = input<boolean>();
   placeholder = input.required<string>();
   auctionType = input.required<AuctionTypes>();
+  auctionTypeComment = input.required<AuctionTypesComments>();
 
   @Output() commentCreated = new EventEmitter<void>();
 
@@ -78,7 +80,7 @@ export class CommentsTextareaComponent implements OnInit {
       return;
     }
 
-    this.#commentsService.createComment(this.createComment as FormGroup, this.auctionType()).subscribe({
+    this.#commentsService.createComment(this.createComment as FormGroup, this.auctionType(), this.auctionTypeComment()).subscribe({
       next: () => {
         this.createComment?.get('text')?.setValue('');
         this.commentCreated.emit();

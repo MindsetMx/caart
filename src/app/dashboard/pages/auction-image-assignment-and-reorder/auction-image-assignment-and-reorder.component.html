@@ -83,7 +83,14 @@
 
       @defer (when fotosMecanicas) {
       <div>
-        <h2 class="mb-2">Fotos mecánicas</h2>
+        <h2 class="mb-2 md:flex md:items-center">
+          Fotos mecánicas
+          <button type="button" (click)="openDeleteAllImagesModal(auctionPhotoSectionsTypes.mechanicalPhotos)"
+            class="text-red-500 md:ml-2 flex items-center">
+            <mat-icon>delete</mat-icon>
+            Eliminar todas las fotos mecánicas
+          </button>
+        </h2>
         <div class="board" cdkDropListGroup>
           @for (imageUrl of fotosMecanicas.value; track i; let i = $index) {
           <div>
@@ -121,7 +128,14 @@
       <!-- fotosInterior -->
       @defer (when fotosInterior) {
       <div>
-        <h2 class="mb-2">Fotos interior</h2>
+        <h2 class="mb-2 md:flex md:items-center">
+          Fotos interior
+          <button type="button" (click)="openDeleteAllImagesModal(auctionPhotoSectionsTypes.interiorPhotos)"
+            class="text-red-500 md:ml-2 flex items-center">
+            <mat-icon>delete</mat-icon>
+            Eliminar todas las fotos interiores
+          </button>
+        </h2>
         <div class="board" cdkDropListGroup>
           @for (imageUrl of fotosInterior.value; track i; let i = $index) {
           <div>
@@ -158,7 +172,14 @@
       <!-- fotosExterior -->
       @defer (when fotosExterior) {
       <div>
-        <h2 class="mb-2">Fotos exterior</h2>
+        <h2 class="mb-2 md:flex md:items-center">
+          Fotos exterior
+          <button type="button" (click)="openDeleteAllImagesModal(auctionPhotoSectionsTypes.exteriorPhotos)"
+            class="text-red-500 md:ml-2 flex items-center">
+            <mat-icon>delete</mat-icon>
+            Eliminar todas las fotos exteriores
+          </button>
+        </h2>
         <div class="board" cdkDropListGroup>
           @for (imageUrl of fotosExterior.value; track i; let i = $index) {
           <div>
@@ -215,3 +236,8 @@
 <auction-image-deletion-confirmation-modal (isOpenChange)="closeDeleteImageModal()" (deleteImageChange)="removePhoto()"
   [isOpen]="deleteImageModalIsOpen()"
   [isButtonSubmitDisabled]="deleteImageSubmitButtonIsDisabled()"></auction-image-deletion-confirmation-modal>
+
+<all-photos-deletion-confirmation-modal (isOpenChange)="closeDeleteAllImagesModal()"
+  (deleteImageChange)="removeAllPhotos($event)" [auctionPhotoSection]="auctionPhotoSection()"
+  [isOpen]="deleteAllImagesModalIsOpen()"
+  [isButtonSubmitDisabled]="deleteAllImagesSubmitButtonIsDisabled()"></all-photos-deletion-confirmation-modal>

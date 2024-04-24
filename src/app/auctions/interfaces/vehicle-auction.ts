@@ -22,6 +22,7 @@ export interface VehicleAuctionAttributes {
   reserve: boolean;
   state: string;
   year: number;
+  title: string;
 }
 
 export interface VehicleAuctionMeta {

@@ -22,6 +22,7 @@ export interface CompletedAuctionsAttributes {
   extract: string;
   state: string;
   city: string;
+  title: string;
 }
 
 export interface CompletedAuctionsMeta {

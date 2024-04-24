@@ -42,7 +42,8 @@
 
   @if (replyIsOpen()) {
   <comments-textarea class="block mt-4" [auctionCarPublishId]="auctionCarPublishId()" [parentCommentId]="comment().id"
-    [auctionType]="auctionType()" placeholder="Agregar un comentario" (commentCreated)="emitCommentCreated()">
+    [auctionTypeComment]="auctionTypeComment()" [auctionType]="auctionType()" placeholder="Agregar un comentario"
+    (commentCreated)="emitCommentCreated()">
   </comments-textarea>
   }
 </div>

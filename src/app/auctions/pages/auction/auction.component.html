@@ -1,6 +1,7 @@
 <div class="mb-32">
-  <div class="sticky inset-0 z-10 bg-white pt-4 pb-2">
+  <div class="sticky inset-0 z-[5] bg-white pt-4 pb-2">
     <div class="container">
+      @defer (when auction().data) {
       <h1 class="font-lato font-black flex text-2xl md:text-4xl mr-4 mb-2">
         {{auction().data.attributes.title}}
         @if (auction().data.attributes.auctionCarForm.reserve === false || auction().data.attributes.premium) {
@@ -19,6 +20,7 @@
         </span>
         }
       </h1>
+      }
       <div
         class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
         @if(specificAuction().data && specificAuction().data.bids.length > 0) {
@@ -28,7 +30,7 @@
           </p>
         </div>
         }
-        @if (countdownConfig().leftTime! > 0) {
+        @if (auction().data && countdownConfig().leftTime! > 0) {
         <div>
           <div class="bg-gray1 rounded-lg px-3 py-1">
             <countdown class="text-red2 font-bold" [config]="countdownConfig()"
@@ -107,7 +109,7 @@
             }
             }
           </div>
-          @if (countdownConfig().leftTime! > 0) {
+          @if (auction().data && countdownConfig().leftTime! > 0) {
           <div>
             <div class="ml-4">
               <countdown class="text-red2 font-bold text-xl" [config]="countdownConfig()"
@@ -142,12 +144,12 @@
         </div>
         <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
           <span class="md:hidden space-x-2 inline-block">
-            @if (auction().data.attributes.auctionCarForm.reserve === false) {
+            @if (auction().data && auction().data.attributes.auctionCarForm.reserve === false) {
             <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
               Sin Reserva
             </span>
             }
-            @if (auction().data.attributes.premium) {
+            @if (auction().data && auction().data.attributes.premium) {
             <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">
               Premium
             </span>
@@ -417,6 +419,7 @@
           }
         </section>
 
+        @if (auction().data.attributes.exteriorDetails.exteriorVideos.length > 0) {
         <section>
           <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
           <swiper-container init="false" #videoGallery>
@@ -432,25 +435,29 @@
           </swiper-container>
         </section>
         }
+        }
 
         @defer (when auction().data) {
 
-        <section class="mt-6">
+        <section [ngClass]="(auction().data.attributes.exteriorDetails.exteriorVideos.length > 0) ? 'mt-6' : 'mt-8'">
           <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
 
-          <image-gallery [photos]="auction().data.attributes.exteriorDetails.exteriorPhotos"></image-gallery>
+          <image-gallery [photos]="auction().data.attributes.exteriorDetails.exteriorPhotos"
+            [index]="3"></image-gallery>
         </section>
 
         <section class="mt-6">
           <h2 class="text-xl font-bold mb-6">Galería de fotos interiores</h2>
 
-          <image-gallery [photos]="auction().data.attributes.interiorDetails.interiorPhotos"></image-gallery>
+          <image-gallery [photos]="auction().data.attributes.interiorDetails.interiorPhotos"
+            [index]="4"></image-gallery>
         </section>
 
         <section class="mt-6">
           <h2 class="text-xl font-bold mb-6">Galería de fotos mecánicas</h2>
 
-          <image-gallery [photos]="auction().data.attributes.mechanicsDetails.mechanicsPhotos"></image-gallery>
+          <image-gallery [photos]="auction().data.attributes.mechanicsDetails.mechanicsPhotos"
+            [index]="5"></image-gallery>
         </section>
 
         <auction-summary class="hidden md:block" [auction]="auction()" [metrics]="metrics()"
@@ -465,8 +472,9 @@
 
           @defer (when auction().data) {
           <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
-            [auctionType]="auctionType.car" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
-            placeholder="Agregar un comentario" (commentCreated)="getComments()"></comments-textarea>
+            [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.car"
+            [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId" placeholder="Agregar un comentario"
+            (commentCreated)="getComments()"></comments-textarea>
           }
 
           <!-- <div class="mt-4">
@@ -476,7 +484,8 @@
 
           @for (comment of comments().data; track $index) {
           <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
-            [auctionType]="auctionType.car" (commentCreated)="getComments()"></comment>
+            [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.car"
+            (commentCreated)="getComments()"></comment>
           }
 
           <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">

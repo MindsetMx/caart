@@ -19,13 +19,13 @@ export class AuctionImageDeletionConfirmationModalComponent {
   // formArray = input.required<FormArray>();
   // index = input.required<number>();
   isOpenChange = output<boolean>();
-  deleteImageChange = output<void>();
+  deleteImagesChange = output<void>();
 
   isButtonSubmitDisabled = input.required<boolean>();
 
   deleteImage(): void {
     // formArray.removeAt(index);
-    this.deleteImageChange.emit();
+    this.deleteImagesChange.emit();
   }
 
   closeModal(): void {

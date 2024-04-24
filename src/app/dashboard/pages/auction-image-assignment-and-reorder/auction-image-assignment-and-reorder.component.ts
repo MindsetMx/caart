@@ -15,6 +15,8 @@ import { AppService } from '@app/app.service';
 import { MatIcon } from '@angular/material/icon';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { AuctionImageDeletionConfirmationModalComponent } from '@app/dashboard/modals/auction-image-deletion-confirmation-modal/auction-image-deletion-confirmation-modal.component';
+import { AllPhotosDeletionConfirmationModalComponent } from '@app/dashboard/modals/all-photos-deletion-confirmation-modal/all-photos-deletion-confirmation-modal.component';
+import { AuctionPhotoSections } from '@app/dashboard/enums/auction-photo-sections.enum';
 
 @Component({
   standalone: true,
@@ -31,7 +33,8 @@ import { AuctionImageDeletionConfirmationModalComponent } from '@app/dashboard/m
     CommonModule,
     MatIcon,
     SpinnerComponent,
-    AuctionImageDeletionConfirmationModalComponent
+    AuctionImageDeletionConfirmationModalComponent,
+    AllPhotosDeletionConfirmationModalComponent
   ],
   templateUrl: './auction-image-assignment-and-reorder.component.html',
   styleUrl: './auction-image-assignment-and-reorder.component.css',
@@ -51,6 +54,9 @@ export class AuctionImageAssignmentAndReorderComponent {
   deleteImageSubmitButtonIsDisabled = signal<boolean>(false);
   aspectRatio = signal<number>(16 / 9);
   allowMultipleSelection = signal<boolean>(false);
+  deleteAllImagesModalIsOpen = signal<boolean>(false);
+  auctionPhotoSection = signal<AuctionPhotoSections>(AuctionPhotoSections.mechanicalPhotos);
+  deleteAllImagesSubmitButtonIsDisabled = signal<boolean>(false);
 
   #activatedRoute = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
@@ -80,6 +86,10 @@ export class AuctionImageAssignmentAndReorderComponent {
 
   get fotosExterior(): FormArray {
     return this.auctionImagesForm.get('fotosExterior') as FormArray;
+  }
+
+  get auctionPhotoSectionsTypes(): typeof AuctionPhotoSections {
+    return AuctionPhotoSections;
   }
 
   constructor() {
@@ -113,6 +123,36 @@ export class AuctionImageAssignmentAndReorderComponent {
     }).add(() => {
       this.saveImagesButtonIsDisabled.set(false);
     });
+  }
+
+  openDeleteAllImagesModal(auctionPhotoSection: AuctionPhotoSections): void {
+    this.auctionPhotoSection.set(auctionPhotoSection);
+    this.deleteAllImagesModalIsOpen.set(true);
+  }
+
+  closeDeleteAllImagesModal(): void {
+    this.deleteAllImagesModalIsOpen.set(false);
+  }
+
+  removeAllPhotos(auctionPhotoSection: AuctionPhotoSections): void {
+    this.deleteAllImagesSubmitButtonIsDisabled.set(true);
+
+    switch (auctionPhotoSection) {
+      case AuctionPhotoSections.mechanicalPhotos:
+        this.fotosMecanicas.clear();
+        break;
+      case AuctionPhotoSections.interiorPhotos:
+        this.fotosInterior.clear();
+        break;
+      case AuctionPhotoSections.exteriorPhotos:
+        this.fotosExterior.clear();
+        break;
+      default:
+        break;
+    }
+
+    this.deleteAllImagesModalIsOpen.set(false);
+    this.deleteAllImagesSubmitButtonIsDisabled.set(false);
   }
 
   openDeleteImageModal(event: Event, formArray: FormArray, index: number): void {

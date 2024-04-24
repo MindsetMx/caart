@@ -54,6 +54,7 @@ export interface GetAllAuctionsAuctionCarDetails {
   userId: string;
   __v: number;
   lotNumber: number;
+  title: string;
 }
 
 export interface GetAllAuctionsAuctionMemorabiliaDetails {

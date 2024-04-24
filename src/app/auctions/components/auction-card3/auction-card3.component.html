@@ -9,9 +9,8 @@
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-optima font-semibold text-xl">{{auction().auctionCarDetails!.year}}
-      {{auction().auctionCarDetails!.brand}}
-      {{auction().auctionCarDetails!.carModel}}
+    <p class="font-optima font-semibold text-xl">
+      {{auction().auctionCarDetails!.title}}
     </p>
     @if (auction().auctionCarDetails!.reserve === false || auction().premium) {
     <div class="space-x-2">

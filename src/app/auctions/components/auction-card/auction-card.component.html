@@ -9,8 +9,8 @@
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-optima font-semibold text-xl">{{auction().attributes.year}} {{auction().attributes.brand}}
-      {{auction().attributes.model}}
+    <p class="font-optima font-semibold text-xl">
+      {{auction().attributes.title}}
     </p>
     @if (auction().attributes.reserve === false || auction().attributes.premium) {
     <div class="space-x-2">

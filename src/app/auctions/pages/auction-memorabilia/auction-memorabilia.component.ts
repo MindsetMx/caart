@@ -33,6 +33,7 @@ import { AuctionDetailsService } from '@auctions/services/auction-details.servic
 import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
 import { CurrentMemorabiliaAuctionsComponent } from '@auctions/components/current-memorabilia-auctions/current-memorabilia-auctions.component';
 import { RecentlyCompletedMemorabiliaAuctionComponent } from '@auctions/components/recently-completed-memorabilia-auctions/recently-completed-memorabilia-auctions.component';
+import { AuctionTypesComments } from '@auctions/enums';
 
 @Component({
   selector: 'app-auction-memorabilia',
@@ -92,6 +93,10 @@ export class AuctionMemorabiliaComponent {
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
+  }
+
+  get auctionTypesComments(): typeof AuctionTypesComments {
+    return AuctionTypesComments;
   }
 
   get swiperParams(): any {
@@ -199,7 +204,7 @@ export class AuctionMemorabiliaComponent {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.originalMemorabiliaId, AuctionTypes.memorabilia).subscribe({
+    this.#commentsService.getComments(this.auction().data.attributes.originalMemorabiliaId, AuctionTypes.memorabilia, this.auctionTypesComments.active).subscribe({
       next: (response) => {
         this.comments.set(response);
 
