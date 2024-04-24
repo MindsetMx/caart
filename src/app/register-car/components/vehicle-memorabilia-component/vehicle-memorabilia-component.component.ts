@@ -45,8 +45,7 @@ export class VehicleMemorabiliaComponentComponent {
   vehicleMemorabiliaForm: FormGroup;
   isButtonRegisterMemorabiliaDisabled = signal(false);
   states = signal<string[]>(states);
-  uploadImageUrl = signal<string>('');
-  initializated: boolean = false;
+  token = signal<string>('');
 
   #validatorsService = inject(ValidatorsService);
   #vehicleMemorabiliaService = inject(VehicleMemorabiliaService);
@@ -65,21 +64,13 @@ export class VehicleMemorabiliaComponentComponent {
   }
 
   uppyDashboardImagesEffect = effect(() => {
-    if (this.uploadImageUrl() && this.uppyDashboardImages()) {
-      if (this.initializated) {
-        this.uppyImages?.getPlugin('XHRUpload')?.setOptions({
-          endpoint: this.uploadImageUrl(),
-        });
-
-        return;
-      }
-
+    if (this.uppyDashboardImages()) {
       this.uppyImages = new Uppy({
         debug: true,
         autoProceed: true,
         locale: Spanish,
         restrictions: {
-          // maxFileSize: 1000000,
+          maxFileSize: 10000000,
           // maxNumberOfFiles: 20,
           minNumberOfFiles: 1,
           allowedFileTypes: ['image/*'],
@@ -102,7 +93,7 @@ export class VehicleMemorabiliaComponentComponent {
           }
         })
         .use(XHRUpload, {
-          endpoint: this.uploadImageUrl(),
+          endpoint: 'https://batch.imagedelivery.net/images/v1',
           formData: true,
           fieldName: 'file',
           allowedMetaFields: [],
@@ -114,16 +105,12 @@ export class VehicleMemorabiliaComponentComponent {
             this.uppyDashboardImages()?.nativeElement.click();
 
             file.meta['uploadURL'] = url;
-
-            this.uploadImageDirect();
           });
         }).on('file-removed', (file) => {
           const urlToRemove = file.meta['uploadURL'];
 
           this.photos.setValue(this.photos.value.filter((url: string) => url !== urlToRemove));
         });
-
-      this.initializated = true;
     }
   });
 
@@ -133,7 +120,7 @@ export class VehicleMemorabiliaComponentComponent {
       autoProceed: true,
       locale: Spanish,
       restrictions: {
-        // maxFileSize: 1000000,
+        maxFileSize: 500000000,
         // maxNumberOfFiles: 20,
         minNumberOfFiles: 1,
         allowedFileTypes: ['video/*'],
@@ -198,7 +185,7 @@ export class VehicleMemorabiliaComponentComponent {
       additionalInformation: new FormControl('', [Validators.required]),
     });
 
-    this.uploadImageDirect();
+    this.batchTokenDirect();
   }
 
   registerVehicleMemorabilia(): void {
@@ -230,15 +217,16 @@ export class VehicleMemorabiliaComponentComponent {
     });
   }
 
-  uploadImageDirect(): void {
-    this.#cloudinaryCroppedImageService.uploadImageDirect$().subscribe({
-      next: (response) => {
-        this.uploadImageUrl.set(response.result.uploadURL);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+  batchTokenDirect(): void {
+    this.#cloudinaryCroppedImageService.batchTokenDirect$().
+      subscribe({
+        next: (response) => {
+          this.token.set(response.result.token);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
   }
 
   hasError(field: string): boolean {

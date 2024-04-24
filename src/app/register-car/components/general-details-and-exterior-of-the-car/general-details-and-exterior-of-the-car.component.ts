@@ -125,7 +125,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
       autoProceed: true,
       locale: Spanish,
       restrictions: {
-        // maxFileSize: 1000000,
+        maxFileSize: 500000000,
         // maxNumberOfFiles: 20,
         minNumberOfFiles: 1,
         allowedFileTypes: ['video/*'],
