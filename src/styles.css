@@ -27,6 +27,10 @@
       margin: revert;
       padding: revert;
     }
+
+    img {
+      display: initial;
+    }
   }
 }
 

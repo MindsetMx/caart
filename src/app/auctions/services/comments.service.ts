@@ -28,7 +28,7 @@ export class CommentsService {
   }
 
   getComments(auctionCarPublishId: string, itemType: string, auctionType: AuctionTypesComments): Observable<GetComments> {
-    return this.#http.get<GetComments>(`${this.#baseUrl}/comments/${itemType}/${auctionCarPublishId}/${auctionType}`); //TODO: cambiar a variable
+    return this.#http.get<GetComments>(`${this.#baseUrl}/comments/${itemType}/${auctionCarPublishId}/${auctionType}`);
   }
 
   likeComment(commentId: string): Observable<LikeComment> {

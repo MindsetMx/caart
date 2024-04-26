@@ -1,3 +1,12 @@
-:host {
-  display: block;
+image-cropper {
+  max-height: 50vh;
+}
+
+.ngx-ic-source-image {
+  display: initial;
+}
+
+.cropper-wrapper {
+  min-height: 300px;
+  position: relative;
 }

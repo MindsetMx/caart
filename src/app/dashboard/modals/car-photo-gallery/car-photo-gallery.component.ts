@@ -86,9 +86,6 @@ export class CarPhotoGalleryComponent {
 
       this.cropCarHistoryImageModalIsOpen.set(true);
     } else {
-
-      console.log('allowMultipleSelection', this.allowMultipleSelection());
-
       if (this.allowMultipleSelection()) {
         this.selectedImagesChange.emit(this.selectedImages?.value);
         //unselect all images

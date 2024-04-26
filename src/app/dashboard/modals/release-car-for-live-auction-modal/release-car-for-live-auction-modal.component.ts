@@ -92,9 +92,9 @@ export class ReleaseCarForLiveAuctionModalComponent {
         this.toastSuccess('Auto publicado en subasta en vivo');
       },
       error: (error) => {
-        console.error(error);
+        console.error(error.error.error.error);
 
-        this.toastError(error.error.error);
+        this.toastError(error.error.error.error);
       }
     }).add(() => {
       this.releaseCarForLiveAuctionSubmitButtonIsDisabled.set(false);

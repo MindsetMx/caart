@@ -269,8 +269,6 @@ export class AuctionImageAssignmentAndReorderComponent {
   }
 
   openModal(varName: WritableSignal<boolean>, formFieldName: string, cropImage: boolean, index?: number, allowMultipleSelection?: boolean): void {
-    console.log('openModal', formFieldName, cropImage, index, allowMultipleSelection);
-
     if (cropImage) {
       switch (formFieldName) {
         case 'fotoCatalogo':
@@ -292,8 +290,6 @@ export class AuctionImageAssignmentAndReorderComponent {
     (allowMultipleSelection !== undefined)
       ? this.allowMultipleSelection.set(allowMultipleSelection)
       : this.allowMultipleSelection.set(false);
-
-    console.log('allowMultipleSelection', this.allowMultipleSelection());
 
     this.formFieldName.set(formFieldName);
     varName.set(true);

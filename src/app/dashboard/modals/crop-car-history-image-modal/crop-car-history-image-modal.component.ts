@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CloudinaryCroppedImageService } from '../../services/cloudinary-cropped-image.service';
 import { ImageCroppedEvent, ImageCropperModule, ImageTransform, LoadedImage, base64ToFile } from 'ngx-image-cropper';
@@ -39,13 +39,17 @@ export class CropCarHistoryImageModalComponent {
   });
 
   croppedImage?: File;
+  croppedImage2?: SafeUrl;
   cropImageButtonIsDisabled = signal<boolean>(false);
 
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
+  #sanitizer = inject(DomSanitizer);
 
   resultImage = signal<HTMLCanvasElement>({} as HTMLCanvasElement);
 
   imageCropped(event: ImageCroppedEvent): void {
+    this.croppedImage2 = this.#sanitizer.bypassSecurityTrustUrl(event.objectUrl || event.base64 || '');
+
     let croppedImageBlob = event.blob;
 
     if (!croppedImageBlob) return;
@@ -75,6 +79,11 @@ export class CropCarHistoryImageModalComponent {
       ).subscribe((response) => {
         this.emitIsOpenChange(false);
         this.croppedImageChange.emit(response.result.variants[0]);
+        this.transform.set({
+          translateH: 0,
+          translateV: 0,
+          scale: 1
+        });
         this.cropImageButtonIsDisabled.set(false);
       });
   }
@@ -142,9 +151,11 @@ export class CropCarHistoryImageModalComponent {
 
   emitIsOpenChange(isOpen: boolean): void {
     this.isOpenChange.emit(isOpen);
-  }
 
-  closeModal(): void {
-    this.emitIsOpenChange(false);
+    this.transform.set({
+      translateH: 0,
+      translateV: 0,
+      scale: 1
+    });
   }
 }
