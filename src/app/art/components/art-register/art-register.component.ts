@@ -1,66 +1,60 @@
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Uppy } from '@uppy/core';
 import Spanish from '@uppy/locales/lib/es_ES';
 import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 
+import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { states } from '@shared/states';
-import { VehicleMemorabiliaService } from '@app/register-car/services/vehicle-memorabilia.service';
-import { AppService } from '@app/app.service';
-import { NgxMaskDirective } from 'ngx-mask';
-import { Router } from '@angular/router';
 import { environments } from '@env/environments';
-import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
+import { RegisterArtService } from '@app/art/services/register-art.service';
 
 @Component({
-  selector: 'vehicle-memorabilia-component',
+  selector: 'art-register',
   standalone: true,
   imports: [
-    CommonModule,
     InputDirective,
     InputErrorComponent,
     PrimaryButtonDirective,
     ReactiveFormsModule,
     SpinnerComponent,
     UppyAngularDashboardModule,
-    NgxMaskDirective
   ],
-  templateUrl: './vehicle-memorabilia-component.component.html',
-  styleUrl: './vehicle-memorabilia-component.component.css',
+  templateUrl: './art-register.component.html',
+  styleUrl: './art-register.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VehicleMemorabiliaComponentComponent {
+export class ArtRegisterComponent {
   readonly #cloudflareToken = environments.cloudflareToken;
 
   uppyDashboardImages = viewChild.required<ElementRef>('uppyDashboardImages');
   uppyDashboardVideos = viewChild.required<ElementRef>('uppyDashboardVideos');
 
-  vehicleMemorabiliaForm: FormGroup;
-  isButtonRegisterMemorabiliaDisabled = signal(false);
-  states = signal<string[]>(states);
+  registerArtForm: FormGroup;
+
+  isButtonRegisterArtDisabled = signal(false);
   token = signal<string>('');
 
-  #validatorsService = inject(ValidatorsService);
-  #vehicleMemorabiliaService = inject(VehicleMemorabiliaService);
-  #router = inject(Router);
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
+  #registerArtService = inject(RegisterArtService);
+  #router = inject(Router);
+  #validatorsService = inject(ValidatorsService);
 
   uppyImages?: Uppy;
   uppyVideos?: Uppy;
 
   get photos(): FormControl {
-    return this.vehicleMemorabiliaForm.get('photos') as FormControl;
+    return this.registerArtForm.get('photos') as FormControl;
   }
 
   get videos(): FormControl {
-    return this.vehicleMemorabiliaForm.get('videos') as FormControl;
+    return this.registerArtForm.get('videos') as FormControl;
   }
 
   uppyDashboardImagesEffect = effect(() => {
@@ -171,45 +165,42 @@ export class VehicleMemorabiliaComponentComponent {
   });
 
   constructor() {
-    this.vehicleMemorabiliaForm = new FormGroup({
+    this.registerArtForm = new FormGroup({
+      artist: new FormControl('', [Validators.required]),
       title: new FormControl('', [Validators.required]),
-      history: new FormControl('', [Validators.required]),
+      year: new FormControl('', [Validators.required]),
       materials: new FormControl('', [Validators.required]),
-      dimensions: new FormControl('', [Validators.required]),
-      hasSignature: new FormControl('', [Validators.required]),
-      hasAuthenticityCertificate: new FormControl('', [Validators.required]),
-      technicalSheet: new FormControl('', [Validators.required]),
-      state: new FormControl('', [Validators.required]),
-      city: new FormControl('', [Validators.required]),
-      reserve: new FormControl('', [Validators.required]),
-      reserveAmount: new FormControl(''),
-      stateOfMemorabilia: new FormControl('', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
+      otherCategory: new FormControl(''),
+      rarity: new FormControl('', [Validators.required]),
+      height: new FormControl('', [Validators.required]),
+      width: new FormControl('', [Validators.required]),
+      depth: new FormControl(''),
+      condition: new FormControl('', [Validators.required]),
+      origin: new FormControl('', [Validators.required]),
       photos: new FormControl([], [Validators.required]),
       videos: new FormControl([]),
-      additionalInformation: new FormControl('', [Validators.required]),
+      acceptTerms: new FormControl('', [Validators.required]),
     });
 
     this.batchTokenDirect();
   }
 
-  registerVehicleMemorabilia(): void {
-    this.isButtonRegisterMemorabiliaDisabled.set(true);
+  registerArt(): void {
+    this.isButtonRegisterArtDisabled.set(true);
 
-    const isValid = this.#validatorsService.isValidForm(this.vehicleMemorabiliaForm);
+    const isValid = this.#validatorsService.isValidForm(this.registerArtForm);
 
     if (!isValid) {
-      this.isButtonRegisterMemorabiliaDisabled.set(false);
+      this.isButtonRegisterArtDisabled.set(false);
       return;
     }
 
-    this.#vehicleMemorabiliaService.registerMemorabilia$(this.vehicleMemorabiliaForm).subscribe({
+    this.#registerArtService.registerArt$(this.registerArtForm).subscribe({
       next: () => {
-        this.vehicleMemorabiliaForm.reset();
+        this.registerArtForm.reset();
         this.photos.setValue([]);
         this.videos.setValue([]);
-
-        // this.uppyImages?.cancelAll();
-        // this.uppyVideos?.cancelAll();
 
         this.#router.navigate(['registro-exitoso']);
       },
@@ -217,7 +208,7 @@ export class VehicleMemorabiliaComponentComponent {
         console.error(error);
       }
     }).add(() => {
-      this.isButtonRegisterMemorabiliaDisabled.set(false);
+      this.isButtonRegisterArtDisabled.set(false);
     });
   }
 
@@ -233,13 +224,11 @@ export class VehicleMemorabiliaComponentComponent {
       });
   }
 
-  hasError(field: string): boolean {
-    return this.#validatorsService.hasError(this.vehicleMemorabiliaForm, field);
+  hasError(field: string, form: FormGroup = this.registerArtForm): boolean {
+    return this.#validatorsService.hasError(form, field);
   }
 
-  getError(field: string): string | undefined {
-    if (!this.vehicleMemorabiliaForm) return undefined;
-
-    return this.#validatorsService.getError(this.vehicleMemorabiliaForm, field);
+  getError(field: string, form: FormGroup = this.registerArtForm): string | undefined {
+    return this.#validatorsService.getError(form, field);
   }
 }

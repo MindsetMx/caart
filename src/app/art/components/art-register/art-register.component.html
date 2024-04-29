@@ -1,0 +1,168 @@
+<form [formGroup]="registerArtForm" (ngSubmit)="registerArt()">
+  <div class="grid grid-cols-2 gap-4">
+    <!-- artist: string; -->
+    <div>
+      <label for="artist" class="block mb-1 text-sm">Artista <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="artist" id="artist" type="text" sharedInput>
+      @if (hasError('artist')) {
+      <shared-input-error [message]="getError('artist')"></shared-input-error>
+      }
+    </div>
+    <!-- title: string; -->
+    <div>
+      <label for="title" class="block mb-1 text-sm">Título <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="title" id="title" type="text" sharedInput>
+      @if (hasError('title')) {
+      <shared-input-error [message]="getError('title')"></shared-input-error>
+      }
+    </div>
+    <!-- year: number; -->
+    <div>
+      <label for="year" class="block mb-1 text-sm">Año <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="year" id="year" type="number" sharedInput>
+      @if (hasError('year')) {
+      <shared-input-error [message]="getError('year')"></shared-input-error>
+      }
+    </div>
+    <!-- materials: string; -->
+    <div>
+      <label for="materials" class="block mb-1 text-sm">Materiales <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="materials" id="materials" type="text" sharedInput>
+      @if (hasError('materials')) {
+      <shared-input-error [message]="getError('materials')"></shared-input-error>
+      }
+    </div>
+    <!-- category: string; -->
+    <div>
+      <label for="category" class="block mb-1 text-sm">Categoría <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="category" id="category" type="text" sharedInput>
+      @if (hasError('category')) {
+      <shared-input-error [message]="getError('category')"></shared-input-error>
+      }
+    </div>
+    <!-- otherCategory?: string; -->
+    <div>
+      <label for="otherCategory" class="block mb-1 text-sm">Otra categoría</label>
+      <input formControlName="otherCategory" id="otherCategory" type="text" sharedInput>
+      @if (hasError('otherCategory')) {
+      <shared-input-error [message]="getError('otherCategory')"></shared-input-error>
+      }
+    </div>
+    <!-- rarity: string; -->
+    <div>
+      <label for="rarity" class="block mb-1 text-sm">Rareza <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="rarity" id="rarity" type="text" sharedInput>
+      @if (hasError('rarity')) {
+      <shared-input-error [message]="getError('rarity')"></shared-input-error>
+      }
+    </div>
+    <!-- height: string; -->
+    <div>
+      <label for="height" class="block mb-1 text-sm">Altura <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="height" id="height" type="text" sharedInput>
+      @if (hasError('height')) {
+      <shared-input-error [message]="getError('height')"></shared-input-error>
+      }
+    </div>
+    <!-- width: string; -->
+    <div>
+      <label for="width" class="block mb-1 text-sm">Ancho <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="width" id="width" type="text" sharedInput>
+      @if (hasError('width')) {
+      <shared-input-error [message]="getError('width')"></shared-input-error>
+      }
+    </div>
+    <!-- depth?: string; -->
+    <div>
+      <label for="depth" class="block mb-1 text-sm">Profundidad</label>
+      <input formControlName="depth" id="depth" type="text" sharedInput>
+      @if (hasError('depth')) {
+      <shared-input-error [message]="getError('depth')"></shared-input-error>
+      }
+    </div>
+    <!-- condition: string; -->
+    <div>
+      <label for="condition" class="block mb-1 text-sm">Condición <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="condition" id="condition" sharedInput>
+        <option value="Excelente">Excelente</option>
+        <option value="Buena">Buena</option>
+        <option value="Regular">Regular</option>
+        <option value="Mala">Mala</option>
+      </select>
+      @if (hasError('condition')) {
+      <shared-input-error [message]="getError('condition')"></shared-input-error>
+      }
+    </div>
+    <!-- origin: string; -->
+    <div>
+      <label for="origin" class="block mb-1 text-sm">Origen <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="origin" id="origin" type="text" sharedInput>
+      @if (hasError('origin')) {
+      <shared-input-error [message]="getError('origin')"></shared-input-error>
+      }
+    </div>
+
+    <!-- Images -->
+    <div class="col-span-2">
+      <label class="text-sm cursor-pointer">
+        Imágenes
+        <span class="font-bold text-red-500 inline-block">*</span></label>
+
+      <div #uppyDashboardImages></div>
+
+      @if (hasError('photos')) {
+      <shared-input-error [message]="getError('photos')"></shared-input-error>
+      }
+    </div>
+
+    <!-- Vídeos -->
+    <div class="col-span-2">
+      <label class="text-sm cursor-pointer">
+        Vídeos
+        <span class="font-bold text-red-500 inline-block">*</span></label>
+
+      <div #uppyDashboardVideos></div>
+
+      @if (hasError('videos')) {
+      <shared-input-error [message]="getError('videos')"></shared-input-error>
+      }
+    </div>
+
+    <!-- acceptTerms: boolean; -->
+
+    <div class="col-span-2 mt-8">
+      <div class="flex items-center text-xs">
+        <input formControlName="acceptTerms" id="acceptTerms" type="checkbox" class="h-4 w-4">
+        <label for="acceptTerms" class="ml-3 block leading-6">
+          Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
+          <a class="underline">Acuerdos de usuarios.</a>
+          <span class="font-bold text-red-500 inline-block">*</span></label>
+      </div>
+
+      @if (hasError('acceptTerms')) {
+      <shared-input-error [message]="getError('acceptTerms')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <button type="submit" class="inline-flex justify-center items-center" [disabled]="isButtonRegisterArtDisabled()"
+        [class.opacity-50]="isButtonRegisterArtDisabled()" sharedPrimaryButton>
+        @if (isButtonRegisterArtDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Registrar
+        }
+      </button>
+    </div>
+  </div>
+</form>
