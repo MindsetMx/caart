@@ -68,7 +68,7 @@ export class AuctionCarPublishesComponent {
         }
       ];
 
-    this.currentTab.set(this.tabs[0]);
+    this.currentTab.set(this.tabs[this.tabs.findIndex(tab => tab.current)]);
 
     this.getHasGeneralInfo();
   }

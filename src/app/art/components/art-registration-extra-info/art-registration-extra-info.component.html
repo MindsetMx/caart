@@ -1,0 +1,114 @@
+<h1 class="font-optima text-4xl font-bold mb-8">Información extra</h1>
+
+<h2 class="text-xl font-bold mb-5">Información del auto</h2>
+<form [formGroup]="extraInfoForm" (ngSubmit)="carExtrasFormSubmit()" class="grid grid-cols-2 items-end gap-5">
+  <!-- certificadoAutenticidad -->
+  <div>
+    <fieldset>
+      <legend class="block text-sm mb-1">Certificado de autenticidad <span
+          class="font-bold text-red-500 inline-block">*</span></legend>
+      <div class="flex">
+        <div class="flex">
+          <input formControlName="certificadoAutenticidad" id="certificadoAutenticidad" [value]="true" type="radio"
+            class="h-6 w-6">
+          <label for="certificadoAutenticidad" class="ml-3 block font-bold">
+            Sí
+          </label>
+        </div>
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
+          <input formControlName="certificadoAutenticidad" id="hasNocertificadoAutenticidad" [value]="false"
+            type="radio" class="h-6 w-6">
+          <label for="hasNocertificadoAutenticidad" class="ml-3 block font-bold">
+            No
+          </label>
+        </div>
+      </div>
+    </fieldset>
+    @if (hasError('certificadoAutenticidad')) {
+    <shared-input-error [message]="getError('certificadoAutenticidad')"></shared-input-error>
+    }
+  </div>
+
+  <!-- entregaConMarco -->
+  <div>
+    <fieldset>
+      <legend class="block text-sm mb-1">Entrega con marco <span class="font-bold text-red-500 inline-block">*</span>
+      </legend>
+      <div class="flex">
+        <div class="flex">
+          <input formControlName="entregaConMarco" id="entregaConMarco" [value]="true" type="radio" class="h-6 w-6">
+          <label for="entregaConMarco" class="ml-3 block font-bold">
+            Sí
+          </label>
+        </div>
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
+          <input formControlName="entregaConMarco" id="hasNoentregaConMarco" [value]="false" type="radio"
+            class="h-6 w-6">
+          <label for="hasNoentregaConMarco" class="ml-3 block font-bold">
+            No
+          </label>
+        </div>
+      </div>
+    </fieldset>
+    @if (hasError('entregaConMarco')) {
+    <shared-input-error [message]="getError('entregaConMarco')"></shared-input-error>
+    }
+  </div>
+
+  <!-- firmaArtista -->
+  <div>
+    <fieldset>
+      <legend class="block text-sm mb-1">Firma del artista <span class="font-bold text-red-500 inline-block">*</span>
+      </legend>
+      <div class="flex">
+        <div class="flex">
+          <input formControlName="firmaArtista" id="firmaArtista" [value]="true" type="radio" class="h-6 w-6">
+          <label for="firmaArtista" class="ml-3 block font-bold">
+            Sí
+          </label>
+        </div>
+        <div class="flex ml-6 xxs:ml-8 md:ml-16">
+          <input formControlName="firmaArtista" id="hasNofirmaArtista" [value]="false" type="radio" class="h-6 w-6">
+          <label for="hasNofirmaArtista" class="ml-3 block font-bold">
+            No
+          </label>
+        </div>
+      </div>
+    </fieldset>
+    @if (hasError('firmaArtista')) {
+    <shared-input-error [message]="getError('firmaArtista')"></shared-input-error>
+    }
+  </div>
+
+  <!-- procedenciaObra input -->
+  <div class="col-span-2">
+    <label for="procedenciaObra" class="block text-sm mb-2">Procedencia de la obra <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="procedenciaObra" type="text" name="procedenciaObra" formControlName="procedenciaObra" sharedInput>
+    @if (hasError('procedenciaObra')) {
+    <shared-input-error [message]="getError('procedenciaObra')"></shared-input-error>
+    }
+  </div>
+
+  <!-- historiaArtista -->
+  <div class="col-span-2">
+    <label for="historiaArtista" class="block text-sm mb-2">Historia del artista <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <textarea id="historiaArtista" rows="4" name="historiaArtista" formControlName="historiaArtista" sharedInput
+      sharedTextarea></textarea>
+    @if (hasError('historiaArtista')) {
+    <shared-input-error [message]="getError('historiaArtista')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <button class="flex justify-center" type="submit" [disabled]="isButtonSubmitDisabled()"
+      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      @if (isButtonSubmitDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
+      Siguiente
+      }
+    </button>
+  </div>
+</form>
