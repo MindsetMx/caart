@@ -1,9 +1,9 @@
 import 'moment/locale/es';
-import { CountdownConfig, CountdownModule } from 'ngx-countdown';
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
+import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal } from '@angular/core';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
@@ -11,32 +11,31 @@ import { switchMap } from 'rxjs';
 register();
 
 import { AppComponent } from '@app/app.component';
-import { AuctionMemorabiliaMetrics, GetComments, SpecificAuction, SpecificMemorabiliaAuction } from '@auctions/interfaces';
+import { AuctionDetailsService } from '@auctions/services/auction-details.service';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
-import { CommentsService } from '@auctions/services/comments.service';
-import { AuthStatus } from '@auth/enums';
+import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
+import { AuctionMemorabiliaMetrics, GetComments, SpecificMemorabiliaAuction } from '@auctions/interfaces';
+import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
+import { AuctionTypesComments } from '@auctions/enums';
 import { AuthService } from '@auth/services/auth.service';
-import { environments } from '@env/environments';
+import { AuthStatus } from '@auth/enums';
+import { CommentComponent } from '@auctions/components/comment/comment.component';
+import { CommentsService } from '@auctions/services/comments.service';
+import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
 import { CountdownService } from '@shared/services/countdown.service';
-import { PaymentMethodsService } from '@shared/services/payment-methods.service';
+import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
+import { CurrentMemorabiliaAuctionsComponent } from '@auctions/components/current-memorabilia-auctions/current-memorabilia-auctions.component';
+import { environments } from '@env/environments';
+import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
-import { StarComponent } from '@shared/components/icons/star/star.component';
-import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
-import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
-import { CommentComponent } from '@auctions/components/comment/comment.component';
+import { PaymentMethodsService } from '@shared/services/payment-methods.service';
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
-import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
-import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
-import { AuctionDetailsService } from '@auctions/services/auction-details.service';
-import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
-import { CurrentMemorabiliaAuctionsComponent } from '@auctions/components/current-memorabilia-auctions/current-memorabilia-auctions.component';
 import { RecentlyCompletedMemorabiliaAuctionComponent } from '@auctions/components/recently-completed-memorabilia-auctions/recently-completed-memorabilia-auctions.component';
-import { AuctionTypesComments } from '@auctions/enums';
+import { StarComponent } from '@shared/components/icons/star/star.component';
 
 @Component({
-  selector: 'app-auction-memorabilia',
   standalone: true,
   imports: [
     CommonModule,

@@ -40,12 +40,26 @@
     <div>
       <label for="category" class="block mb-1 text-sm">Categoría <span
           class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="category" id="category" type="text" sharedInput>
+      <select formControlName="category" id="category" sharedInput>
+        <option value="Pintura">Pintura</option>
+        <option value="Escultura">Escultura</option>
+        <option value="Fotografía">Fotografía</option>
+        <option value="Impresión">Impresión</option>
+        <option value="Dibujo o Collage en papel">Dibujo o Collage en papel</option>
+        <option value="Técnica mixta">Técnica mixta</option>
+        <option value="Cerámica">Cerámica</option>
+        <option value="Joyería">Joyería</option>
+        <option value="Moda y Arte utilizable">Moda y Arte utilizable</option>
+        <option value="Arte decorativo">Arte decorativo</option>
+        <option value="Otro">Otro</option>
+      </select>
       @if (hasError('category')) {
       <shared-input-error [message]="getError('category')"></shared-input-error>
       }
     </div>
     <!-- otherCategory?: string; -->
+
+    @if (categoryControl.value === 'Otro') {
     <div>
       <label for="otherCategory" class="block mb-1 text-sm">Otra categoría</label>
       <input formControlName="otherCategory" id="otherCategory" type="text" sharedInput>
@@ -53,6 +67,7 @@
       <shared-input-error [message]="getError('otherCategory')"></shared-input-error>
       }
     </div>
+    }
     <!-- rarity: string; -->
     <div>
       <label for="rarity" class="block mb-1 text-sm">Rareza <span

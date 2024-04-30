@@ -80,6 +80,11 @@ export const routes: Routes = [
     loadComponent: () => import('./auctions/pages/auction/auction.component').then((m) => m.AuctionComponent),
   },
   {
+    path: 'subasta-arte/:id',
+    canActivate: [VerifiedGuard],
+    loadComponent: () => import('./art/pages/auction-art/auction-art.component').then((m) => m.AuctionArtComponent),
+  },
+  {
     path: 'subasta-memorabilia/:id',
     canActivate: [VerifiedGuard],
     loadComponent: () => import('./auctions/pages/auction-memorabilia/auction-memorabilia.component').then((m) => m.AuctionMemorabiliaComponent),

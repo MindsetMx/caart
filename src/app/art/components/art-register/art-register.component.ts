@@ -57,6 +57,10 @@ export class ArtRegisterComponent {
     return this.registerArtForm.get('videos') as FormControl;
   }
 
+  get categoryControl(): FormControl {
+    return this.registerArtForm.get('category') as FormControl;
+  }
+
   uppyDashboardImagesEffect = effect(() => {
     if (this.token()) {
       this.uppyImages = new Uppy({
