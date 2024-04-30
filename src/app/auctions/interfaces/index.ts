@@ -14,3 +14,4 @@ export * from './auction-memorabilia-metrics';
 export * from './auction-memorabilia-publications';
 export * from './recently-completed-car-auctions';
 export * from './get-all-auctions';
+export * from './auction-art-publications';

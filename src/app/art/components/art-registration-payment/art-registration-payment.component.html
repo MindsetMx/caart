@@ -1,0 +1,115 @@
+<h1 class="font-optima text-4xl font-bold">Información general</h1>
+
+<form id="generalInformationForm" [formGroup]="artRegistrationPaymentForm"
+  (ngSubmit)="artRegistrationPaymentFormSubmit()" class="space-y-6">
+  <div>
+    <h2 class="text-xl font-bold mb-5">Elige tu paquete de subastas <span
+        class="font-bold text-red-500 inline-block">*</span></h2>
+    <fieldset>
+      <legend class="sr-only">Paquete de subastas</legend>
+      <div class="space-y-6">
+        @for (type of auctionTypes().data; track $index) {
+        <div class="flex">
+          <input formControlName="auctionTypeId" [id]="$index" [value]="type.id" type="radio" class="h-6 w-6">
+          <label [for]="$index" class="ml-3 block leading-6">
+            @if (isValidDiscountCode()) {
+            <span class="line-through text-red-500">
+              {{type.attributes.amount | currency:'USD':'symbol':'1.2-2'}} MXN
+            </span>
+            &nbsp;
+            <span class="font-bold">
+              {{applyDiscountCodeResponse().data[$index].attributes.discountedAmount | currency:'USD':'symbol':'1.2-2'}}
+              MXN
+            </span>
+            }@else {
+            <p class="font-bold">
+              {{type.attributes.amount | currency:'USD':'symbol':'1.2-2'}} MXN
+            </p>
+            }
+            <p>{{type.attributes.description}}</p>
+            <span class="text-red-500">
+              {{type.attributes.submessage}}
+            </span>
+          </label>
+        </div>
+        }
+      </div>
+    </fieldset>
+
+    @if(hasError('auctionTypeId')) {
+    <shared-input-error [message]="getError('auctionTypeId')"></shared-input-error>
+    }
+  </div>
+
+  <div>
+    <label for="discountCode" class="block mb-4 font-semibold text-lg">¿Tienes un código de descuento?</label>
+    <div class="inline-flex gap-x-4 w-full max-w-sm">
+      <input formControlName="discountCode" id="discountCode" type="text" placeholder="Ingresa el código" sharedInput>
+      <button (click)="applyDiscountCode()" type="button" class="underline">Canjear</button>
+    </div>
+
+    @if (isValidDiscountCode()) {
+    <p class="text-green-500 mt-2">{{discountCodeMessage()}}</p>
+    }@else {
+    <shared-input-error [message]="discountCodeMessage()"></shared-input-error>
+    }
+  </div>
+
+  <div>
+    <h2 class="text-xl font-bold mb-5">Método de pago <span class="font-bold text-red-500 inline-block">*</span></h2>
+
+    @if (paymentMethods().length>0) {
+    <fieldset class="mb-8">
+      <legend class="sr-only">Método de pago</legend>
+      <div class="space-y-6">
+        @for (paymentMethod of paymentMethods(); track $index) {
+        <div class="flex items-center">
+          <input formControlName="paymentMethodId" [id]="$index" [value]="paymentMethod.id" type="radio"
+            class="h-6 w-6">
+          <label [for]="$index" class="ml-3 block leading-6">
+            @switch (paymentMethod.card.brand) {
+            @case ('visa') {
+            <img src="assets/img/icons/visa.svg" alt="Visa">
+            }
+            }
+            <p class="font-bold mt-2">
+              <span>{{paymentMethod.card.brand | titlecase}}</span> que termina en {{paymentMethod.card.last4}}
+            </p>
+            <p>Expira el {{paymentMethod.card.expMonth}}/{{paymentMethod.card.expYear}}</p>
+          </label>
+        </div>
+        }
+        @if(hasError('paymentMethodId')) {
+        <shared-input-error [message]="getError('paymentMethodId')"></shared-input-error>
+        }
+      </div>
+    </fieldset>
+
+    <div class="mt-6">
+      <button (click)="paymentMethodModalIsOpen.set(true)" type="button" class="block ml-auto" width="w-fit"
+        sharedTertiaryButton>
+        Agregar método de pago
+      </button>
+    </div>
+    } @else {
+    Agrega tu método de pago <button (click)="paymentMethodModalIsOpen.set(true)" type="button"
+      class="underline font-semibold">aquí</button>
+
+    @if(hasError('paymentMethodId')) {
+    <shared-input-error [message]="getError('paymentMethodId')"></shared-input-error>
+    }
+    }
+  </div>
+</form>
+
+<button form="generalInformationForm" class="flex justify-center mt-8" type="submit"
+  [disabled]="isButtonSubmitDisabled()" [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+  @if (isButtonSubmitDisabled()) {
+  <shared-spinner></shared-spinner>
+  } @else {
+  Pagar y continuar
+  }
+</button>
+
+<payment-method-modal (paymentMethodAdded)="refreshPaymentMethods()"
+  [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>

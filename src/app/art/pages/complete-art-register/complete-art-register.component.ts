@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, WritableSignal, inject } from '@angular/core';
+import { ArtRegistrationPaymentComponent } from '@app/art/components/art-registration-payment/art-registration-payment.component';
 import { CompleteArtRegistrationMenuComponent } from '@app/art/components/complete-art-registration/complete-art-registration-menu.component';
 import { CompleteArtRegistrationService } from '@app/art/services/complete-art-registration.service';
 
@@ -8,7 +9,8 @@ import { CompleteArtRegistrationService } from '@app/art/services/complete-art-r
   standalone: true,
   imports: [
     CommonModule,
-    CompleteArtRegistrationMenuComponent
+    CompleteArtRegistrationMenuComponent,
+    ArtRegistrationPaymentComponent
   ],
   templateUrl: './complete-art-register.component.html',
   styleUrl: './complete-art-register.component.css',

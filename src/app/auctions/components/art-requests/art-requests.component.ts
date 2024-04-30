@@ -3,14 +3,12 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { AppService } from '@app/app.service';
 import { ArtRequests } from '@app/dashboard/interfaces';
 import { ArtRequestsService } from '@app/dashboard/services/art-requests.service';
-import { InputDirective } from '@shared/directives';
 
 @Component({
   selector: 'art-requests',
   standalone: true,
   imports: [
     CommonModule,
-    InputDirective
   ],
   templateUrl: './art-requests.component.html',
   styleUrl: './art-requests.component.css',

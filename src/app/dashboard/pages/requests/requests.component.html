@@ -7,17 +7,13 @@
           Una lista de todas las solicitudes de publicación de subastas. Puedes aceptar o rechazar cada solicitud.
         </p>
       </div>
-      <!-- <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <button type="button"
-          class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add
-          user</button>
-      </div> -->
+      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <select [formControl]="requestType" class="ml-auto mt-4" width="w-36" sharedInput>
+          <option [value]="typesOfRequests.Car">Vehículos</option>
+          <option [value]="typesOfRequests.Art">Arte</option>
+        </select>
+      </div>
     </div>
-    <!-- tipo de solicitud: vehículos, arte, memorabilia -->
-    <select [formControl]="requestType" class="ml-auto mt-4" width="w-36" sharedInput>
-      <option [value]="typesOfRequests.Car">Vehículos</option>
-      <option [value]="typesOfRequests.Art">Arte</option>
-    </select>
 
     <div class="mt-8 flow-root">
       @switch (requestType.value) {

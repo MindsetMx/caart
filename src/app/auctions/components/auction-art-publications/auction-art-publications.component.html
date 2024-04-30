@@ -1,0 +1,30 @@
+<div class="space-y-8">
+  @for (publication of artAuctionPublications().data; track publication.id) {
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8">
+    <div class="md:col-span-5">
+      <img class="w-full h-60 object-cover" [src]="publication.attributes.photo" alt="Foto del vehículo">
+    </div>
+    <div class="md:col-span-7">
+      <p class=" font-optima font-semibold text-3xl">
+        {{ publication.attributes.title }}
+      </p>
+      <span class="block bg-reddishOrange text-white px-4 py-2 rounded-lg mt-4 w-fit mb-4">
+        {{ publication.attributes.status }}
+      </span>
+
+      @if (hasGeneralInfo()) {
+      <button [routerLink]="['/completar-registro-arte', publication.id]" class="underline font-semibold text-lg">
+        Completar información
+      </button>
+      }@else {
+      <button (click)="openCompleteRegisterModal(publication.id,auctionTypes.memorabilia)"
+        class="underline font-semibold text-lg">
+        Completar información
+      </button>
+      }
+    </div>
+  </div>
+  } @empty {
+  No hay publicaciones
+  }
+</div>

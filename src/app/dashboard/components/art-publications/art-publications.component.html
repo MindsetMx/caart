@@ -9,14 +9,13 @@
           <!-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Title</th> -->
           <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Estatus</th>
           <!-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th> -->
-          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Detalles</th>
           <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
             <span class="sr-only">Acciones</span>
           </th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200 bg-white">
-        @for (publication of artRequests().data; track $index) {
+        @for (publication of artAuctionPublications().data; track $index) {
         <tr>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
             <div class="flex items-center">
@@ -25,8 +24,9 @@
               </div>
               <div class="ml-4">
                 <div class="font-medium text-gray-900">
-                  {{ publication.attributes.title}}
+                  {{ publication.attributes.title }}
                 </div>
+                <!-- <div class="mt-1 text-gray-500">lindsay.waltonexample.com</div> -->
               </div>
             </div>
           </td>
@@ -36,21 +36,13 @@
               {{ publication.attributes.status }}
             </span>
           </td>
-          <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-            <!-- <button (click)="openRequestsDetailsModal(publication.id)"
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-indigo-800 underline">
-              Ver detalles
-            </button> -->
-          </td>
           <!-- <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">Member</td> -->
           @if (publication.attributes.status === 'Pendiente') {
           <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-            <!-- TODO: descomentar cuando me devuelvan el id de la publicación -->
-            <select sharedInput (change)="updatePublicationRequestStatus(publication.id, $event)">
-              <option value disabled selected>Selecciona una opción</option>
-              <option value="accepted">Aceptar</option>
-              <option value="rejected">Rechazar</option>
-            </select>
+            <button [routerLink]="['/completar-registro-arte', publication.id]"
+              class="text-indigo-600 hover:text-indigo-900">
+              Completar información
+            </button>
           </td>
           }
         </tr>
@@ -59,7 +51,3 @@
     </table>
   </div>
 </div>
-
-<!-- <requests-details-modal [isOpen]="requestsDetailsModalIsOpen()" (isOpenChange)="closeRequestsDetailsModal($event)"
-  [publicationId]="publicationId()">
-</requests-details-modal> -->

@@ -1,48 +1,56 @@
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
-import { AppService } from '@app/app.service';
-import { PublicationRequestsData } from '@app/auctions/interfaces/publication-requests';
-import { AuctionService } from '@app/auctions/services/auction.service';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { ArtRequestsComponent } from '@auctions/components/art-requests/art-requests.component';
+import { InputDirective } from '@shared/directives';
+import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
+import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
+import { VehicleRequestsComponent } from '@auctions/components/vehicle-requests/vehicle-requests.component';
 
 @Component({
-  selector: 'app-publication-requests',
   standalone: true,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    InputDirective,
+    VehicleRequestsComponent,
+    ArtRequestsComponent,
+    TabsWithIconsComponent
   ],
   templateUrl: './publication-requests.component.html',
   styleUrl: './publication-requests.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PublicationRequestsComponent implements OnInit {
-  #auctionService = inject(AuctionService);
-  #appService = inject(AppService);
+export class PublicationRequestsComponent {
+  tabs: TabWithIcon[];
+  currentTab = signal<TabWithIcon>({} as TabWithIcon);
 
-  publicationRequests: WritableSignal<PublicationRequestsData[]> = signal([]);
-
-  ngOnInit(): void {
-    this.getPublicationRequests();
+  constructor() {
+    this.tabs =
+      [
+        {
+          id: 1,
+          name: 'Automóviles',
+          img: 'assets/img/registrar auto/car-sport-outline.svg',
+          current: true
+        },
+        {
+          id: 2,
+          name: 'Arte',
+          img: 'assets/img/registrar auto/milo-venus.svg',
+          current: false
+        },
+        {
+          id: 3,
+          name: 'Memorabilia',
+          img: 'assets/img/registrar auto/milo-venus.svg',
+          current: false
+        }
+      ];
   }
 
-  getPublicationRequests(): void {
-    this.#auctionService.getPublicationRequests$().subscribe((response) => {
-      this.publicationRequests.set(response.data);
-    });
-  }
-
-  acceptPublicationRequest(id: string): void {
-    this.#auctionService.acceptPublicationRequest$(id).subscribe({
-      next: (response) => {
-        this.getPublicationRequests();
-        this.toastSuccess('Solicitud aceptada');
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
-
-  toastSuccess(message: string): void {
-    this.#appService.toastSuccess(message);
+  onTabSelected(tab: TabWithIcon): void {
+    this.currentTab.set(tab);
   }
 }

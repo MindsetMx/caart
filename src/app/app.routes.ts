@@ -107,7 +107,7 @@ export const routes: Routes = [
   {
     path: 'publicaciones',
     canActivate: [VerifiedGuard, AuthGuard],
-    loadComponent: () => import('./auctions/pages/auction-car-publications/auction-car-publications.component').then((m) => m.AuctionCarPublishesComponent),
+    loadComponent: () => import('./auctions/pages/publications/publications.component').then((m) => m.AuctionCarPublishesComponent),
   },
   {
     path: 'solicitudes',

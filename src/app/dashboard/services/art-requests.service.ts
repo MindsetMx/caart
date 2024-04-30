@@ -17,6 +17,10 @@ export class ArtRequestsService {
   }
 
   acceptPublicationRequest$(id: string): Observable<void> {
-    return this.#http.post<void>(`${this.#baseUrl}/auction-items/art/${id}/accept`, {});
+    return this.#http.patch<void>(`${this.#baseUrl}/auction-items/art/${id}/accept`, {});
+  }
+
+  rejectPublicationRequest$(id: string): Observable<void> {
+    return this.#http.patch<void>(`${this.#baseUrl}/auction-items/art/${id}/reject`, {});
   }
 }
