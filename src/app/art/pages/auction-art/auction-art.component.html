@@ -165,7 +165,68 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container mt-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="md:col-span-2" id="app">
+        <div class="f-carousel" id="myCarousel">
+          <div class="f-carousel__slide" data-thumb-src="https://lipsum.app/id/68/256x144" data-fancybox="gallery"
+            data-src="https://lipsum.app/id/68/1600x900">
+            <img width="100%" height="100" data-lazy-src="https://lipsum.app/id/68/640x360" />
+          </div>
+          <div class="f-carousel__slide" data-thumb-src="https://lipsum.app/id/58/256x144" data-fancybox="gallery"
+            data-src="https://lipsum.app/id/58/1600x900">
+            <img width="100%" height="100" data-lazy-src="https://lipsum.app/id/58/640x360" />
+          </div>
+          <div class="f-carousel__slide" data-thumb-src="https://lipsum.app/id/9/256x144" data-fancybox="gallery"
+            data-src="https://lipsum.app/id/9/1600x900">
+            <img width="100%" height="100" data-lazy-src="https://lipsum.app/id/9/640x360" />
+          </div>
+          <div class="f-carousel__slide" data-thumb-src="https://lipsum.app/id/62/256x144" data-fancybox="gallery"
+            data-src="https://lipsum.app/id/62/1600x900">
+            <img width="100%" height="100" data-lazy-src="https://lipsum.app/id/62/640x360" />
+          </div>
+          <div class="f-carousel__slide" data-thumb-src="https://lipsum.app/id/63/256x144" data-fancybox="gallery"
+            data-src="https://lipsum.app/id/63/1600x900">
+            <img width="100%" height="100" data-lazy-src="https://lipsum.app/id/63/640x360" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- information auction -->
+        <div class="grid grid-cols-1 gap-4">
+          <div class="flex justify-between">
+            <div class="text-gray4">Dimensiones:</div>
+            <div class="font-semibold">10x10</div>
+          </div>
+          <div class="flex justify-between">
+            <div class="text-gray4">Materiales:</div>
+            <div class="font-semibold">Madera</div>
+          </div>
+          <div class="flex justify-between">
+            <div class="text-gray4">Firma:</div>
+            <div class="font-semibold">Sí</div>
+          </div>
+          <div class="flex justify-between">
+            <div class="text-gray4">Certificado de autenticidad:</div>
+            <div class="font-semibold">Sí</div>
+          </div>
+          <div class="flex justify-between">
+            <div class="text-gray4">Estado:</div>
+            <div class="font-semibold">Puebla</div>
+          </div>
+          <div class="flex justify-between">
+            <div class="text-gray4">Ciudad:</div>
+            <div class="font-semibold">Puebla de Zaragoza</div>
+          </div>
+          <div class="flex justify-between">
+            <div class="text-gray4">Estado de la obra:</div>
+            <div class="font-semibold">Nuevo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- @defer (when auction().data) { -->
     <section>
       <!-- <div class="grid grid-cols-12 gap-4">
@@ -208,59 +269,10 @@
           <!-- } -->
         </section>
 
-        <hr class="my-4">
+        <!-- <hr class="my-4"> -->
 
         <!-- @defer (when auction().data) { -->
-        <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
-          <ul class="space-y-1">
-            <li>
-              <span class="text-gray4">Dimensiones:</span>&nbsp;<span class="font-semibold">
-                <!-- {{auction().data.attributes.auctionCarForm.dimensions}} -->
-                10x10
-              </span>
-            </li>
-            <li>
-              <span class="text-gray4">Materiales:</span>&nbsp;<span class="font-semibold">
-                <!-- {{auction().data.attributes.auctionCarForm.materials}} -->
-                Madera
-              </span>
-            </li>
-            <li>
-              <span class="text-gray4">Firma:</span>&nbsp;<span class="font-semibold">
-                <!-- {{auction().data.attributes.auctionCarForm.hasSignature ? 'Sí' : 'No'}} -->
-                Sí
-              </span>
-            </li>
-            <li>
-              <span class="text-gray4">Certificado de autenticidad:</span>&nbsp;
-              <span class="font-semibold">
-                <!-- {{auction().data.attributes.auctionCarForm.hasAuthenticityCertificate ? 'Sí' : 'No'}} -->
-                Sí
-              </span>
-            </li>
-          </ul>
 
-          <ul class="space-y-1">
-            <li>
-              <span class="text-gray4">Estado:</span>&nbsp;<span class="font-semibold">
-                <!-- {{auction().data.attributes.auctionCarForm.state}} -->
-                Puebla
-              </span>
-            </li>
-            <li>
-              <span class="text-gray4">Ciudad:</span>&nbsp;<span class="font-semibold">
-                <!-- {{auction().data.attributes.auctionCarForm.city}} -->
-                Puebla de Zaragoza
-              </span>
-            </li>
-            <li>
-              <span class="text-gray4">Estado de la obra:</span>&nbsp;<span class="font-semibold">
-                <!-- {{auction().data.attributes.auctionCarForm.stateOfMemorabilia}} -->
-                Nuevo
-              </span>
-            </li>
-          </ul>
-        </section>
         <!-- } -->
 
         <hr class="my-6">

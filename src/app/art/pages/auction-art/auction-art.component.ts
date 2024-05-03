@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { Carousel, Fancybox } from "@fancyapps/ui";
 
 import { CountdownService } from '@shared/services/countdown.service';
 import { CommonModule } from '@angular/common';
@@ -7,7 +8,8 @@ import { StarComponent } from '@shared/components/icons/star/star.component';
 import { AuctionTypes, AuctionTypesComments } from '@auctions/enums';
 import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
 import { PrimaryButtonDirective } from '@shared/directives';
-
+// import { Thumbs } from '@fancyapps/ui/types/Carousel/plugins/Thumbs/Thumbs';
+import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 @Component({
   standalone: true,
   imports: [
@@ -21,7 +23,7 @@ import { PrimaryButtonDirective } from '@shared/directives';
   styleUrl: './auction-art.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionArtComponent {
+export class AuctionArtComponent implements AfterViewInit {
   #countdownService = inject(CountdownService);
 
   get auctionType(): typeof AuctionTypes {
@@ -30,6 +32,23 @@ export class AuctionArtComponent {
 
   get auctionTypesComments(): typeof AuctionTypesComments {
     return AuctionTypesComments;
+  }
+
+  ngAfterViewInit(): void {
+    new Carousel(
+      document.getElementById('myCarousel'),
+      {
+        // Custom Carousel options
+        Dots: false,
+      },
+      {
+        Thumbs,
+      }
+    );
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+      // Custom Fancybox options
+    });
   }
 
   getComments(): void {

@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900;8..144,1000&display=swap');
 @import "@fancyapps/ui/dist/fancybox/fancybox.css";
+/* import '@fancyapps/ui/dist/carousel/carousel.thumbs.css'; */
+@import "@fancyapps/ui/dist/carousel/carousel.css";
+/* import '@fancyapps/ui/dist/carousel/carousel.thumbs.css'; */
+@import "@fancyapps/ui/dist/carousel/carousel.thumbs.css";
 
 @import "../node_modules/@uppy/core/dist/style.css";
 @import "../node_modules/@uppy/dashboard/dist/style.css";
@@ -100,6 +104,14 @@ select {
 
 .uppy-size--md .uppy-Dashboard-inner {
   width: 100% !important;
+}
+
+.f-button {
+  color: white;
+}
+
+.f-button:hover:not([disabled]) {
+  color: white;
 }
 
 .mat-mdc-form-field[name="mat-form-field1"] {
