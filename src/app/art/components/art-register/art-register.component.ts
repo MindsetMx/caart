@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Uppy } from '@uppy/core';
 import Spanish from '@uppy/locales/lib/es_ES';
@@ -14,6 +14,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { environments } from '@env/environments';
 import { RegisterArtService } from '@app/art/services/register-art.service';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'art-register',
@@ -25,6 +26,7 @@ import { RegisterArtService } from '@app/art/services/register-art.service';
     ReactiveFormsModule,
     SpinnerComponent,
     UppyAngularDashboardModule,
+    NgxMaskDirective
   ],
   templateUrl: './art-register.component.html',
   styleUrl: './art-register.component.css',
@@ -45,6 +47,7 @@ export class ArtRegisterComponent {
   #registerArtService = inject(RegisterArtService);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
+  #formBuilder = inject(FormBuilder);
 
   uppyImages?: Uppy;
   uppyVideos?: Uppy;
@@ -169,22 +172,24 @@ export class ArtRegisterComponent {
   });
 
   constructor() {
-    this.registerArtForm = new FormGroup({
-      artist: new FormControl('', [Validators.required]),
-      title: new FormControl('', [Validators.required]),
-      year: new FormControl('', [Validators.required]),
-      materials: new FormControl('', [Validators.required]),
-      category: new FormControl('', [Validators.required]),
-      otherCategory: new FormControl(''),
-      rarity: new FormControl('', [Validators.required]),
-      height: new FormControl('', [Validators.required]),
-      width: new FormControl('', [Validators.required]),
-      depth: new FormControl(''),
-      condition: new FormControl('', [Validators.required]),
-      origin: new FormControl('', [Validators.required]),
-      photos: new FormControl([], [Validators.required]),
-      videos: new FormControl([]),
-      acceptTerms: new FormControl('', [Validators.required]),
+    this.registerArtForm = this.#formBuilder.group({
+      artist: ['', [Validators.required]],
+      title: ['', [Validators.required]],
+      year: ['', [Validators.required]],
+      materials: ['', [Validators.required]],
+      category: ['', [Validators.required]],
+      otherCategory: [''],
+      rarity: ['', [Validators.required]],
+      height: ['', [Validators.required]],
+      width: ['', [Validators.required]],
+      depth: [''],
+      condition: ['', [Validators.required]],
+      origin: ['', [Validators.required]],
+      reserve: ['', [Validators.required]],
+      reserveAmount: ['', [Validators.required]],
+      photos: [[], [Validators.required]],
+      videos: [[]],
+      acceptTerms: ['', [Validators.required]],
     });
 
     this.batchTokenDirect();

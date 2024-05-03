@@ -117,6 +117,7 @@
       <shared-input-error [message]="getError('condition')"></shared-input-error>
       }
     </div>
+
     <!-- origin: string; -->
     <div>
       <label for="origin" class="block mb-1 text-sm">Origen <span
@@ -126,6 +127,41 @@
       <shared-input-error [message]="getError('origin')"></shared-input-error>
       }
     </div>
+
+    <!-- reserve select -->
+    <div>
+      <label for="reserve" class="block mb-1 text-sm">Reserva <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="reserve" id="reserve" sharedInput>
+        <option value="1">Sí</option>
+        <option value="0">No</option>
+      </select>
+      @if (hasError('reserve')) {
+      <shared-input-error [message]="getError('reserve')"></shared-input-error>
+      }
+    </div>
+
+    <!-- reserveAmount input -->
+    @if (registerArtForm.get('reserve')?.value === "1") {
+    <div>
+      <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <div class="relative rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input formControlName="reserveAmount" type="text" class="pl-7 pr-12" name="price" id="reserveAmount"
+          mask="separator" thousandSeparator="," autocomplete="off" placeholder="0.00" aria-describedby="price-currency"
+          inputFormatter sharedInput>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
+        </div>
+      </div>
+      @if (hasError('reserveAmount')) {
+      <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
+      }
+    </div>
+    }
 
     <!-- Images -->
     <div class="col-span-2">
