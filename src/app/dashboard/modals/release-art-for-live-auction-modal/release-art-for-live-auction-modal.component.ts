@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AppService } from '@app/app.service';
-import { ReleaseArtForLiveAuctionService } from '@app/dashboard/services/release-art-for-live-auction.service';
+import { ReleaseArtForLiveAuctionService } from '@dashboard/services/release-art-for-live-auction.service';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';

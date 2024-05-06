@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
+import { ArtMedia } from '@dashboard/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ArtPhotoGalleryService {
 
   #http = inject(HttpClient);
 
-  getAllArtMedia$(auctionArtId: string): Observable<any> {
+  getAllArtMedia$(auctionArtId: string): Observable<ArtMedia> {
     return this.#http.get<any>(`${this.#baseUrl}/auctions-cars/all-art-media?auctionArtId=${auctionArtId}`);
   }
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { RequestsDetailsService } from '../../services/requests-details.service';
-import { AuctionDetails } from '@app/dashboard/interfaces';
+import { AuctionDetails } from '@dashboard/interfaces';
 
 @Component({
   selector: 'requests-details-modal',

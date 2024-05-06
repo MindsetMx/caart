@@ -17,7 +17,7 @@ import { AppService } from '@app/app.service';
 import { NgxMaskDirective } from 'ngx-mask';
 import { Router } from '@angular/router';
 import { environments } from '@env/environments';
-import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
+import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'vehicle-memorabilia-component',

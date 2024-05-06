@@ -5,10 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 
-import { AuctionArtInfo } from '@app/dashboard/interfaces';
-import { AuctionArtService } from '@app/dashboard/services/auction-art.service';
-import { AuctionArtDetailsModalComponent } from '@app/dashboard/modals/auction-art-details-modal/auction-art-details-modal.component';
-import { ReleaseArtForLiveAuctionModalComponent } from '@app/dashboard/modals/release-art-for-live-auction-modal/release-art-for-live-auction-modal.component';
+import { AuctionArtInfo } from '@dashboard/interfaces';
+import { AuctionArtService } from '@dashboard/services/auction-art.service';
+import { AuctionArtDetailsModalComponent } from '@dashboard/modals/auction-art-details-modal/auction-art-details-modal.component';
+import { ReleaseArtForLiveAuctionModalComponent } from '@dashboard/modals/release-art-for-live-auction-modal/release-art-for-live-auction-modal.component';
 
 @Component({
   selector: 'publish-art',

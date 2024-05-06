@@ -7,7 +7,7 @@ import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 
-import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
+import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';

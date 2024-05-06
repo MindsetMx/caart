@@ -14,7 +14,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 import { environments } from '@env/environments';
-import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
+import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'mechanics',

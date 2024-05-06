@@ -158,6 +158,10 @@ export const routes: Routes = [
         path: 'asignar-y-reordenar-imagenes-subasta/:id',
         loadComponent: () => import('./dashboard/pages/auction-image-assignment-and-reorder/auction-image-assignment-and-reorder.component').then((m) => m.AuctionImageAssignmentAndReorderComponent),
       },
+      {
+        path: 'asignar-y-reordenar-imagenes-subasta-arte/:id',
+        loadComponent: () => import('./dashboard/pages/art-auction-image-assignment-and-reorder/art-auction-image-assignment-and-reorder.component').then((m) => m.ArtAuctionImageAssignmentAndReorderComponent),
+      },
       { path: '**', redirectTo: 'publicaciones' }
     ]
   },

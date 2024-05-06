@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AppService } from '@app/app.service';
-import { RequestsDetailsModalComponent } from '@app/dashboard/modals/requests-details-modal/requests-details-modal.component';
+import { RequestsDetailsModalComponent } from '@dashboard/modals/requests-details-modal/requests-details-modal.component';
 import { PublicationRequestsData } from '@auctions/interfaces/publication-requests';
 import { AuctionService } from '@auctions/services/auction.service';
 

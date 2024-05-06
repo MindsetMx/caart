@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { InputDirective } from '@shared/directives';
-import { PublishCarsComponent } from '@app/dashboard/components/publish-cars/publish-cars.component';
-import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
-import { TypesOfRequests } from '@app/dashboard/enums';
-import { PublishArtComponent } from '@app/dashboard/components/publish-art/publish-art.component';
+import { PublishCarsComponent } from '@dashboard/components/publish-cars/publish-cars.component';
+import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
+import { TypesOfRequests } from '@dashboard/enums';
+import { PublishArtComponent } from '@dashboard/components/publish-art/publish-art.component';
 
 @Component({
   standalone: true,

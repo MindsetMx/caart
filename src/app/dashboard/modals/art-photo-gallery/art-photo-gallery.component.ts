@@ -5,6 +5,7 @@ import { AppService } from '@app/app.service';
 import { ArtPhotoGalleryService } from '@dashboard/services/art-photo-gallery.service';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CropImageModalComponent } from '@shared/components/crop-image-modal/crop-image-modal.component';
+import { ArtMedia } from '@dashboard/interfaces';
 
 @Component({
   selector: 'art-photo-gallery',
@@ -35,7 +36,7 @@ export class ArtPhotoGalleryComponent {
   #appService = inject(AppService);
   #formBuilder = inject(FormBuilder);
 
-  artPhotoGallery = signal<any>({} as any);
+  artPhotoGallery = signal<ArtMedia>({} as ArtMedia);
   cropArtHistoryImageModalIsOpen = signal<boolean>(false);
   selectedImage: FormControl = this.#formBuilder.control('');
   selectedImages: FormArray = this.#formBuilder.array([]);

@@ -1,22 +1,19 @@
-import { ActivatedRoute } from '@angular/router';
-import { CdkDragDrop, CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-
-import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
-import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/car-photo-gallery.component';
-import { ImagesPublish } from '@dashboard/interfaces/images-publish';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
-import { ValidatorsService } from '@shared/services/validators.service';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { PrimaryButtonDirective } from '@shared/directives';
-import { AppService } from '@app/app.service';
 import { MatIcon } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
+
+import { AppService } from '@app/app.service';
+import { ArtImagesPublish } from '@dashboard/interfaces';
+import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
+import { ArtPhotoGalleryComponent } from '@dashboard/modals/art-photo-gallery/art-photo-gallery.component';
+import { ArtAuctionImageAssigmentAndReorderService } from '@dashboard/services/art-auction-image-assigment-and-reorder.service';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { AuctionImageDeletionConfirmationModalComponent } from '@dashboard/modals/auction-image-deletion-confirmation-modal/auction-image-deletion-confirmation-modal.component';
-import { AllPhotosDeletionConfirmationModalComponent } from '@dashboard/modals/all-photos-deletion-confirmation-modal/all-photos-deletion-confirmation-modal.component';
-import { AuctionPhotoSections } from '@dashboard/enums/auction-photo-sections.enum';
+import { PrimaryButtonDirective } from '@shared/directives';
+import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
   standalone: true,
@@ -25,25 +22,23 @@ import { AuctionPhotoSections } from '@dashboard/enums/auction-photo-sections.en
     CdkDropListGroup,
     CdkDropList,
     CdkDrag,
-    CarPhotoGalleryComponent,
+    ArtPhotoGalleryComponent,
     InputErrorComponent,
     ReactiveFormsModule,
     PrimaryButtonDirective,
     CommonModule,
     MatIcon,
-    SpinnerComponent,
-    AuctionImageDeletionConfirmationModalComponent,
-    AllPhotosDeletionConfirmationModalComponent
+    SpinnerComponent
   ],
-  templateUrl: './auction-image-assignment-and-reorder.component.html',
-  styleUrl: './auction-image-assignment-and-reorder.component.css',
+  templateUrl: './art-auction-image-assignment-and-reorder.component.html',
+  styleUrl: './art-auction-image-assignment-and-reorder.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionImageAssignmentAndReorderComponent {
-  originalAuctionCarId = signal<string>('');
+export class ArtAuctionImageAssignmentAndReorderComponent {
+  originalAuctionArtId = signal<string>('');
   auctionImagesForm: FormGroup;
 
-  carPhotoGalleryIsOpen = signal<boolean>(false);
+  artPhotoGalleryIsOpen = signal<boolean>(false);
   saveImagesButtonIsDisabled = signal<boolean>(false);
   formFieldName = signal<string>('');
   index = signal<number | undefined>(undefined);
@@ -54,11 +49,11 @@ export class AuctionImageAssignmentAndReorderComponent {
   aspectRatio = signal<number>(16 / 9);
   allowMultipleSelection = signal<boolean>(false);
   deleteAllImagesModalIsOpen = signal<boolean>(false);
-  auctionPhotoSection = signal<AuctionPhotoSections>(AuctionPhotoSections.mechanicalPhotos);
+  // auctionPhotoSection = signal<any>(AuctionPhotoSections.mechanicalPhotos);
   deleteAllImagesSubmitButtonIsDisabled = signal<boolean>(false);
 
   #activatedRoute = inject(ActivatedRoute);
-  #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
+  #auctionImageAssigmentAndReorderService = inject(ArtAuctionImageAssigmentAndReorderService);
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
   #appService = inject(AppService);
@@ -71,28 +66,16 @@ export class AuctionImageAssignmentAndReorderComponent {
     return this.auctionImagesForm.get('fotoCatalogo') as FormControl;
   }
 
-  get fotosSliderPrincipal(): FormArray {
-    return this.auctionImagesForm.get('fotosSliderPrincipal') as FormArray;
+  get fotosCarrusel(): FormArray {
+    return this.auctionImagesForm.get('fotosCarrusel') as FormArray;
   }
 
-  get fotosMecanicas(): FormArray {
-    return this.auctionImagesForm.get('fotosMecanicas') as FormArray;
-  }
-
-  get fotosInterior(): FormArray {
-    return this.auctionImagesForm.get('fotosInterior') as FormArray;
-  }
-
-  get fotosExterior(): FormArray {
-    return this.auctionImagesForm.get('fotosExterior') as FormArray;
-  }
-
-  get auctionPhotoSectionsTypes(): typeof AuctionPhotoSections {
-    return AuctionPhotoSections;
-  }
+  // get auctionPhotoSectionsTypes(): typeof AuctionPhotoSections {
+  //   return AuctionPhotoSections;
+  // }
 
   constructor() {
-    this.originalAuctionCarId.set(this.#activatedRoute.snapshot.paramMap.get('id')!);
+    this.originalAuctionArtId.set(this.#activatedRoute.snapshot.paramMap.get('id')!);
 
     this.getImagesPublish();
 
@@ -112,7 +95,7 @@ export class AuctionImageAssignmentAndReorderComponent {
       return;
     }
 
-    this.#auctionImageAssigmentAndReorderService.saveImagesPublish$(this.originalAuctionCarId(), this.auctionImagesForm).subscribe({
+    this.#auctionImageAssigmentAndReorderService.saveImagesPublish$(this.originalAuctionArtId(), this.auctionImagesForm).subscribe({
       next: () => {
         this.toastSuccess('Las imágenes se han guardado correctamente');
       },
@@ -124,35 +107,35 @@ export class AuctionImageAssignmentAndReorderComponent {
     });
   }
 
-  openDeleteAllImagesModal(auctionPhotoSection: AuctionPhotoSections): void {
-    this.auctionPhotoSection.set(auctionPhotoSection);
-    this.deleteAllImagesModalIsOpen.set(true);
-  }
+  // openDeleteAllImagesModal(auctionPhotoSection: AuctionPhotoSections): void {
+  //   this.auctionPhotoSection.set(auctionPhotoSection);
+  //   this.deleteAllImagesModalIsOpen.set(true);
+  // }
 
   closeDeleteAllImagesModal(): void {
     this.deleteAllImagesModalIsOpen.set(false);
   }
 
-  removeAllPhotos(auctionPhotoSection: AuctionPhotoSections): void {
-    this.deleteAllImagesSubmitButtonIsDisabled.set(true);
+  // removeAllPhotos(auctionPhotoSection: AuctionPhotoSections): void {
+  //   this.deleteAllImagesSubmitButtonIsDisabled.set(true);
 
-    switch (auctionPhotoSection) {
-      case AuctionPhotoSections.mechanicalPhotos:
-        this.fotosMecanicas.clear();
-        break;
-      case AuctionPhotoSections.interiorPhotos:
-        this.fotosInterior.clear();
-        break;
-      case AuctionPhotoSections.exteriorPhotos:
-        this.fotosExterior.clear();
-        break;
-      default:
-        break;
-    }
+  //   switch (auctionPhotoSection) {
+  //     case AuctionPhotoSections.mechanicalPhotos:
+  //       this.fotosMecanicas.clear();
+  //       break;
+  //     case AuctionPhotoSections.interiorPhotos:
+  //       this.fotosInterior.clear();
+  //       break;
+  //     case AuctionPhotoSections.exteriorPhotos:
+  //       this.fotosExterior.clear();
+  //       break;
+  //     default:
+  //       break;
+  //   }
 
-    this.deleteAllImagesModalIsOpen.set(false);
-    this.deleteAllImagesSubmitButtonIsDisabled.set(false);
-  }
+  //   this.deleteAllImagesModalIsOpen.set(false);
+  //   this.deleteAllImagesSubmitButtonIsDisabled.set(false);
+  // }
 
   openDeleteImageModal(event: Event, formArray: FormArray, index: number): void {
     event.stopPropagation();
@@ -184,24 +167,9 @@ export class AuctionImageAssignmentAndReorderComponent {
       case 'fotoPrincipal':
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(imageUrl, Validators.required));
         break;
-      case 'fotosSliderPrincipal':
+      case 'fotosCarrusel':
         if (this.index() !== undefined) {
-          this.fotosSliderPrincipal.at(this.index()!).patchValue(imageUrl);
-        }
-        break;
-      case 'fotosMecanicas':
-        if (this.index() !== undefined) {
-          this.fotosMecanicas.at(this.index()!).patchValue(imageUrl);
-        }
-        break;
-      case 'fotosInterior':
-        if (this.index() !== undefined) {
-          this.fotosInterior.at(this.index()!).patchValue(imageUrl);
-        }
-        break;
-      case 'fotosExterior':
-        if (this.index() !== undefined) {
-          this.fotosExterior.at(this.index()!).patchValue(imageUrl);
+          this.fotosCarrusel.at(this.index()!).patchValue(imageUrl);
         }
         break;
       default:
@@ -212,21 +180,21 @@ export class AuctionImageAssignmentAndReorderComponent {
     }
   }
 
-  setImages(images: string[]) {
-    switch (this.formFieldName()) {
-      case 'fotosMecanicas':
-        images.forEach((imageUrl) => this.fotosMecanicas.push(this.#formBuilder.control(imageUrl, Validators.required)));
-        break;
-      case 'fotosInterior':
-        images.forEach((imageUrl) => this.fotosInterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
-        break;
-      case 'fotosExterior':
-        images.forEach((imageUrl) => this.fotosExterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
-        break;
-      default:
-        break;
-    }
-  }
+  // setImages(images: string[]) {
+  //   switch (this.formFieldName()) {
+  //     case 'fotosMecanicas':
+  //       images.forEach((imageUrl) => this.fotosMecanicas.push(this.#formBuilder.control(imageUrl, Validators.required)));
+  //       break;
+  //     case 'fotosInterior':
+  //       images.forEach((imageUrl) => this.fotosInterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
+  //       break;
+  //     case 'fotosExterior':
+  //       images.forEach((imageUrl) => this.fotosExterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
   dropPhotos(event: CdkDragDrop<{ imageUrl: string, index: number }>, formArray: FormArray) {
     const previousIndex = event.previousContainer.data.index;
@@ -240,22 +208,22 @@ export class AuctionImageAssignmentAndReorderComponent {
   }
 
   getImagesPublish(): void {
-    this.#auctionImageAssigmentAndReorderService.imagesPublish$(this.originalAuctionCarId()).subscribe({
-      next: (response: ImagesPublish) => {
+    this.#auctionImageAssigmentAndReorderService.imagesPublish$(this.originalAuctionArtId()).subscribe({
+      next: (response: ArtImagesPublish) => {
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(response.data.fotoPrincipal, Validators.required));
         this.auctionImagesForm.setControl('fotoCatalogo', this.#formBuilder.control(response.data.fotoCatalogo, Validators.required));
-        this.auctionImagesForm.setControl('fotosSliderPrincipal', this.#formBuilder.array(response.data.fotosSliderPrincipal.map(
+        this.auctionImagesForm.setControl('fotosCarrusel', this.#formBuilder.array(response.data.fotosCarrusel.map(
           (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
         )));
-        this.auctionImagesForm.setControl('fotosMecanicas', this.#formBuilder.array(response.data.fotosMecanicas.map(
-          (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        ), Validators.minLength(5)));
-        this.auctionImagesForm.setControl('fotosInterior', this.#formBuilder.array(response.data.fotosInterior.map(
-          (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        ), Validators.minLength(5)));
-        this.auctionImagesForm.setControl('fotosExterior', this.#formBuilder.array(response.data.fotosExterior.map(
-          (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        ), Validators.minLength(5)));
+        // this.auctionImagesForm.setControl('fotosMecanicas', this.#formBuilder.array(response.data.fotosMecanicas.map(
+        //   (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
+        // ), Validators.minLength(5)));
+        // this.auctionImagesForm.setControl('fotosInterior', this.#formBuilder.array(response.data.fotosInterior.map(
+        //   (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
+        // ), Validators.minLength(5)));
+        // this.auctionImagesForm.setControl('fotosExterior', this.#formBuilder.array(response.data.fotosExterior.map(
+        //   (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
+        // ), Validators.minLength(5)));
       },
       error: (error) => {
         console.error(error);
@@ -273,7 +241,7 @@ export class AuctionImageAssignmentAndReorderComponent {
         case 'fotoCatalogo':
           this.aspectRatio.set(16 / 11);
           break;
-        case 'fotosSliderPrincipal':
+        case 'fotosCarrusel':
           this.aspectRatio.set(1.5 / 1);
           break;
         default:

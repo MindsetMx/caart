@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
-import { WizardData } from '@app/dashboard/interfaces/wizard-data';
-import { WizardDataService } from '@app/dashboard/services/wizard-data.service';
+import { WizardData } from '@dashboard/interfaces/wizard-data';
+import { WizardDataService } from '@dashboard/services/wizard-data.service';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { MatTabsModule } from '@angular/material/tabs';
 

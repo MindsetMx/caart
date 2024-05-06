@@ -1,0 +1,7 @@
+.board {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-4;
+}
+
+.cell {
+  @apply w-full h-40 bg-gray1 border border-dashed rounded-md border-gray4 flex items-center justify-center;
+}

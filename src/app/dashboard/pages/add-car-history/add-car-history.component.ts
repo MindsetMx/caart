@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, effect, inject, input, output, sign
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AppService } from '@app/app.service';
-import { AuctionCarService } from '@app/dashboard/services/auction-car.service';
+import { AuctionCarService } from '@dashboard/services/auction-car.service';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/car-photo-gallery.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
-import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
+import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
+import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 

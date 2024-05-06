@@ -14,7 +14,7 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { environments } from '@env/environments';
-import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
+import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'interior-of-the-car',

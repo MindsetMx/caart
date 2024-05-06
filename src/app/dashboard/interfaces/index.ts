@@ -7,3 +7,5 @@ export * from './batch-token';
 export * from './art-requests';
 export * from './auction-art-info';
 export * from './art-wizard';
+export * from './art-media';
+export * from './art-images-publish';

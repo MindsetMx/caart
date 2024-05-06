@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { AuctionPhotoSections } from '@app/dashboard/enums/auction-photo-sections.enum';
+import { AuctionPhotoSections } from '@dashboard/enums/auction-photo-sections.enum';
 import { AlertModalComponent } from '@shared/components/alert-modal/alert-modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 

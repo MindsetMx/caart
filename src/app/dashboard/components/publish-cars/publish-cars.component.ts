@@ -5,10 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 
-import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
-import { AuctionCarInfo } from '@app/dashboard/interfaces';
-import { AuctionCarService } from '@app/dashboard/services/auction-car.service';
-import { ReleaseCarForLiveAuctionModalComponent } from '@app/dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
+import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
+import { AuctionCarInfo } from '@dashboard/interfaces';
+import { AuctionCarService } from '@dashboard/services/auction-car.service';
+import { ReleaseCarForLiveAuctionModalComponent } from '@dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
 
 @Component({
   selector: 'publish-cars',

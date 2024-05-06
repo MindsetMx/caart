@@ -33,8 +33,8 @@ import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recentl
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
-import { AuctionImageAssigmentAndReorderService } from '@app/dashboard/services/auction-image-assigment-and-reorder.service';
-import { ImagesPublish } from '@app/dashboard/interfaces/images-publish';
+import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
+import { ImagesPublish } from '@dashboard/interfaces/images-publish';
 import { AuctionTypesComments } from '@auctions/enums';
 
 @Component({

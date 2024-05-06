@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AppService } from '@app/app.service';
-import { ArtRequests } from '@app/dashboard/interfaces';
-import { ArtRequestsService } from '@app/dashboard/services/art-requests.service';
+import { ArtRequests } from '@dashboard/interfaces';
+import { ArtRequestsService } from '@dashboard/services/art-requests.service';
 import { InputDirective } from '@shared/directives';
 
 @Component({

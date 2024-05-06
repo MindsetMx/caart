@@ -6,11 +6,11 @@ import { AuctionCarPublicationsData } from '@app/auctions/interfaces/auction-car
 import { AuctionService } from '@app/auctions/services/auction.service';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
-import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
-import { TypesOfRequests } from '@app/dashboard/enums';
+import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
+import { TypesOfRequests } from '@dashboard/enums';
 import { InputDirective } from '@shared/directives';
-import { VehiclePublicationsComponent } from '@app/dashboard/components/vehicle-publications/vehicle-publications.component';
-import { ArtPublicationsComponent } from '@app/dashboard/components/art-publications/art-publications.component';
+import { VehiclePublicationsComponent } from '@dashboard/components/vehicle-publications/vehicle-publications.component';
+import { ArtPublicationsComponent } from '@dashboard/components/art-publications/art-publications.component';
 
 @Component({
   standalone: true,
