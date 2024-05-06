@@ -7,6 +7,7 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { VehicleFilterResultsComponent } from '@app/auctions/components/vehicle-filter-results/vehicle-filter-results.component';
 import { MemorabiliaFilterResultsComponent } from '@auctions/components/memorabilia-filter-results/memorabilia-filter-results.component';
 import { AllAuctionsFilterResultsComponent } from '@auctions/components/all-auctions-filter-results/all-auctions-filter-results.component';
+import { ArtFilterResultsComponent } from '@auctions/components/art-filter-results/art-filter-results.component';
 
 @Component({
   standalone: true,
@@ -15,7 +16,8 @@ import { AllAuctionsFilterResultsComponent } from '@auctions/components/all-auct
     TabsWithIconsComponent,
     VehicleFilterResultsComponent,
     MemorabiliaFilterResultsComponent,
-    AllAuctionsFilterResultsComponent
+    AllAuctionsFilterResultsComponent,
+    ArtFilterResultsComponent
   ],
   templateUrl: './live-auctions.component.html',
   styleUrl: './live-auctions.component.css',
@@ -44,7 +46,7 @@ export class LiveAuctionsComponent {
         },
         {
           id: 3,
-          name: 'Memorabilia',
+          name: 'Arte',
           img: 'assets/img/icons/memorabilia.svg',
           current: false
         },
