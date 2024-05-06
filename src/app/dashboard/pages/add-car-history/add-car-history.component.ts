@@ -5,7 +5,6 @@ import { AppService } from '@app/app.service';
 import { AuctionCarService } from '@app/dashboard/services/auction-car.service';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { ModalComponent } from '@shared/components/modal/modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/car-photo-gallery.component';
@@ -13,8 +12,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarComponent } from '@app/dashboard/layout/sidebar/sidebar.component';
 import { AuctionCarDetailsModalComponent } from '@app/dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { CropCarHistoryImageModalComponent } from '@app/dashboard/modals/crop-car-history-image-modal/crop-car-history-image-modal.component';
-import { JsonPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -30,8 +27,6 @@ import { MatIcon } from '@angular/material/icon';
     AuctionCarDetailsModalComponent,
     MatMenuModule,
     InputDirective,
-    CropCarHistoryImageModalComponent,
-    JsonPipe,
     MatIcon
   ],
   templateUrl: './add-car-history.component.html',
@@ -46,7 +41,6 @@ export class AddCarHistoryComponent {
   addCarHistoryForm: FormGroup;
   addCarHistorySubmitButtonIsDisabled = signal<boolean>(false);
   auctionCarDetailsModalIsOpen = signal<boolean>(false);
-  cropCarHistoryImageModalIsOpen = signal<boolean>(false);
 
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
@@ -88,7 +82,7 @@ export class AddCarHistoryComponent {
       next: () => {
         this.addCarHistoryForm.reset();
 
-        this.#router.navigate(['/dashboard/publicar-autos']);
+        this.#router.navigate(['/dashboard/publicar']);
 
         this.toastSuccess('Historia del auto agregada');
       },
@@ -127,14 +121,6 @@ export class AddCarHistoryComponent {
     });
 
     this.blocksFormArray.push(nuevoContenido);
-  }
-
-  openCropCarHistoryImageModal(): void {
-    this.cropCarHistoryImageModalIsOpen.set(true);
-  }
-
-  closeCropCarHistoryImageModal(): void {
-    this.cropCarHistoryImageModalIsOpen.set(false);
   }
 
   openAuctionCarDetailsModal(): void {

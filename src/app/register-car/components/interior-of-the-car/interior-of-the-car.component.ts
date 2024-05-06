@@ -13,7 +13,6 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { JsonPipe } from '@angular/common';
 import { environments } from '@env/environments';
 import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 
@@ -28,7 +27,6 @@ import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinar
     ReactiveFormsModule,
     SpinnerComponent,
     UppyAngularDashboardModule,
-    JsonPipe,
   ],
   templateUrl: './interior-of-the-car.component.html',
   styleUrl: './interior-of-the-car.component.css',

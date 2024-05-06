@@ -142,12 +142,16 @@ export const routes: Routes = [
         loadComponent: () => import('./dashboard/pages/requests/requests.component').then((m) => m.RequestsComponent),
       },
       {
-        path: 'publicar-autos',
-        loadComponent: () => import('./dashboard/pages/publish-cars/publish-cars.component').then((m) => m.PublishCarsComponent),
+        path: 'publicar',
+        loadComponent: () => import('./dashboard/pages/publish/publish.component').then((m) => m.PublishComponent),
       },
       {
         path: 'agregar-historia-auto/:id',
         loadComponent: () => import('./dashboard/pages/add-car-history/add-car-history.component').then((m) => m.AddCarHistoryComponent),
+      },
+      {
+        path: 'agregar-historia-arte/:id',
+        loadComponent: () => import('./dashboard/pages/add-art-history/add-art-history.component').then((m) => m.AddArtHistoryComponent),
       },
       {
         // auction-image-assignment-and-reorder

@@ -2,18 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { ArtWizard } from '@dashboard/interfaces';
 import { environments } from '@env/environments';
-import { GetAllCarMedia } from '@dashboard/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CarPhotoGalleryService {
+export class ArtWizardService {
   readonly #baseUrl = environments.baseUrl;
 
   #http = inject(HttpClient);
 
-  getAllCarMedia$(auctionCarId: string): Observable<GetAllCarMedia> {
-    return this.#http.get<GetAllCarMedia>(`${this.#baseUrl}/auctions-cars/all-media?auctionCarId=${auctionCarId}`);
+  getArtWizardData$(auctionCarId: string): Observable<ArtWizard> {
+    return this.#http.get<ArtWizard>(`${this.#baseUrl}/auctions-cars/get-wizard-data-art/${auctionCarId}`);
   }
 }

@@ -14,7 +14,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { DecimalPipe, JsonPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { environments } from '@env/environments';
 import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 
@@ -30,7 +30,6 @@ import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinar
     SpinnerComponent,
     UppyAngularDashboardModule,
     DecimalPipe,
-    JsonPipe
   ],
   templateUrl: './general-details-and-exterior-of-the-car.component.html',
   styleUrl: './general-details-and-exterior-of-the-car.component.css',

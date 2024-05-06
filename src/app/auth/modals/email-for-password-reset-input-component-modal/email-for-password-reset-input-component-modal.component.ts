@@ -1,4 +1,3 @@
-import { CommonModule, JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -19,7 +18,6 @@ import { AppService } from '@app/app.service';
     InputErrorComponent,
     InputDirective,
     PrimaryButtonDirective,
-    JsonPipe
   ],
   templateUrl: './email-for-password-reset-input-component-modal.component.html',
   styleUrl: './email-for-password-reset-input-component-modal.component.css',

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ModalComponent } from '@shared/components/modal/modal.component';
-import { CloudinaryCroppedImageService } from '../../services/cloudinary-cropped-image.service';
+import { CloudinaryCroppedImageService } from '../../../dashboard/services/cloudinary-cropped-image.service';
 import { ImageCroppedEvent, ImageCropperModule, ImageTransform, LoadedImage, base64ToFile } from 'ngx-image-cropper';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,7 @@ import { switchMap } from 'rxjs';
 
 
 @Component({
-  selector: 'crop-car-history-image-modal',
+  selector: 'crop-image-modal',
   standalone: true,
   imports: [
     ModalComponent,
@@ -19,11 +19,11 @@ import { switchMap } from 'rxjs';
     FormsModule,
     InputDirective
   ],
-  templateUrl: './crop-car-history-image-modal.component.html',
-  styleUrl: './crop-car-history-image-modal.component.css',
+  templateUrl: './crop-image-modal.component.html',
+  styleUrl: './crop-image-modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CropCarHistoryImageModalComponent {
+export class CropImageModalComponent {
   isOpen = input.required<boolean>();
   imageUrl = input.required<string>();
   aspectRatio = input<number>(16 / 9);

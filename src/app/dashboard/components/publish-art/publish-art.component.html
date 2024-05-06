@@ -1,0 +1,78 @@
+<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+  <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+    <table class="min-w-full divide-y divide-gray-300">
+      <thead>
+        <tr>
+          <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+            Obra
+          </th>
+          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Info general</th>
+          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Historia del arte</th>
+          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Detalles</th>
+          <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+            <span class="sr-only">Acciones</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 bg-white">
+        @for (auction of auctionArtInfo().data; track $index) {
+        <tr>
+          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+            {{ auction.name }}
+          </td>
+          <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+            <div class="flex items-center justify-end gap-x-2 sm:justify-start">
+              <div class="flex-none rounded-full p-1 bg-green-400/10"
+                [ngClass]="auction.wizardSteps.generalInfo ? 'text-green-400':'text-orange-400'">
+                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+              </div>
+              <div>{{ auction.wizardSteps.generalInfo ? 'Completado':'Pendiente' }}</div>
+            </div>
+          </td>
+          <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+            <div class="flex items-center justify-end gap-x-2 sm:justify-start">
+              <div class="flex-none rounded-full p-1 bg-green-400/10"
+                [ngClass]="auction.carHistoryExists ? 'text-green-400':'text-orange-400'">
+                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+              </div>
+              <div>{{ auction.carHistoryExists ? 'Completado':'Pendiente' }}</div>
+            </div>
+          </td>
+          <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+            <button (click)="openAuctionArtDetailsModal(auction.auctionArtId)"
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-indigo-800 underline">
+              Ver detalles
+            </button>
+          </td>
+          <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+            @if (!auction.published) {
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu class="text-sm" #menu="matMenu">
+              <button [routerLink]="['/dashboard/agregar-historia-arte', auction.auctionArtId]" mat-menu-item>
+                <span>Agregar historia del arte</span>
+              </button>
+              <button (click)="openReleaseCarForLiveAuctionModal(auction.auctionArtId)" mat-menu-item>
+                <span>Liberar arte para subasta en vivo</span>
+              </button>
+              <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta', auction.auctionArtId]"
+                mat-menu-item>
+                <span>Asignar y reordenar imágenes</span>
+              </button>
+            </mat-menu>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<auction-art-details-modal [isOpen]="auctionArtDetailsModalIsOpen()" (isOpenChange)="closeAuctionArtDetailsModal()"
+  [auctionArtId]="auctionArtId()"></auction-art-details-modal>
+
+<!-- <release-car-for-live-auction-modal [isOpen]="releaseCarForLiveAuctionModalIsOpen()"
+  (carReleaseForLiveAuction)="dashboardInfo()" [originalAuctionArtId]="auctionArtId()"
+  (isOpenChange)="closeReleaseCarForLiveAuctionModal()"></release-car-for-live-auction-modal> -->

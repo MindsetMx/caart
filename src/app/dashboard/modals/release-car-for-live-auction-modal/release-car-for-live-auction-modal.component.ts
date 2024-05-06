@@ -6,7 +6,6 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { ReleaseCarForLiveAuctionService } from '../../services/release-car-for-live-auction.service';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
-import { JsonPipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
@@ -20,7 +19,6 @@ import { AppService } from '@app/app.service';
     ReactiveFormsModule,
     InputErrorComponent,
     InputDirective,
-    JsonPipe,
     MatFormFieldModule,
     MatSelectModule,
     PrimaryButtonDirective,

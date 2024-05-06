@@ -1,34 +1,29 @@
-import { ChangeDetectionStrategy, Component, ElementRef, QueryList, effect, inject, input, output, signal, viewChildren } from '@angular/core';
-
-import { ModalComponent } from '@shared/components/modal/modal.component';
-import { CarPhotoGalleryService } from '../../services/car-photo-gallery.service';
-import { GetAllCarMedia } from '@app/dashboard/interfaces';
-import { AppService } from '@app/app.service';
 import { NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, viewChildren } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CropImageModalComponent } from '../../../shared/components/crop-image-modal/crop-image-modal.component';
+import { AppService } from '@app/app.service';
+import { ArtPhotoGalleryService } from '@dashboard/services/art-photo-gallery.service';
+import { ModalComponent } from '@shared/components/modal/modal.component';
+import { CropImageModalComponent } from '@shared/components/crop-image-modal/crop-image-modal.component';
 
 @Component({
-  selector: 'car-photo-gallery',
+  selector: 'art-photo-gallery',
   standalone: true,
   imports: [
     ModalComponent,
     ReactiveFormsModule,
     CropImageModalComponent,
-    NgClass,
+    NgClass
   ],
-  templateUrl: './car-photo-gallery.component.html',
-  styleUrl: './car-photo-gallery.component.css',
+  templateUrl: './art-photo-gallery.component.html',
+  styleUrl: './art-photo-gallery.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarPhotoGalleryComponent {
+export class ArtPhotoGalleryComponent {
   registerImageSelectionInputs = viewChildren<ElementRef>('registerImageSelectionInputs');
-  mechanicsImageSelectionInputs = viewChildren<ElementRef>('mechanicsImageSelectionInputs');
-  interiorImageSelectionInputs = viewChildren<ElementRef>('interiorImageSelectionInputs');
-  exteriorImageSelectionInputs = viewChildren<ElementRef>('exteriorImageSelectionInputs');
 
   isOpen = input.required<boolean>();
-  auctionCarId = input.required<string>();
+  auctionArtId = input.required<string>();
   cropImage = input<boolean>(false);
   aspectRatio = input<number>(16 / 9);
   allowMultipleSelection = input<boolean>(false);
@@ -36,25 +31,25 @@ export class CarPhotoGalleryComponent {
   selectedImageChange = output<string>();
   selectedImagesChange = output<string[]>();
 
-  #carPhotoGalleryService = inject(CarPhotoGalleryService);
+  #artPhotoGalleryService = inject(ArtPhotoGalleryService);
   #appService = inject(AppService);
   #formBuilder = inject(FormBuilder);
 
-  carPhotoGallery = signal<GetAllCarMedia>({} as GetAllCarMedia);
-  cropCarHistoryImageModalIsOpen = signal<boolean>(false);
+  artPhotoGallery = signal<any>({} as any);
+  cropArtHistoryImageModalIsOpen = signal<boolean>(false);
   selectedImage: FormControl = this.#formBuilder.control('');
   selectedImages: FormArray = this.#formBuilder.array([]);
 
-  auctionCarIdEffect = effect(() => {
-    if (this.auctionCarId()) {
-      this.getAllCarMedia();
+  auctionArtIdEffect = effect(() => {
+    if (this.auctionArtId()) {
+      this.getAllArtMedia();
     }
   });
 
-  getAllCarMedia(): void {
-    this.#carPhotoGalleryService.getAllCarMedia$(this.auctionCarId()).subscribe({
+  getAllArtMedia(): void {
+    this.#artPhotoGalleryService.getAllArtMedia$(this.auctionArtId()).subscribe({
       next: (response) => {
-        this.carPhotoGallery.set(response);
+        this.artPhotoGallery.set(response);
       },
       error: (error) => {
         console.error(error);
@@ -83,7 +78,7 @@ export class CarPhotoGalleryComponent {
     if (this.cropImage()) {
       this.closeModal();
 
-      this.cropCarHistoryImageModalIsOpen.set(true);
+      this.cropArtHistoryImageModalIsOpen.set(true);
     } else {
       if (this.allowMultipleSelection()) {
         this.selectedImagesChange.emit(this.selectedImages?.value);
@@ -104,26 +99,14 @@ export class CarPhotoGalleryComponent {
     this.registerImageSelectionInputs().forEach((inputElement) => {
       (inputElement.nativeElement as HTMLInputElement).checked = false;
     });
-
-    this.mechanicsImageSelectionInputs().forEach((inputElement) => {
-      (inputElement.nativeElement as HTMLInputElement).checked = false;
-    });
-
-    this.interiorImageSelectionInputs().forEach((inputElement) => {
-      (inputElement.nativeElement as HTMLInputElement).checked = false;
-    });
-
-    this.exteriorImageSelectionInputs().forEach((inputElement) => {
-      (inputElement.nativeElement as HTMLInputElement).checked = false;
-    });
   }
 
   croppedImageChange(croppedImage: string): void {
     this.selectedImageChange.emit(croppedImage);
   }
 
-  closeCropCarHistoryImageModal(): void {
-    this.cropCarHistoryImageModalIsOpen.set(false);
+  closeCropArtHistoryImageModal(): void {
+    this.cropArtHistoryImageModalIsOpen.set(false);
   }
 
   closeModal(): void {

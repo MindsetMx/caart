@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { AuctionImageAssigmentAndReorderService } from '@app/dashboard/services/auction-image-assigment-and-reorder.service';
 import { CarPhotoGalleryComponent } from '@app/dashboard/modals/car-photo-gallery/car-photo-gallery.component';
@@ -26,7 +26,6 @@ import { AuctionPhotoSections } from '@app/dashboard/enums/auction-photo-section
     CdkDropList,
     CdkDrag,
     CarPhotoGalleryComponent,
-    JsonPipe,
     InputErrorComponent,
     ReactiveFormsModule,
     PrimaryButtonDirective,

@@ -9,7 +9,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 import { Router } from '@angular/router';
-import { DecimalPipe, JsonPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
 import { MatIcon } from '@angular/material/icon';
 
@@ -25,7 +25,6 @@ import { MatIcon } from '@angular/material/icon';
     SpinnerComponent,
     DecimalPipe,
     InputFormatterDirective,
-    JsonPipe,
     MatIcon
   ],
   templateUrl: './car-extras.component.html',

@@ -9,9 +9,9 @@
           <!-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Title</th> -->
           <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Estatus</th>
           <!-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th> -->
-          <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+          <!-- <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
             <span class="sr-only">Acciones</span>
-          </th>
+          </th> -->
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200 bg-white">
@@ -36,14 +36,14 @@
             </span>
           </td>
           <!-- <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">Member</td> -->
-          @if (publication.attributes.status === 'Pendiente') {
+          <!-- @if (publication.attributes.status === 'Pendiente') {
           <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
             <button [routerLink]="['/completar-registro-vehiculo', publication.id]"
               class="text-indigo-600 hover:text-indigo-900">
               Completar información
             </button>
           </td>
-          }
+          } -->
         </tr>
         }
       </tbody>

@@ -1,7 +1,7 @@
 <sidebar-layout>
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
-      <h1 class="text-base font-semibold leading-6 text-gray-900 mb-4">Agregar historia del auto</h1>
+      <h1 class="text-base font-semibold leading-6 text-gray-900 mb-4">Agregar historia del arte</h1>
       <!-- <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
         <button type="button"
           class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add
@@ -10,15 +10,15 @@
     </div>
 
     <section class="no-tailwindcss-base">
-      <form [formGroup]="addCarHistoryForm" (ngSubmit)="addCarHistory()" class="space-y-6">
+      <form [formGroup]="addArtHistoryForm" (ngSubmit)="addArtHistory()" class="space-y-6">
         <div>
           <!-- seleccionar fotos de la galería -->
-          <!-- <button type="button" (click)="openCarPhotoGallery()" class="block mb-1 text-sm">
+          <!-- <button type="button" (click)="openArtPhotoGallery()" class="block mb-1 text-sm">
             <span class="text-blue-500">Seleccionar fotos de la galería</span>
           </button> -->
 
-          <button (click)="openAuctionCarDetailsModal()" class="block mb-1 text-sm text-blue-500">
-            Ver detalles del auto
+          <button (click)="openAuctionArtDetailsModal()" class="block mb-1 text-sm text-blue-500">
+            Ver detalles del arte
           </button>
 
           <div formArrayName="blocks" class="space-y-4 mb-4">
@@ -57,7 +57,7 @@
             <button (click)="addContent('text')" mat-menu-item>
               <span>Párrafo</span>
             </button>
-            <button (click)="openCarPhotoGallery()" mat-menu-item>
+            <button (click)="openArtPhotoGallery()" mat-menu-item>
               <span>Imagen</span>
             </button>
           </mat-menu>
@@ -76,22 +76,13 @@
           }
         </div>
 
-        <!-- extraInfo -->
-        <div>
-          <label for="extraInfo" class="block mb-1 text-sm">Información extra</label>
-          <textarea formControlName="extraInfo" class="w-full h-40" sharedInput></textarea>
-          @if (hasError('extraInfo')) {
-          <shared-input-error [message]="getError('extraInfo')"></shared-input-error>
-          }
-        </div>
-
         <button class="inline-flex justify-center items-center" type="submit"
-          [disabled]="addCarHistorySubmitButtonIsDisabled()" [class.opacity-50]="addCarHistorySubmitButtonIsDisabled()"
+          [disabled]="addArtHistorySubmitButtonIsDisabled()" [class.opacity-50]="addArtHistorySubmitButtonIsDisabled()"
           sharedPrimaryButton>
-          @if (addCarHistorySubmitButtonIsDisabled()) {
+          @if (addArtHistorySubmitButtonIsDisabled()) {
           <shared-spinner></shared-spinner>
           } @else {
-          Agregar historia del auto
+          Agregar historia del arte
           }
         </button>
       </form>
@@ -100,9 +91,9 @@
 
 </sidebar-layout>
 
-<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeCarPhotoGallery()" [cropImage]="true"
-  (selectedImageChange)="setImage($event)" [auctionCarId]="originalAuctionCarId()">
-</car-photo-gallery>
+<art-photo-gallery [isOpen]="artPhotoGalleryIsOpen()" (isOpenChange)="closeArtPhotoGallery()" [cropImage]="true"
+  (selectedImageChange)="setImage($event)" [auctionArtId]="originalAuctionArtId()">
+</art-photo-gallery>
 
-<auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"
-  [auctionCarId]="originalAuctionCarId()"></auction-car-details-modal>
+<auction-art-details-modal [isOpen]="auctionArtDetailsModalIsOpen()" (isOpenChange)="closeAuctionArtDetailsModal()"
+  [auctionArtId]="originalAuctionArtId()"></auction-art-details-modal>
