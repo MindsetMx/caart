@@ -53,7 +53,7 @@
               <button [routerLink]="['/dashboard/agregar-historia-arte', auction.auctionArtId]" mat-menu-item>
                 <span>Agregar historia del arte</span>
               </button>
-              <button (click)="openReleaseCarForLiveAuctionModal(auction.auctionArtId)" mat-menu-item>
+              <button (click)="openReleaseArtForLiveAuctionModal(auction.auctionArtId)" mat-menu-item>
                 <span>Liberar arte para subasta en vivo</span>
               </button>
               <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta', auction.auctionArtId]"
@@ -73,6 +73,6 @@
 <auction-art-details-modal [isOpen]="auctionArtDetailsModalIsOpen()" (isOpenChange)="closeAuctionArtDetailsModal()"
   [auctionArtId]="auctionArtId()"></auction-art-details-modal>
 
-<!-- <release-car-for-live-auction-modal [isOpen]="releaseCarForLiveAuctionModalIsOpen()"
-  (carReleaseForLiveAuction)="dashboardInfo()" [originalAuctionArtId]="auctionArtId()"
-  (isOpenChange)="closeReleaseCarForLiveAuctionModal()"></release-car-for-live-auction-modal> -->
+<release-art-for-live-auction-modal [isOpen]="releaseArtForLiveAuctionModalIsOpen()"
+  (artReleaseForLiveAuction)="dashboardInfo()" [originalAuctionArtId]="auctionArtId()"
+  (isOpenChange)="closeReleaseArtForLiveAuctionModal()"></release-art-for-live-auction-modal>

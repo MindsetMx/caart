@@ -7,8 +7,8 @@ import { RouterLink } from '@angular/router';
 
 import { AuctionArtInfo } from '@app/dashboard/interfaces';
 import { AuctionArtService } from '@app/dashboard/services/auction-art.service';
-import { ReleaseCarForLiveAuctionModalComponent } from '@app/dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
 import { AuctionArtDetailsModalComponent } from '@app/dashboard/modals/auction-art-details-modal/auction-art-details-modal.component';
+import { ReleaseArtForLiveAuctionModalComponent } from '@app/dashboard/modals/release-art-for-live-auction-modal/release-art-for-live-auction-modal.component';
 
 @Component({
   selector: 'publish-art',
@@ -20,7 +20,7 @@ import { AuctionArtDetailsModalComponent } from '@app/dashboard/modals/auction-a
     MatIconModule,
     RouterLink,
     AuctionArtDetailsModalComponent,
-    ReleaseCarForLiveAuctionModalComponent,
+    ReleaseArtForLiveAuctionModalComponent
   ],
   templateUrl: './publish-art.component.html',
   styleUrl: './publish-art.component.css',
@@ -44,20 +44,24 @@ export class PublishArtComponent {
       1,
       50,
       'brand',
-    ).subscribe((auctionCarInfo) => {
-      // this.auctionCarInfo.set(auctionCarInfo);
+    ).subscribe((auctionArtInfo) => {
+      // this.auctionArtInfo.set(auctionArtInfo);
 
-      //reverser this.auctionCarInfo data
+      //reverser this.auctionArtInfo data
       this.auctionArtInfo.set({
-        ...auctionCarInfo,
-        data: auctionCarInfo.data.reverse()
+        ...auctionArtInfo,
+        data: auctionArtInfo.data.reverse()
       });
     });
   }
 
-  openReleaseCarForLiveAuctionModal(auctionId: string): void {
+  openReleaseArtForLiveAuctionModal(auctionId: string): void {
     this.auctionArtId.set(auctionId);
     this.releaseArtForLiveAuctionModalIsOpen.set(true);
+  }
+
+  closeReleaseArtForLiveAuctionModal(): void {
+    this.releaseArtForLiveAuctionModalIsOpen.set(false);
   }
 
   openAuctionArtDetailsModal(auctionId: string): void {
