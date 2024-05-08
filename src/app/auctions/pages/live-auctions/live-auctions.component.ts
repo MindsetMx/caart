@@ -47,9 +47,15 @@ export class LiveAuctionsComponent {
         {
           id: 3,
           name: 'Arte',
-          img: 'assets/img/icons/memorabilia.svg',
+          img: 'assets/img/registrar auto/milo-venus.svg',
           current: false
         },
+        // {
+        //   id: 4,
+        //   name: 'Memorabilia',
+        //   img: 'assets/img/icons/memorabilia.svg',
+        //   current: false
+        // }
       ];
 
     this.currentTab.set(this.tabs[this.tabs.findIndex((tab) => tab.current)]);

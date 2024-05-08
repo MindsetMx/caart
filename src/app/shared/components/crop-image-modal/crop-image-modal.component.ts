@@ -48,7 +48,10 @@ export class CropImageModalComponent {
   resultImage = signal<HTMLCanvasElement>({} as HTMLCanvasElement);
 
   imageCropped(event: ImageCroppedEvent): void {
+    console.log({ event });
+
     this.croppedImage2 = this.#sanitizer.bypassSecurityTrustUrl(event.objectUrl || event.base64 || '');
+    console.log({ croppedImage2: this.croppedImage2 });
 
     let croppedImageBlob = event.blob;
 
@@ -143,6 +146,8 @@ export class CropImageModalComponent {
     // show cropper
   }
   cropperReady(): void {
+    console.log('cropperReady');
+
     // cropper ready
   }
   loadImageFailed(): void {

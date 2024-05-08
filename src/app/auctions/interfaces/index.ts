@@ -15,3 +15,7 @@ export * from './auction-memorabilia-publications';
 export * from './recently-completed-car-auctions';
 export * from './get-all-auctions';
 export * from './auction-art-publications';
+export * from './art-auction-details';
+export * from './specific-art-auction';
+export * from './bidding-art-conditions';
+export * from './bid-art-conditions';

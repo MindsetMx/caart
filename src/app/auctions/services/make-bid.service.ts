@@ -18,6 +18,12 @@ export class MakeBidService {
     return this.#http.post<any>(url, { bidAmount, paymentMethodId });
   }
 
+  makeArtBid$(auctionId: string, bidAmount: number, paymentMethodId: string): Observable<any> {
+    const url = `${this.#baseUrl}/auctions-cars/${auctionId}/bid-art`;
+
+    return this.#http.post<any>(url, { bidAmount, paymentMethodId });
+  }
+
   makeMemorabiliaBid$(auctionId: string, bidAmount: number, paymentMethodId: string): Observable<any> {
     const url = `${this.#baseUrl}/auctions-memorabilia/${auctionId}/bid`;
 

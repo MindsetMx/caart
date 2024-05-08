@@ -47,6 +47,9 @@ export class FollowButtonComponent implements OnInit {
       case AuctionTypes.car:
         this.getMetrics();
         break;
+      case AuctionTypes.art:
+        this.getArtMetrics();
+        break;
       case AuctionTypes.memorabilia:
         this.getMemorabiliaMetrics();
         break;
@@ -110,6 +113,18 @@ export class FollowButtonComponent implements OnInit {
 
   getMemorabiliaMetrics(): void {
     this.#auctionDetailsService.getMemorabiliaMetrics$(this.auctionId()).subscribe({
+      next: (metrics: AuctionMetrics) => {
+        this.metrics.set(metrics);
+        this.isFollowing.set(metrics.data.attributes.isFollowing);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  getArtMetrics(): void {
+    this.#auctionDetailsService.getArtMetrics$(this.auctionId()).subscribe({
       next: (metrics: AuctionMetrics) => {
         this.metrics.set(metrics);
         this.isFollowing.set(metrics.data.attributes.isFollowing);

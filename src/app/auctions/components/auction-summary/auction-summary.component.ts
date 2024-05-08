@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { NgxMaskDirective } from 'ngx-mask';
 
-import { AuctionDetails, AuctionMetrics, SpecificAuction, SpecificMemorabiliaAuction } from '@auctions/interfaces';
+import { ArtAuctionDetails, AuctionDetails, AuctionMetrics, SpecificArtAuction, SpecificAuction, SpecificMemorabiliaAuction } from '@auctions/interfaces';
 import { CountdownService } from '@shared/services/countdown.service';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { StarComponent } from '@shared/components/icons/star/star.component';
@@ -17,6 +17,7 @@ import { AuthService } from '@auth/services/auth.service';
 import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
 import { BiddingMemorabiliaConditionsService } from '@auctions/services/bidding-memorabilia-conditions.service';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { BiddingArtConditionsService } from '@auctions/services/bidding-art-conditions.service';
 
 @Component({
   selector: 'auction-summary',
@@ -37,10 +38,10 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionSummaryComponent {
-  auction = input.required<AuctionDetails | AuctionMemorabiliaDetails>();
+  auction = input.required<AuctionDetails | AuctionMemorabiliaDetails | ArtAuctionDetails>();
   auctionType = input.required<AuctionTypes>();
   metrics = input.required<AuctionMetrics>();
-  specificAuction = input.required<SpecificAuction | SpecificMemorabiliaAuction>();
+  specificAuction = input.required<SpecificAuction | SpecificMemorabiliaAuction | SpecificArtAuction>();
 
   @Output() makeAnOfferModalIsOpenChanged = new EventEmitter<number>();
 
@@ -53,6 +54,7 @@ export class AuctionSummaryComponent {
   #validatorsService = inject(ValidatorsService);
   #biddingConditionsService = inject(BiddingConditionsService);
   #biddingMemorabiliaConditionsService = inject(BiddingMemorabiliaConditionsService);
+  #biddingArtConditionsService = inject(BiddingArtConditionsService);
   #authService = inject(AuthService);
 
   minimumNextBidChangedEffect = effect(() => {
@@ -73,6 +75,9 @@ export class AuctionSummaryComponent {
         switch (this.auctionType()) {
           case AuctionTypes.car:
             this.getBiddingConditions();
+            break;
+          case AuctionTypes.art:
+            this.getBiddingArtConditions();
             break;
           case AuctionTypes.memorabilia:
             this.getBiddingMemorabiliaConditions();
@@ -117,6 +122,18 @@ export class AuctionSummaryComponent {
 
   getBiddingMemorabiliaConditions(): void {
     this.#biddingMemorabiliaConditionsService.getBiddingConditions(this.auction().data.id).subscribe({
+      next: (biddingConditions) => {
+        this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
+        this.offerAmountControl.setValue(this.minimumNextBid());
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  getBiddingArtConditions(): void {
+    this.#biddingArtConditionsService.getBiddingConditions(this.auction().data.id).subscribe({
       next: (biddingConditions) => {
         this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
         this.offerAmountControl.setValue(this.minimumNextBid());

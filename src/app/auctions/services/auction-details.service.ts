@@ -6,6 +6,7 @@ import { AuctionDetails, AuctionMemorabiliaMetrics, AuctionMetrics, SpecificAuct
 import { environments } from '@env/environments';
 import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
 import { SpecificMemorabiliaAuction } from '@auctions/interfaces/specific-memorabilia-auction';
+import { ArtMetrics } from '@auctions/interfaces/art-metrics';
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +50,11 @@ export class AuctionDetailsService {
     const url = `${this.#baseUrl}/auctions-memorabilia/${id}/metrics`;
 
     return this.#http.get<AuctionMemorabiliaMetrics>(url);
+  }
+
+  getArtMetrics$(id: string): Observable<ArtMetrics> {
+    const url = `${this.#baseUrl}/auctions-cars/${id}/metrics-art`;
+
+    return this.#http.get<ArtMetrics>(url);
   }
 }
