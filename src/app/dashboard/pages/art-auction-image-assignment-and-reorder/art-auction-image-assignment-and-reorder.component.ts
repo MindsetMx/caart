@@ -239,7 +239,7 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
     if (cropImage) {
       switch (formFieldName) {
         case 'fotoCatalogo':
-          this.aspectRatio.set(100 / 67);
+          this.aspectRatio.set(25 / 16);
           break;
         case 'fotosCarrusel':
           this.aspectRatio.set(1.5 / 1);

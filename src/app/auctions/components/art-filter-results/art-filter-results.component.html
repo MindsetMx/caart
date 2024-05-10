@@ -157,10 +157,16 @@
   @for (auction of auctions()?.data; track $index; let last = $last) {
   @defer () {
   @if (last) {
-  <art-auction-card [auction]="auction" intersection (visible)="getLiveAuctions(false)"></art-auction-card>
+  <art-auction-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.cover"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    intersection (visible)="getLiveAuctions(false)"></art-auction-card>
   }
   @else {
-  <art-auction-card [auction]="auction"></art-auction-card>
+  <art-auction-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.cover"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate"></art-auction-card>
   }
   } @placeholder (minimum 500ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>

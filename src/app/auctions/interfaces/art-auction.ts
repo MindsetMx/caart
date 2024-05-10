@@ -12,9 +12,9 @@ export interface ArtAuctionData {
 
 export interface ArtAuctionAttributes {
   premium: boolean;
-  lastBid: null;
+  lastBid: number;
   title: string;
-  endDate: Date;
+  endDate: string;
   cover: string;
   year: number;
   extract: string;

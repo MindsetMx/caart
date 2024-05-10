@@ -79,7 +79,6 @@ export class AuctionArtComponent {
   #appComponent = inject(AppComponent);
   #paymentMethodsService = inject(PaymentMethodsService);
   #auctionFollowService = inject(AuctionFollowService);
-  #auctionDetailsService = inject(AuctionDetailsService);
   #commentsService = inject(CommentsService);
 
   get auctionType(): typeof AuctionTypes {
@@ -279,7 +278,7 @@ export class AuctionArtComponent {
   getMetrics(auctionId: string | null): void {
     if (!auctionId) return;
 
-    this.#auctionDetailsService.getArtMetrics$(auctionId).subscribe({
+    this.#artAuctionDetailsService.getArtMetrics$(auctionId).subscribe({
       next: (metrics) => {
         this.metrics.set(metrics);
         this.isFollowing.set(metrics.data.attributes.isFollowing);

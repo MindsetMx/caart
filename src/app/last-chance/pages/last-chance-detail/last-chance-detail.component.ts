@@ -1,8 +1,8 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, signal, inject, effect } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal } from '@angular/core';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
-import { CountdownModule } from 'ngx-countdown';
+import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
@@ -10,28 +10,35 @@ import { switchMap } from 'rxjs';
 register();
 
 import { AppComponent } from '@app/app.component';
+import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
+import { AuctionDetailsService } from '@auctions/services/auction-details.service';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
+import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
 import { CommentComponent } from '@auctions/components/comment/comment.component';
 import { CommentsService } from '@auctions/services/comments.service';
 import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
 import { CountdownService } from '@shared/services/countdown.service';
-import { GeneralInfoService } from '@auth/services/general-info.service';
-import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
-import { InputDirective, PrimaryButtonDirective, SecondaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
-import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
-import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
-import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
-import { PaymentMethod } from '@auth/interfaces/general-info';
-import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
-import { SpecificAuction, AuctionMetrics, GetComments } from '@auctions/interfaces';
-import { StarComponent } from '@shared/components/icons/star/star.component';
-import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
+import { environments } from '@env/environments';
+import { GetComments } from '@auctions/interfaces/get-comments';
+import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
+import { InputDirective } from '@shared/directives/input.directive';
+import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
+import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { PaymentMethodsService } from '@shared/services/payment-methods.service';
+import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
+import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
+import { StarComponent } from '@shared/components/icons/star/star.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
+import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
+import { ImagesPublish } from '@dashboard/interfaces/images-publish';
 import { AuctionTypesComments } from '@auctions/enums';
-
+import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
+import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
+import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
@@ -43,16 +50,16 @@ import { AuctionTypesComments } from '@auctions/enums';
     StarComponent,
     SlicePipe,
     CurrencyPipe,
-    CountdownModule,
     MomentModule,
     ImageGalleryComponent,
     PaymentMethodModalComponent,
     CommentsTextareaComponent,
     CommentComponent,
-    SecondaryButtonDirective,
-    TertiaryButtonDirective,
     RecentlyCompletedAuctionsComponent,
-    CurrentAuctionsComponent
+    AuctionSummaryComponent,
+    CurrentAuctionsComponent,
+    AuctionCancelledComponent,
+    StickyAuctionInfoBarComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './last-chance-detail.component.html',
@@ -60,30 +67,42 @@ import { AuctionTypesComments } from '@auctions/enums';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastChanceDetailComponent implements AfterViewInit {
-  @ViewChild('videoGallery') videoGallery!: ElementRef;
-  @ViewChild('auctionsEnded') auctionsEnded!: ElementRef;
+  readonly #baseUrl = environments.baseUrl;
 
-  makeAnOfferModalIsOpen = signal<boolean>(false);
+  videoGallery = viewChild<ElementRef>('videoGallery');
+
   auction = signal<LastChanceAuctionVehicleDetail>({} as LastChanceAuctionVehicleDetail);
-  specificAuction = signal<SpecificAuction>({} as SpecificAuction);
-  metrics = signal<AuctionMetrics>({} as AuctionMetrics);
-  isFollowing = signal<boolean | undefined>(undefined);
-  paymentMethodModalIsOpen = signal<boolean>(false);
-  paymentMethods = signal<PaymentMethod[]>([] as PaymentMethod[]);
-  comments = signal<GetComments>({} as GetComments);
   auctionId = signal<string | null>(null);
+  auctionId2 = signal<string | null>(null);
+  comments = signal<GetComments>({} as GetComments);
+  eventSource?: EventSource;
+  isFollowing = signal<boolean>(false);
+  makeAnOfferModalIsOpen = signal<boolean>(false);
+  metrics = signal<AuctionMetrics>({} as AuctionMetrics);
+  paymentMethodId = signal<string>('');
+  paymentMethodModalIsOpen = signal<boolean>(false);
+  specificAuction = signal<SpecificAuction>({} as SpecificAuction);
+  offeredAmount = signal<number | undefined>(undefined);
+  newOfferMade = signal<number>(0);
+  auctionCancelledModalIsOpen = signal<boolean>(false);
+  imagesPublish = signal<ImagesPublish>({} as ImagesPublish);
 
-  #route = inject(ActivatedRoute);
-  #lastChanceVehicleDetailService = inject(LastChanceVehicleDetailService);
-  #countdownService = inject(CountdownService);
-  #auctionFollowService = inject(AuctionFollowService);
-  #authService = inject(AuthService);
   #appComponent = inject(AppComponent);
-  #generalInfoService = inject(GeneralInfoService);
+  #auctionDetailsService = inject(AuctionDetailsService);
+  #lastChanceVehicleDetailService = inject(LastChanceVehicleDetailService);
+  #authService = inject(AuthService);
   #commentsService = inject(CommentsService);
+  #countdownService = inject(CountdownService);
+  #paymentMethodsService = inject(PaymentMethodsService);
+  #route = inject(ActivatedRoute);
+  #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
+  }
+
+  get auctionTypesComments(): typeof AuctionTypesComments {
+    return AuctionTypesComments;
   }
 
   get swiperParams(): any {
@@ -121,35 +140,64 @@ export class LastChanceDetailComponent implements AfterViewInit {
     return AuctionTypes;
   }
 
-  get auctionTypesComments(): typeof AuctionTypesComments {
-    return AuctionTypesComments;
-  }
-
-  get auctionTypeComment(): typeof AuctionTypesComments {
-    return AuctionTypesComments;
-  }
-
   authStatusEffect = effect(() => {
     switch (this.authStatus) {
       case AuthStatus.authenticated:
-        this.getAuctionDetails(this.auctionId());
         this.getMetrics(this.auctionId());
 
         break;
-      case AuthStatus.notAuthenticated:
-        this.getAuctionDetails(this.auctionId());
-        break;
+    }
+  });
+
+  videoGalleryEffect = effect(() => {
+    if (this.videoGallery) {
+      this.initSwiperCarousel(this.videoGallery(), this.swiperParams);
+    }
+  });
+
+  auction2Effect = effect(() => {
+    if (this.auctionId2()) {
+      this.eventSource?.close();
+
+      this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
+
+      this.eventSource.onmessage = (event) => {
+        console.log({ event: event });
+        this.newOfferMade.set(this.newOfferMade() + 1);
+
+        if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
+          this.getSpecificAuctionDetails();
+          this.getAuctionDetails(this.auctionId());
+          this.getComments();
+        }
+
+        if (JSON.parse(event.data).type === 'CANCELLED') {
+          this.auctionCancelledModalIsOpen.set(true);
+        }
+      };
     }
   });
 
   constructor() {
     this.auctionId.set(this.#route.snapshot.paramMap.get('id'));
+
+    this.#route.paramMap.subscribe(params => {
+      let id = params.get('id');
+
+      this.auctionId.set(id);
+      this.getAuctionDetails(id);
+      this.getImagesPublish(id!);
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSource) {
+      this.eventSource.close();
+    }
   }
 
   ngAfterViewInit(): void {
-    this.initSwiperCarousel(this.videoGallery, this.swiperParams);
-    this.initSwiperCarousel(this.auctionsEnded, this.swiperParams);
-
     Fancybox.bind("[data-fancybox='gallery']");
     Fancybox.bind("[data-fancybox='gallery2']");
     Fancybox.bind("[data-fancybox='gallery3']");
@@ -158,59 +206,45 @@ export class LastChanceDetailComponent implements AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery6']");
   }
 
+  getImagesPublish(originalAuctionCarId: string): void {
+    this.#auctionImageAssigmentAndReorderService.imagesPublish$(originalAuctionCarId).subscribe({
+      next: (response: ImagesPublish) => {
+        this.imagesPublish.set(response);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  makeAnOfferModalIsOpenChanged(isOpen: boolean): void {
+    this.makeAnOfferModalIsOpen.set(isOpen);
+  }
+
+  getPhotoFromVideoUrl(videoUrl: string): string {
+    const videoId = videoUrl.split('/').slice(-2, -1)[0];
+
+    return `https://videodelivery.net/${videoId}/thumbnails/thumbnail.jpg`;
+  }
+
   getComments(): void {
-    this.#commentsService.getComments(this.auction().carHistory.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.active).subscribe({
+    this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.active).subscribe({
       next: (response) => {
         this.comments.set(response);
+
+        //invertir el orden de los comentarios
+        this.comments().data = this.comments().data.reverse();
       },
       error: (error) => {
         console.error(error);
       }
     });
-  }
-
-  followAuction(auctionId: string): void {
-    this.#auctionFollowService.followAuction$(auctionId, AuctionTypes.car).subscribe({
-      next: (response) => {
-        this.getMetrics(auctionId);
-        this.isFollowing.set(response.data.attributes.isFollowing);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
-
-  unfollowAuction(auctionId: string): void {
-    this.#auctionFollowService.unfollowAuction$(auctionId, AuctionTypes.car).subscribe({
-      next: (response) => {
-        this.getMetrics(auctionId);
-        this.isFollowing.set(response.data.attributes.isFollowing);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
-
-  followOrUnfollowAuction(auctionId: string): void {
-    if (this.authStatus === AuthStatus.notAuthenticated) {
-      this.openSignInModal();
-
-      return;
-    }
-
-    if (this.isFollowing()) {
-      this.unfollowAuction(auctionId);
-    } else {
-      this.followAuction(auctionId);
-    }
   }
 
   getMetrics(auctionId: string | null): void {
     if (!auctionId) return;
 
-    this.#lastChanceVehicleDetailService.getMetrics$(auctionId).subscribe({
+    this.#auctionDetailsService.getMetrics$(auctionId).subscribe({
       next: (metrics: AuctionMetrics) => {
         this.metrics.set(metrics);
         this.isFollowing.set(metrics.data.attributes.isFollowing);
@@ -227,10 +261,12 @@ export class LastChanceDetailComponent implements AfterViewInit {
     this.#lastChanceVehicleDetailService.getAuctionDetails$(auctionId).pipe(
       switchMap((auctionDetails) => {
         this.auction.set(auctionDetails);
+        this.auctionId2.set(auctionDetails.data.id);
+
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
         }
-        return this.#lastChanceVehicleDetailService.getSpecificAuctionDetails$(auctionDetails.carHistory.originalAuctionCarId);
+        return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
       })
     ).subscribe({
       next: (specificAuctionDetails) => {
@@ -243,7 +279,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   }
 
   getSpecificAuctionDetails(): void {
-    this.#lastChanceVehicleDetailService.getSpecificAuctionDetails$(this.auction().carHistory.originalAuctionCarId).subscribe({
+    this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionCarId).subscribe({
       next: (specificAuctionDetails) => {
         this.specificAuction.set(specificAuctionDetails);
       },
@@ -257,35 +293,17 @@ export class LastChanceDetailComponent implements AfterViewInit {
     return new Date(dateString);
   }
 
-  // countdownConfig(): CountdownConfig {
-  //   let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
-  //   return {
-  //     leftTime: leftTime,
-  //     format: this.getFormat(leftTime)
-  //   };
-  // }
-
-  // countdownConfig2(): CountdownConfig {
-  //   let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
-  //   return {
-  //     leftTime: leftTime,
-  //     format: this.getFormat2(leftTime)
-  //   };
-  // }
-
   getSecondsUntilEndDate(endDate: string): number {
     return this.#countdownService.getSecondsUntilEndDate(endDate);
-  }
-
-  getFormat(seconds: number): string {
-    return this.#countdownService.getFormat(seconds);
   }
 
   getFormat2(seconds: number): string {
     return this.#countdownService.getFormat2(seconds);
   }
 
-  openMakeAnOfferModal(): void {
+  openMakeAnOfferModal(offeredAmount?: number): void {
+    this.offeredAmount.set(undefined);
+
     if (this.authStatus === AuthStatus.notAuthenticated) {
       this.openSignInModal();
 
@@ -293,10 +311,10 @@ export class LastChanceDetailComponent implements AfterViewInit {
     }
 
     //Si tiene un método de pago registrado, se abre el modal
-    this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
-      this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
-
-      if (this.paymentMethods().length > 0) {
+    this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
+      if (paymentMethods.data.length > 0) {
+        this.paymentMethodId.set(paymentMethods.data[0].id);
+        this.offeredAmount.set(offeredAmount);
         this.makeAnOfferModalIsOpen.set(true);
         return;
       }
@@ -307,8 +325,8 @@ export class LastChanceDetailComponent implements AfterViewInit {
   }
 
   refreshPaymentMethods(): void {
-    this.#generalInfoService.getGeneralInfo$().subscribe((generalInfo) => {
-      this.paymentMethods.set(generalInfo.data.attributes.paymentMethods);
+    this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
+      this.paymentMethodId.set(paymentMethods.data[0].id);
     });
   }
 
@@ -325,5 +343,4 @@ export class LastChanceDetailComponent implements AfterViewInit {
     // and now initialize it
     swiperEl.nativeElement.initialize();
   }
-
 }

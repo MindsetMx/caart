@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, signal, ElementRef, effect, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, effect, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -11,13 +11,15 @@ import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
 
 import { AppComponent } from '@app/app.component';
+import { ArtRegisterComponent } from '@app/art/components/art-register/art-register.component';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
 import { Brands, Colors } from '@app/register-car/interfaces';
+import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-modal/complete-register-modal.component';
+import { environments } from '@env/environments';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { RegisterCarService } from '@app/register-car/services/register-car.service';
 import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
@@ -28,9 +30,7 @@ import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { VehicleMemorabiliaComponentComponent } from '@app/register-car/components/vehicle-memorabilia-component/vehicle-memorabilia-component.component';
-import { environments } from '@env/environments';
-import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
-import { ArtRegisterComponent } from '@app/art/components/art-register/art-register.component';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'register-car',
@@ -47,9 +47,9 @@ import { ArtRegisterComponent } from '@app/art/components/art-register/art-regis
     TabsWithIconsComponent,
     UppyAngularDashboardModule,
     MatAutocompleteModule,
-    InputFormatterDirective,
     VehicleMemorabiliaComponentComponent,
-    ArtRegisterComponent
+    ArtRegisterComponent,
+    NgxMaskDirective
   ],
   templateUrl: './register-car.component.html',
   styleUrl: './register-car.component.css',

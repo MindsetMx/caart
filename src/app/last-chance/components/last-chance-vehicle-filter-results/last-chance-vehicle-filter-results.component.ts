@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
-import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { LastChanceAuctionFilterMenuComponent } from '@app/last-chance/components/last-chance-auction-filter-menu/last-chance-auction-filter-menu.component';
 import { LastChanceVehicleCardComponent } from '@app/last-chance/components/last-chance-vehicle-card/last-chance-vehicle-card.component';
@@ -20,7 +19,6 @@ const MOBILE_SCREEN_WIDTH = 1024;
   selector: 'last-chance-vehicle-filter-results',
   standalone: true,
   imports: [
-    AuctionCardComponent,
     CommonModule,
     FormsModule,
     IntersectionDirective,

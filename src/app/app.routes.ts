@@ -95,6 +95,11 @@ export const routes: Routes = [
     loadComponent: () => import('./last-chance/pages/last-chance-detail/last-chance-detail.component').then((m) => m.LastChanceDetailComponent),
   },
   {
+    path: 'ultima-oportunidad-arte/:id',
+    canActivate: [VerifiedGuard],
+    loadComponent: () => import('./last-chance/pages/last-chance-art-detail/last-chance-art-detail.component').then((m) => m.LastChanceArtDetailComponent),
+  },
+  {
     path: 'subastas-en-vivo',
     canActivate: [VerifiedGuard],
     loadComponent: () => import('./auctions/pages/live-auctions/live-auctions.component').then((m) => m.LiveAuctionsComponent),

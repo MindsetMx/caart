@@ -21,7 +21,14 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArtAuctionCardComponent {
-  auction = input.required<ArtAuctionData>();
+  originalAuctionArtId = input.required<string>();
+  cover = input.required<string>();
+  title = input.required<string>();
+  reserve = input.required<boolean>();
+  premium = input.required<boolean>();
+  extract = input.required<string>();
+  lastBid = input.required<number>();
+  endDate = input.required<string>();
 
   #countdownService = inject(CountdownService);
 
@@ -29,8 +36,8 @@ export class ArtAuctionCardComponent {
     return AuctionTypes;
   }
 
-  countdownConfig(auction: any): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);
+  countdownConfig(): CountdownConfig {
+    let leftTime = this.getSecondsUntilEndDate(this.endDate());
     return {
       leftTime: leftTime,
       format: this.getFormat(leftTime)

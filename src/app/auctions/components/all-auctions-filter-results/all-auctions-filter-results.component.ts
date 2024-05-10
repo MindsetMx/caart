@@ -14,6 +14,8 @@ import { RouterModule } from '@angular/router';
 import { GetAllAuctionsService } from '@auctions/services/all-auctions.service';
 import { AuctionCard3Component } from '../auction-card3/auction-card3.component';
 import { MemorabiliaAuctionCard2Component } from '../memorabilia-auction-card2/memorabilia-auction-card2.component';
+import { AuctionTypesAll } from '../../enums/auction-types-all';
+import { ArtAuctionCardComponent } from '../art-auction-card/art-auction-card.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -33,7 +35,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
     TertiaryButtonDirective,
     YearRangeComponent,
     RouterModule,
-    MemorabiliaAuctionCard2Component
+    MemorabiliaAuctionCard2Component,
+    ArtAuctionCardComponent
   ],
   templateUrl: './all-auctions-filter-results.component.html',
   styleUrl: './all-auctions-filter-results.component.css',
@@ -88,7 +91,11 @@ export class AllAuctionsFilterResultsComponent {
 
   #allAuctionsService = inject(GetAllAuctionsService);
 
-  auctions = signal<GetAllAuctions | undefined>(undefined);
+  auctions = signal<GetAllAuctions>({} as GetAllAuctions);
+
+  get auctionTypesAll(): typeof AuctionTypesAll {
+    return AuctionTypesAll;
+  }
 
   ngOnInit(): void {
     this.getLiveAuctions(true);

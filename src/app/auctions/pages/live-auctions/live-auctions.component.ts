@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
@@ -24,47 +24,47 @@ import { ArtFilterResultsComponent } from '@auctions/components/art-filter-resul
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LiveAuctionsComponent {
-  tabs: TabWithIcon[];
-  currentTab = signal<TabWithIcon>({} as TabWithIcon);
+  tabs?: TabWithIcon[];
+  currentTab = signal<number | undefined>(undefined);
 
   #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
 
   constructor() {
-    this.tabs =
-      [
+    this.#activatedRoute.queryParams.subscribe(params => {
+      let tabId = +params['tab']; // Obtiene el id de la pestaña de los parámetros de consulta
+
+      if (isNaN(tabId)) {
+        tabId = 1;
+      }
+
+      this.currentTab.set(tabId);
+
+      this.tabs = [
         {
           id: 1,
           name: 'Todo',
           img: 'assets/img/icons/apps-outline.svg',
-          current: true
+          current: tabId === 1
         },
         {
           id: 2,
           name: 'Automóviles',
           img: 'assets/img/registrar auto/car-sport-outline.svg',
-          current: false
+          current: tabId === 2
         },
         {
           id: 3,
           name: 'Arte',
           img: 'assets/img/registrar auto/milo-venus.svg',
-          current: false
+          current: tabId === 3
         },
-        // {
-        //   id: 4,
-        //   name: 'Memorabilia',
-        //   img: 'assets/img/icons/memorabilia.svg',
-        //   current: false
-        // }
       ];
-
-    this.currentTab.set(this.tabs[this.tabs.findIndex((tab) => tab.current)]);
-
-    this.navigateWithQueryParams(this.currentTab().id);
+    });
   }
 
   onTabSelected(tab: TabWithIcon): void {
-    this.currentTab.set(tab);
+    this.currentTab.set(tab.id);
 
     this.navigateWithQueryParams(tab.id);
   }

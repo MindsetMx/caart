@@ -30,7 +30,7 @@ export class MemorabiliaAuctionCard2Component {
   }
 
   countdownConfig(auction: GetAllAuctionsData): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(auction.endDate);
+    let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);
     return {
       leftTime: leftTime,
       format: this.getFormat(leftTime)

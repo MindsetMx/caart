@@ -12,9 +12,10 @@ export interface LastChanceVehiclesData {
 
 export interface LastChanceVehiclesAttributes {
   reserve: boolean;
-  lastBid: number;
-  endDate: string;
-  photos: string[];
+  lastBid: null;
+  endDate: Date;
+  title: string;
+  cover: string;
   brand: string;
   model: string;
   year: number;

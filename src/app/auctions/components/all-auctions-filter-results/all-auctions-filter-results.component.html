@@ -154,22 +154,41 @@
 
 <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8 mt-4">
   @if ( auctions()) {
-  @for (auction of auctions()?.data; track $index; let last = $last) {
+  @for (auction of auctions().data; track $index; let last = $last) {
   @defer () {
   @if (last) {
-  @if (auction?.auctionCarDetails) {
+  @switch (auction.type) {
+  @case (auctionTypesAll.auctionsCar){
   <auction-card3 [auction]="auction" intersection (visible)="getLiveAuctions(false)"></auction-card3>
-  }@else {
-  <memorabilia-auction-card2 [auction]="auction" intersection
-    (visible)="getLiveAuctions(false)"></memorabilia-auction-card2>
+  }
+
+  @case (auctionTypesAll.auctionsArt) {
+  <art-auction-card [originalAuctionArtId]="auction.originalAucionId" [cover]="auction.attributes.cover"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate"></art-auction-card>
+  }
   }
   }
   @else {
-  @if (auction?.auctionCarDetails) {
+  @switch (auction.type) {
+  @case (auctionTypesAll.auctionsCar) {
+  <auction-card3 [auction]="auction"></auction-card3>
+  }
+
+  @case (auctionTypesAll.auctionsArt) {
+  <art-auction-card [originalAuctionArtId]="auction.originalAucionId" [cover]="auction.attributes.cover"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate"></art-auction-card>
+  }
+  }
+
+  <!-- @if (auction?.auctionCarDetails) {
   <auction-card3 [auction]="auction"></auction-card3>
   } @else {
   <memorabilia-auction-card2 [auction]="auction"></memorabilia-auction-card2>
-  }
+  } -->
   }
   } @placeholder (minimum 500ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>

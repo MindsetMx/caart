@@ -13,6 +13,6 @@ export class GetAllAuctionsService {
   #http = inject(HttpClient);
 
   getAllLiveAuctions$(page: number, size: number): Observable<GetAllAuctions> {
-    return this.#http.get<GetAllAuctions>(`${this.#baseUrl}/auctions-cars/all-live-auctions?page=${page}&size=${size}`);
+    return this.#http.get<GetAllAuctions>(`${this.#baseUrl}/auctions-cars/live-auctions-all?page=${page}&size=${size}`);
   }
 }

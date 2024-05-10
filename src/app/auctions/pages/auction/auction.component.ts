@@ -36,6 +36,7 @@ import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/au
 import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
 import { ImagesPublish } from '@dashboard/interfaces/images-publish';
 import { AuctionTypesComments } from '@auctions/enums';
+import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
 
 @Component({
   standalone: true,
@@ -47,7 +48,6 @@ import { AuctionTypesComments } from '@auctions/enums';
     StarComponent,
     SlicePipe,
     CurrencyPipe,
-    CountdownModule,
     MomentModule,
     ImageGalleryComponent,
     PaymentMethodModalComponent,
@@ -56,7 +56,8 @@ import { AuctionTypesComments } from '@auctions/enums';
     RecentlyCompletedAuctionsComponent,
     AuctionSummaryComponent,
     CurrentAuctionsComponent,
-    AuctionCancelledComponent
+    AuctionCancelledComponent,
+    StickyAuctionInfoBarComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
@@ -73,7 +74,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   auctionId2 = signal<string | null>(null);
   comments = signal<GetComments>({} as GetComments);
   eventSource?: EventSource;
-  isFollowing = signal<boolean | undefined>(undefined);
+  isFollowing = signal<boolean>(false);
   makeAnOfferModalIsOpen = signal<boolean>(false);
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
   paymentMethodId = signal<string>('');
@@ -86,7 +87,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
-  #auctionFollowService = inject(AuctionFollowService);
   #authService = inject(AuthService);
   #commentsService = inject(CommentsService);
   #countdownService = inject(CountdownService);
@@ -238,44 +238,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  followAuction(auctionId: string): void {
-    this.#auctionFollowService.followAuction$(auctionId, AuctionTypes.car).subscribe({
-      next: (response) => {
-        this.getMetrics(auctionId);
-        this.isFollowing.set(response.data.attributes.isFollowing);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
-
-  unfollowAuction(auctionId: string): void {
-    this.#auctionFollowService.unfollowAuction$(auctionId, AuctionTypes.car).subscribe({
-      next: (response) => {
-        this.getMetrics(auctionId);
-        this.isFollowing.set(response.data.attributes.isFollowing);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
-
-  followOrUnfollowAuction(auctionId: string): void {
-    if (this.authStatus === AuthStatus.notAuthenticated) {
-      this.openSignInModal();
-
-      return;
-    }
-
-    if (this.isFollowing()) {
-      this.unfollowAuction(auctionId);
-    } else {
-      this.followAuction(auctionId);
-    }
-  }
-
   getMetrics(auctionId: string | null): void {
     if (!auctionId) return;
 
@@ -328,20 +290,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     return new Date(dateString);
   }
 
-  countdownConfig(): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
-    return {
-      leftTime: leftTime,
-      format: this.getFormat(leftTime)
-    };
-  }
-
   getSecondsUntilEndDate(endDate: string): number {
     return this.#countdownService.getSecondsUntilEndDate(endDate);
-  }
-
-  getFormat(seconds: number): string {
-    return this.#countdownService.getFormat(seconds);
   }
 
   getFormat2(seconds: number): string {

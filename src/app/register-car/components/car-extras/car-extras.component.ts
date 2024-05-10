@@ -10,8 +10,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { InputFormatterDirective } from '@shared/directives/input-formatter.directive';
 import { MatIcon } from '@angular/material/icon';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'car-extras',
@@ -24,8 +24,8 @@ import { MatIcon } from '@angular/material/icon';
     ReactiveFormsModule,
     SpinnerComponent,
     DecimalPipe,
-    InputFormatterDirective,
-    MatIcon
+    MatIcon,
+    NgxMaskDirective
   ],
   templateUrl: './car-extras.component.html',
   styleUrl: './car-extras.component.css',
