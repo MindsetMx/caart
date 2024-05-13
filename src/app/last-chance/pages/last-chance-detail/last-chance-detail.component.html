@@ -1,8 +1,8 @@
 <div class="mb-32">
 
-  <sticky-auction-info-bar [auction]="auction()" [specificAuction]="specificAuction()" [(isFollowing)]="isFollowing"
+  <last-chance-sticky-info-bar [auction]="auction()" [specificAuction]="specificAuction()" [(isFollowing)]="isFollowing"
     (openMakeAnOfferModalChange)="openMakeAnOfferModal()"
-    (getMetricsChange)="getMetrics($event)"></sticky-auction-info-bar>
+    (getMetricsChange)="getMetrics($event)"></last-chance-sticky-info-bar>
 
   <div class="container">
     @defer (when auction().data) {

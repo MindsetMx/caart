@@ -39,6 +39,7 @@ import { AuctionTypesComments } from '@auctions/enums';
 import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
 import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
 import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
+import { LastChanceStickyInfoBarComponent } from '@app/last-chance/components/last-chance-sticky-info-bar/last-chance-sticky-info-bar.component';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
@@ -59,7 +60,7 @@ import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
     AuctionSummaryComponent,
     CurrentAuctionsComponent,
     AuctionCancelledComponent,
-    StickyAuctionInfoBarComponent
+    LastChanceStickyInfoBarComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './last-chance-detail.component.html',

@@ -1,19 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject, input, model, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 
 import { AppComponent } from '@app/app.component';
-import { AuctionDetails, SpecificAuction } from '@auctions/interfaces';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
 import { AuctionTypes } from '@auctions/enums';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
 import { CountdownService } from '@shared/services/countdown.service';
-import { StarComponent } from '@shared/components/icons/star/star.component';
+import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
 import { PrimaryButtonDirective } from '@shared/directives';
+import { SpecificAuction } from '@auctions/interfaces';
+import { StarComponent } from '@shared/components/icons/star/star.component';
 
 @Component({
-  selector: 'sticky-auction-info-bar',
+  selector: 'last-chance-sticky-info-bar',
   standalone: true,
   imports: [
     CommonModule,
@@ -21,12 +22,12 @@ import { PrimaryButtonDirective } from '@shared/directives';
     StarComponent,
     PrimaryButtonDirective,
   ],
-  templateUrl: './sticky-auction-info-bar.component.html',
-  styleUrl: './sticky-auction-info-bar.component.css',
+  templateUrl: './last-chance-sticky-info-bar.component.html',
+  styleUrl: './last-chance-sticky-info-bar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StickyAuctionInfoBarComponent {
-  auction = input.required<AuctionDetails>();
+export class LastChanceStickyInfoBarComponent {
+  auction = input.required<LastChanceAuctionVehicleDetail>();
   specificAuction = input.required<SpecificAuction>();
   isFollowing = model.required<boolean>();
   openMakeAnOfferModalChange = output<void>();

@@ -12,10 +12,10 @@ import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.serv
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { RouterModule } from '@angular/router';
 import { GetAllAuctionsService } from '@auctions/services/all-auctions.service';
-import { AuctionCard3Component } from '../auction-card3/auction-card3.component';
 import { MemorabiliaAuctionCard2Component } from '../memorabilia-auction-card2/memorabilia-auction-card2.component';
 import { AuctionTypesAll } from '../../enums/auction-types-all';
 import { ArtAuctionCardComponent } from '../art-auction-card/art-auction-card.component';
+import { AuctionCardComponent } from '../auction-card/auction-card.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -23,7 +23,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
   selector: 'all-auctions-filter-results',
   standalone: true,
   imports: [
-    AuctionCard3Component,
+    AuctionCardComponent,
     AuctionFilterMenuComponent,
     CommonModule,
     FormsModule,

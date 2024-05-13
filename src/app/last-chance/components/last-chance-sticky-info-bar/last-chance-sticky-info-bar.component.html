@@ -27,19 +27,6 @@
         </p>
       </div>
       }
-      @if (auction().data && countdownConfig().leftTime! > 0) {
-      <div>
-        <div class="bg-gray1 rounded-lg px-3 py-1">
-          <countdown class="text-red2 font-bold" [config]="countdownConfig()"
-            [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
-          <br>
-          <span class="hidden md:block text-gray4 text-sm">
-            {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
-            a'}}
-          </span>
-        </div>
-      </div>
-      }
       <div>
         <div class="hidden md:block py-1">
           <!-- <p class="font-bold text-lg">18</p> -->
@@ -57,25 +44,6 @@
         }
         }
       </div>
-      @defer (when specificAuction().data) {
-      @switch (specificAuction().data.status) {
-      @case ('cancelled') {
-      <div class="py-1">
-        <!-- Reserva no alcanzada -->
-        <p class="font-bold border border-red-700 bg-[#f0aeae] text-red-700 px-2 py-1 rounded-xl text-xs">
-          Reserva no alcanzada
-        </p>
-      </div>
-      }
-      @case ('completed') {
-      <div class="py-1">
-        <p class="font-bold border border-green-700 bg-[#b6f0ae] text-green-700 px-2 py-1 rounded-xl text-xs">
-          Vendido
-        </p>
-      </div>
-      }
-      }
-      }
     </div>
     <div class="grid gap-y-4 md:flex w-full md:justify-between">
       <div
@@ -88,13 +56,14 @@
         </div>
         }
         <div>
-          <div class="hidden md:block py-1 ml-4">
-            <!-- <p class="font-bold text-lg">18</p> -->
-            <p class="inline lg:block text-xl">
-              <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</span>
-              Ofertas
+          @defer (when auction().data) {
+          <h3 class="text-xl">
+            {{auction().data.attributes.reserveAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+            <p class="text-sm">
+              Precio de venta
             </p>
-          </div>
+          </h3>
+          }
 
           @defer (when specificAuction().data) {
           @if (specificAuction().data.status === 'active') {
@@ -107,38 +76,6 @@
           }
           }
         </div>
-        @if (auction().data && countdownConfig().leftTime! > 0) {
-        <div>
-          <div class="ml-4">
-            <countdown class="text-red2 font-bold text-xl" [config]="countdownConfig()"
-              [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
-            <br>
-            <!-- <span class="hidden md:block text-gray4 text-sm">
-              {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
-              a'}}
-            </span> -->
-          </div>
-        </div>
-        }
-        @defer (when specificAuction().data) {
-        @switch (specificAuction().data.status) {
-        @case ('cancelled') {
-        <div class="py-1">
-          <!-- Reserva no alcanzada -->
-          <p class="font-bold ml-4 border border-red-700 bg-[#f0aeae] text-red-700 px-6 py-1 rounded-xl">
-            Reserva no alcanzada
-          </p>
-        </div>
-        }
-        @case ('completed') {
-        <div class="py-1">
-          <p class="font-bold ml-4 border border-green-700 bg-[#b6f0ae] text-green-700 px-6 py-1 rounded-xl">
-            Vendido
-          </p>
-        </div>
-        }
-        }
-        }
       </div>
       <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
         <span class="md:hidden space-x-2 inline-block">
@@ -161,12 +98,12 @@
         </button>
         <div class="col-span-2 md:col-span-1">
           @defer (when specificAuction().data) {
-          @if (specificAuction().data.status === 'active') {
+          <!-- @if (specificAuction().data.status === 'active') { -->
           <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
             classes="hidden md:block font-lato font-semibold text-xs" sharedPrimaryButton>
             OFERTAR
           </button>
-          }
+          <!-- } -->
           }
           <div class="block md:hidden">
             <!-- <p class="font-bold text-lg">18</p> -->

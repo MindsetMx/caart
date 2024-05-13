@@ -159,21 +159,27 @@
   @if (last) {
   @switch (auction.type) {
   @case (auctionTypesAll.auctionsCar){
-  <auction-card3 [auction]="auction" intersection (visible)="getLiveAuctions(false)"></auction-card3>
+  <auction-card [originalAuctionCarId]="auction.originalAucionId" [cover]="auction.attributes.cover"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    intersection (visible)="getLiveAuctions(false)"></auction-card>
   }
 
   @case (auctionTypesAll.auctionsArt) {
   <art-auction-card [originalAuctionArtId]="auction.originalAucionId" [cover]="auction.attributes.cover"
     [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
-    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate"></art-auction-card>
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    intersection (visible)="getLiveAuctions(false)"></art-auction-card>
   }
   }
   }
   @else {
   @switch (auction.type) {
   @case (auctionTypesAll.auctionsCar) {
-  <auction-card3 [auction]="auction"></auction-card3>
+  <auction-card [originalAuctionCarId]="auction.originalAucionId" [cover]="auction.attributes.cover"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate"></auction-card>
   }
 
   @case (auctionTypesAll.auctionsArt) {
