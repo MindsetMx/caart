@@ -1,6 +1,7 @@
+import { AuctionTypes as AuctionTypes2 } from '@app/auctions/enums/auction-types';
 import { environments } from '@env/environments';
 import { FormGroup } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -95,10 +96,12 @@ export class CompleteCarRegistrationService {
     return this.#http.post<any>(url, trimmedCarExtras);
   }
 
-  getAuctionTypes$(): Observable<AuctionTypes> {
+  getAuctionTypes$(type: AuctionTypes2): Observable<AuctionTypes> {
     const url = `${this.#baseUrl}/auction-types`;
 
-    return this.#http.get<AuctionTypes>(url);
+    const params = new HttpParams().set('type', type);
+
+    return this.#http.get<AuctionTypes>(url, { params });
   }
 
   addPaymentMethod(stripeToken: string): Observable<any> {

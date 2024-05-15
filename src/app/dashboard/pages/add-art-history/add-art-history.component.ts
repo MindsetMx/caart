@@ -41,6 +41,7 @@ export class AddArtHistoryComponent {
   addArtHistoryForm: FormGroup;
   addArtHistorySubmitButtonIsDisabled = signal<boolean>(false);
   auctionArtDetailsModalIsOpen = signal<boolean>(false);
+  aspectRatios = signal<number[]>([1.477]);
 
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);

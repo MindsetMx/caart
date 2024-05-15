@@ -41,7 +41,58 @@ export class ReleaseArtForLiveAuctionModalComponent {
   #releaseArtForLiveAuctionService = inject(ReleaseArtForLiveAuctionService);
   #appService = inject(AppService);
 
-  categoriesList: { name: string, value: string }[] = [{ name: "Clásico", value: "classic" }, { name: "Eléctrico", value: "electric" }];
+  categoriesList: { name: string, value: string }[] = [
+    // Pintura
+    {
+      name: "Pintura",
+      value: "Pintura"
+    },
+    // Escultura
+    {
+      name: "Escultura",
+      value: "Escultura"
+    },
+    // Fotografía,
+    {
+      name: "Fotografía",
+      value: "Fotografía"
+    },
+    // Impresión
+    {
+      name: "Impresión",
+      value: "Impresión"
+    },
+    // Dibujo o Collage en papel
+    {
+      name: "Dibujo o Collage en papel",
+      value: "Dibujo o Collage en papel"
+    },
+    // Técnica mixta
+    {
+      name: "Técnica mixta",
+      value: "Técnica mixta"
+    },
+    // Ceramica
+    {
+      name: "Ceramica",
+      value: "Ceramica"
+    },
+    // Joyeria
+    {
+      name: "Joyeria",
+      value: "Joyeria"
+    },
+    // Moda y Arte utilizable
+    {
+      name: "Moda y Arte utilizable",
+      value: "Moda y Arte utilizable"
+    },
+    // Arte decorativo
+    {
+      name: "Arte decorativo",
+      value: "Arte decorativo"
+    },
+  ];
 
   originalAuctionArtIdEffect = effect(() => {
     this.releaseArtForLiveAuctionForm.reset();

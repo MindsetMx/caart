@@ -1,3 +1,4 @@
+import { AuctionTypes as AuctionTypes2 } from '@app/auctions/enums/auction-types';
 import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Signal, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -121,7 +122,7 @@ export class ArtRegistrationPaymentComponent {
   }
 
   getAuctionTypes(): void {
-    this.#completeArtRegistrationService.getAuctionTypes$().subscribe((auctionTypes) => {
+    this.#completeArtRegistrationService.getAuctionTypes$(AuctionTypes2.art).subscribe((auctionTypes) => {
       this.auctionTypes.set(auctionTypes);
     });
   }

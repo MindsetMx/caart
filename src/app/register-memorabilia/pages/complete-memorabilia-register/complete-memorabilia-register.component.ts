@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApplyDiscountCode, AuctionTypes } from '@app/register-car/interfaces';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { CompleteMemorabiliaRegistrationService } from '@app/register-memorabilia/services/complete-memorabilia-registration.service';
+import { AuctionTypes as AuctionTypes2 } from '@auctions/enums';
 import { PaymentMethod } from '@auth/interfaces/general-info';
 import { GeneralInfoService } from '@auth/services/general-info.service';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -116,7 +117,7 @@ export class CompleteMemorabiliaRegisterComponent implements OnInit {
 
 
   getAuctionTypes(): void {
-    this.#completeMemorabiliaRegistrationService.getAuctionTypes$().subscribe((auctionTypes) => {
+    this.#completeMemorabiliaRegistrationService.getAuctionTypes$(AuctionTypes2.memorabilia).subscribe((auctionTypes) => {
       this.auctionTypes.set(auctionTypes);
     });
   }

@@ -9,14 +9,34 @@
   <div class="container w-full">
     <!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
 
-    @defer (when imageUrl() && aspectRatio() && transform()) {
+    @if(isOpen() && aspectRatio() !== undefined) {
     <div class="no-tailwindcss-base cropper-wrapper">
-      <image-cropper [imageURL]="imageUrl()" [maintainAspectRatio]="true" [aspectRatio]="aspectRatio()"
-        alignImage="center" backgroundColor="red" [(transform)]="transform" format="png"
+      <image-cropper [imageURL]="imageUrl()" [maintainAspectRatio]="maintainAspectRatio()"
+        [aspectRatio]="aspectRatio()!" alignImage="center" backgroundColor="red" [(transform)]="transform" format="png"
         (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded($event)" (cropperReady)="cropperReady()"
         (loadImageFailed)="loadImageFailed()"></image-cropper>
     </div>
     }
+    <!-- botones para seleccionar reacion de aspecto: 1054:1000, 1:1 -->
+    <div class="grid grid-flow-col gap-4 mt-4">
+      <!-- <button (click)="setAspectRatio(1054/1000)"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        1054:1000
+      </button>
+      <button (click)="setAspectRatio(1/1)"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        1:1
+      </button> -->
+
+      <!-- @if (aspectRatios().length>1) { -->
+      @for (aspectRatio of aspectRatios(); track $index) {
+      <button (click)="setAspectRatio(aspectRatio)"
+        class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+        {{aspectRatio===0 ? 'Libre' : aspectRatio}}
+      </button>
+      }
+      <!-- } -->
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
       <div class="flex items-center justify-center gap-4">
@@ -58,7 +78,7 @@
 
   <div class="container w-full mt-4">
     <h3 class="text-center font-bold text-lg mb-4">Así se verá la foto:</h3>
-    <img [src]="croppedImage2" class="object-contain max-w-lg mx-auto h-auto">
+    <img [src]="croppedImage2()" class="object-contain w-fill max-w-lg mx-auto h-auto">
   </div>
 
   <div class="w-full bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" footer>

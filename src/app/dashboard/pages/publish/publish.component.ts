@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -7,6 +7,8 @@ import { PublishCarsComponent } from '@dashboard/components/publish-cars/publish
 import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { TypesOfRequests } from '@dashboard/enums';
 import { PublishArtComponent } from '@dashboard/components/publish-art/publish-art.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -23,9 +25,37 @@ import { PublishArtComponent } from '@dashboard/components/publish-art/publish-a
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PublishComponent {
-  requestType: FormControl = new FormControl(TypesOfRequests.Art);
+  requestType: FormControl = new FormControl(TypesOfRequests.Car);
+
+  #activatedRoute = inject(ActivatedRoute);
+  #router = inject(Router);
 
   get typesOfRequests(): typeof TypesOfRequests {
     return TypesOfRequests;
+  }
+
+  constructor() {
+    this.#activatedRoute.queryParams.
+      pipe(
+        takeUntilDestroyed(),
+      ).subscribe(params => {
+        let type: TypesOfRequests = params['type'];
+
+        if (!(type in TypesOfRequests)) {
+          type = TypesOfRequests.Car;
+        }
+
+        this.requestType.setValue(type);
+      });
+
+    this.requestType.valueChanges.
+      pipe(
+        takeUntilDestroyed(),
+      ).subscribe((value: TypesOfRequests) => {
+        this.#router.navigate([], {
+          queryParams: { type: value },
+          queryParamsHandling: 'merge'
+        });
+      });
   }
 }

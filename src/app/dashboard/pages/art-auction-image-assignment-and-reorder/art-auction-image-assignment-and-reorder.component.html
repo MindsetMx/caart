@@ -15,24 +15,6 @@
     </div>
 
     <form class="mt-4 space-y-4" [formGroup]="auctionImagesForm" (submit)="saveImages()">
-      <h2 class="mb-2">Foto principal</h2>
-      <div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          @if(fotoPrincipal.value) {
-          <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoPrincipal', true)">
-            <img [src]="fotoPrincipal.value" class="cell object-contain" />
-          </button>
-          }@else {
-          <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoPrincipal', true)" class="cell">
-            Foto principal
-          </button>
-          }
-        </div>
-        @if (hasError('fotoPrincipal')) {
-        <shared-input-error [message]="getError('fotoPrincipal')"></shared-input-error>
-        }
-      </div>
-
       <!-- fotoCatalogo -->
       <h2 class="mb-2">Foto portada catálogo</h2>
       <div>
@@ -52,13 +34,34 @@
         }
       </div>
 
+      <h2 class="mb-2">Foto principal</h2>
+      <div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          @if(fotoPrincipal.value) {
+          <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoPrincipal', true)">
+            <img [src]="fotoPrincipal.value" class="cell object-contain" />
+          </button>
+          }@else {
+          <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoPrincipal', true)" class="cell">
+            Foto principal
+          </button>
+          }
+        </div>
+        @if (hasError('fotoPrincipal')) {
+        <shared-input-error [message]="getError('fotoPrincipal')"></shared-input-error>
+        }
+      </div>
+
       @defer (when fotosCarrusel) {
       <div>
+        <!-- <pre>
+          {{fotosCarrusel() | json}}
+        </pre> -->
         <h2 class="mb-2">Fotos carrusel</h2>
         <div class="board" cdkDropListGroup>
-          @for (imageUrl of fotosCarrusel.value; track i; let i = $index) {
+          @for (imageUrl of fotosCarrusel(); track i; let i = $index) {
           <div>
-            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosCarrusel)"
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosCarruselFormArray)"
               [cdkDropListData]=" {imageUrl, index: i}">
               @if (imageUrl) {
               <button type="button" class="w-full" (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', true, i)">
@@ -71,8 +74,8 @@
               </button>
               }
             </div>
-            @if (formArrayHasError(fotosCarrusel, i)) {
-            <shared-input-error [message]="getErrorFromFormArray(fotosCarrusel, i)"></shared-input-error>
+            @if (formArrayHasError(fotosCarruselFormArray, i)) {
+            <shared-input-error [message]="getErrorFromFormArray(fotosCarruselFormArray, i)"></shared-input-error>
             }
           </div>
           }
@@ -94,7 +97,7 @@
 
 </sidebar-layout>
 
-<art-photo-gallery [isOpen]="artPhotoGalleryIsOpen()" [aspectRatio]="aspectRatio()"
+<art-photo-gallery [isOpen]="artPhotoGalleryIsOpen()" [aspectRatios]="aspectRatios()"
   [allowMultipleSelection]="allowMultipleSelection()" (isOpenChange)="closeModal(artPhotoGalleryIsOpen)"
   (selectedImageChange)="setImage($event)" [cropImage]="cropImage()" [auctionArtId]="originalAuctionArtId()">
 </art-photo-gallery>

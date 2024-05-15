@@ -92,7 +92,7 @@
 </sidebar-layout>
 
 <art-photo-gallery [isOpen]="artPhotoGalleryIsOpen()" (isOpenChange)="closeArtPhotoGallery()" [cropImage]="true"
-  (selectedImageChange)="setImage($event)" [auctionArtId]="originalAuctionArtId()">
+  [aspectRatios]="aspectRatios()" (selectedImageChange)="setImage($event)" [auctionArtId]="originalAuctionArtId()">
 </art-photo-gallery>
 
 <auction-art-details-modal [isOpen]="auctionArtDetailsModalIsOpen()" (isOpenChange)="closeAuctionArtDetailsModal()"

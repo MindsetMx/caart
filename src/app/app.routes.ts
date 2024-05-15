@@ -31,6 +31,11 @@ export const routes: Routes = [
     loadComponent: () => import('./infoPages/pages/how-it-works/how-it-works.component').then((m) => m.HowItWorksComponent),
   },
   {
+    path: 'vende-con-nosotros',
+    canActivate: [VerifiedGuard],
+    loadComponent: () => import('./infoPages/pages/sell-with-us/sell-with-us.component').then((m) => m.SellWithUsComponent),
+  },
+  {
     path: 'iniciar-sesion',
     canActivate: [VerifiedGuard, GuestGuard],
     loadComponent: () => import('./auth/components/sign-in/sign-in.component').then((m) => m.SignInComponent),

@@ -1,4 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { AuctionTypes as AuctionTypes2 } from '@app/auctions/enums/auction-types';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -16,10 +17,12 @@ export class CompleteMemorabiliaRegistrationService {
   #http = inject(HttpClient);
   #appService = inject(AppService);
 
-  getAuctionTypes$(): Observable<AuctionTypes> {
+  getAuctionTypes$(type: AuctionTypes2): Observable<AuctionTypes> {
     const url = `${this.#baseUrl}/auction-types`;
 
-    return this.#http.get<AuctionTypes>(url);
+    const params = new HttpParams().set('type', type);
+
+    return this.#http.get<AuctionTypes>(url, { params });
   }
 
   applyDiscountCode$(discountCode: string): Observable<ApplyDiscountCode> {

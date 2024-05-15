@@ -1,4 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { AuctionTypes as AuctionTypes2 } from '@app/auctions/enums';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ApplyDiscountCode, AuctionTypes } from '@app/register-car/interfaces';
@@ -40,10 +41,12 @@ export class CompleteArtRegistrationService {
     return this.#http.patch<any>(url, generalInformation.value);
   }
 
-  getAuctionTypes$(): Observable<AuctionTypes> {
+  getAuctionTypes$(type: AuctionTypes2): Observable<AuctionTypes> {
     const url = `${this.#baseUrl}/auction-types`;
 
-    return this.#http.get<AuctionTypes>(url);
+    const params = new HttpParams().set('type', type);
+
+    return this.#http.get<AuctionTypes>(url, { params });
   }
 
   wizardSteps$(publicationId: string): Observable<AuctionArtWizardSteps> {

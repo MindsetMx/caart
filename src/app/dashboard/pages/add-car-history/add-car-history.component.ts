@@ -37,7 +37,7 @@ export class AddCarHistoryComponent {
   originalAuctionCarId = signal<string>('');
 
   carPhotoGalleryIsOpen = signal<boolean>(false);
-
+  aspectRatios = signal<number[]>([1.477]);
   addCarHistoryForm: FormGroup;
   addCarHistorySubmitButtonIsDisabled = signal<boolean>(false);
   auctionCarDetailsModalIsOpen = signal<boolean>(false);

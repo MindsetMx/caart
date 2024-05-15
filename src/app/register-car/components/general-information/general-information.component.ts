@@ -15,6 +15,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TertiaryButtonDirective } from '@shared/directives/tertiary-button.directive';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { ApplyDiscountCode } from '@app/register-car/interfaces';
+import { AuctionTypes as AuctionTypes2 } from '@app/auctions/enums/auction-types';
 
 @Component({
   selector: 'register-car-general-information',
@@ -125,7 +126,7 @@ export class GeneralInformationComponent implements OnInit {
   }
 
   getAuctionTypes(): void {
-    this.#completeCarRegistrationService.getAuctionTypes$().subscribe((auctionTypes) => {
+    this.#completeCarRegistrationService.getAuctionTypes$(AuctionTypes2.car).subscribe((auctionTypes) => {
       this.auctionTypes.set(auctionTypes);
     });
   }

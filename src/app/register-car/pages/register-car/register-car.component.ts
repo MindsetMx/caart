@@ -320,6 +320,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       if (value === 'true') {
         this.reserveAmountControl.setValidators([Validators.required]);
       } else {
+        this.reserveAmountControl.setValue('');
         this.reserveAmountControl.clearValidators();
       }
 
@@ -330,6 +331,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       if (value === 'other') {
         this.carRegisterForm.get('otherTransmission')?.setValidators([Validators.required]);
       } else {
+        this.carRegisterForm.get('otherTransmission')?.setValue('');
         this.carRegisterForm.get('otherTransmission')?.clearValidators();
       }
 

@@ -17,6 +17,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { AuctionImageDeletionConfirmationModalComponent } from '@dashboard/modals/auction-image-deletion-confirmation-modal/auction-image-deletion-confirmation-modal.component';
 import { AllPhotosDeletionConfirmationModalComponent } from '@dashboard/modals/all-photos-deletion-confirmation-modal/all-photos-deletion-confirmation-modal.component';
 import { AuctionPhotoSections } from '@dashboard/enums/auction-photo-sections.enum';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -42,6 +43,10 @@ import { AuctionPhotoSections } from '@dashboard/enums/auction-photo-sections.en
 export class AuctionImageAssignmentAndReorderComponent {
   originalAuctionCarId = signal<string>('');
   auctionImagesForm: FormGroup;
+  fotosSliderPrincipal = signal<string[]>([]);
+  fotosMecanicas = signal<string[]>([]);
+  fotosInterior = signal<string[]>([]);
+  fotosExterior = signal<string[]>([]);
 
   carPhotoGalleryIsOpen = signal<boolean>(false);
   saveImagesButtonIsDisabled = signal<boolean>(false);
@@ -51,7 +56,9 @@ export class AuctionImageAssignmentAndReorderComponent {
   cropImage = signal<boolean>(false);
   deleteImageModalIsOpen = signal<boolean>(false);
   deleteImageSubmitButtonIsDisabled = signal<boolean>(false);
-  aspectRatio = signal<number>(16 / 9);
+  aspectRatios = signal<number[]>([1.477, 1.054, 1, 0]);
+  maintainAspectRatio = signal<boolean>(true);
+  // aspectRatio = signal<number>(16 / 9);
   allowMultipleSelection = signal<boolean>(false);
   deleteAllImagesModalIsOpen = signal<boolean>(false);
   auctionPhotoSection = signal<AuctionPhotoSections>(AuctionPhotoSections.mechanicalPhotos);
@@ -71,19 +78,19 @@ export class AuctionImageAssignmentAndReorderComponent {
     return this.auctionImagesForm.get('fotoCatalogo') as FormControl;
   }
 
-  get fotosSliderPrincipal(): FormArray {
+  get fotosSliderPrincipalFormArray(): FormArray {
     return this.auctionImagesForm.get('fotosSliderPrincipal') as FormArray;
   }
 
-  get fotosMecanicas(): FormArray {
+  get fotosMecanicasFormArray(): FormArray {
     return this.auctionImagesForm.get('fotosMecanicas') as FormArray;
   }
 
-  get fotosInterior(): FormArray {
+  get fotosInteriorFormArray(): FormArray {
     return this.auctionImagesForm.get('fotosInterior') as FormArray;
   }
 
-  get fotosExterior(): FormArray {
+  get fotosExteriorFormArray(): FormArray {
     return this.auctionImagesForm.get('fotosExterior') as FormArray;
   }
 
@@ -99,7 +106,39 @@ export class AuctionImageAssignmentAndReorderComponent {
     this.auctionImagesForm = this.#formBuilder.group({
       fotoPrincipal: ['', Validators.required],
       fotoCatalogo: ['', Validators.required],
+      fotosSliderPrincipal: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
+      fotosMecanicas: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
+      fotosInterior: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
+      fotosExterior: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
     });
+
+    this.fotosSliderPrincipalFormArray.valueChanges.
+      pipe(
+        takeUntilDestroyed(),
+      ).subscribe((value) => {
+        this.fotosSliderPrincipal.set(value);
+      });
+
+    this.fotosMecanicasFormArray.valueChanges.
+      pipe(
+        takeUntilDestroyed(),
+      ).subscribe((value) => {
+        this.fotosMecanicas.set(value);
+      });
+
+    this.fotosInteriorFormArray.valueChanges.
+      pipe(
+        takeUntilDestroyed(),
+      ).subscribe((value) => {
+        this.fotosInterior.set(value);
+      });
+
+    this.fotosExteriorFormArray.valueChanges.
+      pipe(
+        takeUntilDestroyed(),
+      ).subscribe((value) => {
+        this.fotosExterior.set(value);
+      });
   }
 
   saveImages(): void {
@@ -138,13 +177,16 @@ export class AuctionImageAssignmentAndReorderComponent {
 
     switch (auctionPhotoSection) {
       case AuctionPhotoSections.mechanicalPhotos:
-        this.fotosMecanicas.clear();
+        this.fotosMecanicasFormArray.clear();
+        this.fotosMecanicasFormArray.setValidators(Validators.minLength(5));
         break;
       case AuctionPhotoSections.interiorPhotos:
-        this.fotosInterior.clear();
+        this.fotosInteriorFormArray.clear();
+        this.fotosInteriorFormArray.setValidators(Validators.minLength(5));
         break;
       case AuctionPhotoSections.exteriorPhotos:
-        this.fotosExterior.clear();
+        this.fotosExteriorFormArray.clear();
+        this.fotosExteriorFormArray.setValidators(Validators.minLength(5));
         break;
       default:
         break;
@@ -181,33 +223,31 @@ export class AuctionImageAssignmentAndReorderComponent {
 
   setImage(imageUrl: string) {
     switch (this.formFieldName()) {
+      case 'fotoCatalogo':
+        this.auctionImagesForm.setControl('fotoCatalogo', this.#formBuilder.control(imageUrl, Validators.required));
+        break;
       case 'fotoPrincipal':
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(imageUrl, Validators.required));
         break;
       case 'fotosSliderPrincipal':
         if (this.index() !== undefined) {
-          this.fotosSliderPrincipal.at(this.index()!).patchValue(imageUrl);
+          this.fotosSliderPrincipalFormArray.at(this.index()!).patchValue(imageUrl);
         }
         break;
       case 'fotosMecanicas':
         if (this.index() !== undefined) {
-          this.fotosMecanicas.at(this.index()!).patchValue(imageUrl);
+          this.fotosMecanicasFormArray.at(this.index()!).patchValue(imageUrl);
         }
         break;
       case 'fotosInterior':
         if (this.index() !== undefined) {
-          this.fotosInterior.at(this.index()!).patchValue(imageUrl);
+          this.fotosInteriorFormArray.at(this.index()!).patchValue(imageUrl);
         }
         break;
       case 'fotosExterior':
         if (this.index() !== undefined) {
-          this.fotosExterior.at(this.index()!).patchValue(imageUrl);
+          this.fotosExteriorFormArray.at(this.index()!).patchValue(imageUrl);
         }
-        break;
-      default:
-        this.auctionImagesForm.patchValue({
-          [this.formFieldName()]: imageUrl
-        });
         break;
     }
   }
@@ -215,13 +255,13 @@ export class AuctionImageAssignmentAndReorderComponent {
   setImages(images: string[]) {
     switch (this.formFieldName()) {
       case 'fotosMecanicas':
-        images.forEach((imageUrl) => this.fotosMecanicas.push(this.#formBuilder.control(imageUrl, Validators.required)));
+        images.forEach((imageUrl) => this.fotosMecanicasFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
         break;
       case 'fotosInterior':
-        images.forEach((imageUrl) => this.fotosInterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
+        images.forEach((imageUrl) => this.fotosInteriorFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
         break;
       case 'fotosExterior':
-        images.forEach((imageUrl) => this.fotosExterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
+        images.forEach((imageUrl) => this.fotosExteriorFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
         break;
       default:
         break;
@@ -242,20 +282,16 @@ export class AuctionImageAssignmentAndReorderComponent {
   getImagesPublish(): void {
     this.#auctionImageAssigmentAndReorderService.imagesPublish$(this.originalAuctionCarId()).subscribe({
       next: (response: ImagesPublish) => {
-        this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(response.data.fotoPrincipal, Validators.required));
-        this.auctionImagesForm.setControl('fotoCatalogo', this.#formBuilder.control(response.data.fotoCatalogo, Validators.required));
-        this.auctionImagesForm.setControl('fotosSliderPrincipal', this.#formBuilder.array(response.data.fotosSliderPrincipal.map(
-          (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        )));
-        this.auctionImagesForm.setControl('fotosMecanicas', this.#formBuilder.array(response.data.fotosMecanicas.map(
-          (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        ), Validators.minLength(5)));
-        this.auctionImagesForm.setControl('fotosInterior', this.#formBuilder.array(response.data.fotosInterior.map(
-          (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        ), Validators.minLength(5)));
-        this.auctionImagesForm.setControl('fotosExterior', this.#formBuilder.array(response.data.fotosExterior.map(
-          (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        ), Validators.minLength(5)));
+        this.fotoPrincipal.patchValue(response.data.fotoPrincipal);
+        this.fotoCatalogo.patchValue(response.data.fotoCatalogo);
+
+        response.data.fotosSliderPrincipal.forEach((imageUrl: string) => this.fotosSliderPrincipalFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
+
+        response.data.fotosMecanicas.forEach((imageUrl: string) => this.fotosMecanicasFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
+
+        response.data.fotosInterior.forEach((imageUrl: string) => this.fotosInteriorFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
+
+        response.data.fotosExterior.forEach((imageUrl: string) => this.fotosExteriorFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
       },
       error: (error) => {
         console.error(error);
@@ -271,13 +307,15 @@ export class AuctionImageAssignmentAndReorderComponent {
     if (cropImage) {
       switch (formFieldName) {
         case 'fotoCatalogo':
-          this.aspectRatio.set(25 / 16);
+          this.aspectRatios.set([1.477, 1.054, 1, 0]);
+          this.maintainAspectRatio.set(true);
+          break;
+        case 'fotoPrincipal':
+          this.aspectRatios.set([1.5]);
+          this.maintainAspectRatio.set(true);
           break;
         case 'fotosSliderPrincipal':
-          this.aspectRatio.set(1.5 / 1);
-          break;
-        default:
-          this.aspectRatio.set(16 / 9);
+          this.aspectRatios.set([1.5]);
           break;
       }
     }
@@ -304,6 +342,8 @@ export class AuctionImageAssignmentAndReorderComponent {
   }
 
   hasError(field: string, form: FormGroup = this.auctionImagesForm): boolean {
+    if (!form.controls[field]) return false;
+
     return this.#validatorsService.hasError(form, field);
   }
 
@@ -312,13 +352,13 @@ export class AuctionImageAssignmentAndReorderComponent {
   }
 
   formArrayHasError(formArray: FormArray, index: number): boolean {
-    if (!this.auctionImagesForm) return false;
+    if (!formArray.controls[index]) return false;
 
     return this.#validatorsService.formArrayHasError(formArray, index);
   }
 
   getErrorFromFormArray(formArray: FormArray, index: number): string | undefined {
-    if (!this.auctionImagesForm) return undefined;
+    if (!formArray.controls[index]) return undefined;
 
     return this.#validatorsService.getErrorFromFormArray(formArray, index);
   }

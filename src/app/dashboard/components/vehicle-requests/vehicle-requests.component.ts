@@ -4,12 +4,14 @@ import { AppService } from '@app/app.service';
 import { RequestsDetailsModalComponent } from '@dashboard/modals/requests-details-modal/requests-details-modal.component';
 import { PublicationRequestsData } from '@auctions/interfaces/publication-requests';
 import { AuctionService } from '@auctions/services/auction.service';
+import { InputDirective } from '@shared/directives';
 
 @Component({
   selector: 'vehicle-requests',
   standalone: true,
   imports: [
     RequestsDetailsModalComponent,
+    InputDirective
   ],
   templateUrl: './vehicle-requests.component.html',
   styleUrl: './vehicle-requests.component.css',

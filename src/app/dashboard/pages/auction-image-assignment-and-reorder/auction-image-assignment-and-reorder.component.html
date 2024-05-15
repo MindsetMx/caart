@@ -15,24 +15,6 @@
     </div>
 
     <form class="mt-4 space-y-4" [formGroup]="auctionImagesForm" (submit)="saveImages()">
-      <h2 class="mb-2">Foto principal</h2>
-      <div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          @if(fotoPrincipal.value) {
-          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoPrincipal', true)">
-            <img [src]="fotoPrincipal.value" class="cell object-contain" />
-          </button>
-          }@else {
-          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoPrincipal', true)" class="cell">
-            Foto principal
-          </button>
-          }
-        </div>
-        @if (hasError('fotoPrincipal')) {
-        <shared-input-error [message]="getError('fotoPrincipal')"></shared-input-error>
-        }
-      </div>
-
       <!-- fotoCatalogo -->
       <h2 class="mb-2">Foto portada catálogo</h2>
       <div>
@@ -52,13 +34,31 @@
         }
       </div>
 
-      @defer (when fotosSliderPrincipal) {
+      <h2 class="mb-2">Foto principal</h2>
+      <div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          @if(fotoPrincipal.value) {
+          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoPrincipal', true)">
+            <img [src]="fotoPrincipal.value" class="cell object-contain" />
+          </button>
+          }@else {
+          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotoPrincipal', true)" class="cell">
+            Foto principal
+          </button>
+          }
+        </div>
+        @if (hasError('fotoPrincipal')) {
+        <shared-input-error [message]="getError('fotoPrincipal')"></shared-input-error>
+        }
+      </div>
+
+      @defer (when fotosSliderPrincipal()) {
       <div>
         <h2 class="mb-2">Fotos slider principal</h2>
         <div class="board" cdkDropListGroup>
-          @for (imageUrl of fotosSliderPrincipal.value; track i; let i = $index) {
+          @for (imageUrl of fotosSliderPrincipal(); track i; let i = $index) {
           <div>
-            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosSliderPrincipal)"
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosSliderPrincipalFormArray)"
               [cdkDropListData]=" {imageUrl, index: i}">
               @if (imageUrl) {
               <button type="button" class="w-full"
@@ -72,8 +72,9 @@
               </button>
               }
             </div>
-            @if (formArrayHasError(fotosSliderPrincipal, i)) {
-            <shared-input-error [message]="getErrorFromFormArray(fotosSliderPrincipal, i)"></shared-input-error>
+            @if (formArrayHasError(fotosSliderPrincipalFormArray, i)) {
+            <shared-input-error
+              [message]="getErrorFromFormArray(fotosSliderPrincipalFormArray, i)"></shared-input-error>
             }
           </div>
           }
@@ -81,7 +82,7 @@
       </div>
       }
 
-      @defer (when fotosMecanicas) {
+      @defer (when fotosMecanicas()) {
       <div>
         <h2 class="mb-2 md:flex md:items-center">
           Fotos mecánicas
@@ -92,22 +93,22 @@
           </button>
         </h2>
         <div class="board" cdkDropListGroup>
-          @for (imageUrl of fotosMecanicas.value; track i; let i = $index) {
+          @for (imageUrl of fotosMecanicas(); track i; let i = $index) {
           <div>
-            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosMecanicas)"
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosMecanicasFormArray)"
               [cdkDropListData]="{imageUrl, index: i}">
               <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)">
                 <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
 
-                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosMecanicas, i)"
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosMecanicasFormArray, i)"
                   class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
                   <mat-icon class="text-red-500">delete</mat-icon>
                 </button>
               </button>
             </div>
-            @if (formArrayHasError(fotosMecanicas, i)) {
-            <shared-input-error [message]="getErrorFromFormArray(fotosMecanicas, i)"></shared-input-error>
+            @if (formArrayHasError(fotosMecanicasFormArray, i)) {
+            <shared-input-error [message]="getErrorFromFormArray(fotosMecanicasFormArray, i)"></shared-input-error>
             }
           </div>
           }
@@ -126,7 +127,7 @@
       }
 
       <!-- fotosInterior -->
-      @defer (when fotosInterior) {
+      @defer (when fotosInterior()) {
       <div>
         <h2 class="mb-2 md:flex md:items-center">
           Fotos interior
@@ -137,22 +138,22 @@
           </button>
         </h2>
         <div class="board" cdkDropListGroup>
-          @for (imageUrl of fotosInterior.value; track i; let i = $index) {
+          @for (imageUrl of fotosInterior(); track i; let i = $index) {
           <div>
-            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosInterior)"
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosInteriorFormArray)"
               [cdkDropListData]="{imageUrl, index: i}">
               <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)">
                 <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
 
-                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosInterior, i)"
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosInteriorFormArray, i)"
                   class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
                   <mat-icon class="text-red-500">delete</mat-icon>
                 </button>
               </button>
             </div>
-            @if (formArrayHasError(fotosInterior, i)) {
-            <shared-input-error [message]="getErrorFromFormArray(fotosInterior, i)"></shared-input-error>
+            @if (formArrayHasError(fotosInteriorFormArray, i)) {
+            <shared-input-error [message]="getErrorFromFormArray(fotosInteriorFormArray, i)"></shared-input-error>
             }
           </div>
           }
@@ -181,22 +182,22 @@
           </button>
         </h2>
         <div class="board" cdkDropListGroup>
-          @for (imageUrl of fotosExterior.value; track i; let i = $index) {
+          @for (imageUrl of fotosExterior(); track i; let i = $index) {
           <div>
-            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosExterior)"
+            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosExteriorFormArray)"
               [cdkDropListData]="{imageUrl, index: i}">
               <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)">
                 <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
 
-                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosExterior, i)"
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosExteriorFormArray, i)"
                   class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
                   <mat-icon class="text-red-500">delete</mat-icon>
                 </button>
               </button>
             </div>
-            @if (formArrayHasError(fotosExterior, i)) {
-            <shared-input-error [message]="getErrorFromFormArray(fotosExterior, i)"></shared-input-error>
+            @if (formArrayHasError(fotosExteriorFormArray, i)) {
+            <shared-input-error [message]="getErrorFromFormArray(fotosExteriorFormArray, i)"></shared-input-error>
             }
           </div>
           }
@@ -227,14 +228,13 @@
 
 </sidebar-layout>
 
-<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" [aspectRatio]="aspectRatio()"
+<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" [aspectRatios]="aspectRatios()"
   [allowMultipleSelection]="allowMultipleSelection()" (isOpenChange)="closeModal(carPhotoGalleryIsOpen)"
   (selectedImageChange)="setImage($event)" (selectedImagesChange)="setImages($event)" [cropImage]="cropImage()"
   [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
 
-<auction-image-deletion-confirmation-modal (isOpenChange)="closeDeleteImageModal()" (deleteImageChange)="removePhoto()"
-  [isOpen]="deleteImageModalIsOpen()"
+<auction-image-deletion-confirmation-modal (deleteImagesChange)="removePhoto()" [(isOpen)]="deleteImageModalIsOpen"
   [isButtonSubmitDisabled]="deleteImageSubmitButtonIsDisabled()"></auction-image-deletion-confirmation-modal>
 
 <all-photos-deletion-confirmation-modal (isOpenChange)="closeDeleteAllImagesModal()"

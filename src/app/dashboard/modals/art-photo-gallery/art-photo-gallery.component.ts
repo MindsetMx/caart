@@ -26,7 +26,7 @@ export class ArtPhotoGalleryComponent {
   isOpen = input.required<boolean>();
   auctionArtId = input.required<string>();
   cropImage = input<boolean>(false);
-  aspectRatio = input<number>(16 / 9);
+  aspectRatios = input.required<number[]>();
   allowMultipleSelection = input<boolean>(false);
   isOpenChange = output<boolean>();
   selectedImageChange = output<string>();

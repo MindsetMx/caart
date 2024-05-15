@@ -1,20 +1,21 @@
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgxMaskDirective } from 'ngx-mask';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Uppy } from '@uppy/core';
-import Spanish from '@uppy/locales/lib/es_ES';
 import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
+import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
 
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
+import { environments } from '@env/environments';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { RegisterArtService } from '@app/art/services/register-art.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { environments } from '@env/environments';
-import { RegisterArtService } from '@app/art/services/register-art.service';
-import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'art-register',
@@ -62,6 +63,14 @@ export class ArtRegisterComponent {
 
   get categoryControl(): FormControl {
     return this.registerArtForm.get('category') as FormControl;
+  }
+
+  get reserveControl(): FormControl {
+    return this.registerArtForm.get('reserve') as FormControl;
+  }
+
+  get reserveAmountControl(): FormControl {
+    return this.registerArtForm.get('reserveAmount') as FormControl;
   }
 
   uppyDashboardImagesEffect = effect(() => {
@@ -190,6 +199,19 @@ export class ArtRegisterComponent {
       photos: [[], [Validators.required]],
       videos: [[]],
       acceptTerms: ['', [Validators.required]],
+    });
+
+    this.reserveControl.valueChanges.pipe(
+      takeUntilDestroyed(),
+    ).subscribe((value) => {
+      if (value === 'true') {
+        this.reserveAmountControl.setValidators([Validators.required]);
+      } else {
+        this.reserveAmountControl.setValue('');
+        this.reserveAmountControl.clearValidators();
+      }
+
+      this.reserveAmountControl.updateValueAndValidity();
     });
 
     this.batchTokenDirect();

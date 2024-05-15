@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output, signal } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { AlertModalComponent } from '@shared/components/alert-modal/alert-modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
@@ -15,20 +15,16 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionImageDeletionConfirmationModalComponent {
-  isOpen = input.required<boolean>();
-  // formArray = input.required<FormArray>();
-  // index = input.required<number>();
-  isOpenChange = output<boolean>();
+  isOpen = model.required<boolean>();
   deleteImagesChange = output<void>();
 
   isButtonSubmitDisabled = input.required<boolean>();
 
   deleteImage(): void {
-    // formArray.removeAt(index);
     this.deleteImagesChange.emit();
   }
 
   closeModal(): void {
-    this.isOpenChange.emit(false);
+    this.isOpen.set(false);
   }
 }

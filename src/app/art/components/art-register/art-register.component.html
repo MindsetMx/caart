@@ -133,8 +133,8 @@
       <label for="reserve" class="block mb-1 text-sm">Reserva <span
           class="font-bold text-red-500 inline-block">*</span></label>
       <select formControlName="reserve" id="reserve" sharedInput>
-        <option value="1">Sí</option>
-        <option value="0">No</option>
+        <option value="true">Sí</option>
+        <option value="false">No</option>
       </select>
       @if (hasError('reserve')) {
       <shared-input-error [message]="getError('reserve')"></shared-input-error>
@@ -142,7 +142,7 @@
     </div>
 
     <!-- reserveAmount input -->
-    @if (registerArtForm.get('reserve')?.value === "1") {
+    @if (registerArtForm.get('reserve')?.value === "true") {
     <div>
       <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva <span
           class="font-bold text-red-500 inline-block">*</span></label>

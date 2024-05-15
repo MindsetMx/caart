@@ -1,6 +1,7 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
@@ -37,6 +38,9 @@ import { ValidatorsService } from '@shared/services/validators.service';
 export class ArtAuctionImageAssignmentAndReorderComponent {
   originalAuctionArtId = signal<string>('');
   auctionImagesForm: FormGroup;
+  fotosCarrusel = signal<string[]>([]);
+  aspectRatios = signal<number[]>([1.477, 1.054, 1, 0]);
+  maintainAspectRatio = signal<boolean>(true);
 
   artPhotoGalleryIsOpen = signal<boolean>(false);
   saveImagesButtonIsDisabled = signal<boolean>(false);
@@ -46,7 +50,7 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
   cropImage = signal<boolean>(false);
   deleteImageModalIsOpen = signal<boolean>(false);
   deleteImageSubmitButtonIsDisabled = signal<boolean>(false);
-  aspectRatio = signal<number>(16 / 9);
+  // aspectRatio = signal<number>(16 / 9);
   allowMultipleSelection = signal<boolean>(false);
   deleteAllImagesModalIsOpen = signal<boolean>(false);
   // auctionPhotoSection = signal<any>(AuctionPhotoSections.mechanicalPhotos);
@@ -66,7 +70,7 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
     return this.auctionImagesForm.get('fotoCatalogo') as FormControl;
   }
 
-  get fotosCarrusel(): FormArray {
+  get fotosCarruselFormArray(): FormArray {
     return this.auctionImagesForm.get('fotosCarrusel') as FormArray;
   }
 
@@ -82,7 +86,15 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
     this.auctionImagesForm = this.#formBuilder.group({
       fotoPrincipal: ['', Validators.required],
       fotoCatalogo: ['', Validators.required],
+      fotosCarrusel: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
     });
+
+    this.fotosCarruselFormArray.valueChanges
+      .pipe(
+        takeUntilDestroyed(),
+      ).subscribe((value) => {
+        this.fotosCarrusel.set(value);
+      });
   }
 
   saveImages(): void {
@@ -168,14 +180,12 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(imageUrl, Validators.required));
         break;
       case 'fotosCarrusel':
+        console.log(this.index());
+        console.log(imageUrl);
+
         if (this.index() !== undefined) {
-          this.fotosCarrusel.at(this.index()!).patchValue(imageUrl);
+          this.fotosCarruselFormArray.at(this.index()!).patchValue(imageUrl);
         }
-        break;
-      default:
-        this.auctionImagesForm.patchValue({
-          [this.formFieldName()]: imageUrl
-        });
         break;
     }
   }
@@ -212,18 +222,10 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
       next: (response: ArtImagesPublish) => {
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(response.data.fotoPrincipal, Validators.required));
         this.auctionImagesForm.setControl('fotoCatalogo', this.#formBuilder.control(response.data.fotoCatalogo, Validators.required));
-        this.auctionImagesForm.setControl('fotosCarrusel', this.#formBuilder.array(response.data.fotosCarrusel.map(
-          (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        )));
-        // this.auctionImagesForm.setControl('fotosMecanicas', this.#formBuilder.array(response.data.fotosMecanicas.map(
+        // this.auctionImagesForm.setControl('fotosCarrusel', this.#formBuilder.array(response.data.fotosCarrusel.map(
         //   (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        // ), Validators.minLength(5)));
-        // this.auctionImagesForm.setControl('fotosInterior', this.#formBuilder.array(response.data.fotosInterior.map(
-        //   (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        // ), Validators.minLength(5)));
-        // this.auctionImagesForm.setControl('fotosExterior', this.#formBuilder.array(response.data.fotosExterior.map(
-        //   (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
-        // ), Validators.minLength(5)));
+        // )));
+        response.data.fotosCarrusel.forEach((imageUrl: string) => this.fotosCarruselFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
       },
       error: (error) => {
         console.error(error);
@@ -239,13 +241,16 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
     if (cropImage) {
       switch (formFieldName) {
         case 'fotoCatalogo':
-          this.aspectRatio.set(25 / 16);
+          this.aspectRatios.set([1.477, 1.054, 1, 0]);
+          this.maintainAspectRatio.set(true);
+          break;
+        case 'fotoPrincipal':
+          this.aspectRatios.set([0]);
+          this.maintainAspectRatio.set(false);
           break;
         case 'fotosCarrusel':
-          this.aspectRatio.set(1.5 / 1);
-          break;
-        default:
-          this.aspectRatio.set(16 / 9);
+          this.aspectRatios.set([0]);
+          this.maintainAspectRatio.set(false);
           break;
       }
     }

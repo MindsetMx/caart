@@ -51,7 +51,7 @@
               Aceptar solicitud
             </button> -->
             <!-- select aceptar o rechazar -->
-            <select sharedInput (change)="updatePublicationRequestStatus(publication.id, $event)">
+            <select sharedInput (change)="updatePublicationRequestStatus(publication.id, $event)" sharedInput>
               <option value disabled selected>Selecciona una opción</option>
               <option value="accepted">Aceptar</option>
               <option value="rejected">Rechazar</option>

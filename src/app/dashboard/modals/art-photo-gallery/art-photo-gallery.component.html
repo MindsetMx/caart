@@ -42,7 +42,7 @@
   </div>
 </shared-modal>
 
-<crop-image-modal [isOpen]="cropArtHistoryImageModalIsOpen()" [aspectRatio]="aspectRatio()"
+<crop-image-modal [isOpen]="cropArtHistoryImageModalIsOpen()" [aspectRatios]="aspectRatios()"
   (croppedImageChange)="croppedImageChange($event)" (isOpenChange)="closeCropArtHistoryImageModal()"
   [imageUrl]="selectedImage.value">
 </crop-image-modal>

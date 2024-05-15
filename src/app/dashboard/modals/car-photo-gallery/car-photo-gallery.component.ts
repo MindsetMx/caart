@@ -30,7 +30,7 @@ export class CarPhotoGalleryComponent {
   isOpen = input.required<boolean>();
   auctionCarId = input.required<string>();
   cropImage = input<boolean>(false);
-  aspectRatio = input<number>(16 / 9);
+  aspectRatios = input.required<number[]>();
   allowMultipleSelection = input<boolean>(false);
   isOpenChange = output<boolean>();
   selectedImageChange = output<string>();
@@ -120,10 +120,6 @@ export class CarPhotoGalleryComponent {
 
   croppedImageChange(croppedImage: string): void {
     this.selectedImageChange.emit(croppedImage);
-  }
-
-  closeCropCarHistoryImageModal(): void {
-    this.cropCarHistoryImageModalIsOpen.set(false);
   }
 
   closeModal(): void {
