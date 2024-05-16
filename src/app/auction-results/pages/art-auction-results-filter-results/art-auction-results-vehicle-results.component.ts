@@ -17,7 +17,7 @@ import { YearRangeComponent } from '@shared/components/year-range/year-range.com
 
 const MOBILE_SCREEN_WIDTH = 1024;
 @Component({
-  selector: 'auction-results-vehicle-filter-results',
+  selector: 'art-auction-results-vehicle-filter-results',
   standalone: true,
   imports: [
     AuctionCardComponent,
@@ -34,8 +34,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
     TertiaryButtonDirective,
     YearRangeComponent,
   ],
-  templateUrl: './auction-results-vehicle-filter-results.component.html',
-  styleUrl: './auction-results-vehicle-filter-results.component.css',
+  templateUrl: './art-auction-results-filter-results.component.html',
+  styleUrl: './art-auction-results-filter-results.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('openClose', [
@@ -58,7 +58,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
     ]),
   ]
 })
-export class AuctionResultsVehicleFilterResultsComponent implements OnInit {
+export class ArtAuctionResultsFilterResultsComponent {
   currentPage = signal<number>(0);
   size = signal<number>(10);
 

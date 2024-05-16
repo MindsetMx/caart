@@ -131,16 +131,6 @@ export class AuctionArtComponent {
         this.imagesPublish().data.fotoPrincipal.length +
         this.imagesPublish().data.fotosCarrusel.length) > 0
       && this.myCarousel()) {
-      // new Carousel(
-      //   this.myCarousel()?.nativeElement,
-      //   {
-      //     Dots: false,
-      //   },
-      //   {
-      //     Thumbs,
-      //   }
-      // );
-
       new Carousel(
         this.myCarousel()?.nativeElement,
         {
@@ -154,6 +144,10 @@ export class AuctionArtComponent {
               center: true,
               fill: true,
               dragFree: true,
+              Autoplay: {
+                autoStart: true,
+                timeout: 5000,
+              },
             },
           },
         },
