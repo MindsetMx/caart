@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, input, model } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ModalComponent } from '@shared/components/modal/modal.component';
@@ -17,7 +17,6 @@ import { PrimaryButtonDirective } from '@shared/directives';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionCancelledComponent {
-  isOpen = input.required<boolean>();
+  isOpen = model.required<boolean>();
   auctionId = input.required<string>();
-  @Output() isOpenChange = new EventEmitter<boolean>();
 }

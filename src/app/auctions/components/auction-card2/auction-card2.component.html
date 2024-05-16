@@ -1,5 +1,5 @@
 <div [routerLink]="['/subasta', auction().originalAuctionCarId]" class="relative cursor-pointer">
-  <img class="w-full h-56 object-cover" [src]="auction().attributes.cover" alt="">
+  <img class="w-full object-cover rounded-md" [src]="auction().attributes.cover" alt="">
   <follow-button [auctionId]="auction().originalAuctionCarId" [auctionType]="auctionType.car"
     class="absolute top-3 right-5">
   </follow-button>

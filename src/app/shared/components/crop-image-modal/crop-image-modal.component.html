@@ -28,14 +28,14 @@
         1:1
       </button> -->
 
-      <!-- @if (aspectRatios().length>1) { -->
+      @if (aspectRatios().length>1) {
       @for (aspectRatio of aspectRatios(); track $index) {
       <button (click)="setAspectRatio(aspectRatio)"
         class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
         {{aspectRatio===0 ? 'Libre' : aspectRatio}}
       </button>
       }
-      <!-- } -->
+      }
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">

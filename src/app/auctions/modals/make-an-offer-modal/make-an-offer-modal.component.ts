@@ -48,6 +48,7 @@ export class MakeAnOfferModalComponent implements OnInit {
   minimumNextBid = signal<number>(0);
   isButtonMakeAnOfferDisabled = signal<boolean>(false);
   holdAmount = signal<number>(0);
+  serverError = signal<string | undefined>(undefined);
 
   eventSource?: EventSource;
 
@@ -184,6 +185,7 @@ export class MakeAnOfferModalComponent implements OnInit {
           },
           error: (error) => {
             console.error(error);
+            this.serverError.set(error.error.message);
           }
         }).add(() => {
           this.isButtonMakeAnOfferDisabled.set(false);

@@ -126,17 +126,88 @@ export class AuctionArtComponent {
   });
 
   imagesPublishEffect = effect(() => {
-    if (this.imagesPublish() && this.myCarousel()) {
+    if (
+      (this.imagesPublish().data.fotoCatalogo.length +
+        this.imagesPublish().data.fotoPrincipal.length +
+        this.imagesPublish().data.fotosCarrusel.length) > 0
+      && this.myCarousel()) {
+      // new Carousel(
+      //   this.myCarousel()?.nativeElement,
+      //   {
+      //     Dots: false,
+      //   },
+      //   {
+      //     Thumbs,
+      //   }
+      // );
+
       new Carousel(
         this.myCarousel()?.nativeElement,
         {
-          // Custom Carousel options
+          infinite: false,
           Dots: false,
+          Thumbs: {
+            type: 'classic',
+            Carousel: {
+              slidesPerPage: 1,
+              Navigation: true,
+              center: true,
+              fill: true,
+              dragFree: true,
+            },
+          },
         },
-        {
-          Thumbs,
-        }
+        { Thumbs }
       );
+
+      Fancybox.bind('[data-fancybox="gallery"]', {
+        idle: false,
+        compact: false,
+        dragToClose: false,
+
+        animated: false,
+        showClass: 'f-fadeSlowIn',
+        hideClass: false,
+
+        Carousel: {
+          infinite: false,
+        },
+
+        Images: {
+          zoom: false,
+          Panzoom: {
+            maxScale: 1.5,
+          },
+        },
+
+        Toolbar: {
+          absolute: true,
+          display: {
+            left: [],
+            middle: [],
+            right: ['close'],
+          },
+        },
+
+        Thumbs: {
+          type: 'classic',
+          Carousel: {
+            axis: 'x',
+
+            slidesPerPage: 1,
+            Navigation: true,
+            center: true,
+            fill: true,
+            dragFree: true,
+
+            breakpoints: {
+              '(min-width: 640px)': {
+                axis: 'y',
+              },
+            },
+          },
+        },
+      });
     }
   });
 

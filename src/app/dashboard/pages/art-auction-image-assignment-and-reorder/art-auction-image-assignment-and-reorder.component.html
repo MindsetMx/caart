@@ -64,11 +64,12 @@
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosCarruselFormArray)"
               [cdkDropListData]=" {imageUrl, index: i}">
               @if (imageUrl) {
-              <button type="button" class="w-full" (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', true, i)">
+              <button type="button" class="w-full"
+                (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, i)">
                 <img cdkDrag [src]="imageUrl" class="cell object-contain" />
               </button>
               } @else {
-              <button cdkDrag type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', true, i)"
+              <button cdkDrag type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, i)"
                 class="cell">
                 Subir foto
               </button>

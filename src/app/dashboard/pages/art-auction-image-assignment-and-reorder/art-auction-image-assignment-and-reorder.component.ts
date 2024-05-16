@@ -176,6 +176,9 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
 
   setImage(imageUrl: string) {
     switch (this.formFieldName()) {
+      case 'fotoCatalogo':
+        this.auctionImagesForm.setControl('fotoCatalogo', this.#formBuilder.control(imageUrl, Validators.required));
+        break;
       case 'fotoPrincipal':
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(imageUrl, Validators.required));
         break;
@@ -248,10 +251,10 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
           this.aspectRatios.set([0]);
           this.maintainAspectRatio.set(false);
           break;
-        case 'fotosCarrusel':
-          this.aspectRatios.set([0]);
-          this.maintainAspectRatio.set(false);
-          break;
+        // case 'fotosCarrusel':
+        //   this.aspectRatios.set([0]);
+        //   this.maintainAspectRatio.set(false);
+        //   break;
       }
     }
 

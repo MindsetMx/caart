@@ -35,6 +35,10 @@
     <shared-input-error class="mt-1" [message]="getFirstError(acceptTermsControl)"></shared-input-error>
     }
 
+    @if (serverError()) {
+    <shared-input-error class="mt-1" [message]="serverError()"></shared-input-error>
+    }
+
     <button class="mt-8 flex justify-center" sharedPrimaryButton [disabled]="isButtonMakeAnOfferDisabled()"
       [class.opacity-50]="isButtonMakeAnOfferDisabled()">
       @if (isButtonMakeAnOfferDisabled()) {
