@@ -9,11 +9,11 @@ import { RouterModule } from '@angular/router';
 import { AuctionCardComponent } from '@app/auctions/components/auction-card/auction-card.component';
 import { AuctionResultsFilterMenuComponent } from '@app/auction-results/components/auction-results-filter-menu/auction-results-filter-menu.component';
 import { AuctionResultsVehicleCardComponent } from '@app/auction-results/components/auction-results-vehicle-card/auction-results-vehicle-card.component';
-import { CompletedAuctionsService } from '@auctions/services/completed-auctions.service';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { VehicleAuction } from '@auctions/interfaces';
+import { CompletedArtAuctions } from '@auctions/interfaces';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { CompletedArtAuctionsService } from '@auctions/services/completed-art-auctions.service';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 @Component({
@@ -140,20 +140,20 @@ export class ArtAuctionResultsFilterResultsComponent {
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
   // #vehicleFilterService = inject(VehicleFilterService);
-  #completedAuctionsService = inject(CompletedAuctionsService);
+  #completedArtAuctionsService = inject(CompletedArtAuctionsService);
 
-  auctions = signal<VehicleAuction | undefined>(undefined);
+  auctions = signal<CompletedArtAuctions | undefined>(undefined);
 
   ngOnInit(): void {
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
-  getLiveAuctions(replace: boolean = false): void {
+  getCompletedAuctions(replace: boolean = false): void {
     this.currentPage.update((page) => page + 1);
 
-    this.#completedAuctionsService.getCompletedAuctions$(
-      // this.currentPage(),
-      // this.size(),
+    this.#completedArtAuctionsService.getCompletedAuctions$(
+      this.currentPage(),
+      this.size(),
       // this.auctionType().join(','),
       this.category().join(','),
       // this.era().join(','),
@@ -164,11 +164,10 @@ export class ArtAuctionResultsFilterResultsComponent {
       this.states().join(','),
       this.search(),
     ).subscribe({
-      next: (auctions: VehicleAuction) => {
+      next: (auctions: any) => {
         if (replace) {
           this.auctions.set(auctions);
-          // TODO: descomentar cuando quede lista la paginacion
-          // this.getLiveAuctions(false);
+          this.getCompletedAuctions(false);
           return;
         }
 
@@ -192,55 +191,55 @@ export class ArtAuctionResultsFilterResultsComponent {
   setSearch(value: string): void {
     this.search.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setAuctionType(value: string[]): void {
     this.auctionType.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setCategory(value: string[]): void {
     this.category.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setEra(value: string[]): void {
     this.era.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setEndsIn(value: string[]): void {
     this.endsIn.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setCurrentOffer(value: string[]): void {
     this.currentOffer.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setStates(value: string[]): void {
     this.states.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setOrderBy(value: string): void {
     this.orderBy.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setYearRange(value: { yearFrom: number, yearTo: number }): void {
     this.yearRange.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   openAuctionFilterMenu(): void {

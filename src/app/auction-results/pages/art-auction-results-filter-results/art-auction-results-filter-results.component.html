@@ -115,13 +115,17 @@
   @for (auction of auctions()?.data; track $index; let last = $last) {
   @defer () {
   @if (last) {
-  <!-- TODO: descomentar cuando quede lista la paginacion -->
-  <!-- <auction-results-vehicle-card [auction]="auction" intersection
-    (visible)="getLiveAuctions(false)"></auction-results-vehicle-card> -->
-  <auction-results-vehicle-card [auction]="auction"></auction-results-vehicle-card>
+  <auction-results-vehicle-card auctionLink="/subasta-arte" [originalAuctionId]="auction.originalAuctionArtId"
+    [cover]="auction.attributes.cover" [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
+    [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" intersection
+    (visible)="getCompletedAuctions(false)"></auction-results-vehicle-card>
   }
   @else {
-  <auction-results-vehicle-card [auction]="auction"></auction-results-vehicle-card>
+  <auction-results-vehicle-card auctionLink="/subasta-arte" [originalAuctionId]="auction.originalAuctionArtId"
+    [cover]="auction.attributes.cover" [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
+    [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-results-vehicle-card>
   }
   } @placeholder (minimum 500ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>

@@ -19,7 +19,15 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionResultsVehicleCardComponent {
-  auction = input.required<VehicleAuctionData>();
+  auctionLink = input.required<string>();
+  originalAuctionId = input.required<string>();
+  cover = input.required<string>();
+  title = input.required<string>();
+  hasReserve = input.required<boolean>();
+  isPremium = input.required<boolean>();
+  extract = input.required<string>();
+  lastBid = input.required<number>();
+  endDate = input.required<string>();
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;

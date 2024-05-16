@@ -1,33 +1,29 @@
-<div [routerLink]="['/subasta', auction().originalAuctionCarId]" class="relative cursor-pointer">
-  <img class="w-full h-64 object-contain" [src]="auction().attributes.cover" alt="">
-  <follow-button [auctionId]="auction().originalAuctionCarId" [auctionType]="auctionType.car"
-    class="absolute top-3 right-5">
+<div [routerLink]="[auctionLink(), originalAuctionId()]" class="relative cursor-pointer">
+  <img class="w-full h-64 object-contain" [src]="cover()" alt="">
+  <follow-button [auctionId]="originalAuctionId()" [auctionType]="auctionType.car" class="absolute top-3 right-5">
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-optima font-semibold text-xl">{{auction().attributes.year}} {{auction().attributes.brand}}
-      {{auction().attributes.model}}
-    </p>
-    @if (auction().attributes.reserve === false || auction().attributes.premium) {
+    <p class="font-optima font-semibold text-xl">{{title()}}</p>
+    @if (hasReserve() === false || isPremium()) {
     <div class="space-x-2">
-      @if (auction().attributes.reserve === false) {
+      @if (hasReserve() === false) {
       <span class="inline-block text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded mb-2">
         Sin Reserva
       </span>
       }
-      @if (auction().attributes.premium) {
+      @if (isPremium()) {
       <span class="inline-block text-sm w-fit bg-black/30 text-black px-4 py-1 rounded mb-2">
         Premium
       </span>
       }
     </div>
     }
-    <p class="text-gray4 line-clamp-3"
-      [ngClass]="{'mt-9': !auction().attributes.reserve === false && !auction().attributes.premium}">
-      {{auction().attributes.extract}}
+    <p class="text-gray4 line-clamp-3" [ngClass]="{'mt-9': !hasReserve() === false && !isPremium()}">
+      {{extract()}}
     </p>
 
-    <p class="mt-2">Vendido por <b>${{auction().attributes.lastBid | number}}</b></p>
-    <span class="text-gray4">{{auction().attributes.endDate | date:'dd/MM/yyyy'}}</span>
+    <p class="mt-2">Vendido por <b>${{lastBid() | number}}</b></p>
+    <span class="text-gray4">{{endDate() | date:'dd/MM/yyyy'}}</span>
   </div>
 </div>

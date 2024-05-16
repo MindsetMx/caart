@@ -1,14 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { CompletedAuctions } from '@auctions/interfaces/completed-auctions';
-
+import { CompletedArtAuctions } from '@auctions/interfaces';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CompletedAuctionsService {
+export class CompletedArtAuctionsService {
   readonly #baseUrl = environments.baseUrl;
 
   #http = inject(HttpClient);
@@ -20,8 +19,8 @@ export class CompletedAuctionsService {
     range?: { yearFrom: number, yearTo: number },
     states?: string,
     searchTerm?: string,
-  ): Observable<CompletedAuctions> {
-    const url = `${this.#baseUrl}/auctions-cars/completed`;
+  ): Observable<CompletedArtAuctions> {
+    const url = `${this.#baseUrl}/auctions-cars/completed-art`;
 
     let params = new HttpParams();
 
@@ -32,6 +31,6 @@ export class CompletedAuctionsService {
     if (states) { params = params.set('state', states); }
     if (searchTerm) { params = params.set('searchTerm', searchTerm); }
 
-    return this.#http.get<CompletedAuctions>(url, { params });
+    return this.#http.get<CompletedArtAuctions>(url, { params });
   }
 }

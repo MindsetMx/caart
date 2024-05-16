@@ -19,3 +19,5 @@ export * from './art-auction-details';
 export * from './specific-art-auction';
 export * from './bidding-art-conditions';
 export * from './bid-art-conditions';
+export * from './completed-auctions';
+export * from './completed-art-auctions';

@@ -12,7 +12,7 @@ import { AuctionResultsVehicleCardComponent } from '@app/auction-results/compone
 import { CompletedAuctionsService } from '@auctions/services/completed-auctions.service';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { VehicleAuction } from '@auctions/interfaces';
+import { CompletedAuctions, VehicleAuction } from '@auctions/interfaces';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
@@ -142,18 +142,18 @@ export class AuctionResultsVehicleFilterResultsComponent implements OnInit {
   // #vehicleFilterService = inject(VehicleFilterService);
   #completedAuctionsService = inject(CompletedAuctionsService);
 
-  auctions = signal<VehicleAuction | undefined>(undefined);
+  auctions = signal<CompletedAuctions | undefined>(undefined);
 
   ngOnInit(): void {
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
-  getLiveAuctions(replace: boolean = false): void {
+  getCompletedAuctions(replace: boolean = false): void {
     this.currentPage.update((page) => page + 1);
 
     this.#completedAuctionsService.getCompletedAuctions$(
-      // this.currentPage(),
-      // this.size(),
+      this.currentPage(),
+      this.size(),
       // this.auctionType().join(','),
       this.category().join(','),
       // this.era().join(','),
@@ -164,11 +164,10 @@ export class AuctionResultsVehicleFilterResultsComponent implements OnInit {
       this.states().join(','),
       this.search(),
     ).subscribe({
-      next: (auctions: VehicleAuction) => {
+      next: (auctions: CompletedAuctions) => {
         if (replace) {
           this.auctions.set(auctions);
-          // TODO: descomentar cuando quede lista la paginacion
-          // this.getLiveAuctions(false);
+          this.getCompletedAuctions(false);
           return;
         }
 
@@ -192,55 +191,55 @@ export class AuctionResultsVehicleFilterResultsComponent implements OnInit {
   setSearch(value: string): void {
     this.search.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setAuctionType(value: string[]): void {
     this.auctionType.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setCategory(value: string[]): void {
     this.category.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setEra(value: string[]): void {
     this.era.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setEndsIn(value: string[]): void {
     this.endsIn.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setCurrentOffer(value: string[]): void {
     this.currentOffer.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setStates(value: string[]): void {
     this.states.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setOrderBy(value: string): void {
     this.orderBy.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   setYearRange(value: { yearFrom: number, yearTo: number }): void {
     this.yearRange.set(value);
     this.resetPage();
-    this.getLiveAuctions(true);
+    this.getCompletedAuctions(true);
   }
 
   openAuctionFilterMenu(): void {
