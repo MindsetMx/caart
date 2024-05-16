@@ -53,11 +53,14 @@
           <p class="text-xl">
             {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
           </p>
+          <p class="text-sm">
+            Puja más alta
+          </p>
         </div>
         }
         <div>
           @defer (when auction().data) {
-          <h3 class="text-xl">
+          <h3 class="text-xl" [ngClass]="{'ml-4': specificAuction().data && specificAuction().data.bids.length > 0}">
             {{auction().data.attributes.reserveAmount | currency:'USD':'symbol':'1.0-2'}} MXN
             <p class="text-sm">
               Precio de venta

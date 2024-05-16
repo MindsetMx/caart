@@ -98,7 +98,7 @@ export class ReleaseArtForLiveAuctionModalComponent {
     this.releaseArtForLiveAuctionForm.reset();
     if (this.isOpen()) {
       this.originalAuctionArtIdControl.setValue(this.originalAuctionArtId());
-      // this.getTentativeTitle();
+      this.getTentativeTitle();
     }
   });
 
@@ -149,16 +149,16 @@ export class ReleaseArtForLiveAuctionModalComponent {
     });
   }
 
-  // getTentativeTitle(): void {
-  //   this.#releaseArtForLiveAuctionService.getTentativeTitle$(this.originalAuctionArtIdControl.value).subscribe({
-  //     next: (tentativeTitle) => {
-  //       this.releaseArtForLiveAuctionForm.patchValue({ title: tentativeTitle.data.attributes.year + ' ' + tentativeTitle.data.attributes.brand + ' ' + tentativeTitle.data.attributes.artModel });
-  //     },
-  //     error: (error) => {
-  //       console.error(error);
-  //     }
-  //   });
-  // }
+  getTentativeTitle(): void {
+    this.#releaseArtForLiveAuctionService.getTentativeTitle$(this.originalAuctionArtIdControl.value).subscribe({
+      next: (tentativeTitle) => {
+        this.releaseArtForLiveAuctionForm.patchValue({ title: tentativeTitle.data.attributes.title });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
 
   hasError(field: string): boolean {
     return this.#validatorsService.hasError(this.releaseArtForLiveAuctionForm, field);

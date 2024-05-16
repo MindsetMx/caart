@@ -1,9 +1,11 @@
+import { FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+
 import { AppService } from '@app/app.service';
 import { environments } from '@env/environments';
-import { Observable } from 'rxjs';
+import { TentativeArtTitle } from '@dashboard/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +24,9 @@ export class ReleaseArtForLiveAuctionService {
     return this.#http.post<any>(url, trimmedReleaseArtForLiveAuctionForm);
   }
 
-  // getTentativeTitle$(auctionItemId: string): Observable<any> {
-  //   const url = `${this.#baseUrl}/auction-items/${auctionItemId}/tentative-title`;
+  getTentativeTitle$(auctionItemId: string): Observable<TentativeArtTitle> {
+    const url = `${this.#baseUrl}/auction-items/${auctionItemId}/tentative-title-art`;
 
-  //   return this.#http.get<any>(url);
-  // }
+    return this.#http.get<TentativeArtTitle>(url);
+  }
 }

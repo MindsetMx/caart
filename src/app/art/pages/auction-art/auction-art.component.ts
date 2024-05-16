@@ -126,11 +126,7 @@ export class AuctionArtComponent {
   });
 
   imagesPublishEffect = effect(() => {
-    if (this.imagesPublish().data &&
-      (this.imagesPublish().data.fotoCatalogo.length +
-        this.imagesPublish().data.fotoPrincipal.length +
-        this.imagesPublish().data.fotosCarrusel.length) > 0
-      && this.myCarousel()) {
+    if (this.imagesPublish().data && this.imagesPublish().data.fotosCarrusel.length > 0 && this.myCarousel()) {
       new Carousel(
         this.myCarousel()?.nativeElement,
         {

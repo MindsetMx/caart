@@ -99,8 +99,21 @@
 
   <div class="container mt-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="md:col-span-2" id="app">
-        @defer (when imagesPublish().data) {
+      <div class="md:col-span-2">
+        <div class="max-w-3xl mx-auto">
+          <div id="productCarousel" #myCarousel class="f-carousel">
+            @defer (when imagesPublish().data) {
+            @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
+            <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
+              [attr.data-src]="auction">
+              <img class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
+                [attr.data-lazy-src]="auction" />
+            </div>
+            }
+            }
+          </div>
+        </div>
+        <!-- @defer (when imagesPublish().data) {
         <div class="f-carousel" id="myCarousel" #myCarousel>
           @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
           <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
@@ -109,7 +122,7 @@
           </div>
           }
         </div>
-        }
+        } -->
       </div>
 
       <div>
