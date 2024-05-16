@@ -81,6 +81,10 @@
           </div>
           }
         </div>
+
+        @if (hasError('fotosCarrusel')) {
+        <shared-input-error message="Debes subir al menos una foto"></shared-input-error>
+        }
       </div>
       }
 

@@ -86,7 +86,7 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
     this.auctionImagesForm = this.#formBuilder.group({
       fotoPrincipal: ['', Validators.required],
       fotoCatalogo: ['', Validators.required],
-      fotosCarrusel: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
+      fotosCarrusel: this.#formBuilder.array([], [Validators.required, Validators.minLength(1)]),
     });
 
     this.fotosCarruselFormArray.valueChanges
@@ -101,6 +101,15 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
     this.saveImagesButtonIsDisabled.set(true);
 
     const isValid = this.#validatorsService.isValidForm(this.auctionImagesForm);
+
+    console.log(isValid);
+
+    console.log(this.auctionImagesForm.value);
+
+    console.log(this.auctionImagesForm.errors);
+
+
+
 
     if (!isValid) {
       this.saveImagesButtonIsDisabled.set(false);
