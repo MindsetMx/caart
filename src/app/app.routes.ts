@@ -51,9 +51,9 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/pages/complete-register/complete-register.component').then((m) => m.CompleteRegisterComponent),
   },
   {
-    path: 'registrar-vehiculo',
+    path: 'registrar-subasta',
     canActivate: [VerifiedGuard],
-    loadComponent: () => import('./register-car/pages/register-car/register-car.component').then((m) => m.RegisterCarComponent),
+    loadComponent: () => import('./register-car/pages/register-auction/register-auction.component').then((m) => m.RegisterAuctionComponent),
   },
   {
     path: 'registro-exitoso',

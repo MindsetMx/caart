@@ -1,0 +1,26 @@
+<section class="container mt-16">
+  <h1 class="text-center font-optima font-bold text-4xl mb-6">SUBASTA TU AUTO</h1>
+
+  <p class="text-center text-lg mb-4">
+    Registra los siguientes datos de tu automóvil
+  </p>
+
+  <shared-tabs-with-icons [tabs]="tabs" (tabSelected)="onTabSelected($event)"></shared-tabs-with-icons>
+
+  @switch (currentTab().id) {
+  @case (1) {
+  <car-register></car-register>
+  }
+  @case (2) {
+  <!-- Registrar arte -->
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-xl mb-32">
+    <art-register></art-register>
+  </div>
+  }
+  @case (3) {
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-xl mb-32">
+    <vehicle-memorabilia-component></vehicle-memorabilia-component>
+  </div>
+  }
+  }
+</section>

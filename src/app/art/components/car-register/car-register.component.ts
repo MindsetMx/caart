@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Observable, Subscription, map, startWith } from 'rxjs';
-import { Router } from '@angular/router';
+import { NgxMaskDirective } from 'ngx-mask';
+import { Observable, map, startWith } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
@@ -11,29 +12,23 @@ import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
 
 import { AppComponent } from '@app/app.component';
-import { ArtRegisterComponent } from '@app/art/components/art-register/art-register.component';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
 import { Brands, Colors } from '@app/register-car/interfaces';
-import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
+import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-modal/complete-register-modal.component';
 import { environments } from '@env/environments';
-import { InputDirective } from '@shared/directives/input.directive';
+import { InputDirective, PrimaryButtonDirective, SecondaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { RegisterCarService } from '@app/register-car/services/register-car.service';
-import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
+import { Router } from '@angular/router';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { states } from '@shared/states';
 import { SubastaAutomovilesTypes } from '@app/register-car/enums/subastaAutomovilesTypes.enum';
-import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
-import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { VehicleMemorabiliaComponentComponent } from '@app/register-car/components/vehicle-memorabilia-component/vehicle-memorabilia-component.component';
-import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
-  selector: 'register-car',
+  selector: 'car-register',
   standalone: true,
   imports: [
     CommonModule,
@@ -44,100 +39,42 @@ import { NgxMaskDirective } from 'ngx-mask';
     ReactiveFormsModule,
     SecondaryButtonDirective,
     SpinnerComponent,
-    TabsWithIconsComponent,
     UppyAngularDashboardModule,
     MatAutocompleteModule,
-    VehicleMemorabiliaComponentComponent,
-    ArtRegisterComponent,
-    NgxMaskDirective
+    NgxMaskDirective,
   ],
-  templateUrl: './register-car.component.html',
-  styleUrl: './register-car.component.css',
+  templateUrl: './car-register.component.html',
+  styleUrl: './car-register.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterCarComponent implements OnInit, OnDestroy {
+export class CarRegisterComponent {
   readonly #cloudflareToken = environments.cloudflareToken;
 
   uppyDashboardImages = viewChild<ElementRef>('uppyDashboardImages');
   uppyDashboardVideos = viewChild<ElementRef>('uppyDashboardVideos');
 
-  #appComponent = inject(AppComponent);
-  #fb = inject(FormBuilder);
-  #registerCarService = inject(RegisterCarService);
-  #router = inject(Router);
-  #validatorsService = inject(ValidatorsService);
-  #authService = inject(AuthService);
-  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
-
   brands = signal<string[]>([]);
-  filteredBrands?: Observable<string[]>;
-  states = signal<string[]>(states);
-  filteredStates?: Observable<string[]>;
-  token = signal<string>('');
-
-  colors = signal<Colors[]>([]);
   carRegisterForm: FormGroup;
+  colors = signal<Colors[]>([]);
   currentSubastaAutomovilesType = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
-  currentTab = signal<TabWithIcon>({} as TabWithIcon);
   currentYear = new Date().getFullYear();
   isButtonSubmitDisabled = signal(false);
-  reserveValueChangesSubscription?: Subscription;
-  transmisionValueChangesSubscription?: Subscription;
-  tabs: TabWithIcon[];
-  unformattedReserveAmount?: string;
-  unformattedKm?: string;
-  formattedKm?: string;
+  states = signal<string[]>(states);
+  token = signal<string>('');
+
+  filteredBrands?: Observable<string[]>;
+  filteredStates?: Observable<string[]>;
 
   uppyImages?: Uppy;
   uppyVideos?: Uppy;
 
-  get stateControl(): FormControl {
-    return this.carRegisterForm.get('state') as FormControl;
-  }
-
-  get kmTypeControl(): FormControl {
-    return this.carRegisterForm.get('kmType') as FormControl;
-  }
-
-  get brandControl(): FormControl {
-    return this.carRegisterForm.get('brand') as FormControl;
-  }
-
-  get subastaAutomovilesType(): typeof SubastaAutomovilesTypes {
-    return SubastaAutomovilesTypes;
-  }
-
-  get transmisionControl(): FormControl {
-    return this.carRegisterForm.get('transmissionType') as FormControl;
-  }
-
-  get kmInputControl(): FormControl {
-    return this.carRegisterForm.get('kmInput') as FormControl;
-  }
-
-  get reserveControl(): FormControl {
-    return this.carRegisterForm.get('reserve') as FormControl;
-  }
-
-  get reserveAmountControl(): FormControl {
-    return this.carRegisterForm.get('reserveAmount') as FormControl;
-  }
-
-  get authStatus(): AuthStatus {
-    return this.#authService.authStatus();
-  }
-
-  get userIsNotAuthenticated(): boolean {
-    return this.authStatus === AuthStatus.notAuthenticated;
-  }
-
-  get photosControl(): FormControl {
-    return this.carRegisterForm.get('photos') as FormControl;
-  }
-
-  get videosControl(): FormControl {
-    return this.carRegisterForm.get('videos') as FormControl;
-  }
+  #appComponent = inject(AppComponent);
+  #authService = inject(AuthService);
+  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
+  #fb = inject(FormBuilder);
+  #registerCarService = inject(RegisterCarService);
+  #router = inject(Router);
+  #validatorsService = inject(ValidatorsService);
 
   uploadImageUrlEffect = effect(() => {
     if (this.uppyDashboardImages()) {
@@ -146,7 +83,7 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
         autoProceed: true,
         locale: Spanish,
         restrictions: {
-          maxFileSize: 10000000,
+          maxFileSize: 20000000,
           // maxNumberOfFiles: 20,
           minNumberOfFiles: 1,
           allowedFileTypes: ['image/*'],
@@ -253,6 +190,68 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
     }
   });
 
+  get stateControl(): FormControl {
+    return this.carRegisterForm.get('state') as FormControl;
+  }
+
+  get kmTypeControl(): FormControl {
+    return this.carRegisterForm.get('kmType') as FormControl;
+  }
+
+  get brandControl(): FormControl {
+    return this.carRegisterForm.get('brand') as FormControl;
+  }
+
+  get transmisionControl(): FormControl {
+    return this.carRegisterForm.get('transmissionType') as FormControl;
+  }
+
+  get kmInputControl(): FormControl {
+    return this.carRegisterForm.get('kmInput') as FormControl;
+  }
+
+  get reserveControl(): FormControl {
+    return this.carRegisterForm.get('reserve') as FormControl;
+  }
+
+  get reserveAmountControl(): FormControl {
+    return this.carRegisterForm.get('reserveAmount') as FormControl;
+  }
+
+  get photosControl(): FormControl {
+    return this.carRegisterForm.get('photos') as FormControl;
+  }
+
+  get videosControl(): FormControl {
+    return this.carRegisterForm.get('videos') as FormControl;
+  }
+
+  get subastaAutomovilesType(): typeof SubastaAutomovilesTypes {
+    return SubastaAutomovilesTypes;
+  }
+
+  get authStatus(): AuthStatus {
+    return this.#authService.authStatus();
+  }
+
+  get userIsNotAuthenticated(): boolean {
+    return this.authStatus === AuthStatus.notAuthenticated;
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = this._normalizeValue(value);
+    return this.brands().filter(street => this._normalizeValue(street).includes(filterValue));
+  }
+
+  private _filterStates(value: string): string[] {
+    const filterValue = this._normalizeValue(value);
+    return states.filter(street => this._normalizeValue(street).includes(filterValue));
+  }
+
+  private _normalizeValue(value: string): string {
+    return value.toLowerCase().replace(/\s/g, '');
+  }
+
   constructor() {
     this.carRegisterForm = this.#fb.group({
       type: ['automobile', Validators.required],
@@ -282,32 +281,6 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
 
     this.batchTokenDirect();
 
-    this.tabs =
-      [
-        {
-          id: 1,
-          name: 'Automóviles',
-          img: 'assets/img/registrar auto/car-sport-outline.svg',
-          current: true
-        },
-        {
-          id: 2,
-          name: 'Arte',
-          img: 'assets/img/registrar auto/milo-venus.svg',
-          current: false
-        },
-        {
-          id: 3,
-          name: 'Memorabilia',
-          img: 'assets/img/registrar auto/milo-venus.svg',
-          current: false
-        }
-      ];
-
-    this.currentTab.set(this.tabs[0]);
-  }
-
-  ngOnInit(): void {
     this.getBrands();
     this.getColors();
 
@@ -316,66 +289,33 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       map(value => this._filterStates(value || '')),
     );
 
-    this.reserveValueChangesSubscription = this.reserveControl.valueChanges.subscribe((value) => {
-      if (value === 'true') {
-        this.reserveAmountControl.setValidators([Validators.required]);
-      } else {
-        this.reserveAmountControl.setValue('');
-        this.reserveAmountControl.clearValidators();
-      }
-
-      this.reserveAmountControl.updateValueAndValidity();
-    });
-
-    this.transmisionValueChangesSubscription = this.transmisionControl.valueChanges.subscribe((value) => {
-      if (value === 'other') {
-        this.carRegisterForm.get('otherTransmission')?.setValidators([Validators.required]);
-      } else {
-        this.carRegisterForm.get('otherTransmission')?.setValue('');
-        this.carRegisterForm.get('otherTransmission')?.clearValidators();
-      }
-
-      this.carRegisterForm.get('otherTransmission')?.updateValueAndValidity();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.reserveValueChangesSubscription?.unsubscribe();
-    this.transmisionValueChangesSubscription?.unsubscribe();
-  }
-
-  batchTokenDirect(): void {
-    this.#cloudinaryCroppedImageService.batchTokenDirect$().
-      subscribe({
-        next: (response) => {
-          this.token.set(response.result.token);
-        },
-        error: (error) => {
-          console.error(error);
+    this.reserveControl.valueChanges.
+      pipe(
+        takeUntilDestroyed()
+      ).subscribe((value) => {
+        if (value === 'true') {
+          this.reserveAmountControl.setValidators([Validators.required]);
+        } else {
+          this.reserveAmountControl.setValue('');
+          this.reserveAmountControl.clearValidators();
         }
+
+        this.reserveAmountControl.updateValueAndValidity();
       });
-  }
 
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.brands().filter(street => this._normalizeValue(street).includes(filterValue));
-  }
+    this.transmisionControl.valueChanges.
+      pipe(
+        takeUntilDestroyed()
+      ).subscribe((value) => {
+        if (value === 'other') {
+          this.carRegisterForm.get('otherTransmission')?.setValidators([Validators.required]);
+        } else {
+          this.carRegisterForm.get('otherTransmission')?.setValue('');
+          this.carRegisterForm.get('otherTransmission')?.clearValidators();
+        }
 
-  private _filterStates(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return states.filter(street => this._normalizeValue(street).includes(filterValue));
-  }
-
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
-  }
-
-  openSignInModal(): void {
-    this.#appComponent.openSignInModal();
-  }
-
-  openRegisterModal(): void {
-    this.#appComponent.openRegisterModal();
+        this.carRegisterForm.get('otherTransmission')?.updateValueAndValidity();
+      });
   }
 
   registerCar(): void {
@@ -401,13 +341,6 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
       this.isButtonSubmitDisabled.set(false);
     });
 
-  }
-
-  showModalBasedOnUserStatus(): void {
-    if (this.userIsNotAuthenticated) {
-      this.#appComponent.openSignInModal();
-      return;
-    }
   }
 
   getBrands(): void {
@@ -437,12 +370,35 @@ export class RegisterCarComponent implements OnInit, OnDestroy {
     });
   }
 
+  batchTokenDirect(): void {
+    this.#cloudinaryCroppedImageService.batchTokenDirect$().
+      subscribe({
+        next: (response) => {
+          this.token.set(response.result.token);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+  }
+
+  showModalBasedOnUserStatus(): void {
+    if (this.userIsNotAuthenticated) {
+      this.#appComponent.openSignInModal();
+      return;
+    }
+  }
+
   setSubastaAutomovilesType(type: SubastaAutomovilesTypes): void {
     this.currentSubastaAutomovilesType.set(type);
   }
 
-  onTabSelected(tab: TabWithIcon): void {
-    this.currentTab.set(tab);
+  openSignInModal(): void {
+    this.#appComponent.openSignInModal();
+  }
+
+  openRegisterModal(): void {
+    this.#appComponent.openRegisterModal();
   }
 
   hasError(field: string): boolean {
