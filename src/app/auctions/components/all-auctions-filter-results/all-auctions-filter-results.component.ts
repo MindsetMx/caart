@@ -46,6 +46,8 @@ export class AllAuctionsFilterResultsComponent {
   currentPage = signal<number>(0);
   size = signal<number>(10);
 
+  auctionType = signal<string[]>([]);
+  era = signal<string[]>([]);
   yearRange = signal<{ yearFrom: number, yearTo: number } | undefined>(undefined);
   currentOffer = signal<string[]>([]);
   orderBy = signal<string>('EndingSoonest');
@@ -62,6 +64,28 @@ export class AllAuctionsFilterResultsComponent {
   onResize(): void {
     this.isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH; // Actualiza el valor en tiempo real
   }
+
+  auctionTypeList: { value: string; label: string }[] = [
+    { value: 'premium', label: 'Premium' },
+    { value: 'no-reserve', label: 'Sin Reserva' },
+  ];
+
+  eraList: { value: string; label: string }[] = [
+    { value: '2020s', label: '2020s' },
+    { value: '2010s', label: '2010s' },
+    { value: '2000s', label: '2000s' },
+    { value: '1990s', label: '1990s' },
+    { value: '1980s', label: '1980s' },
+    { value: '1970s', label: '1970s' },
+    { value: '1960s', label: '1960s' },
+    { value: '1950s', label: '1950s' },
+    { value: '1940s', label: '1940s' },
+    { value: '1930s', label: '1930s' },
+    { value: '1920s', label: '1920s' },
+    { value: '1910s', label: '1910s' },
+    { value: '1900s', label: '1900s' },
+    { value: 'Pre1900', label: 'Pre-1900s' },
+  ];
 
   currentOfferList: { value: string; label: string }[] = [
     { value: 'lessThan200000', label: 'Menor a 200,000' },
@@ -107,6 +131,13 @@ export class AllAuctionsFilterResultsComponent {
     this.#allAuctionsService.getAllLiveAuctions$(
       this.currentPage(),
       this.size(),
+      this.orderBy(),
+      this.auctionType().join(','),
+      this.era().join(','),
+      this.currentOffer().join(','),
+      this.states().join(','),
+      this.yearRange(),
+      this.endsIn().join(','),
     ).subscribe({
       next: (auctions: GetAllAuctions) => {
         if (replace) {
@@ -130,6 +161,12 @@ export class AllAuctionsFilterResultsComponent {
 
   resetPage(): void {
     this.currentPage.set(0);
+  }
+
+  setAuctionType(value: string[]): void {
+    this.auctionType.set(value);
+    this.resetPage();
+    this.getLiveAuctions(true);
   }
 
   setSearch(value: string): void {
@@ -158,6 +195,12 @@ export class AllAuctionsFilterResultsComponent {
 
   setOrderBy(value: string): void {
     this.orderBy.set(value);
+    this.resetPage();
+    this.getLiveAuctions(true);
+  }
+
+  setEra(value: string[]): void {
+    this.era.set(value);
     this.resetPage();
     this.getLiveAuctions(true);
   }

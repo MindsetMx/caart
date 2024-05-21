@@ -6,7 +6,7 @@ export interface GetAllAuctions {
 export interface GetAllAuctionsData {
   id: string;
   type: string;
-  originalAucionId: string;
+  originalAuctionId: string;
   attributes: GetAllAuctionsAttributes;
 }
 

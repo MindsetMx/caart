@@ -44,7 +44,7 @@
 
 @if (!isMobile) {
 <div class="flex gap-4">
-  <!-- <mat-form-field name="mat-form-field1">
+  <mat-form-field name="mat-form-field1">
     <mat-label>Tipo de listado</mat-label>
     <mat-select [ngModel]="auctionType()" (ngModelChange)="setAuctionType($event)" multiple>
       <mat-select-trigger>
@@ -61,7 +61,7 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field name="mat-form-field1">
+  <!-- <mat-form-field name="mat-form-field1">
     <mat-label>Categoría</mat-label>
     <mat-select [ngModel]="category()" (ngModelChange)="setCategory($event)" multiple>
       <mat-select-trigger>
@@ -76,7 +76,7 @@
       <mat-option name="mat-option1" [value]="category.value">{{category.label}}</mat-option>
       }
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Era</mat-label>
@@ -97,7 +97,7 @@
 
   <div class="flex">
     <year-range [ngModel]="yearRange()" (ngModelChange)="setYearRange($event)" class="w-max"></year-range>
-  </div> -->
+  </div>
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Termina en</mat-label>
@@ -159,14 +159,14 @@
   @if (last) {
   @switch (auction.type) {
   @case (auctionTypesAll.auctionsCar){
-  <auction-card [originalAuctionCarId]="auction.originalAucionId" [cover]="auction.attributes.cover"
+  <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
     [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
     [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     intersection (visible)="getLiveAuctions(false)"></auction-card>
   }
 
   @case (auctionTypesAll.auctionsArt) {
-  <art-auction-card [originalAuctionArtId]="auction.originalAucionId" [cover]="auction.attributes.cover"
+  <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
     [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
     [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     intersection (visible)="getLiveAuctions(false)"></art-auction-card>
@@ -176,14 +176,14 @@
   @else {
   @switch (auction.type) {
   @case (auctionTypesAll.auctionsCar) {
-  <auction-card [originalAuctionCarId]="auction.originalAucionId" [cover]="auction.attributes.cover"
+  <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
     [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
     [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
     [endDate]="auction.attributes.endDate"></auction-card>
   }
 
   @case (auctionTypesAll.auctionsArt) {
-  <art-auction-card [originalAuctionArtId]="auction.originalAucionId" [cover]="auction.attributes.cover"
+  <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
     [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
     [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
     [endDate]="auction.attributes.endDate"></art-auction-card>
@@ -215,11 +215,11 @@
 
 </div>
 
-<!-- <auction-filter-menu [auctionTypeList]="auctionTypeList" [categoryList]="categoryList"
-  [currentOfferList]="currentOfferList" [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList"
-  [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen" (setCurrentOfferChange)="setCurrentOffer($event)"
-  (setEndsInChange)="setEndsIn($event)" (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
-  (setYearRangeChange)="setYearRange($event)"></auction-filter-menu> -->
+<auction-filter-menu [auctionTypeList]="auctionTypeList" [currentOfferList]="currentOfferList" [endsInList]="endsInList"
+  [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen"
+  (setCurrentOfferChange)="setCurrentOffer($event)" (setEndsInChange)="setEndsIn($event)"
+  (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
+  (setYearRangeChange)="setYearRange($event)"></auction-filter-menu>
 
 <ng-template #auctionCardSkeleton>
   @for (item of [].constructor(8); track $index) {

@@ -1,10 +1,10 @@
-<div [routerLink]="['/subasta-memorabilia', auction().originalAucionId]" class="relative cursor-pointer">
+<div [routerLink]="['/subasta-memorabilia', auction().originalAuctionId]" class="relative cursor-pointer">
   <img class="w-full object-cover rounded-md" [src]="auction().attributes.cover" alt="">
   <!-- <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
     <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
   </button> -->
 
-  <follow-button [auctionId]="auction().originalAucionId" [auctionType]="auctionType.memorabilia"
+  <follow-button [auctionId]="auction().originalAuctionId" [auctionType]="auctionType.memorabilia"
     class="absolute top-3 right-5">
   </follow-button>
 
