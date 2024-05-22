@@ -29,6 +29,18 @@
     }
   </div>
 
+  @if (certificadoAutenticidadControl.value === true) {
+  <div class="col-span-2">
+    <label for="entidadCertificado" class="block text-sm mb-2">Entidad que otorga el certificado <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="entidadCertificado" type="text" name="entidadCertificado" formControlName="entidadCertificado"
+      sharedInput>
+    @if (hasError('entidadCertificado')) {
+    <shared-input-error [message]="getError('entidadCertificado')"></shared-input-error>
+    }
+  </div>
+  }
+
   <!-- entregaConMarco -->
   <div>
     <fieldset>
@@ -92,12 +104,23 @@
 
   <!-- historiaArtista -->
   <div class="col-span-2">
-    <label for="historiaArtista" class="block text-sm mb-2">Historia del artista <span
-        class="font-bold text-red-500 inline-block">*</span></label>
+    <label for="historiaArtista" class="block text-sm mb-2">Historia del artista</label>
     <textarea id="historiaArtista" rows="4" name="historiaArtista" formControlName="historiaArtista" sharedInput
       sharedTextarea></textarea>
     @if (hasError('historiaArtista')) {
     <shared-input-error [message]="getError('historiaArtista')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <label class="text-sm cursor-pointer">
+      Imágenes extra (opcional)
+    </label>
+
+    <div #uppyDashboardImages></div>
+
+    @if (hasError('photos')) {
+    <shared-input-error [message]="getError('photos')"></shared-input-error>
     }
   </div>
 

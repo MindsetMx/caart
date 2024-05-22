@@ -16,6 +16,10 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { RegisterArtService } from '@app/art/services/register-art.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Observable, map, startWith } from 'rxjs';
+import { states } from '@shared/states';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'art-register',
@@ -27,7 +31,9 @@ import { ValidatorsService } from '@shared/services/validators.service';
     ReactiveFormsModule,
     SpinnerComponent,
     UppyAngularDashboardModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    MatAutocompleteModule,
+    AsyncPipe
   ],
   templateUrl: './art-register.component.html',
   styleUrl: './art-register.component.css',
@@ -43,6 +49,8 @@ export class ArtRegisterComponent {
 
   isButtonRegisterArtDisabled = signal(false);
   token = signal<string>('');
+
+  filteredStates?: Observable<string[]>;
 
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
   #registerArtService = inject(RegisterArtService);
@@ -61,6 +69,10 @@ export class ArtRegisterComponent {
     return this.registerArtForm.get('videos') as FormControl;
   }
 
+  get stateControl(): FormControl {
+    return this.registerArtForm.get('state') as FormControl;
+  }
+
   get categoryControl(): FormControl {
     return this.registerArtForm.get('category') as FormControl;
   }
@@ -71,6 +83,15 @@ export class ArtRegisterComponent {
 
   get reserveAmountControl(): FormControl {
     return this.registerArtForm.get('reserveAmount') as FormControl;
+  }
+
+  private _filterStates(value: string): string[] {
+    const filterValue = this._normalizeValue(value);
+    return states.filter(street => this._normalizeValue(street).includes(filterValue));
+  }
+
+  private _normalizeValue(value: string): string {
+    return value.toLowerCase().replace(/\s/g, '');
   }
 
   uppyDashboardImagesEffect = effect(() => {
@@ -193,7 +214,8 @@ export class ArtRegisterComponent {
       width: ['', [Validators.required]],
       depth: [''],
       condition: ['', [Validators.required]],
-      origin: ['', [Validators.required]],
+      state: ['', Validators.required],
+      postalCode: ['', Validators.required],
       reserve: ['', [Validators.required]],
       reserveAmount: ['', [Validators.required]],
       photos: [[], [Validators.required]],
@@ -213,6 +235,11 @@ export class ArtRegisterComponent {
 
       this.reserveAmountControl.updateValueAndValidity();
     });
+
+    this.filteredStates = this.stateControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterStates(value || '')),
+    );
 
     this.batchTokenDirect();
   }

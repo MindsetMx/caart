@@ -13,6 +13,13 @@ export class PaymentMethodsService {
 
   #http = inject(HttpClient);
 
+  // http://localhost:3000/users/payment-methods/pm_1P355DERAnFdCDEdwKSYw7bw
+  deletePaymentMethod$(paymentMethodId: string): Observable<any> {
+    const url = `${this.#baseUrl}/users/payment-methods/${paymentMethodId}`;
+
+    return this.#http.delete<any>(url);
+  }
+
   getPaymentMethods$(): Observable<PaymentMethods> {
     const url = `${this.#baseUrl}/users/payment-methods`;
 

@@ -87,7 +87,7 @@
     }
 
     <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-12 md:col-span-7">
+      <div class="col-span-12 md:col-span-8">
         <section class="flex justify-between mt-4">
           <!-- <div class="underline">5 Comentarios</div> -->
           @defer (when comments().data) {
@@ -114,7 +114,8 @@
         <hr class="my-4">
 
         @defer (when auction().data) {
-        <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
+        <h1 class="font-bold mb-4">Detalles del auto</h1>
+        <section class="grid grid-cols-2 gap-4">
           <ul class="space-y-1">
             <li>
               <span class="text-gray4">Marca:</span>&nbsp;<span
@@ -240,13 +241,33 @@
           }
         </section>
 
-        @if (auction().data.attributes.exteriorDetails.exteriorVideos.length > 0) {
+        @if (auction().data.attributes.exteriorDetails.exteriorVideos.length +
+        auction().data.attributes.interiorDetails.interiorVideos.length +
+        auction().data.attributes.mechanicsDetails.mechanicsVideos.length > 0) {
         <section>
           <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
           <swiper-container init="false" #videoGallery>
             @for (item of this.auction().data.attributes.exteriorDetails.exteriorVideos; track $index) {
             <swiper-slide class="pb-12">
-              <a class="relative" [href]="item" data-fancybox="gallery2">
+              <a class="relative" [href]="item" data-fancybox="gallery2" data-type="iframe">
+                <img [src]="getPhotoFromVideoUrl(item)" alt="">
+                <img src="assets/img/icons/play-circle.svg" alt=""
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
+              </a>
+            </swiper-slide>
+            }
+            @for (item of this.auction().data.attributes.interiorDetails.interiorVideos; track $index) {
+            <swiper-slide class="pb-12">
+              <a class="relative" [href]="item" data-fancybox="gallery2" data-type="iframe">
+                <img [src]="getPhotoFromVideoUrl(item)" alt="">
+                <img src="assets/img/icons/play-circle.svg" alt=""
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
+              </a>
+            </swiper-slide>
+            }
+            @for (item of this.auction().data.attributes.mechanicsDetails.mechanicsVideos; track $index) {
+            <swiper-slide class="pb-12">
+              <a class="relative" [href]="item" data-fancybox="gallery2" data-type="iframe">
                 <img [src]="getPhotoFromVideoUrl(item)" alt="">
                 <img src="assets/img/icons/play-circle.svg" alt=""
                   class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
@@ -360,7 +381,7 @@
 
         <recently-completed-auctions class="hidden md:block" [auctionId]="auctionId()!"></recently-completed-auctions>
       </div>
-      <div class="col-span-12 md:col-span-5">
+      <div class="col-span-12 md:col-span-4">
         <section
           class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-2">Información adicional</h3>

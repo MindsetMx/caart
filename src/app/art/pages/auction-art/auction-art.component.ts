@@ -151,6 +151,7 @@ export class AuctionArtComponent {
       );
 
       Fancybox.bind('[data-fancybox="gallery"]', {
+        Hash: false,
         idle: false,
         compact: false,
         dragToClose: false,
@@ -213,7 +214,13 @@ export class AuctionArtComponent {
 
   refreshPaymentMethods(): void {
     this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
-      this.paymentMethodId.set(paymentMethods.data[0].id);
+      const paymentMethod = paymentMethods.data.find((paymentMethod) => paymentMethod.attributes.isDefault);
+
+      if (!paymentMethod) {
+        throw new Error('No default payment method found');
+      }
+
+      this.paymentMethodId.set(paymentMethod.id);
     });
   }
 
@@ -362,7 +369,13 @@ export class AuctionArtComponent {
     //Si tiene un método de pago registrado, se abre el modal
     this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
       if (paymentMethods.data.length > 0) {
-        this.paymentMethodId.set(paymentMethods.data[0].id);
+        const paymentMethod = paymentMethods.data.find((paymentMethod) => paymentMethod.attributes.isDefault);
+
+        if (!paymentMethod) {
+          throw new Error('No default payment method found');
+        }
+
+        this.paymentMethodId.set(paymentMethod.id);
         this.offeredAmount.set(offeredAmount);
         this.makeAnOfferModalIsOpen.set(true);
         return;

@@ -8,9 +8,11 @@
       <thumbs-up-outline class="mr-2" [shouldFill]="comment().attributes.likedByMe ? true : false"></thumbs-up-outline>
     </button>
     <span class="align-middle">{{comment().attributes.likesCount}}</span>
+    @if (!comment().attributes.isBid) {
     <button (click)="toggleReply()" class="text-gray4 align-middle ml-2" type="button">
       Responder
     </button>
+    }
     <span class="align-middle text-gray4 ml-2">{{comment().attributes.dateCreated | date: 'MMM d, h:mm a'}}</span>
   </div>
 
@@ -40,7 +42,7 @@
   </div>
   }
 
-  @if (replyIsOpen()) {
+  @if (replyIsOpen() && !comment().attributes.isBid) {
   <comments-textarea class="block mt-4" [auctionCarPublishId]="auctionCarPublishId()" [parentCommentId]="comment().id"
     [auctionTypeComment]="auctionTypeComment()" [auctionType]="auctionType()" placeholder="Agregar un comentario"
     (commentCreated)="emitCommentCreated()">

@@ -199,12 +199,12 @@ export class LastChanceDetailComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    Fancybox.bind("[data-fancybox='gallery']");
-    Fancybox.bind("[data-fancybox='gallery2']");
-    Fancybox.bind("[data-fancybox='gallery3']");
-    Fancybox.bind("[data-fancybox='gallery4']");
-    Fancybox.bind("[data-fancybox='gallery5']");
-    Fancybox.bind("[data-fancybox='gallery6']");
+    Fancybox.bind("[data-fancybox='gallery']", { Hash: false });
+    Fancybox.bind("[data-fancybox='gallery2']", { Hash: false });
+    Fancybox.bind("[data-fancybox='gallery3']", { Hash: false });
+    Fancybox.bind("[data-fancybox='gallery4']", { Hash: false });
+    Fancybox.bind("[data-fancybox='gallery5']", { Hash: false });
+    Fancybox.bind("[data-fancybox='gallery6']", { Hash: false });
   }
 
   getImagesPublish(originalAuctionCarId: string): void {
@@ -314,7 +314,13 @@ export class LastChanceDetailComponent implements AfterViewInit {
     //Si tiene un método de pago registrado, se abre el modal
     this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
       if (paymentMethods.data.length > 0) {
-        this.paymentMethodId.set(paymentMethods.data[0].id);
+        const paymentMethod = paymentMethods.data.find((paymentMethod) => paymentMethod.attributes.isDefault);
+
+        if (!paymentMethod) {
+          throw new Error('No default payment method found');
+        }
+
+        this.paymentMethodId.set(paymentMethod.id);
         this.offeredAmount.set(offeredAmount);
         this.makeAnOfferModalIsOpen.set(true);
         return;
@@ -327,7 +333,13 @@ export class LastChanceDetailComponent implements AfterViewInit {
 
   refreshPaymentMethods(): void {
     this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
-      this.paymentMethodId.set(paymentMethods.data[0].id);
+      const paymentMethod = paymentMethods.data.find((paymentMethod) => paymentMethod.attributes.isDefault);
+
+      if (!paymentMethod) {
+        throw new Error('No default payment method found');
+      }
+
+      this.paymentMethodId.set(paymentMethod.id);
     });
   }
 

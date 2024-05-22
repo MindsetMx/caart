@@ -39,11 +39,11 @@
         <label for="premium" class="block mb-1 text-sm">¿Subasta premium?</label>
         <div class="flex items-center gap-x-4">
           <div class="flex items-center">
-            <input id="premium" formControlName="premium" type="radio" value="true" sharedInput>
+            <input id="premium" formControlName="premium" type="radio" [value]="true" sharedInput>
             <label for="premium" class="block ml-1 text-sm">Sí</label>
           </div>
           <div class="flex items-center">
-            <input id="premium" formControlName="premium" type="radio" value="false" sharedInput>
+            <input id="premium" formControlName="premium" type="radio" [value]="false" sharedInput>
             <label for="premium" class="block ml-1 text-sm">No</label>
           </div>
         </div>

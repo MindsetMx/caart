@@ -3,17 +3,19 @@
     @defer (when auction().data) {
     <h1 class="font-lato font-black flex text-2xl md:text-4xl mr-4 mb-2">
       {{auction().data.attributes.title}}
-      @if (auction().data.attributes.auctionCarForm.reserve === false) {
+      @if (auction().data.attributes.isWithReserve === false || auction().data.attributes.premium === true) {
       <span class="hidden space-x-2 md:flex md:items-center ml-4">
-        @if (auction().data.attributes.auctionCarForm.reserve === false) {
+        @if (auction().data.attributes.isWithReserve === false) {
         <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
           Sin Reserva
         </span>
         }
+        @if (auction().data.attributes.premium === true) {
         <span
           class="inline-block text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
           Premium
         </span>
+        }
       </span>
       }
     </h1>
@@ -141,18 +143,22 @@
         }
       </div>
       <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
+        @defer (when auction().data) {
+        @if (auction().data.attributes.isWithReserve === false || auction().data.attributes.premium === true) {
         <span class="md:hidden space-x-2 inline-block">
-          @if (auction().data && auction().data.attributes.auctionCarForm.reserve === false) {
+          @if (auction().data && auction().data.attributes.isWithReserve === false) {
           <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
             Sin Reserva
           </span>
           }
-          @if (auction().data) {
+          @if (auction().data.attributes.premium === true) {
           <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">
             Premium
           </span>
           }
         </span>
+        }
+        }
         <div class="ml-auto">
           <img class="inline-block w-7 h-7" src="assets/img/icons/share.svg" alt="">
         </div>

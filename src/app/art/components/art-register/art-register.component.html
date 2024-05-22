@@ -27,6 +27,30 @@
       <shared-input-error [message]="getError('year')"></shared-input-error>
       }
     </div>
+
+    <div>
+      <label for="state" class="block mb-1 text-sm">Estado <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input id="state" type="text" formControlName="state" [matAutocomplete]="states" autocomplete="abc" sharedInput>
+      <mat-autocomplete #states="matAutocomplete">
+        @for (state of filteredStates | async; track $index) {
+        <mat-option [value]="state">{{state}}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (hasError('state')) {
+      <shared-input-error [message]="getError('state')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="postalCode" class="block mb-1 text-sm">Código Postal <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
+      @if (hasError('postalCode')) {
+      <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+      }
+    </div>
+
     <!-- materials: string; -->
     <div>
       <label for="materials" class="block mb-1 text-sm">Materiales <span
@@ -115,16 +139,6 @@
       </select>
       @if (hasError('condition')) {
       <shared-input-error [message]="getError('condition')"></shared-input-error>
-      }
-    </div>
-
-    <!-- origin: string; -->
-    <div>
-      <label for="origin" class="block mb-1 text-sm">Origen <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="origin" id="origin" type="text" sharedInput>
-      @if (hasError('origin')) {
-      <shared-input-error [message]="getError('origin')"></shared-input-error>
       }
     </div>
 

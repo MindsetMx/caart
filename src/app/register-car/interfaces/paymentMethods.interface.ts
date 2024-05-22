@@ -15,6 +15,7 @@ export interface PaymentMethodsAttributes {
   expMonth: number;
   expYear: number;
   isDefault: boolean;
+  isExpired: boolean;
 }
 
 export interface PaymentMethodsMeta {

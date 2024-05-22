@@ -7,8 +7,8 @@
   <div class="space-y-6">
     @for (paymentMethod of paymentMethods().data; track paymentMethod.id; let index = $index) {
     <div class="flex items-center gap-4">
-      <input formControlName="paymentMethodId" [id]="index" [value]="paymentMethod.id" type="radio" class="h-6 w-6">
-      <label [for]="index" class="block leading-6">
+      <!-- <input formControlName="paymentMethodId" [id]="index" [value]="paymentMethod.id" type="radio" class="h-6 w-6"> -->
+      <div class="block leading-6">
         @switch (paymentMethod.attributes.brand) {
         @case ('visa') {
         <img src="assets/img/icons/visa.svg" alt="Visa">
@@ -18,10 +18,19 @@
           <span>{{paymentMethod.attributes.brand | titlecase}}</span> que termina en {{paymentMethod.attributes.last4}}
         </p>
         <p>Expira el {{paymentMethod.attributes.expMonth}}/{{paymentMethod.attributes.expYear}}</p>
-      </label>
+        @if (paymentMethod.attributes.isExpired) {
+        <p class="text-red-500">Esta tarjeta ha expirado y no se puede utilizar</p>
+        }
+        <button (click)="openDeletePaymentMethodModal(paymentMethod.id, index)" type="button"
+          [disabled]="deletePaymentMethodButtonIsDisabled()[index]"
+          [class.opacity-50]="deletePaymentMethodButtonIsDisabled()[index]">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
       <div class="ml-auto">
         <button (click)="setDefaultPaymentMethod(paymentMethod.id, index)"
-          [disabled]="setPaymentMethodButtonIsDisabled()[index]">
+          [disabled]="setPaymentMethodButtonIsDisabled()[index]"
+          [class.opacity-50]="setPaymentMethodButtonIsDisabled()[index]">
           <shared-star [shouldFill]="paymentMethod.attributes.isDefault ? true : false"
             classes="inline-block w-7 h-7"></shared-star>
         </button>
@@ -43,3 +52,7 @@
 
 <payment-method-modal [isOpen]="paymentMethodModalIsOpen"
   (paymentMethodAdded)="getPaymentMethods()"></payment-method-modal>
+
+<payment-method-deletion-confirmation-modal [(isOpen)]="deletePaymentMethodIsOpen"
+  [paymentMethodId]="paymentMethodIdToDelete()" (deletePaymentMethodChange)="deletePaymentMethod($event)"
+  [(isButtonSubmitDisabled)]="deletePaymentMethodSubmitButtonIsDisabled"></payment-method-deletion-confirmation-modal>

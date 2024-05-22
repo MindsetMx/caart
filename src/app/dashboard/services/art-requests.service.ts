@@ -12,8 +12,12 @@ export class ArtRequestsService {
 
   #http = inject(HttpClient);
 
+  // getArtRequests$(): Observable<ArtRequests> {
+  //   return this.#http.get<ArtRequests>(`${this.#baseUrl}/auction-items/all-auction-art`);
+  // }
+
   getArtRequests$(): Observable<ArtRequests> {
-    return this.#http.get<ArtRequests>(`${this.#baseUrl}/auction-items/all-auction-art`);
+    return this.#http.get<ArtRequests>(`${this.#baseUrl}/auction-items/auction-arts`);
   }
 
   acceptPublicationRequest$(id: string): Observable<void> {

@@ -8,9 +8,23 @@
       <p class=" font-optima font-semibold text-3xl">
         {{ publication.attributes.title }}
       </p>
-      <span class="block bg-reddishOrange text-white px-4 py-2 rounded-lg mt-4 w-fit mb-4">
+      @switch (publication.attributes.status) {
+      @case ('Publicado') {
+      <span class="block bg-green-500 text-white px-4 py-2 rounded-lg mt-4 w-fit mb-4">
         {{ publication.attributes.status }}
       </span>
+      }
+      @case ('En revisión') {
+      <span class="block bg-yellow-500 text-white px-4 py-2 rounded-lg mt-4 w-fit mb-4">
+        {{ publication.attributes.status }}
+      </span>
+      }
+      @case ('Pendiente') {
+      <span class="block bg-gray-400 text-white px-4 py-2 rounded-lg mt-4 w-fit mb-4">
+        {{ publication.attributes.status }}
+      </span>
+      }
+      }
 
       @if (hasGeneralInfo()) {
       <button [routerLink]="['/completar-registro-arte', publication.id]" class="underline font-semibold text-lg">

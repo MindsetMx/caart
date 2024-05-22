@@ -48,8 +48,6 @@ export class CropImageModalComponent {
   #sanitizer = inject(DomSanitizer);
 
   aspectRatiosEffect = effect(() => {
-    console.log('aspectRatiosEffect');
-
     this.aspectRatios()[0] === 0
       ? this.maintainAspectRatio.set(false)
       : this.maintainAspectRatio.set(true);
