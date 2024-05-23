@@ -31,6 +31,7 @@ import { MomentModule } from 'ngx-moment';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
 import { LastChanceAuctionArtDetail } from '@app/last-chance/interfaces';
+import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 
 @Component({
   standalone: true,
@@ -45,7 +46,8 @@ import { LastChanceAuctionArtDetail } from '@app/last-chance/interfaces';
     MomentModule,
     // MakeAnOfferModalComponent,
     PaymentMethodModalComponent,
-    AuctionCancelledComponent
+    AuctionCancelledComponent,
+    TwoColumnAuctionGridComponent
   ],
   templateUrl: './last-chance-art-detail.component.html',
   styleUrl: './last-chance-art-detail.component.css',

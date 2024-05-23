@@ -156,11 +156,11 @@
   </div>
 
   <div class="container mt-4">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="md:col-span-2">
+    <two-column-auction-grid>
+      <ng-container left>
         <div class="max-w-3xl mx-auto">
+          @defer (when imagesPublish().data) {
           <div id="productCarousel" #myCarousel class="f-carousel">
-            @defer (when imagesPublish().data) {
             @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
             <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
               [attr.data-src]="auction">
@@ -168,22 +168,21 @@
                 [attr.data-lazy-src]="auction" />
             </div>
             }
-            }
-          </div>
-        </div>
-        <!-- @defer (when imagesPublish().data) {
-        <div class="f-carousel" id="myCarousel" #myCarousel>
-          @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
-          <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
-            [attr.data-src]="auction">
-            <img width="100%" height="100" [attr.data-lazy-src]="auction" />
           </div>
           }
         </div>
-        } -->
-      </div>
-
-      <div>
+        <!-- @defer (when imagesPublish().data) {
+          <div class="f-carousel" id="myCarousel" #myCarousel>
+            @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
+            <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
+              [attr.data-src]="auction">
+              <img width="100%" height="100" [attr.data-lazy-src]="auction" />
+            </div>
+            }
+          </div>
+          } -->
+      </ng-container>
+      <ng-container right>
         <!-- information auction -->
         @if (auction().data) {
         <div class="grid grid-cols-1 gap-4">
@@ -244,14 +243,14 @@
 
 
           <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
-            HACER UNA OFERTA
-          </button> -->
+              HACER UNA OFERTA
+            </button> -->
         </section>
-      </div>
-    </div>
+      </ng-container>
+    </two-column-auction-grid>
 
-    <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-12 md:col-span-7">
+    <two-column-auction-grid>
+      <ng-container left>
         <section class="flex justify-between mt-8">
           <div class="underline">{{comments().data ? comments().data.length : 0}} comentarios</div>
 
@@ -320,8 +319,9 @@
         }
 
         <!-- <recently-completed-memorabilia-auctions [auctionId]="auctionId()!"></recently-completed-memorabilia-auctions> -->
-      </div>
-      <div class="col-span-12 md:col-span-5">
+      </ng-container>
+
+      <ng-container right>
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-6">¿Tienes una pieza de arte y quieres venderla?</h3>
 
@@ -359,8 +359,8 @@
         </section>
 
         <!-- <current-memorabilia-auctions [auctionId]="auctionId()"></current-memorabilia-auctions> -->
-      </div>
-    </div>
+      </ng-container>
+    </two-column-auction-grid>
   </div>
 </div>
 

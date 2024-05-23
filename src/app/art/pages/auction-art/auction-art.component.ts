@@ -31,6 +31,7 @@ import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/
 import { environments } from '@env/environments';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
+import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 @Component({
   standalone: true,
   imports: [
@@ -44,7 +45,8 @@ import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/au
     MomentModule,
     MakeAnOfferModalComponent,
     PaymentMethodModalComponent,
-    AuctionCancelledComponent
+    AuctionCancelledComponent,
+    TwoColumnAuctionGridComponent
   ],
   templateUrl: './auction-art.component.html',
   styleUrl: './auction-art.component.css',

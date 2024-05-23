@@ -86,16 +86,16 @@
     </section>
     }
 
-    <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-12 md:col-span-7">
+    <two-column-auction-grid>
+      <ng-container left>
         <section class="flex justify-between mt-4">
           <!-- <div class="underline">5 Comentarios</div> -->
           @defer (when comments().data) {
           <div class="underline">{{comments().data.length}} Comentarios</div>
           }
           <!-- @defer (when comments().data) {
-          <div class="underline">{{comments().data.length}} Comentarios</div>
-          } -->
+            <div class="underline">{{comments().data.length}} Comentarios</div>
+            } -->
 
           @defer (when metrics().data) {
           <div class="text-gray4 text-sm flex space-x-4">
@@ -160,12 +160,12 @@
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           <!-- <ul class="list-inside list-disc text-gray4">
-            <li>Rines “X”</li>
-            <li>Faros “X”</li>
-            <li>Adaptación “X”</li>
-            <li>Llanta “X”</li>
-            <li>Polarizado “X”</li>
-          </ul> -->
+              <li>Rines “X”</li>
+              <li>Faros “X”</li>
+              <li>Adaptación “X”</li>
+              <li>Llanta “X”</li>
+              <li>Polarizado “X”</li>
+            </ul> -->
           @if (auction().data) {
           <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
 
@@ -196,9 +196,9 @@
           <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
 
           <!-- <ul class="list-inside list-disc text-gray4 mb-8">
-            <li>Tenencia: $1,000 MXN</li>
-            <li>Comisión dealer: $3,100 MXN</li>
-          </ul> -->
+              <li>Tenencia: $1,000 MXN</li>
+              <li>Comisión dealer: $3,100 MXN</li>
+            </ul> -->
 
           <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.extras.additionalCharges"></div> -->
           <ol class="list-inside list-disc mb-8">
@@ -223,8 +223,8 @@
         <section class="space-y-4">
           <!-- <div class="break-words" [innerHTML]="auction().data.attributes.carHistory.content"></div> -->
           <!-- <pre>
-            {{auction().data.attributes.carHistory | json}}
-          </pre> -->
+              {{auction().data.attributes.carHistory | json}}
+            </pre> -->
 
           @for (item of auction().data.attributes.carHistory.blocks; track $index) {
           @switch (item.type) {
@@ -283,9 +283,9 @@
         </section>
 
         <!-- <auction-summary class="hidden md:block" [auction]="auction()" [metrics]="metrics()"
-          [specificAuction]="specificAuction()" [auctionType]="auctionType.car"
-          (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
-        </auction-summary> -->
+            [specificAuction]="specificAuction()" [auctionType]="auctionType.car"
+            (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
+          </auction-summary> -->
 
         <section class="mt-6">
           @defer (when comments().data) {
@@ -300,9 +300,9 @@
           }
 
           <!-- <div class="mt-4">
-            <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
-            <span class="underline">Mantenme en la conversación por correo</span>
-          </div> -->
+              <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
+              <span class="underline">Mantenme en la conversación por correo</span>
+            </div> -->
 
           @for (comment of comments().data; track $index) {
           <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
@@ -311,68 +311,69 @@
           }
 
           <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
-            <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-              Nov 15 a las 03:38 PM
-            </div>
-            <div class="md:col-span-9 mb-4 md:mb-0">
-              <div class="px-2 py-1 rounded-lg bg-gray1">
-                <p class="font-semibold">John Smith (Vendedor)</p>
-                <p>19,914 km</p>
-                <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                <span class="align-middle">2</span>
+              <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                Nov 15 a las 03:38 PM
               </div>
-            </div>
+              <div class="md:col-span-9 mb-4 md:mb-0">
+                <div class="px-2 py-1 rounded-lg bg-gray1">
+                  <p class="font-semibold">John Smith (Vendedor)</p>
+                  <p>19,914 km</p>
+                  <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                  <span class="align-middle">2</span>
+                </div>
+              </div>
 
-            <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-              Nov 15 a las 02:54 PM
-            </div>
-            <div class="md:col-span-9 mb-4 md:mb-0">
-              <div class="px-2 py-1">
-                <p class="font-semibold">Andrés Gallardo</p>
-                <p>¿Qué kilometraje tiene el auto?</p>
-                <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                <span class="align-middle">0</span>
+              <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                Nov 15 a las 02:54 PM
               </div>
-            </div>
+              <div class="md:col-span-9 mb-4 md:mb-0">
+                <div class="px-2 py-1">
+                  <p class="font-semibold">Andrés Gallardo</p>
+                  <p>¿Qué kilometraje tiene el auto?</p>
+                  <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                  <span class="align-middle">0</span>
+                </div>
+              </div>
 
-            <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-              Nov 15 a las 02:38 PM
-            </div>
-            <div class="md:col-span-9 mb-4 md:mb-0">
-              <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
-                Nueva puja de $215,000 por Adam Smith
+              <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                Nov 15 a las 02:38 PM
               </div>
-            </div>
+              <div class="md:col-span-9 mb-4 md:mb-0">
+                <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
+                  Nueva puja de $215,000 por Adam Smith
+                </div>
+              </div>
 
-            <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-              Nov 15 a las 11:43 AM
-            </div>
-            <div class="md:col-span-9 mb-4 md:mb-0">
-              <div class="px-2 py-1">
-                <p class="font-semibold">Andrés Gallardo</p>
-                <p>El color es magnifico</p>
-                <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                <span class="align-middle">0</span>
+              <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                Nov 15 a las 11:43 AM
               </div>
-            </div>
-          </div> -->
+              <div class="md:col-span-9 mb-4 md:mb-0">
+                <div class="px-2 py-1">
+                  <p class="font-semibold">Andrés Gallardo</p>
+                  <p>El color es magnifico</p>
+                  <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                  <span class="align-middle">0</span>
+                </div>
+              </div>
+            </div> -->
         </section>
         }
 
         <recently-completed-auctions class="hidden md:block" [auctionId]="auctionId()!"></recently-completed-auctions>
-      </div>
-      <div class="col-span-12 md:col-span-5">
+      </ng-container>
+
+      <ng-container right>
         <section
           class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           <!-- <ul class="list-inside list-disc text-gray4">
-            <li>Rines “X”</li>
-            <li>Faros “X”</li>
-            <li>Adaptación “X”</li>
-            <li>Llanta “X”</li>
-            <li>Polarizado “X”</li>
-          </ul> -->
+              <li>Rines “X”</li>
+              <li>Faros “X”</li>
+              <li>Adaptación “X”</li>
+              <li>Llanta “X”</li>
+              <li>Polarizado “X”</li>
+            </ul> -->
           @if (auction().data) {
           <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
 
@@ -403,9 +404,9 @@
           <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
 
           <!-- <ul class="list-inside list-disc text-gray4 mb-8">
-            <li>Tenencia: $1,000 MXN</li>
-            <li>Comisión dealer: $3,100 MXN</li>
-          </ul> -->
+              <li>Tenencia: $1,000 MXN</li>
+              <li>Comisión dealer: $3,100 MXN</li>
+            </ul> -->
 
           <!-- <div class="text-gray4 mb-8" [innerHTML]="auction().data.attributes.extras.additionalCharges"></div> -->
           <ol class="list-inside list-disc mb-8">
@@ -448,13 +449,13 @@
           @defer (when specificAuction().data) {
           <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
             <!-- <div class="flex gap-x-4 p-4 bg-green1/30 rounded-xl">
-                <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-                <div class="text-gray4">
-                  <p class="font-semibold text-black">$215,000</p>
-                  <p>Adam Smith</p>
-                  <span>Hace 2 minutos</span>
-                </div>
-              </div> -->
+                  <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+                  <div class="text-gray4">
+                    <p class="font-semibold text-black">$215,000</p>
+                    <p>Adam Smith</p>
+                    <span>Hace 2 minutos</span>
+                  </div>
+                </div> -->
             @for (item of specificAuction().data.bids; track $index; let last = $last) {
             <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0}">
               <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
@@ -473,30 +474,30 @@
             }
 
             <!-- <div class="flex gap-x-4 p-4 rounded-xl">
-                <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-                <div class="text-gray4">
-                  <p class="font-semibold text-black">$200,000</p>
-                  <p>Jorge Sanders</p>
-                  <span>Hace 10 minutos</span>
+                  <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+                  <div class="text-gray4">
+                    <p class="font-semibold text-black">$200,000</p>
+                    <p>Jorge Sanders</p>
+                    <span>Hace 10 minutos</span>
+                  </div>
                 </div>
-              </div>
-              <hr>
-              <div class="flex gap-x-4 p-4 rounded-xl">
-                <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-                <div class="text-gray4">
-                  <p class="font-semibold text-black">$150,000</p>
-                  <p>Adam Smith</p>
-                  <span>Hace 10 minutos</span>
-                </div>
-              </div> -->
+                <hr>
+                <div class="flex gap-x-4 p-4 rounded-xl">
+                  <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+                  <div class="text-gray4">
+                    <p class="font-semibold text-black">$150,000</p>
+                    <p>Adam Smith</p>
+                    <span>Hace 10 minutos</span>
+                  </div>
+                </div> -->
             }
           </div>
           }
         </section>
 
         <current-auctions class="hidden md:block" [auctionId]="auctionId()"></current-auctions>
-      </div>
-    </div>
+      </ng-container>
+    </two-column-auction-grid>
   </div>
 </div>
 

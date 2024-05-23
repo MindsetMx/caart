@@ -40,6 +40,7 @@ import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-
 import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
 import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
 import { LastChanceStickyInfoBarComponent } from '@app/last-chance/components/last-chance-sticky-info-bar/last-chance-sticky-info-bar.component';
+import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
@@ -60,7 +61,8 @@ import { LastChanceStickyInfoBarComponent } from '@app/last-chance/components/la
     AuctionSummaryComponent,
     CurrentAuctionsComponent,
     AuctionCancelledComponent,
-    LastChanceStickyInfoBarComponent
+    LastChanceStickyInfoBarComponent,
+    TwoColumnAuctionGridComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './last-chance-detail.component.html',

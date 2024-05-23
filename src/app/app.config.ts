@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideNgxStripe } from 'ngx-stripe';
@@ -21,8 +21,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(
       routes,
-      inMemoryScrollingFeature
+      inMemoryScrollingFeature,
     ),
+    provideExperimentalZonelessChangeDetection(),
     importProvidersFrom(
       ToastrModule.forRoot(),
     ),

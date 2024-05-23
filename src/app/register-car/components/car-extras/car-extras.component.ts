@@ -36,6 +36,7 @@ export class CarExtrasComponent {
   #fb = inject(FormBuilder);
   #completeCarRegistrationService = inject(CompleteCarRegistrationService);
   #router = inject(Router);
+  // TODO: refactorizar usando signals
   #changeDetectorRef = inject(ChangeDetectorRef);
 
   carExtrasForm: FormGroup;

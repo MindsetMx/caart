@@ -37,6 +37,7 @@ import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auct
 import { ImagesPublish } from '@dashboard/interfaces/images-publish';
 import { AuctionTypesComments } from '@auctions/enums';
 import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
+import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 
 @Component({
   standalone: true,
@@ -57,7 +58,8 @@ import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-
     AuctionSummaryComponent,
     CurrentAuctionsComponent,
     AuctionCancelledComponent,
-    StickyAuctionInfoBarComponent
+    StickyAuctionInfoBarComponent,
+    TwoColumnAuctionGridComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
