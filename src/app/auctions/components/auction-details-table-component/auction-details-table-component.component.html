@@ -1,0 +1,10 @@
+<table class="border rounded-xl w-full overflow-hidden border-separate border-spacing-0 text-xs">
+  <tbody class="table-row-group">
+    @for (detail of auctionDetails(); track $index) {
+    <tr class="bg-[rgba(0,0,0,.04)] even:bg-white">
+      <th class="text-left" style="padding: 15px 24px 15px 16px;">{{detail.label}}</th>
+      <td>{{detail.value}}</td>
+    </tr>
+    }
+  </tbody>
+</table>

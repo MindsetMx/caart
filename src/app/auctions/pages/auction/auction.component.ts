@@ -1,6 +1,6 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, untracked } from '@angular/core';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
@@ -38,6 +38,7 @@ import { ImagesPublish } from '@dashboard/interfaces/images-publish';
 import { AuctionTypesComments } from '@auctions/enums';
 import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
+import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
 
 @Component({
   standalone: true,
@@ -60,6 +61,7 @@ import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-a
     AuctionCancelledComponent,
     StickyAuctionInfoBarComponent,
     TwoColumnAuctionGridComponent,
+    AuctionDetailsTableComponentComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
@@ -86,6 +88,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   newOfferMade = signal<number>(0);
   auctionCancelledModalIsOpen = signal<boolean>(false);
   imagesPublish = signal<ImagesPublish>({} as ImagesPublish);
+  auctionDetails = signal<{ label: string, value: string | number }[]>([]);
+  auctionDetails2 = signal<{ label: string, value: string | number }[]>([]);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -151,6 +155,26 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   videoGalleryEffect = effect(() => {
     if (this.videoGallery) {
       this.initSwiperCarousel(this.videoGallery(), this.swiperParams);
+    }
+  });
+
+  auctionEffect = effect(() => {
+    if (this.auction().data) {
+      untracked(() => {
+        this.auctionDetails.set([
+          { label: 'Marca', value: this.auction().data.attributes.auctionCarForm.brand },
+          { label: 'Modelo', value: this.auction().data.attributes.auctionCarForm.carModel },
+          { label: 'Año', value: this.auction().data.attributes.auctionCarForm.year },
+          { label: 'VIN', value: this.auction().data.attributes.exteriorDetails.VIN },
+        ]);
+
+        this.auctionDetails2.set([
+          { label: 'Km', value: this.auction().data.attributes.auctionCarForm.kmInput },
+          { label: 'Transmisión', value: this.auction().data.attributes.auctionCarForm.transmissionType },
+          { label: 'Color', value: this.auction().data.attributes.auctionCarForm.exteriorColor },
+          { label: 'Entregado en', value: 'CDMX, México' },
+        ]);
+      });
     }
   });
 

@@ -116,43 +116,11 @@
         @defer (when auction().data) {
         <h1 class="font-bold mb-4">Detalles del auto</h1>
         <section class="grid grid-cols-2 gap-4">
-          <ul class="space-y-1">
-            <li>
-              <span class="text-gray4">Marca:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.brand}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Modelo:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.carModel}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Año:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.year}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">VIN:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.exteriorDetails.VIN}}</span>
-            </li>
-          </ul>
+          @defer (when auctionDetails().length > 0) {
+          <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
 
-          <ul class="space-y-1">
-            <li>
-              <!-- <span class="text-gray4">Km:</span>&nbsp;<span class="font-semibold">19,914</span> -->
-              <span class="text-gray4">Km:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.kmInput | number}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Transmisión:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.transmissionType}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Color:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.exteriorColor}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Entregado en:</span>&nbsp;<span class="font-semibold">CDMX, México</span>
-            </li>
-          </ul>
+          <auction-details-table-component [auctionDetails]="auctionDetails2()"></auction-details-table-component>
+          }
         </section>
         }
 
