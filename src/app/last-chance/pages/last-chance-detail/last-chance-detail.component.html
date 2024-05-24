@@ -1,7 +1,7 @@
 <div class="mb-32">
 
   <last-chance-sticky-info-bar [auction]="auction()" [specificAuction]="specificAuction()" [(isFollowing)]="isFollowing"
-    (openMakeAnOfferModalChange)="openMakeAnOfferModal()"
+    (openMakeAnOfferModalChange)="openMakeAnOfferModal()" (openBuyNowModalChange)="openBuyNowModal()"
     (getMetricsChange)="getMetrics($event)"></last-chance-sticky-info-bar>
 
   <div class="container">
@@ -472,18 +472,26 @@
 @defer (when makeAnOfferModalIsOpen()) {
 
 @if (offeredAmount()) {
-<auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
+<last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
-  [offerAmount]="offeredAmount()" [isOpen]="makeAnOfferModalIsOpen()"
-  (isOpenChange)="makeAnOfferModalIsOpenChanged($event)">
-</auction-make-an-offer-modal>
+  [bidAmount]="offeredAmount()" [(isOpen)]="makeAnOfferModalIsOpen">
+</last-chance-bid-modal-component>
 }@else {
-<auction-make-an-offer-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
+<last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
-  [isOpen]="makeAnOfferModalIsOpen()"
-  (isOpenChange)="makeAnOfferModalIsOpenChanged($event)"></auction-make-an-offer-modal>
+  [isOpen]="makeAnOfferModalIsOpen()"></last-chance-bid-modal-component>
+}
+}
+
+@defer (when auction().data) {
+@if (reserveAmount() && paymentMethodId() && comission()) {
+<last-chance-buy-now-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
+  [name]="auction().data.attributes.auctionCarForm.year + ' ' + auction().data.attributes.auctionCarForm.brand + ' ' + auction().data.attributes.auctionCarForm.carModel"
+  [auctionType]="auctionType.car" [comission]="comission()!" [reserveAmount]="reserveAmount()!"
+  (lastChanceItemPurchased)="getAuctionDetails(auction().data.attributes.originalAuctionCarId)"
+  [(isOpen)]="buyNowModalIsOpen"></last-chance-buy-now-modal>
 }
 }
 

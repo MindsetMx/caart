@@ -23,7 +23,6 @@ export const appConfig: ApplicationConfig = {
       routes,
       inMemoryScrollingFeature,
     ),
-    provideExperimentalZonelessChangeDetection(),
     importProvidersFrom(
       ToastrModule.forRoot(),
     ),

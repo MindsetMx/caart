@@ -31,6 +31,7 @@ export class LastChanceStickyInfoBarComponent {
   specificAuction = input.required<SpecificAuction>();
   isFollowing = model.required<boolean>();
   openMakeAnOfferModalChange = output<void>();
+  openBuyNowModalChange = output<void>();
   getMetricsChange = output<string>();
 
   #countdownService = inject(CountdownService);
@@ -105,7 +106,11 @@ export class LastChanceStickyInfoBarComponent {
     return this.#countdownService.getFormat(seconds);
   }
 
-  openMakeAnOfferModal() {
+  openMakeAnOfferModal(): void {
     this.openMakeAnOfferModalChange.emit();
+  }
+
+  openBuyNowModal(): void {
+    this.openBuyNowModalChange.emit();
   }
 }

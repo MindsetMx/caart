@@ -102,10 +102,19 @@
         <div class="col-span-2 md:col-span-1">
           @defer (when specificAuction().data) {
           <!-- @if (specificAuction().data.status === 'active') { -->
-          <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
-            classes="hidden md:block font-lato font-semibold text-xs" sharedPrimaryButton>
-            OFERTAR
-          </button>
+          <div class="flex gap-2">
+            @if (auction().data.attributes.status === 'active') {
+            <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
+              classes="hidden md:block font-lato font-semibold text-xs" sharedPrimaryButton>
+              OFERTAR
+            </button>
+            <!-- comprar -->
+            <button (click)="openBuyNowModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
+              classes="hidden md:block font-lato font-semibold text-xs" sharedPrimaryButton>
+              COMPRAR
+            </button>
+            }
+          </div>
           <!-- } -->
           }
           <div class="block md:hidden">

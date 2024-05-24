@@ -2,18 +2,21 @@ import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, untracked } from '@angular/core';
 import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
-import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
+import { forkJoin, switchMap } from 'rxjs';
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
-import { switchMap } from 'rxjs';
 register();
 
 import { AppComponent } from '@app/app.component';
-import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
+import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
 import { AuctionDetailsService } from '@auctions/services/auction-details.service';
-import { AuctionFollowService } from '@auctions/services/auction-follow.service';
+import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
+import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
+import { AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
 import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
+import { AuctionTypesComments } from '@auctions/enums';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
 import { CommentComponent } from '@auctions/components/comment/comment.component';
@@ -24,31 +27,27 @@ import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/
 import { environments } from '@env/environments';
 import { GetComments } from '@auctions/interfaces/get-comments';
 import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
+import { ImagesPublish } from '@dashboard/interfaces/images-publish';
 import { InputDirective } from '@shared/directives/input.directive';
-import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
+import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
+import { LastChanceBidModalComponent } from '@auctions/modals/last-chance-bid-modal/last-chance-bid-modal.component';
+import { LastChanceBuyNowModalComponent } from '@auctions/modals/last-chance-buy-now-modal/last-chance-buy-now-modal.component';
+import { LastChancePurchaseService } from '@auctions/services/last-chance-purchase.service';
+import { LastChanceStickyInfoBarComponent } from '@app/last-chance/components/last-chance-sticky-info-bar/last-chance-sticky-info-bar.component';
+import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { PaymentMethodsService } from '@shared/services/payment-methods.service';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
-import { AuctionTypes } from '@auctions/enums/auction-types';
-import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
-import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
-import { ImagesPublish } from '@dashboard/interfaces/images-publish';
-import { AuctionTypesComments } from '@auctions/enums';
-import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
-import { LastChanceVehicleDetailService } from '@app/last-chance/services/last-chance-vehicle-detail.service';
-import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
-import { LastChanceStickyInfoBarComponent } from '@app/last-chance/components/last-chance-sticky-info-bar/last-chance-sticky-info-bar.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
-import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
   imports: [
     CommonModule,
     InputDirective,
-    MakeAnOfferModalComponent,
+    LastChanceBidModalComponent,
     PrimaryButtonDirective,
     StarComponent,
     SlicePipe,
@@ -65,6 +64,7 @@ import { AuctionDetailsTableComponentComponent } from '@auctions/components/auct
     LastChanceStickyInfoBarComponent,
     TwoColumnAuctionGridComponent,
     AuctionDetailsTableComponentComponent,
+    LastChanceBuyNowModalComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './last-chance-detail.component.html',
@@ -83,6 +83,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   eventSource?: EventSource;
   isFollowing = signal<boolean>(false);
   makeAnOfferModalIsOpen = signal<boolean>(false);
+  buyNowModalIsOpen = signal<boolean>(false);
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
   paymentMethodId = signal<string>('');
   paymentMethodModalIsOpen = signal<boolean>(false);
@@ -93,6 +94,8 @@ export class LastChanceDetailComponent implements AfterViewInit {
   imagesPublish = signal<ImagesPublish>({} as ImagesPublish);
   auctionDetails = signal<{ label: string, value: string | number }[]>([]);
   auctionDetails2 = signal<{ label: string, value: string | number }[]>([]);
+  comission = signal<number | undefined>(undefined);
+  reserveAmount = signal<number | undefined>(undefined);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -103,6 +106,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   #paymentMethodsService = inject(PaymentMethodsService);
   #route = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
+  #lastChancePurchaseService = inject(LastChancePurchaseService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -244,10 +248,6 @@ export class LastChanceDetailComponent implements AfterViewInit {
     });
   }
 
-  makeAnOfferModalIsOpenChanged(isOpen: boolean): void {
-    this.makeAnOfferModalIsOpen.set(isOpen);
-  }
-
   getPhotoFromVideoUrl(videoUrl: string): string {
     const videoId = videoUrl.split('/').slice(-2, -1)[0];
 
@@ -354,6 +354,36 @@ export class LastChanceDetailComponent implements AfterViewInit {
 
       //Si no tiene un método de pago registrado, se abre el modal de registro de método de pago
       this.paymentMethodModalIsOpen.set(true);
+    });
+  }
+
+  openBuyNowModal(): void {
+    if (this.authStatus === AuthStatus.notAuthenticated) {
+      this.openSignInModal();
+
+      return;
+    }
+
+    forkJoin({
+      conditions: this.#lastChancePurchaseService.getConditions(this.auction().data.id),
+      paymentMethods: this.#paymentMethodsService.getPaymentMethods$()
+    }).subscribe(({ conditions, paymentMethods }) => {
+      this.comission.set(conditions.data.commission);
+      this.reserveAmount.set(conditions.data.reserveAmount);
+
+      if (paymentMethods.data.length > 0) {
+        const paymentMethod = paymentMethods.data.find((paymentMethod) => paymentMethod.attributes.isDefault);
+
+        if (!paymentMethod) {
+          throw new Error('No default payment method found');
+        }
+
+        this.paymentMethodId.set(paymentMethod.id);
+        this.buyNowModalIsOpen.set(true);
+        return;
+      }
+
+      this.buyNowModalIsOpen.set(true);
     });
   }
 

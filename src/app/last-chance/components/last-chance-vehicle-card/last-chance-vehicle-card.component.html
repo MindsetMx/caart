@@ -12,8 +12,14 @@
       {{auction().attributes.extract}}
     </p>
 
-    <button class="mt-4" width="w-fit" px="px-4" py="py-2.5" sharedPrimaryButton>
+    <button (click)="openMakeAnOfferModal($event)" class="mt-4" width="w-fit" px="px-4" py="py-2.5" sharedPrimaryButton>
       Ver o hacer una oferta
     </button>
   </div>
 </div>
+
+<last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().id"
+  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
+  [(isOpen)]="makeAnOfferModalIsOpen"></last-chance-bid-modal-component>
+
+<payment-method-modal [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>
