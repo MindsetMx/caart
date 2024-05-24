@@ -134,6 +134,12 @@ export const routes: Routes = [
     canActivate: [VerifiedGuard, AuthGuard],
     loadComponent: () => import('./auctions/pages/publication-requests/publication-requests.component').then((m) => m.PublicationRequestsComponent),
   },
+  // mis-subastas
+  {
+    path: 'mis-subastas',
+    canActivate: [VerifiedGuard, AuthGuard],
+    loadComponent: () => import('./auctions/pages/my-auctions/my-auctions.component').then((m) => m.MyAuctionsComponent),
+  },
   {
     path: 'reestablecer-contrasena',
     canActivate: [VerifiedGuard, GuestGuard],

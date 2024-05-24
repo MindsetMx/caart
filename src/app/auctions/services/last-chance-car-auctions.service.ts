@@ -1,0 +1,22 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { LastChanceCarAuctions } from '@auctions/interfaces';
+import { environments } from '@env/environments';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LastChanceCarAuctionsService {
+  readonly #baseUrl = environments.baseUrl;
+
+  #http = inject(HttpClient);
+
+  getMyAuctions$(): Observable<LastChanceCarAuctions> {
+    return this.#http.get<LastChanceCarAuctions>(`${this.#baseUrl}/last-chance-auctions/my-auctions`);
+  }
+
+  acceptOffer$(idLastChance: string, idOffer: string): Observable<any> {
+    return this.#http.patch<any>(`${this.#baseUrl}/last-chance-auctions/${idLastChance}/accept-offer/${idOffer}`, {});
+  }
+}

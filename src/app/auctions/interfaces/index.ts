@@ -22,3 +22,4 @@ export * from './bid-art-conditions';
 export * from './completed-auctions';
 export * from './completed-art-auctions';
 export * from './last-chance-car-purchase-conditions';
+export * from './last-chance-car-auctions';

@@ -8,7 +8,7 @@
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-optima font-semibold text-xl">
+    <p class="font-lato font-semibold text-xl">
       {{title()}}
     </p>
     @if (reserve() === false || premium()) {
@@ -19,7 +19,11 @@
       </span>
       }
       @if (premium()) {
-      <span class="inline-block text-sm w-fit bg-black/30 text-black px-4 py-1 rounded mb-2">
+      <!-- <span class="inline-block text-sm w-fit bg-black/30 text-black px-4 py-1 rounded mb-2">
+        Premium
+      </span> -->
+      <span
+        class="inline-block font-bold text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
         Premium
       </span>
       }
