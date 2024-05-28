@@ -5,6 +5,7 @@ import { FollowButtonComponent } from '@shared/components/follow-button/follow-b
 import { RouterLink } from '@angular/router';
 import { VehicleAuctionData } from '@app/auctions/interfaces';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 
 @Component({
   selector: 'auction-results-vehicle-card',
@@ -12,7 +13,8 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
   imports: [
     CommonModule,
     RouterLink,
-    FollowButtonComponent
+    FollowButtonComponent,
+    NoReserveTagComponentComponent
   ],
   templateUrl: './auction-results-vehicle-card.component.html',
   styleUrl: './auction-results-vehicle-card.component.css',

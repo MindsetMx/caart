@@ -12,6 +12,7 @@ import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
 import { PrimaryButtonDirective } from '@shared/directives';
 import { SpecificAuction } from '@auctions/interfaces';
 import { StarComponent } from '@shared/components/icons/star/star.component';
+import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 
 @Component({
   selector: 'last-chance-sticky-info-bar',
@@ -21,6 +22,7 @@ import { StarComponent } from '@shared/components/icons/star/star.component';
     CountdownModule,
     StarComponent,
     PrimaryButtonDirective,
+    NoReserveTagComponentComponent
   ],
   templateUrl: './last-chance-sticky-info-bar.component.html',
   styleUrl: './last-chance-sticky-info-bar.component.css',

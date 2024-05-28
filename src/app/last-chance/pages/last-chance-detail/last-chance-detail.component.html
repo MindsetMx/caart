@@ -262,7 +262,7 @@
 
           @defer (when auction().data) {
           <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionCarForm.userId"
-            [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.car"
+            [auctionTypeComment]="auctionTypesComments.lastChance" [auctionType]="auctionType.car"
             [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId" placeholder="Agregar un comentario"
             (commentCreated)="getComments()"></comments-textarea>
           }
@@ -274,7 +274,7 @@
 
           @for (comment of comments().data; track $index) {
           <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
-            [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.car"
+            [auctionTypeComment]="auctionTypesComments.lastChance" [auctionType]="auctionType.car"
             (commentCreated)="getComments()"></comment>
           }
 
@@ -481,7 +481,7 @@
 <last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
   (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
-  [isOpen]="makeAnOfferModalIsOpen()"></last-chance-bid-modal-component>
+  [(isOpen)]="makeAnOfferModalIsOpen"></last-chance-bid-modal-component>
 }
 }
 

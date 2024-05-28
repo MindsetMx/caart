@@ -7,9 +7,7 @@
 
     <span class="space-x-2 inline-block">
       @if (auction().data.attributes.auctionCarForm.reserve === false) {
-      <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
-        Sin Reserva
-      </span>
+      <no-reserve-tag-component></no-reserve-tag-component>
       }
       @if (auction().data.attributes.premium) {
       <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">

@@ -127,47 +127,7 @@
       <ng-container right>
         <!-- information auction -->
         @if (auction().data) {
-        <div class="grid grid-cols-1 gap-4">
-          <!-- artist -->
-          <div class="flex justify-between">
-            <div class="text-gray4">Artista:</div>
-            <div class="font-semibold">{{auction().data.attributes.auctionArtForm.artist}}</div>
-          </div>
-          <!-- year -->
-          <div class="flex justify-between">
-            <div class="text-gray4">Año:</div>
-            <div class="font-semibold">{{auction().data.attributes.auctionArtForm.year}}</div>
-          </div>
-          <!-- materials -->
-          <div class="flex justify-between">
-            <div class="text-gray4">Materiales:</div>
-            <div class="font-semibold">{{auction().data.attributes.auctionArtForm.materials}}</div>
-          </div>
-          <!-- rarity (Rareza) -->
-          <div class="flex justify-between">
-            <div class="text-gray4">Rareza:</div>
-            <div class="font-semibold">{{auction().data.attributes.auctionArtForm.rarity}}</div>
-          </div>
-          <!-- Dimensions (Alto x Ancho x Profundidad): {{height}} {{width}} {{depth (opcional)}} -->
-          <div class="flex justify-between">
-            <div class="text-gray4">Dimensiones:</div>
-            <div class="font-semibold">
-              {{auction().data.attributes.auctionArtForm.height}} x {{auction().data.attributes.auctionArtForm.width}}
-              x
-              {{auction().data.attributes.auctionArtForm.depth}}
-            </div>
-          </div>
-          <!-- condition -->
-          <div class="flex justify-between">
-            <div class="text-gray4">Condición:</div>
-            <div class="font-semibold">{{auction().data.attributes.auctionArtForm.condition}}</div>
-          </div>
-          <!-- origin -->
-          <div class="flex justify-between">
-            <div class="text-gray4">Origen:</div>
-            <div class="font-semibold">{{auction().data.attributes.auctionArtForm.origin}}</div>
-          </div>
-        </div>
+        <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
         }
 
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
@@ -243,7 +203,7 @@
 
           @defer (when auction().data) {
           <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionArtForm.userId"
-            [auctionType]="auctionType.art" [auctionTypeComment]="auctionTypesComments.active"
+            [auctionType]="auctionType.art" [auctionTypeComment]="auctionTypesComments.lastChance"
             [auctionCarPublishId]="auction().data.attributes.originalAuctionArtId" placeholder="Agregar un comentario"
             (commentCreated)="getComments()"></comments-textarea>
           }
@@ -255,7 +215,7 @@
 
           @for (comment of comments().data; track $index) {
           <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionArtId"
-            [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.art"
+            [auctionTypeComment]="auctionTypesComments.lastChance" [auctionType]="auctionType.art"
             (commentCreated)="getComments()"></comment>
           }
         </section>

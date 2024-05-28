@@ -32,7 +32,7 @@ export class CommentComponent {
   #comments = inject(CommentsService);
 
   likeComment(commentId = this.comment().id): void {
-    this.#comments.likeComment(commentId).subscribe({
+    this.#comments.likeComment$(commentId).subscribe({
       next: () => {
         this.commentCreated.emit();
       },

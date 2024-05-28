@@ -34,6 +34,7 @@ import { PaymentMethodsService } from '@shared/services/payment-methods.service'
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { RecentlyCompletedMemorabiliaAuctionComponent } from '@auctions/components/recently-completed-memorabilia-auctions/recently-completed-memorabilia-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
+import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 
 @Component({
   standalone: true,
@@ -56,6 +57,7 @@ import { StarComponent } from '@shared/components/icons/star/star.component';
     CurrentAuctionsComponent,
     CurrentMemorabiliaAuctionsComponent,
     RecentlyCompletedMemorabiliaAuctionComponent,
+    NoReserveTagComponentComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction-memorabilia.component.html',
@@ -203,7 +205,7 @@ export class AuctionMemorabiliaComponent {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.originalMemorabiliaId, AuctionTypes.memorabilia, this.auctionTypesComments.active).subscribe({
+    this.#commentsService.getComments$(this.auction().data.attributes.originalMemorabiliaId, AuctionTypes.memorabilia, this.auctionTypesComments.active).subscribe({
       next: (response) => {
         this.comments.set(response);
 

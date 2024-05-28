@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Carousel, Fancybox } from '@fancyapps/ui';
-import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { switchMap } from 'rxjs';
@@ -32,6 +32,7 @@ import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-me
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
 import { LastChanceAuctionArtDetail } from '@app/last-chance/interfaces';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
+import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
 
 @Component({
   standalone: true,
@@ -47,7 +48,8 @@ import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-a
     // MakeAnOfferModalComponent,
     PaymentMethodModalComponent,
     AuctionCancelledComponent,
-    TwoColumnAuctionGridComponent
+    TwoColumnAuctionGridComponent,
+    AuctionDetailsTableComponentComponent,
   ],
   templateUrl: './last-chance-art-detail.component.html',
   styleUrl: './last-chance-art-detail.component.css',
@@ -73,6 +75,7 @@ export class LastChanceArtDetailComponent {
   newOfferMade = signal<number>(0);
   eventSource?: EventSource;
   auctionCancelledModalIsOpen = signal<boolean>(false);
+  auctionDetails = signal<{ label: string, value: string | number }[]>([]);
 
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
@@ -103,6 +106,22 @@ export class LastChanceArtDetailComponent {
         this.getMetrics(this.auctionId());
 
         break;
+    }
+  });
+
+  auctionEffect = effect(() => {
+    if (this.auction().data) {
+      untracked(() => {
+        this.auctionDetails.set([
+          { label: 'Artista', value: this.auction().data.attributes.auctionArtForm.artist },
+          { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
+          { label: 'Materiales', value: this.auction().data.attributes.auctionArtForm.materials },
+          { label: 'Rareza', value: this.auction().data.attributes.auctionArtForm.rarity },
+          { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} x ${this.auction().data.attributes.auctionArtForm.width} x ${this.auction().data.attributes.auctionArtForm.depth}` },
+          { label: 'Condición', value: this.auction().data.attributes.auctionArtForm.condition },
+          { label: 'Origen', value: this.auction().data.attributes.auctionArtForm.origin },
+        ]);
+      });
     }
   });
 
@@ -279,7 +298,7 @@ export class LastChanceArtDetailComponent {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.carHistory.originalAuctionArtId, this.auctionType.art, this.auctionTypesComments.active).subscribe({
+    this.#commentsService.getComments$(this.auction().data.attributes.carHistory.originalAuctionArtId, this.auctionType.art, this.auctionTypesComments.lastChance).subscribe({
       next: (response) => {
         this.comments.set(response);
 

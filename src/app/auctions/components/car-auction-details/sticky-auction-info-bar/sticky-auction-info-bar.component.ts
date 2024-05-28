@@ -11,6 +11,7 @@ import { AuthStatus } from '@auth/enums';
 import { CountdownService } from '@shared/services/countdown.service';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { PrimaryButtonDirective } from '@shared/directives';
+import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 
 @Component({
   selector: 'sticky-auction-info-bar',
@@ -18,8 +19,9 @@ import { PrimaryButtonDirective } from '@shared/directives';
   imports: [
     CommonModule,
     CountdownModule,
-    StarComponent,
+    NoReserveTagComponentComponent,
     PrimaryButtonDirective,
+    StarComponent,
   ],
   templateUrl: './sticky-auction-info-bar.component.html',
   styleUrl: './sticky-auction-info-bar.component.css',

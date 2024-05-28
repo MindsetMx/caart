@@ -7,6 +7,7 @@ import { CountdownService } from '@shared/services/countdown.service';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { VehicleAuctionData } from '@app/auctions/interfaces';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { NoReserveTagComponentComponent } from '../no-reserve-tag-component/no-reserve-tag-component.component';
 
 @Component({
   selector: 'auction-card',
@@ -15,7 +16,8 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
     CommonModule,
     CountdownModule,
     RouterLink,
-    FollowButtonComponent
+    FollowButtonComponent,
+    NoReserveTagComponentComponent
   ],
   templateUrl: './auction-card.component.html',
   styleUrl: './auction-card.component.css',

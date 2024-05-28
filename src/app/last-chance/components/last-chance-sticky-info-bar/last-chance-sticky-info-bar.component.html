@@ -6,9 +6,7 @@
       @if (auction().data.attributes.auctionCarForm.reserve === false) {
       <span class="hidden space-x-2 md:flex md:items-center ml-4">
         @if (auction().data.attributes.auctionCarForm.reserve === false) {
-        <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
-          Sin Reserva
-        </span>
+        <no-reserve-tag-component></no-reserve-tag-component>
         }
         <span
           class="inline-block text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
@@ -83,9 +81,7 @@
       <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
         <span class="md:hidden space-x-2 inline-block">
           @if (auction().data && auction().data.attributes.auctionCarForm.reserve === false) {
-          <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
-            Sin Reserva
-          </span>
+          <no-reserve-tag-component></no-reserve-tag-component>
           }
           @if (auction().data) {
           <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">

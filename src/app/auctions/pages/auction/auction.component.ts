@@ -251,7 +251,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.active).subscribe({
+    this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.active).subscribe({
       next: (response) => {
         this.comments.set(response);
 

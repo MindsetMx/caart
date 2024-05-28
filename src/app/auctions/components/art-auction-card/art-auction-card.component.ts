@@ -6,6 +6,7 @@ import { ArtAuctionData } from '@auctions/interfaces/art-auction';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { CountdownService } from '@shared/services/countdown.service';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { NoReserveTagComponentComponent } from '../no-reserve-tag-component/no-reserve-tag-component.component';
 
 @Component({
   selector: 'art-auction-card',
@@ -14,7 +15,8 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
     CommonModule,
     CountdownModule,
     RouterLink,
-    FollowButtonComponent
+    FollowButtonComponent,
+    NoReserveTagComponentComponent
   ],
   templateUrl: './art-auction-card.component.html',
   styleUrl: './art-auction-card.component.css',

@@ -6,6 +6,7 @@ import { MemorabiliaAuctionData } from '@auctions/interfaces';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { CountdownService } from '@shared/services/countdown.service';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { NoReserveTagComponentComponent } from '../no-reserve-tag-component/no-reserve-tag-component.component';
 
 @Component({
   selector: 'memorabilia-auction-card',
@@ -14,7 +15,8 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
     CommonModule,
     RouterLink,
     FollowButtonComponent,
-    CountdownModule
+    CountdownModule,
+    NoReserveTagComponentComponent
   ],
   templateUrl: './memorabilia-auction-card.component.html',
   styleUrl: './memorabilia-auction-card.component.css',

@@ -15,9 +15,7 @@
     @if (auction().attributes.reserve === false || auction().attributes.premium) {
     <div class="space-x-2">
       @if (auction().attributes.reserve === false) {
-      <span class="inline-block text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded mb-2">
-        Sin Reserva
-      </span>
+      <no-reserve-tag-component></no-reserve-tag-component>
       }
       @if (auction().attributes.premium) {
       <span class="inline-block text-sm w-fit bg-black/30 text-black px-4 py-1 rounded mb-2">

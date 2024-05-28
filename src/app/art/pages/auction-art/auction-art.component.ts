@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
@@ -32,21 +32,23 @@ import { environments } from '@env/environments';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
+import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
 @Component({
   standalone: true,
   imports: [
+    AuctionCancelledComponent,
+    AuctionDetailsTableComponentComponent,
+    AuctionSummaryComponent,
+    CommentComponent,
+    CommentsTextareaComponent,
     CommonModule,
     CountdownModule,
-    StarComponent,
-    CommentsTextareaComponent,
-    PrimaryButtonDirective,
-    CommentComponent,
-    AuctionSummaryComponent,
-    MomentModule,
     MakeAnOfferModalComponent,
+    MomentModule,
     PaymentMethodModalComponent,
-    AuctionCancelledComponent,
-    TwoColumnAuctionGridComponent
+    PrimaryButtonDirective,
+    StarComponent,
+    TwoColumnAuctionGridComponent,
   ],
   templateUrl: './auction-art.component.html',
   styleUrl: './auction-art.component.css',
@@ -58,20 +60,21 @@ export class AuctionArtComponent {
   readonly #baseUrl = environments.baseUrl;
 
   auction = signal<ArtAuctionDetails>({} as ArtAuctionDetails);
+  auctionCancelledModalIsOpen = signal<boolean>(false);
+  auctionDetails = signal<{ label: string, value: string | number }[]>([]);
   auctionId = signal<string | null>(null);
   auctionId2 = signal<string | null>(null);
-  specificAuction = signal<SpecificArtAuction>({} as SpecificArtAuction);
+  comments = signal<GetComments>({} as GetComments);
+  eventSource?: EventSource;
   imagesPublish = signal<ArtImagesPublish>({} as ArtImagesPublish);
+  isFollowing = signal<boolean | undefined>(undefined);
+  makeAnOfferModalIsOpen = signal<boolean>(false);
+  metrics = signal<ArtMetrics>({} as ArtMetrics);
+  newOfferMade = signal<number>(0);
   offeredAmount = signal<number | undefined>(undefined);
   paymentMethodId = signal<string>('');
-  makeAnOfferModalIsOpen = signal<boolean>(false);
   paymentMethodModalIsOpen = signal<boolean>(false);
-  isFollowing = signal<boolean | undefined>(undefined);
-  metrics = signal<ArtMetrics>({} as ArtMetrics);
-  comments = signal<GetComments>({} as GetComments);
-  newOfferMade = signal<number>(0);
-  eventSource?: EventSource;
-  auctionCancelledModalIsOpen = signal<boolean>(false);
+  specificAuction = signal<SpecificArtAuction>({} as SpecificArtAuction);
 
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
@@ -101,6 +104,22 @@ export class AuctionArtComponent {
         this.getMetrics(this.auctionId());
 
         break;
+    }
+  });
+
+  auctionEffect = effect(() => {
+    if (this.auction().data) {
+      untracked(() => {
+        this.auctionDetails.set([
+          { label: 'Artista', value: this.auction().data.attributes.auctionArtForm.artist },
+          { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
+          { label: 'Materiales', value: this.auction().data.attributes.auctionArtForm.materials },
+          { label: 'Rareza', value: this.auction().data.attributes.auctionArtForm.rarity },
+          { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} x ${this.auction().data.attributes.auctionArtForm.width} x ${this.auction().data.attributes.auctionArtForm.depth}` },
+          { label: 'Condición', value: this.auction().data.attributes.auctionArtForm.condition },
+          { label: 'Origen', value: this.auction().data.attributes.auctionArtForm.origin },
+        ]);
+      });
     }
   });
 
@@ -277,7 +296,7 @@ export class AuctionArtComponent {
   }
 
   getComments(): void {
-    this.#commentsService.getComments(this.auction().data.attributes.originalAuctionArtId, this.auctionType.art, this.auctionTypesComments.active).subscribe({
+    this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionArtId, this.auctionType.art, this.auctionTypesComments.active).subscribe({
       next: (response) => {
         this.comments.set(response);
 
