@@ -237,7 +237,6 @@
 <auction-image-deletion-confirmation-modal (deleteImagesChange)="removePhoto()" [(isOpen)]="deleteImageModalIsOpen"
   [isButtonSubmitDisabled]="deleteImageSubmitButtonIsDisabled()"></auction-image-deletion-confirmation-modal>
 
-<all-photos-deletion-confirmation-modal (isOpenChange)="closeDeleteAllImagesModal()"
-  (deleteImageChange)="removeAllPhotos($event)" [auctionPhotoSection]="auctionPhotoSection()"
-  [isOpen]="deleteAllImagesModalIsOpen()"
+<all-photos-deletion-confirmation-modal (deleteImageChange)="removeAllPhotos($event)"
+  [auctionPhotoSection]="auctionPhotoSection()" [(isOpen)]="deleteAllImagesModalIsOpen"
   [isButtonSubmitDisabled]="deleteAllImagesSubmitButtonIsDisabled()"></all-photos-deletion-confirmation-modal>

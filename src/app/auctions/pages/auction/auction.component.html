@@ -116,24 +116,6 @@
         @defer (when auction().data) {
         <h1 class="font-bold mb-4">Detalles del auto</h1>
         <section class="grid grid-cols-2 gap-4">
-          <!-- <ul class="space-y-1">
-            <li>
-              <span class="text-gray4">Marca:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.brand}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Modelo:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.carModel}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Año:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionCarForm.year}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">VIN:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.exteriorDetails.VIN}}</span>
-            </li>
-          </ul> -->
           @defer (when auctionDetails().length > 0) {
           <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
 
@@ -142,16 +124,9 @@
         </section>
         }
 
-        <section class="md:hidden mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <section class="md:hidden mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6 text-xs">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
-          <!-- <ul class="list-inside list-disc text-gray4">
-              <li>Rines “X”</li>
-              <li>Faros “X”</li>
-              <li>Adaptación “X”</li>
-              <li>Llanta “X”</li>
-              <li>Polarizado “X”</li>
-            </ul> -->
           @if (auction().data) {
           <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
 

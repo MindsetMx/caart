@@ -4,7 +4,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CarPhotoGalleryService } from '../../services/car-photo-gallery.service';
 import { GetAllCarMedia } from '@dashboard/interfaces';
 import { AppService } from '@app/app.service';
-import { NgClass } from '@angular/common';
+import { JsonPipe, NgClass } from '@angular/common';
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CropImageModalComponent } from '../../../shared/components/crop-image-modal/crop-image-modal.component';
 
@@ -16,6 +16,7 @@ import { CropImageModalComponent } from '../../../shared/components/crop-image-m
     ReactiveFormsModule,
     CropImageModalComponent,
     NgClass,
+    JsonPipe
   ],
   templateUrl: './car-photo-gallery.component.html',
   styleUrl: './car-photo-gallery.component.css',
@@ -48,6 +49,13 @@ export class CarPhotoGalleryComponent {
   auctionCarIdEffect = effect(() => {
     if (this.auctionCarId()) {
       this.getAllCarMedia();
+    }
+  });
+
+  isOpenChangeEffect = effect(() => {
+    if (!this.isOpen()) {
+      this.selectedImage.setValue('');
+      this.selectedImages.clear();
     }
   });
 
@@ -87,13 +95,10 @@ export class CarPhotoGalleryComponent {
     } else {
       if (this.allowMultipleSelection()) {
         this.selectedImagesChange.emit(this.selectedImages?.value);
-        //unselect all images
-        this.selectedImages.clear();
 
         this.clearImageSelections();
       } else {
         this.selectedImageChange.emit(this.selectedImage.value);
-        this.selectedImage.setValue('');
       }
 
       this.closeModal();

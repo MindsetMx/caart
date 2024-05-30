@@ -24,7 +24,25 @@ export interface ArtAuctionDetailsAttributes {
   auctionArtForm: ArtAuctionDetailsAuctionArtForm;
   artHistory: ArtHistory;
   dataUser: ArtAuctionDetailsDataUser;
+  artDetail: ArtAuctionDetailsArtDetail;
 }
+
+export interface ArtAuctionDetailsArtDetail {
+  _id: string;
+  certificadoAutenticidad: boolean;
+  entidadCertificado: string;
+  entregaConMarco: boolean;
+  firmaArtista: boolean;
+  procedenciaObra: string;
+  historiaArtista: string;
+  originalAuctionArtId: string;
+  photos: string[];
+  videos: any[];
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}
+
 
 export interface ArtAuctionDetailsAuctionArtForm {
   _id: string;

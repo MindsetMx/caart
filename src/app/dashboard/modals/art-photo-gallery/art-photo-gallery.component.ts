@@ -47,6 +47,13 @@ export class ArtPhotoGalleryComponent {
     }
   });
 
+  isOpenChangeEffect = effect(() => {
+    if (!this.isOpen()) {
+      this.selectedImage.setValue('');
+      this.selectedImages.clear();
+    }
+  });
+
   getAllArtMedia(): void {
     this.#artPhotoGalleryService.getAllArtMedia$(this.auctionArtId()).subscribe({
       next: (response) => {

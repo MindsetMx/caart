@@ -187,26 +187,6 @@
         @if (auction().data) {
         <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
         }
-
-        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
-          @if (auction().data) {
-          <div class="my-4">
-            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
-            <span class="align-middle">
-              {{auction().data.attributes.dataUser.username}}
-            </span>
-          </div>
-
-          <div>
-            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
-          </div>
-          }
-
-
-          <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button> -->
-        </section>
       </ng-container>
     </two-column-auction-grid>
 
@@ -283,6 +263,26 @@
       </ng-container>
 
       <ng-container right>
+        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+          @if (auction().data) {
+          <div class="my-4">
+            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+            <span class="align-middle">
+              {{auction().data.attributes.dataUser.username}}
+            </span>
+          </div>
+
+          <div>
+            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+          </div>
+          }
+
+
+          <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
+              HACER UNA OFERTA
+            </button> -->
+        </section>
+
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-6">¿Tienes una pieza de arte y quieres venderla?</h3>
 

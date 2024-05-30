@@ -1,20 +1,20 @@
-<alert-modal [isOpen]="isOpen()" (keydown.enter)="deleteButton.click()">
+<alert-modal [isOpen]="isOpen()">
   <ng-container title>
-    Eliminar imagen
+    Rechazar oferta
   </ng-container>
 
   <ng-container body>
-    ¿Estás seguro que deseas eliminar las imágenes {{auctionPhotoSection()}}?
+    ¿Estás seguro que deseas rechazar esta oferta?
   </ng-container>
 
   <div footer class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-    <button type="button" (click)="deleteImage()" [disabled]="isButtonSubmitDisabled()" #deleteButton
+    <button type="button" (click)="emitRejectLastChanceBid()" [disabled]="isButtonSubmitDisabled()"
       [class.opacity-25]="isButtonSubmitDisabled()"
       class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">
       @if (isButtonSubmitDisabled()) {
       <shared-spinner></shared-spinner>
       } @else {
-      Eliminar
+      Aceptar
       }
     </button>
     <button type="button" (click)="closeModal()"

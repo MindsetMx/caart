@@ -1,6 +1,6 @@
 import { animate, query, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, WritableSignal, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, WritableSignal, effect, input, signal, viewChild } from '@angular/core';
 import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 
 @Component({
@@ -37,6 +37,8 @@ import { ClickOutsideDirective } from '@shared/directives/click-outside.directiv
 })
 
 export class ModalComponent {
+  modal = viewChild<ElementRef>('modal');
+
   // @Input() isOpen: WritableSignal<boolean> = signal(false);
   isOpen = input.required<boolean>();
   @Output() isOpenChange = new EventEmitter<boolean>();
@@ -47,5 +49,15 @@ export class ModalComponent {
 
   closeModal(): void {
     this.isOpenChange.emit(false);
+  }
+
+  constructor() {
+    effect(() => {
+      if (this.isOpen() && this.modal()) {
+        console.log('popup opened');
+
+        this.modal()?.nativeElement.focus({ preventScroll: true });
+      }
+    });
   }
 }

@@ -6,23 +6,23 @@ export interface CompletedAuctions {
 export interface CompletedAuctionsData {
   type: string;
   id: string;
-  originalAuctionCarId: string;
+  originalAuctionId: string;
   attributes: CompletedAuctionsAttributes;
 }
 
 export interface CompletedAuctionsAttributes {
-  reserve: boolean;
-  premium: boolean;
-  lastBid: number;
-  endDate: string;
-  cover: string;
   brand: string;
-  model: string;
-  year: number;
+  // city: string;
+  cover: string;
+  endDate: string;
   extract: string;
-  state: string;
-  city: string;
+  lastBid: number;
+  // model: string;
+  premium: boolean;
+  reserve: boolean;
+  // state: string;
   title: string;
+  year: number;
 }
 
 export interface CompletedAuctionsMeta {

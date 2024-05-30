@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, input, model, output, viewChild } from '@angular/core';
 import { AuctionPhotoSections } from '@dashboard/enums/auction-photo-sections.enum';
 import { AlertModalComponent } from '@shared/components/alert-modal/alert-modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
@@ -15,19 +15,17 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AllPhotosDeletionConfirmationModalComponent {
-  isOpenChange = output<boolean>();
-  isOpen = input.required<boolean>();
+  isOpen = model.required<boolean>();
   deleteImageChange = output<AuctionPhotoSections>();
   auctionPhotoSection = input.required<AuctionPhotoSections>();
 
   isButtonSubmitDisabled = input.required<boolean>();
 
   deleteImage(): void {
-    // formArray.removeAt(index);
     this.deleteImageChange.emit(this.auctionPhotoSection());
   }
 
   closeModal(): void {
-    this.isOpenChange.emit(false);
+    this.isOpen.set(false);
   }
 }

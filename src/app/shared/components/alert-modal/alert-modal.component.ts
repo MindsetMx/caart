@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, input, output, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, input, output, viewChild } from '@angular/core';
 
 @Component({
   selector: 'alert-modal',
@@ -40,4 +40,12 @@ export class AlertModalComponent {
   // isOpenChange = output<boolean>();
   // modalMaxWidth = input<string>('sm:max-w-xl');
   // verticalCenter = input<boolean>(false);
+
+  constructor() {
+    effect(() => {
+      if (this.isOpen() && this.modal()) {
+        this.modal()?.nativeElement.focus({ preventScroll: true });
+      }
+    });
+  }
 }

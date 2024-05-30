@@ -4,72 +4,25 @@
     <h1 class="font-lato font-black text-2xl md:text-4xl">
       <span class="inline align-middle"
         [ngClass]="{'mr-4': auction().data.attributes.isWithReserve === false || auction().data.attributes.premium}">
-        {{auction().data.attributes.title}}</span>
+        {{auction().data.attributes.title}}
+      </span>
+
       @if (auction().data.attributes.isWithReserve === false) {
-      <!-- <span [ngClass]="{'mr-4': auction().data.attributes.premium}"
-        class="inline-block align-middle text-xs md:text-sm w-fit bg-green1/30 px-4 py-1 rounded-2xl border-green-700 text-green-700 border-2">
-        Sin Reserva
-      </span> -->
       <no-reserve-tag-component class="inline-flex align-middle"></no-reserve-tag-component>
       }
+
       @if (auction().data.attributes.premium === true) {
       <div
-        class="inline-block align-middle text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
+        class="inline align-middle text-xs md:text-sm w-fit bg-[gainsboro] text-black px-2 md:px-4 py-1 rounded-2xl border-black border-2">
         Premium
       </div>
       }
     </h1>
     }
-    <!-- <div
-      class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
-      @if(specificAuction().data && specificAuction().data.bids.length > 0) {
-      <div class="py-1">
-        <p class="font-bold">
-          {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-        </p>
-      </div>
-      }
-      @if (auction().data && countdownConfig().leftTime! > 0) {
-      <div>
-        <div class="bg-gray1 rounded-lg px-3 py-1">
-          <countdown class="text-red2 font-bold" [config]="countdownConfig()"
-            [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
-          <br>
-          <span class="hidden md:block text-gray4 text-sm">
-            {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
-            a'}}
-          </span>
-        </div>
-      </div>
-      }
-      <div>
-        <div class="py-1">
-          <p class="inline lg:block font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</p>
-          <span class="text-gray4 text-sm"> Ofertas</span>
-        </div>
-      </div>
-      @defer (when specificAuction().data) {
-      @switch (specificAuction().data.status) {
-      @case ('cancelled') {
-      <div class="py-1">
-        <p class="font-bold border border-red-700 bg-[#f0aeae] text-red-700 px-2 py-1 rounded-xl text-xs">
-          Reserva no alcanzada
-        </p>
-      </div>
-      }
-      @case ('completed') {
-      <div class="py-1">
-        <p class="font-bold border border-green-700 bg-[#b6f0ae] text-green-700 px-2 py-1 rounded-xl text-xs">
-          Vendido
-        </p>
-      </div>
-      }
-      }
-      }
-    </div> -->
-    <div class="grid gap-y-4 md:flex w-full md:justify-between">
+
+    <div class="flex w-full justify-between">
       <div
-        class="grid items-center text-sm md:text-xl gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
+        class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
         @defer (when specificAuction().data) {
         @if(specificAuction().data.bids.length > 0) {
         <div class="py-1">
@@ -78,9 +31,8 @@
           </p>
         </div>
         }
-        <!-- <div> -->
+
         <div class="py-1" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
-          <!-- <p class="font-bold text-lg">18</p> -->
           <p class="inline lg:block">
             <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</span>
             Ofertas
@@ -88,27 +40,12 @@
         </div>
         }
 
-        <!-- @defer (when specificAuction().data) {
-          @if (specificAuction().data.status === 'active') {
-          <div class="md:hidden">
-            <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-              py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button>
-          </div>
-          }
-          } -->
-        <!-- </div> -->
         @if (auction().data && countdownConfig().leftTime! > 0) {
         <div>
           <div class="ml-4">
             <countdown class="text-red2 font-bold text-sm md:text-xl" [config]="countdownConfig()"
               [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
             <br>
-            <!-- <span class="hidden md:block text-gray4 text-sm">
-              {{auction().data.attributes.endDate | date:'MMM d, y, h:mm
-              a'}}
-            </span> -->
           </div>
         </div>
         }
@@ -116,7 +53,6 @@
         @switch (specificAuction().data.status) {
         @case ('cancelled') {
         <div class="py-1">
-          <!-- Reserva no alcanzada -->
           <p class="font-bold ml-4 border border-red-700 bg-[#f0aeae] text-red-700 px-6 py-1 rounded-xl">
             Reserva no alcanzada
           </p>
@@ -132,27 +68,10 @@
         }
         }
       </div>
-      <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
-        <!-- @defer (when auction().data) {
-        @if (auction().data.attributes.isWithReserve === false || auction().data.attributes.premium === true) {
-        <span class="md:hidden space-x-2 inline-block">
-          @if (auction().data && auction().data.attributes.isWithReserve === false) {
-          <span class="inline-block text-xs md:text-sm w-fit bg-green1/30 text-green1 px-4 py-1 rounded">
-            Sin Reserva
-          </span>
-          }
-          @if (auction().data.attributes.premium === true) {
-          <span
-            class="inline-block text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
-            Premium
-          </span>
-          }
-        </span>
-        }
-        } -->
-        <div class="ml-auto">
+      <div class="flex lg:grid lg:grid-flow-col gap-x-2 md:gap-x-4 gap-y-4 items-center md:text-center">
+        <!-- <div class="ml-auto">
           <img class="inline-block w-5 h-5 md:w-7 md:h-7" src="assets/img/icons/share.svg" alt="">
-        </div>
+        </div> -->
         <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionCarId)">
           <shared-star [shouldFill]="isFollowing() ? true : false"
             classes="inline-block w-5 h-5 md:w-7 md:h-7"></shared-star>
@@ -166,12 +85,6 @@
           </button>
           }
           }
-          <!-- <div class="block md:hidden">
-            @if (specificAuction().data) {
-            <p class="inline lg:block font-bold">{{specificAuction().data.bids.length}}</p>
-            }
-            <span class="text-gray4 text-sm"> Ofertas</span>
-          </div> -->
         </div>
       </div>
     </div>
