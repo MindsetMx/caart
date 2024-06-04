@@ -286,9 +286,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
         this.auction.set(auctionDetails);
         this.auctionId2.set(auctionDetails.data.id);
 
-        if (this.authStatus === AuthStatus.authenticated) {
-          this.getComments();
-        }
+        this.getComments();
         return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
       })
     ).subscribe({

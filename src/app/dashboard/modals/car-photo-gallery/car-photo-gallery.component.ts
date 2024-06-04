@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, QueryList, effect, inject, input, output, signal, viewChildren } from '@angular/core';
-
-import { ModalComponent } from '@shared/components/modal/modal.component';
-import { CarPhotoGalleryService } from '../../services/car-photo-gallery.service';
-import { GetAllCarMedia } from '@dashboard/interfaces';
-import { AppService } from '@app/app.service';
-import { JsonPipe, NgClass } from '@angular/common';
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CropImageModalComponent } from '../../../shared/components/crop-image-modal/crop-image-modal.component';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, viewChildren } from '@angular/core';
+import { JsonPipe, NgClass } from '@angular/common';
+
+import { AppService } from '@app/app.service';
+import { CarPhotoGalleryService } from '@app/dashboard/services/car-photo-gallery.service';
+import { CropImageModalComponent } from '@shared/components/crop-image-modal/crop-image-modal.component';
+import { GetAllCarMedia } from '@dashboard/interfaces';
+import { ModalComponent } from '@shared/components/modal/modal.component';
 
 @Component({
   selector: 'car-photo-gallery',

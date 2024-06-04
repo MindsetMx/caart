@@ -6,6 +6,10 @@ import { CommentsTextareaComponent } from '../comments-textarea/comments-textare
 import { ThumbsUpOutlineComponent } from '@shared/components/icons/thumbs-up-outline/thumbs-up-outline.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { AuctionTypesComments } from '@auctions/enums';
+import { UserData } from '@auth/interfaces';
+import { AuthService } from '@auth/services/auth.service';
+import { AuthStatus } from '@auth/enums';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'comment',
@@ -30,8 +34,24 @@ export class CommentComponent {
   responsesIsOpen = signal<boolean>(false);
 
   #comments = inject(CommentsService);
+  #authService = inject(AuthService);
+  #appComponent = inject(AppComponent);
+
+  get user(): UserData | null {
+    return this.#authService.currentUser();
+  }
+
+  get authStatus(): AuthStatus {
+    return this.#authService.authStatus();
+  }
 
   likeComment(commentId = this.comment().id): void {
+    if (this.authStatus === AuthStatus.notAuthenticated) {
+      this.openSignInModal();
+
+      return;
+    }
+
     this.#comments.likeComment$(commentId).subscribe({
       next: () => {
         this.commentCreated.emit();
@@ -52,5 +72,9 @@ export class CommentComponent {
 
   emitCommentCreated(): void {
     this.commentCreated.emit();
+  }
+
+  openSignInModal(): void {
+    this.#appComponent.openSignInModal();
   }
 }

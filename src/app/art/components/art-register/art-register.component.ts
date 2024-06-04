@@ -20,6 +20,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Observable, map, startWith } from 'rxjs';
 import { states } from '@shared/states';
 import { AsyncPipe } from '@angular/common';
+import { Rarity } from '../../enum/rarity.enum';
 
 @Component({
   selector: 'art-register',
@@ -49,6 +50,7 @@ export class ArtRegisterComponent {
 
   isButtonRegisterArtDisabled = signal(false);
   token = signal<string>('');
+  rarities = signal<Rarity[]>(Object.values(Rarity));
 
   filteredStates?: Observable<string[]>;
 
@@ -84,6 +86,10 @@ export class ArtRegisterComponent {
   get reserveAmountControl(): FormControl {
     return this.registerArtForm.get('reserveAmount') as FormControl;
   }
+
+  // get rarity(): Rarity {
+  //   return Rarity;
+  // }
 
   private _filterStates(value: string): string[] {
     const filterValue = this._normalizeValue(value);
@@ -213,6 +219,7 @@ export class ArtRegisterComponent {
       height: ['', [Validators.required]],
       width: ['', [Validators.required]],
       depth: [''],
+      unit: ['', [Validators.required]],
       condition: ['', [Validators.required]],
       state: ['', Validators.required],
       postalCode: ['', Validators.required],

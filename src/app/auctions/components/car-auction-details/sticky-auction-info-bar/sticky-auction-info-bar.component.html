@@ -24,12 +24,20 @@
       <div
         class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
         @defer (when specificAuction().data) {
+        @if (specificAuction().data.status === 'completed') {
+        <div class="py-1">
+          <p>
+            {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
+          </p>
+        </div>
+        } @else {
         @if(specificAuction().data.bids.length > 0) {
         <div class="py-1">
           <p>
             {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
           </p>
         </div>
+        }
         }
 
         <div class="py-1" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">

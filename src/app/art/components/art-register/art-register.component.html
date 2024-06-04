@@ -96,7 +96,11 @@
     <div>
       <label for="rarity" class="block mb-1 text-sm">Rareza <span
           class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="rarity" id="rarity" type="text" sharedInput>
+      <select formControlName="rarity" id="rarity" sharedInput>
+        @for (rarity of rarities(); track $index) {
+        <option value="{{rarity}}">{{rarity}}</option>
+        }
+      </select>
       @if (hasError('rarity')) {
       <shared-input-error [message]="getError('rarity')"></shared-input-error>
       }
@@ -105,7 +109,7 @@
     <div>
       <label for="height" class="block mb-1 text-sm">Altura <span
           class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="height" id="height" type="text" sharedInput>
+      <input formControlName="height" id="height" type="number" sharedInput>
       @if (hasError('height')) {
       <shared-input-error [message]="getError('height')"></shared-input-error>
       }
@@ -114,7 +118,7 @@
     <div>
       <label for="width" class="block mb-1 text-sm">Ancho <span
           class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="width" id="width" type="text" sharedInput>
+      <input formControlName="width" id="width" type="number" sharedInput>
       @if (hasError('width')) {
       <shared-input-error [message]="getError('width')"></shared-input-error>
       }
@@ -122,9 +126,21 @@
     <!-- depth?: string; -->
     <div>
       <label for="depth" class="block mb-1 text-sm">Profundidad</label>
-      <input formControlName="depth" id="depth" type="text" sharedInput>
+      <input formControlName="depth" id="depth" type="number" sharedInput>
       @if (hasError('depth')) {
       <shared-input-error [message]="getError('depth')"></shared-input-error>
+      }
+    </div>
+    <!-- unit -->
+    <div>
+      <label for="unit" class="block mb-1 text-sm">Unidad <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="unit" id="unit" sharedInput>
+        <option value="cm">cm</option>
+        <option value="in">in</option>
+      </select>
+      @if (hasError('unit')) {
+      <shared-input-error [message]="getError('unit')"></shared-input-error>
       }
     </div>
     <!-- condition: string; -->

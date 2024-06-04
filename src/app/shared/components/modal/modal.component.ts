@@ -54,8 +54,6 @@ export class ModalComponent {
   constructor() {
     effect(() => {
       if (this.isOpen() && this.modal()) {
-        console.log('popup opened');
-
         this.modal()?.nativeElement.focus({ preventScroll: true });
       }
     });

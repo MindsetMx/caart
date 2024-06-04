@@ -15,6 +15,14 @@ export interface SpecificAuctionData {
   premium: boolean;
   categories: string[];
   bids: SpecificAuctionBid[];
+  winnerInfo: SpecificAuctionBidWinnerInfo;
+}
+
+export interface SpecificAuctionBidWinnerInfo {
+  userId: string;
+  amount: number;
+  chargeId: string;
+  purchaseDate: Date;
 }
 
 export interface SpecificAuctionBid {
