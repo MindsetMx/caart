@@ -82,7 +82,7 @@ export class AddArtHistoryComponent {
       next: () => {
         this.addArtHistoryForm.reset();
 
-        this.#router.navigate(['/dashboard/publicar']);
+        this.#router.navigate(['/dashboard/publicar'], { queryParams: { type: 'Art' } });
 
         this.toastSuccess('Historia del arte agregada');
       },

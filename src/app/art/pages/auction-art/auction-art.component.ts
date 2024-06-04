@@ -115,7 +115,7 @@ export class AuctionArtComponent {
           { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
           { label: 'Materiales', value: this.auction().data.attributes.auctionArtForm.materials },
           { label: 'Rareza', value: this.auction().data.attributes.auctionArtForm.rarity },
-          { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} x ${this.auction().data.attributes.auctionArtForm.width} x ${this.auction().data.attributes.auctionArtForm.depth}` },
+          { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.width} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.depth} ${this.auction().data.attributes.auctionArtForm.unit}` },
           { label: 'Condición', value: this.auction().data.attributes.auctionArtForm.condition },
           { label: 'Origen', value: this.auction().data.attributes.auctionArtForm.origin },
           { label: 'Certificado de autenticidad', value: this.auction().data.attributes.artDetail.certificadoAutenticidad ? 'Sí' + ',' + this.auction().data.attributes.artDetail.entidadCertificado : 'No' },
