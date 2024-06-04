@@ -132,7 +132,7 @@
       }
     </div>
     <!-- unit -->
-    <div>
+    <!-- <div>
       <label for="unit" class="block mb-1 text-sm">Unidad <span
           class="font-bold text-red-500 inline-block">*</span></label>
       <select formControlName="unit" id="unit" sharedInput>
@@ -142,7 +142,23 @@
       @if (hasError('unit')) {
       <shared-input-error [message]="getError('unit')"></shared-input-error>
       }
-    </div>
+    </div> -->
+
+    <fieldset>
+      <legend class="block mb-1 text-sm">Unidad <span class="font-bold text-red-500 inline-block">*</span></legend>
+      <div class="mt-2 space-y-6 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+        <div class="flex items-center">
+          <input formControlName="unit" id="cm" type="radio" value="cm"
+            class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+          <label for="cm" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Cm</label>
+        </div>
+        <div class="flex items-center">
+          <input formControlName="unit" id="sms" type="radio" value="in"
+            class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+          <label for="in" class="ml-3 block text-sm font-medium leading-6 text-gray-900">In</label>
+        </div>
+      </div>
+    </fieldset>
     <!-- condition: string; -->
     <div>
       <label for="condition" class="block mb-1 text-sm">Condición <span
