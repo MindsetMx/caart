@@ -235,9 +235,46 @@
       }
     </div>
 
+    <div class="col-span-2 mt-4">
+      <p class="text-xl font-bold">Elige tu paquete <span class="font-bold text-red-500 inline-block">*</span>
+      </p>
+      <p class="text-red-500 text-sm mb-4">La sesión de fotos y videos a domicilio es una herramienta indispensable
+        para potenciar las ofertas de tu pieza.
+      </p>
+      <fieldset>
+        <legend class="sr-only">¿En qué estas interesado?</legend>
+        <div class="space-y-2">
+          <div>
+            <input value="ListInMarketplace" id="listInMarketplace" type="radio" checked class="h-4 w-4">
+            <label for="listInMarketplace" class="ml-3 leading-6 inline mr-4">Publicar mi pieza + Sesión
+              fotográfica
+              profesional</label>
+            <span class="bg-red-500 text-white text-sm px-2 py-1 rounded-md ml-auto inline-block">
+              Recomendado por CAART
+            </span>
+          </div>
+          <div class="flex items-center">
+            <input value="ListInMarketplacePlusPhotoshoot" id="listInMarketplacePlusPhotoshoot" type="radio"
+              class="h-4 w-4">
+            <label for="listInMarketplacePlusPhotoshoot" class="ml-3 block leading-6">
+              Publicar mi pieza</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- @if (hasError('interest')) {
+      <shared-input-error [message]="getError('interest')"></shared-input-error>
+      } -->
+    </div>
+
+    <div class="col-span-2">
+      <p class="text-xs text-gray-400">*Si la pieza no alcanza el precio de reserva, se publicará durante un mes en la
+        sección de última oportunidad sin costo adicional.</p>
+    </div>
+
     <!-- acceptTerms: boolean; -->
 
-    <div class="col-span-2 mt-8">
+    <div class="col-span-2">
       <div class="flex items-center text-xs">
         <input formControlName="acceptTerms" id="acceptTerms" type="checkbox" class="h-4 w-4">
         <label for="acceptTerms" class="ml-3 block leading-6">
