@@ -42,14 +42,6 @@
     }
   </div>
 
-  <!-- <div>
-    <label for="mileage" class="block mb-1 text-sm">Kilometraje <span class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="mileage" formControlName="mileage" type="number" sharedInput>
-    @if (hasError('mileage')) {
-    <shared-input-error [message]="getError('mileage')"></shared-input-error>
-    }
-  </div> -->
-
   <div>
     <label for="odometerVerified" class="block mb-1 text-sm">¿El odómetro es acertado? <span
         class="font-bold text-red-500 inline-block">*</span></label>
@@ -84,18 +76,6 @@
     }
   </div>
   }
-
-  <!-- Tipo de vendedor select -->
-  <!-- <div>
-    <label for="sellerType" class="block mb-1 text-sm">Tipo de vendedor <span class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="sellerType" formControlName="sellerType" sharedInput>
-      <option value="individual">Individual</option>
-      <option value="dealer">Distribuidor</option>
-    </select>
-    @if (hasError('sellerType')) {
-    <shared-input-error [message]="getError('sellerType')"></shared-input-error>
-    }
-  </div> -->
 
   <!-- VIN -->
   <div>
@@ -284,19 +264,6 @@
     <shared-input-error [message]="getError('detailComments')"></shared-input-error>
     }
   </div>
-
-  <!-- Fotos/vídeos de detalles -->
-  <!-- <div class="col-span-2">
-    <label for="uppyDashboard1" class="text-sm cursor-pointer">
-      Fotos/vídeos de detalles <span class="text-gray4">(Opcional)</span>
-     <span class="font-bold text-red-500 inline-block">*</span></label>
-
-    <div id="uppyDashboard1" #uppyDashboard1></div>
-
-    @if (hasError('detailPhotos')) {
-    <shared-input-error [message]="getError('detailPhotos')"></shared-input-error>
-    }
-  </div> -->
 
   <!-- Fotos del exterior del auto -->
   <div class="col-span-2">

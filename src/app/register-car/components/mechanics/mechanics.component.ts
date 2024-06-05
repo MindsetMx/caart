@@ -241,7 +241,7 @@ export class MechanicsComponent {
   getMechanics(): void {
     this.#completeCarRegistrationService.getMechanics$(this.originalAuctionCarId).subscribe({
       next: (mechanics) => {
-        const {
+        let {
           originalRims,
           tireBrand,
           tireSize,
@@ -260,6 +260,24 @@ export class MechanicsComponent {
           mechanicsPhotos,
           mechanicsVideos,
         } = mechanics.data.attributes;
+
+        //Sobreescribir con valores de prueba
+        originalRims = true;
+        tireBrand = 'Michelin';
+        tireSize = '205/55 R16';
+        tireDate = '2021-08-01';
+        tireCondition = 'Excelente';
+        extraTiresOrRims = 'false';
+        spareTire = true;
+        originalTransmissionEngine = true;
+        improvementModificationOriginal = true;
+        performedServicesWithDates = 'Cambio de aceite 2021-08-01';
+        mechanicalProblemDetail = false;
+        illuminatedDashboardSensor = true;
+        factoryEquipment = false;
+        extraEquipment = false;
+        comments = 'Comentarios de prueba';
+        mechanicsPhotos = (mechanicsPhotos && mechanicsPhotos.length > 0) ? mechanicsPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
 
         this.mechanicsForm.patchValue({
           originalRims,

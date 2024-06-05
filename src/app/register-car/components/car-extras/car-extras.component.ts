@@ -117,7 +117,7 @@ export class CarExtrasComponent {
   getCarExtras(): void {
     this.#completeCarRegistrationService.getCarExtras$(this.originalAuctionCarId).subscribe({
       next: (carExtras) => {
-        const {
+        let {
           toolBox,
           carCover,
           batteryCharger,
@@ -129,6 +129,17 @@ export class CarExtrasComponent {
           comments,
           termsConditionsAccepted,
         } = carExtras.data.attributes;
+
+        //Sobreescribir con valores de prueba
+        toolBox = true;
+        carCover = true;
+        batteryCharger = true;
+        manuals = true;
+        tireInflator = true;
+        numberOfKeys = 2;
+        others = 'Otros';
+        comments = 'Comentarios';
+        termsConditionsAccepted = true;
 
         this.carExtrasForm.patchValue({
           toolBox,
@@ -157,6 +168,24 @@ export class CarExtrasComponent {
           this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
           this.#changeDetectorRef.detectChanges();
         }
+
+        // TODO:eliminar cuando ya no se necesite
+        else {
+          //Sobreescribir con valores de prueba
+          const aditionalChargesFormGroups = [
+            this.#fb.group({
+              chargeType: ['Cargo adicional 1', Validators.required],
+              amount: [100, Validators.required],
+            }),
+            this.#fb.group({
+              chargeType: ['Cargo adicional 2', Validators.required],
+              amount: [200, Validators.required],
+            }),
+          ];
+
+          this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
+        }
+        // TODO:eliminar cuando ya no se necesite
       },
       error: (error) => console.error(error),
     });

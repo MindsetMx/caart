@@ -329,7 +329,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
   getGeneralInformation(): void {
     this.#completeCarRegistrationService.getGeneralInformation$(this.originalAuctionCarId()).subscribe({
       next: (response) => {
-        const {
+        let {
           VIN,
           kmInput,
           brand,
@@ -357,6 +357,32 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
           exteriorPhotos,
           exteriorVideos,
         } = response;
+
+        //Sobreescribir con valores de prueba
+        VIN = VIN || '1HGCM82633A123456';
+        kmInput = kmInput || 123456;
+        brand = brand || 'Toyota';
+        year = year || 2020;
+        carModel = carModel || 'Corolla';
+        odometerVerified = odometerVerified || 'true';
+        transmissionType = transmissionType || 'Manual';
+        otherTransmission = otherTransmission || 'N/A';
+        warranties = warranties || 'false';
+        wichWarranties = wichWarranties || 'N/A';
+        invoiceType = invoiceType || 'invoice';
+        invoiceDetails = invoiceDetails || 'Paid in cash';
+        carHistory = carHistory || 'No accidents';
+        exteriorColor = exteriorColor || 'Blue';
+        specificColor = specificColor || 'N/A';
+        accident = accident || 'false';
+        raced = raced || 'false';
+        originalPaint = originalPaint || 'true';
+        paintMeter = paintMeter || 'false';
+        exteriorModified = exteriorModified || 'false';
+        exteriorCondition = exteriorCondition || 'excellent';
+        detailComments = detailComments || 'No comments';
+        exteriorPhotos = (exteriorPhotos && exteriorPhotos.length > 0) ? exteriorPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
+        exteriorVideos = exteriorVideos || [];
 
         this.exteriorOfTheCarForm.patchValue({
           VIN,
