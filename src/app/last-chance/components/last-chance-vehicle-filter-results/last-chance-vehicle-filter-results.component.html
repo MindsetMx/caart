@@ -115,10 +115,14 @@
   @for (auction of vehicles()?.data; track $index; let last = $last) {
   @defer () {
   @if (last) {
-  <last-chance-vehicle-card [auction]="auction" intersection (visible)="getVehicles(false)"></last-chance-vehicle-card>
+  <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionCarId"
+    [cover]="auction.attributes.cover" [title]="auction.attributes.title" [extract]="auction.attributes.extract"
+    intersection (visible)="getVehicles(false)"></last-chance-vehicle-card>
   }
   @else {
-  <last-chance-vehicle-card [auction]="auction"></last-chance-vehicle-card>
+  <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionCarId"
+    [cover]="auction.attributes.cover" [title]="auction.attributes.title"
+    [extract]="auction.attributes.extract"></last-chance-vehicle-card>
   }
   } @placeholder (minimum 500ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>

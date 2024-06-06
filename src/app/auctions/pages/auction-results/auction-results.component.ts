@@ -1,9 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { ArtAuctionResultsFilterResultsComponent } from '@app/auction-results/pages/art-auction-results-filter-results/art-auction-results-vehicle-results.component';
 import { AuctionResultsVehicleFilterResultsComponent } from '@app/auction-results/pages/auction-results-vehicle-filter-results/auction-results-vehicle-filter-results.component';
-import { VehicleFilterResultsComponent } from '@auctions/components/vehicle-filter-results/vehicle-filter-results.component';
+import { ResultsAuctionFilterResultsComponent } from '@app/auction-results/pages/results-auction-filter-results/results-auction-filter-results.component';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 
@@ -13,7 +14,8 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
     CommonModule,
     TabsWithIconsComponent,
     AuctionResultsVehicleFilterResultsComponent,
-    ArtAuctionResultsFilterResultsComponent
+    ArtAuctionResultsFilterResultsComponent,
+    ResultsAuctionFilterResultsComponent
   ],
   templateUrl: './auction-results.component.html',
   styleUrl: './auction-results.component.css',

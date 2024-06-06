@@ -15,14 +15,19 @@ import { CountdownModule } from 'ngx-countdown';
     CountdownModule,
     RouterLink,
     FollowButtonComponent,
-    PrimaryButtonDirective
+    PrimaryButtonDirective,
+    LastChanceArtCardComponent
   ],
   templateUrl: './last-chance-art-card.component.html',
   styleUrl: './last-chance-art-card.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastChanceArtCardComponent {
-  auction = input.required<LastChanceArtsData>();
+  // auction = input.required<LastChanceArtsData>();
+  originalAuctionArtId = input.required<string>();
+  cover = input.required<string>();
+  title = input.required<string>();
+  extract = input.required<string>();
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;

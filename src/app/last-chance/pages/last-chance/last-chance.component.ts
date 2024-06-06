@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { CommonModule } from '@angular/common';
 
 import { LastChanceArtFilterResultsComponent } from '@lastChance/components/last-chance-art-filter-results/last-chance-art-filter-results.component';
+import { LastChanceAuctionFilterResultsComponent } from '@lastChance/components/last-chance-auction-filter-results/last-chance-auction-filter-results.component';
 import { LastChanceVehicleFilterResultsComponent } from '@lastChance/components/last-chance-vehicle-filter-results/last-chance-vehicle-filter-results.component';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
 import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
@@ -13,7 +14,8 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
     CommonModule,
     TabsWithIconsComponent,
     LastChanceVehicleFilterResultsComponent,
-    LastChanceArtFilterResultsComponent
+    LastChanceArtFilterResultsComponent,
+    LastChanceAuctionFilterResultsComponent,
   ],
   templateUrl: './last-chance.component.html',
   styleUrl: './last-chance.component.css',

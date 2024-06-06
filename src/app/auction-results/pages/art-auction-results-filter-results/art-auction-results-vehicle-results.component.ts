@@ -20,7 +20,6 @@ const MOBILE_SCREEN_WIDTH = 1024;
   selector: 'art-auction-results-vehicle-filter-results',
   standalone: true,
   imports: [
-    AuctionCardComponent,
     AuctionResultsFilterMenuComponent,
     AuctionResultsVehicleCardComponent,
     CommonModule,

@@ -32,7 +32,12 @@ import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-me
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastChanceVehicleCardComponent {
-  auction = input.required<LastChanceVehiclesData>();
+  // auction = input.required<LastChanceVehiclesData>();
+  auctionId = input.required<string>();
+  originalAuctionId = input.required<string>();
+  cover = input.required<string>();
+  title = input.required<string>();
+  extract = input.required<string>();
 
   makeAnOfferModalIsOpen = signal<boolean>(false);
   newOfferMade = signal<number>(0);

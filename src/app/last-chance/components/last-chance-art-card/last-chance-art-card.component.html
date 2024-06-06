@@ -1,14 +1,13 @@
-<div [routerLink]="['/ultima-oportunidad-arte', auction().originalAuctionArtId]" class="relative cursor-pointer">
-  <img class="w-full object-cover rounded-md" [src]="auction().attributes.photos[0]" alt="">
-  <follow-button [auctionId]="auction().originalAuctionArtId" [auctionType]="auctionType.art"
-    class="absolute top-3 right-5">
+<div [routerLink]="['/ultima-oportunidad-arte', originalAuctionArtId()]" class="relative cursor-pointer">
+  <img class="w-full object-cover rounded-md" [src]="cover()" alt="">
+  <follow-button [auctionId]="originalAuctionArtId()" [auctionType]="auctionType.art" class="absolute top-3 right-5">
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-optima font-semibold text-xl">{{auction().attributes.title}}
+    <p class="font-optima font-semibold text-xl">{{title()}}
     </p>
     <p class="text-gray4 line-clamp-3">
-      {{auction().attributes.extract}}
+      {{extract()}}
     </p>
 
     <button class="mt-4" width="w-fit" px="px-4" py="py-2.5" sharedPrimaryButton>

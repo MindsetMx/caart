@@ -1,7 +1,5 @@
-<h2 class="text-center font-optima font-bold text-3xl my-8">Venta de Arte</h2>
-
-<div class="grid lg:flex gap-4 mb-4">
-  <div class="w-full my-auto">
+<div class="grid lg:flex gap-4 mb-4 mt-4">
+  <div class="w-full my-auto mt-4 md:mt-0">
     <label for="search" class="sr-only">Buscar</label>
     <div class="relative">
       <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
@@ -13,17 +11,27 @@
     </div>
   </div>
 
-  <div class="hidden md:flex gap-4">
-    <a routerLink="/subastas-en-vivo" px="px-4" width="lg:w-fit w-full"
-      class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
-      Subastas en vivo
-    </a>
+  <div class="hidden md:block w-fit">
+    <mat-form-field name="mat-form-field1">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select [ngModel]="orderBy()" (ngModelChange)="setOrderBy($event)">
+        @for (orderBy of orderByList; track $index) {
+        <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
 
+  <!-- <div class="hidden md:flex gap-4">
+    <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
+      class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
+      Última oportunidad
+    </a>
     <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
       sharedTertiaryButton>
       Resultados
     </a>
-  </div>
+  </div> -->
 
   @if (isMobile) {
   <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"
@@ -37,6 +45,23 @@
 @if (!isMobile) {
 <div class="flex gap-4">
   <mat-form-field name="mat-form-field1">
+    <mat-label>Tipo de listado</mat-label>
+    <mat-select [ngModel]="auctionType()" (ngModelChange)="setAuctionType($event)" multiple>
+      <mat-select-trigger>
+        {{auctionType()[0]}}
+        @if (auctionType().length > 1) {
+        <span>
+          (+{{auctionType().length - 1}} {{auctionType().length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (auction of auctionTypeList; track auction) {
+      <mat-option name="mat-option1" [value]="auction.value">{{auction.label}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- <mat-form-field name="mat-form-field1">
     <mat-label>Categoría</mat-label>
     <mat-select [ngModel]="category()" (ngModelChange)="setCategory($event)" multiple>
       <mat-select-trigger>
@@ -51,7 +76,7 @@
       <mat-option name="mat-option1" [value]="category.value">{{category.label}}</mat-option>
       }
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Era</mat-label>
@@ -74,7 +99,24 @@
     <year-range [ngModel]="yearRange()" (ngModelChange)="setYearRange($event)" class="w-max"></year-range>
   </div>
 
-  <mat-form-field name="mat-form-field1">
+  <!-- <mat-form-field name="mat-form-field1">
+    <mat-label>Termina en</mat-label>
+    <mat-select [ngModel]="endsIn()" (ngModelChange)="setEndsIn($event)" multiple>
+      <mat-select-trigger>
+        {{endsIn()[0]}}
+        @if (endsIn().length > 1) {
+        <span>
+          (+{{endsIn().length - 1}} {{endsIn().length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (endsIn of endsInList; track endsIn) {
+      <mat-option name="mat-option1" [value]="endsIn.value">{{endsIn.label}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field> -->
+
+  <!-- <mat-form-field name="mat-form-field1">
     <mat-label>Oferta actual</mat-label>
     <mat-select [ngModel]="currentOffer()" (ngModelChange)="setCurrentOffer($event)" multiple>
       <mat-select-trigger>
@@ -89,7 +131,7 @@
       <mat-option name="mat-option1" [value]="topping.value">{{topping.label}}</mat-option>
       }
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Estado</mat-label>
@@ -111,17 +153,50 @@
 }
 
 <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8 mt-4">
-  @if (arts()) {
-  @for (auction of arts()?.data; track $index; let last = $last) {
+  @if ( auctions()) {
+  @for (auction of auctions().data; track $index; let last = $last) {
   @defer () {
   @if (last) {
-  <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.photos[0]"
-    [title]="auction.attributes.title" [extract]="auction.attributes.extract" intersection
-    (visible)="getArts(false)"></last-chance-art-card>
+  @switch (auction.type) {
+  @case (auctionTypesAll.lastChanceAuction){
+  <auction-results-vehicle-card auctionLink="/subasta-arte" [originalAuctionId]="auction.originalAuctionId"
+    [cover]="auction.attributes.cover" [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
+    [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" intersection
+    (visible)="getLiveAuctions(false)"></auction-results-vehicle-card>
+  }
+
+  @case (auctionTypesAll.lastChanceAuctionArt) {
+  <auction-results-vehicle-card auctionLink="/subasta-arte" [originalAuctionId]="auction.originalAuctionId"
+    [cover]="auction.attributes.cover" [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
+    [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" intersection
+    (visible)="getLiveAuctions(false)"></auction-results-vehicle-card>
+  }
+  }
   }
   @else {
-  <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.photos[0]"
-    [title]="auction.attributes.title" [extract]="auction.attributes.extract"></last-chance-art-card>
+  @switch (auction.type) {
+  @case (auctionTypesAll.lastChanceAuction) {
+  <auction-results-vehicle-card auctionLink="/subasta-arte" [originalAuctionId]="auction.originalAuctionId"
+    [cover]="auction.attributes.cover" [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
+    [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-results-vehicle-card>
+  }
+
+  @case (auctionTypesAll.lastChanceAuctionArt) {
+  <auction-results-vehicle-card auctionLink="/subasta-arte" [originalAuctionId]="auction.originalAuctionId"
+    [cover]="auction.attributes.cover" [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
+    [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-results-vehicle-card>
+  }
+  }
+
+  <!-- @if (auction?.auctionCarDetails) {
+  <auction-card3 [auction]="auction"></auction-card3>
+  } @else {
+  <memorabilia-auction-card2 [auction]="auction"></memorabilia-auction-card2>
+  } -->
   }
   } @placeholder (minimum 500ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
@@ -142,11 +217,10 @@
 
 </div>
 
-<last-chance-art-auction-filter-menu [categoryList]="categoryList" [currentOfferList]="currentOfferList"
-  [eraList]="eraList" [statesList]="statesList" [(isOpen)]="auctionFilterMenuIsOpen"
-  (setCategoryChange)="setCategory($event)" (setCurrentOfferChange)="setCurrentOffer($event)"
-  (setEraChange)="setEra($event)" (setStatesChange)="setStates($event)"
-  (setYearRangeChange)="setYearRange($event)"></last-chance-art-auction-filter-menu>
+<auction-filter-menu [auctionTypeList]="auctionTypeList" [currentOfferList]="currentOfferList" [endsInList]="endsInList"
+  [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen"
+  (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
+  (setYearRangeChange)="setYearRange($event)"></auction-filter-menu>
 
 <ng-template #auctionCardSkeleton>
   @for (item of [].constructor(8); track $index) {

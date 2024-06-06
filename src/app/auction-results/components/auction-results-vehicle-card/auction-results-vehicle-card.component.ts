@@ -28,7 +28,7 @@ export class AuctionResultsVehicleCardComponent {
   hasReserve = input.required<boolean>();
   isPremium = input.required<boolean>();
   extract = input.required<string>();
-  lastBid = input.required<number>();
+  lastBid = input.required<number | null>();
   endDate = input.required<string>();
 
   get auctionType(): typeof AuctionTypes {

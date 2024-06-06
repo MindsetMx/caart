@@ -46,10 +46,10 @@ import { RouterLink } from '@angular/router';
 })
 export class AuctionFilterMenuComponent {
   @Input() isOpen = signal<boolean>(false);
-  @Input({ required: true }) auctionTypeList!: { value: string; label: string }[];
+  @Input() auctionTypeList!: { value: string; label: string }[];
   @Input() categoryList!: { value: string; label: string }[];
   @Input({ required: true }) currentOfferList!: { value: string; label: string }[];
-  @Input({ required: true }) endsInList!: { value: string; label: string }[];
+  @Input() endsInList!: { value: string; label: string }[];
   @Input({ required: true }) eraList!: { value: string; label: string }[];
   @Input({ required: true }) orderByList!: { value: string; label: string }[];
   @Input({ required: true }) statesList!: { value: string; label: string }[];
