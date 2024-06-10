@@ -163,7 +163,7 @@
   @else {
   <memorabilia-auction-card [auction]="auction"></memorabilia-auction-card>
   }
-  } @placeholder (minimum 500ms) {
+  } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
   }
   @loading (after 100ms) {

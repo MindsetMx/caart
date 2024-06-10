@@ -127,7 +127,7 @@
     [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
     [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-results-vehicle-card>
   }
-  } @placeholder (minimum 500ms) {
+  } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
   }
   @loading (after 100ms) {

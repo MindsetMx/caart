@@ -123,7 +123,7 @@
   <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.photos[0]"
     [title]="auction.attributes.title" [extract]="auction.attributes.extract"></last-chance-art-card>
   }
-  } @placeholder (minimum 500ms) {
+  } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
   }
   @loading (after 100ms) {

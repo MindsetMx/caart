@@ -124,7 +124,7 @@
     [cover]="auction.attributes.cover" [title]="auction.attributes.title"
     [extract]="auction.attributes.extract"></last-chance-vehicle-card>
   }
-  } @placeholder (minimum 500ms) {
+  } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
   }
   @loading (after 100ms) {

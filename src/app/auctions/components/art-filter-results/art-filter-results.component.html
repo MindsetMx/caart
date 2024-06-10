@@ -168,7 +168,7 @@
     [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
     [endDate]="auction.attributes.endDate"></art-auction-card>
   }
-  } @placeholder (minimum 500ms) {
+  } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
   }
   @loading (after 100ms) {
