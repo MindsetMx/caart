@@ -293,7 +293,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
         }
-        return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
+        return this.#auctionDetailsService.getSpecificAuctionDetailsLastChance$(auctionDetails.data.attributes.originalAuctionCarId);
       })
     ).subscribe({
       next: (specificAuctionDetails) => {
@@ -347,6 +347,8 @@ export class LastChanceDetailComponent implements AfterViewInit {
         }
 
         this.paymentMethodId.set(paymentMethod.id);
+        console.log({ offeredAmount });
+
         this.offeredAmount.set(offeredAmount);
         this.makeAnOfferModalIsOpen.set(true);
         return;

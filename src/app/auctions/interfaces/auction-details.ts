@@ -9,29 +9,76 @@ export interface AuctionDetailsData {
 }
 
 export interface AuctionDetailsAttributes {
-  __v: number;
   _id: string;
-  auctionCarForm: AuctionCarForm;
-  bids: Bid[];
-  carHistory: CarHistory;
-  categories: string[];
-  dataUser: dataUser;
-  endDate: string;
-  title: string;
-  exteriorDetails: ExteriorDetails;
-  extras: Extras;
-  interiorDetails: InteriorDetails;
-  internalNumber: string;
-  isWithReserve: boolean;
-  mechanicsDetails: MechanicsDetails;
   originalAuctionCarId: string;
-  premium: boolean;
-  reserveAmount: number;
+  isWithReserve: boolean;
   reserveCommissionValue: number;
   startDate: string;
+  endDate: string;
+  reserveAmount: number;
   status: string;
+  premium: boolean;
+  categories: string[];
+  title: string;
+  bids: any[];
+  __v: number;
+  auctionCarForm: AuctionDetailsAuctionCarForm;
+  extras: AuctionDetailsExtras;
+  interiorDetails: AuctionDetailsInteriorDetails;
+  mechanicsDetails: AuctionDetailsMechanicsDetails;
+  exteriorDetails: AuctionDetailsExteriorDetails;
+  carHistory: AuctionDetailsCarHistory;
+  dataUser: AuctionDetailsDataUser;
 }
-export interface dataUser {
+
+export interface AuctionDetailsAuctionCarForm {
+  _id: string;
+  type: string;
+  brand: string;
+  year: number;
+  carModel: string;
+  exteriorColor: string;
+  interiorColor: string;
+  specificColor: string;
+  generalCondition: string;
+  transmissionType: string;
+  otherTransmission: string;
+  engine: string;
+  city: string;
+  postalCode: string;
+  state: string;
+  reserve: boolean;
+  reserveAmount: number;
+  kmType: string;
+  kmInput: number;
+  howDidYouHearAboutUs: string;
+  photos: string[];
+  videos: any[];
+  interest: string;
+  acceptTerms: boolean;
+  status: string;
+  userId: string;
+  lotNumber: number;
+  __v: number;
+}
+
+export interface AuctionDetailsCarHistory {
+  _id: string;
+  blocks: AuctionDetailsBlock[];
+  originalAuctionCarId: string;
+  extract: string;
+  extraInfo: string;
+  createdAt: Date;
+  __v: number;
+}
+
+export interface AuctionDetailsBlock {
+  type: string;
+  content: string;
+  _id: string;
+}
+
+export interface AuctionDetailsDataUser {
   _id: string;
   firstName: string;
   lastName: string;
@@ -43,83 +90,25 @@ export interface dataUser {
   phoneNumber: string;
   email: string;
   password: string;
-  taxId: string;
-  streetAndNumber: string;
-  postalCode: string;
-  validationType: string;
   validationImg: string[];
   acceptTermsAndConditions: boolean;
   accountVerified: boolean;
   verificationCode: null;
   verificationCodeExpires: null;
   __v: number;
-  clientId: string;
-}
-
-export interface CarHistory {
-  _id: string;
-  blocks: Block[];
-  originalAuctionCarId: string;
-  extract: string;
-  extraInfo: string;
-  createdAt: Date;
-  __v: number;
-}
-
-export interface Block {
-  type: string;
-  content: string;
-  _id: string;
-}
-
-export interface AuctionCarForm {
-  __v: number;
-  _id: string;
-  acceptTerms: boolean;
-  brand: string;
-  carModel: string;
-  city: string;
-  engine: string;
-  exteriorColor: string;
-  generalCondition: string;
-  howDidYouHearAboutUs: string;
-  interest: string;
-  interiorColor: string;
-  kmInput: number;
-  kmType: string;
-  lotNumber: string;
-  otherTransmission: null;
-  photos: string[];
   postalCode: string;
-  reserve: boolean;
-  reserveAmount: number;
-  specificColor: string;
-  state: string;
-  status: string;
-  transmissionType: string;
-  type: string;
-  userId: string;
-  videos: any[];
-  year: number;
+  streetAndNumber: string;
+  taxId: string;
+  validationType: string;
+  clientId: string;
+  defaultPaymentMethodId: string;
 }
 
-export interface Bid {
-  userId: string;
-  bidAmount: number;
-  bidTime: string;
-  holdAmount: number;
-  stripeTransactionId: null;
-  isHoldActive: boolean;
-  winner: boolean;
-  paymentMethodId: string;
-  _id: string;
-}
-
-export interface ExteriorDetails {
+export interface AuctionDetailsExteriorDetails {
   _id: string;
   originalAuctionCarId: string;
-  __v: number;
   VIN: string;
+  __v: number;
   accident: boolean;
   brand: string;
   carHistory: string;
@@ -145,11 +134,11 @@ export interface ExteriorDetails {
   year: number;
 }
 
-export interface Extras {
+export interface AuctionDetailsExtras {
   _id: string;
   originalAuctionCarId: string;
   __v: number;
-  additionalCharges: AdditionalCharge[];
+  additionalCharges: AuctionDetailsAdditionalCharge[];
   batteryCharger: boolean;
   carCover: boolean;
   comments: string;
@@ -161,13 +150,13 @@ export interface Extras {
   toolBox: boolean;
 }
 
-export interface AdditionalCharge {
+export interface AuctionDetailsAdditionalCharge {
   chargeType: string;
   amount: number;
   _id: string;
 }
 
-export interface InteriorDetails {
+export interface AuctionDetailsInteriorDetails {
   _id: string;
   originalAuctionCarId: string;
   __v: number;
@@ -181,7 +170,7 @@ export interface InteriorDetails {
   material: string;
 }
 
-export interface MechanicsDetails {
+export interface AuctionDetailsMechanicsDetails {
   _id: string;
   originalAuctionCarId: string;
   __v: number;
@@ -200,6 +189,6 @@ export interface MechanicsDetails {
   spareTire: boolean;
   tireBrand: string;
   tireCondition: string;
-  tireDate: string;
+  tireDate: Date;
   tireSize: string;
 }

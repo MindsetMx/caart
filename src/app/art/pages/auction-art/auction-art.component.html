@@ -161,6 +161,11 @@
         <div class="max-w-3xl mx-auto">
           @defer (when imagesPublish().data) {
           <div id="productCarousel" #myCarousel class="f-carousel">
+            <div class="f-carousel__slide" [attr.data-thumb-src]="imagesPublish().data.fotoPrincipal"
+              data-fancybox="gallery" [attr.data-src]="imagesPublish().data.fotoPrincipal">
+              <img class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
+                [attr.data-lazy-src]="imagesPublish().data.fotoPrincipal" />
+            </div>
             @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
             <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
               [attr.data-src]="auction">

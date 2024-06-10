@@ -107,9 +107,9 @@ export class AuctionImageAssignmentAndReorderComponent {
       fotoPrincipal: ['', Validators.required],
       fotoCatalogo: ['', Validators.required],
       fotosSliderPrincipal: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
-      fotosMecanicas: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
-      fotosInterior: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
-      fotosExterior: this.#formBuilder.array([], [Validators.required, Validators.minLength(5)]),
+      fotosMecanicas: this.#formBuilder.array([], [Validators.required, Validators.minLength(1)]),
+      fotosInterior: this.#formBuilder.array([], [Validators.required, Validators.minLength(1)]),
+      fotosExterior: this.#formBuilder.array([], [Validators.required, Validators.minLength(1)]),
     });
 
     this.fotosSliderPrincipalFormArray.valueChanges.
@@ -178,15 +178,15 @@ export class AuctionImageAssignmentAndReorderComponent {
     switch (auctionPhotoSection) {
       case AuctionPhotoSections.mechanicalPhotos:
         this.fotosMecanicasFormArray.clear();
-        this.fotosMecanicasFormArray.setValidators(Validators.minLength(5));
+        this.fotosMecanicasFormArray.setValidators(Validators.minLength(1));
         break;
       case AuctionPhotoSections.interiorPhotos:
         this.fotosInteriorFormArray.clear();
-        this.fotosInteriorFormArray.setValidators(Validators.minLength(5));
+        this.fotosInteriorFormArray.setValidators(Validators.minLength(1));
         break;
       case AuctionPhotoSections.exteriorPhotos:
         this.fotosExteriorFormArray.clear();
-        this.fotosExteriorFormArray.setValidators(Validators.minLength(5));
+        this.fotosExteriorFormArray.setValidators(Validators.minLength(1));
         break;
       default:
         break;

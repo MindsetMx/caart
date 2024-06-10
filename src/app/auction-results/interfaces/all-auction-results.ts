@@ -1,10 +1,12 @@
+import { AuctionResultsTypes } from '@app/auction-results/enums';
+
 export interface AuctionResults {
   data: AuctionResultsData[];
   meta: AuctionResultsMeta;
 }
 
 export interface AuctionResultsData {
-  type: string;
+  type: AuctionResultsTypes;
   id: string;
   originalAuctionId: string;
   attributes: AuctionResultsAttributes;

@@ -64,9 +64,9 @@ export class LastChanceBidModalComponent {
     this.paymentMethodControl.setValue(this.paymentMethodId());
   });
 
-  minimumNextBidChangedEffect = effect(() => {
-    this.bidAmountControl.addValidators(Validators.min(this.minimumNextBid()));
-  });
+  // minimumNextBidChangedEffect = effect(() => {
+  //   this.bidAmountControl.addValidators(Validators.min(this.minimumNextBid()));
+  // });
 
   newOfferMadeChangedEffect = effect(() => {
     if (this.newOfferMade()) {
@@ -185,11 +185,11 @@ export class LastChanceBidModalComponent {
   getBiddingConditions(): void {
     this.#lastChanceBidService.getBiddingConditions$(this.auctionId()).subscribe({
       next: (biddingConditions) => {
-        this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
+        // this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
 
-        this.bidAmount()
-          ? this.bidAmountControl.setValue(this.bidAmount())
-          : this.bidAmountControl.setValue(this.minimumNextBid());
+        // this.bidAmount()
+        //   ? this.bidAmountControl.setValue(this.bidAmount())
+        //   : this.bidAmountControl.setValue(this.minimumNextBid());
 
         this.getBidConditions(this.minimumNextBid());
       },

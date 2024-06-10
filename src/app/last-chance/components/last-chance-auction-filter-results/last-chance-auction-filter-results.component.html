@@ -159,7 +159,6 @@
   @if (last) {
   @switch (auction.type) {
   @case (auctionTypesAll.lastChanceAuctionCar){
-  1
   <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionId"
     [title]="auction.attributes.title" [extract]="auction.attributes.extract" [cover]="auction.attributes.cover"
     intersection (visible)="getLiveAuctions(false)"></last-chance-vehicle-card>

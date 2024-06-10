@@ -77,6 +77,24 @@
           }
           }
         </div>
+        @defer (when specificAuction().data) {
+        @switch (specificAuction().data.status) {
+        @case ('cancelled') {
+        <div class="py-1">
+          <p class="font-bold ml-4 border border-red-700 bg-[#f0aeae] text-red-700 px-6 py-1 rounded-xl">
+            Reserva no alcanzada
+          </p>
+        </div>
+        }
+        @case ('completed') {
+        <div class="py-1">
+          <p class="font-bold ml-4 border border-green-700 bg-[#b6f0ae] text-green-700 px-6 py-1 rounded-2xl w-fit">
+            Vendido
+          </p>
+        </div>
+        }
+        }
+        }
       </div>
       <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
         <span class="md:hidden space-x-2 inline-block">

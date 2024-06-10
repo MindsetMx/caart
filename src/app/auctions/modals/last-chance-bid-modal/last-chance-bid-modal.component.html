@@ -11,7 +11,7 @@
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <span class="text-gray-500 sm:text-sm">$</span>
         </div>
-        <input formControlName="bidAmount" type="text" placeholder="Oferta ${{minimumNextBid() | number}} o más"
+        <input formControlName="bidAmount" type="text" placeholder="Ingresa tu oferta"
           class="block w-full rounded-md border-0 py-1.5 pl-7 pr-12  placeholder:text-gray-400" sharedInput
           mask="separator" thousandSeparator="," required aria-describedby="price-currency">
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -23,7 +23,9 @@
     <shared-input-error class="mt-1" [message]="getFirstError(bidAmountControl)"></shared-input-error>
     }
 
+    @if (bidAmountControl.value) {
     <p class="text-sm mt-1">Comision a cobrar: ${{holdAmount() === 0 ? '5,000' : holdAmount() | number}} MXN.</p>
+    }
     <br>
 
     <input formControlName="acceptTerms" class="align-middle mr-2" type="checkbox" id="terms">

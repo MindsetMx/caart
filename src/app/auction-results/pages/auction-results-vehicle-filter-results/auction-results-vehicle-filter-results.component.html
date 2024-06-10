@@ -115,14 +115,14 @@
   @for (auction of auctions()?.data; track $index; let last = $last) {
   @defer () {
   @if (last) {
-  <auction-results-vehicle-card auctionLink="/subasta" [originalAuctionId]="auction.originalAuctionId"
+  <auction-results-vehicle-card [auctionType2]="auction.type" [originalAuctionId]="auction.originalAuctionId"
     [cover]="auction.attributes.cover" [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
     [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
     [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" intersection
     (visible)="getCompletedAuctions(false)"></auction-results-vehicle-card>
   }
   @else {
-  <auction-results-vehicle-card auctionLink="/subasta" [originalAuctionId]="auction.originalAuctionId"
+  <auction-results-vehicle-card [auctionType2]="auction.type" [originalAuctionId]="auction.originalAuctionId"
     [cover]="auction.attributes.cover" [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
     [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
     [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-results-vehicle-card>

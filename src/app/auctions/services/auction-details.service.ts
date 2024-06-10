@@ -17,13 +17,22 @@ export class AuctionDetailsService {
   #http = inject(HttpClient);
 
   getAuctionDetails$(id: string): Observable<AuctionDetails> {
-    const url = `${this.#baseUrl}/auctions-cars/${id}`;
+    const url = `${this.#baseUrl}/auctions-cars/live-auction/${id}`;
 
     return this.#http.get<AuctionDetails>(url);
   }
 
   getSpecificAuctionDetails$(id: string): Observable<SpecificAuction> {
-    const url = `${this.#baseUrl}/auctions-cars/auction/${id}`;
+    const url = `${this.#baseUrl}/auctions-cars/auction/active/${id}`;
+
+    return this.#http.get<SpecificAuction>(url);
+  }
+
+  getSpecificAuctionDetailsLastChance$(id: string): Observable<SpecificAuction> {
+    // const url = `${this.#baseUrl}/auctions-cars/auction/active/${id}`;
+
+    // http://localhost:3000/auctions-cars/auction/last-chance/6662380e931aa3b5240e91e5
+    const url = `${this.#baseUrl}/auctions-cars/auction/last-chance/${id}`;
 
     return this.#http.get<SpecificAuction>(url);
   }

@@ -1,19 +1,18 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { AuctionResultsVehicleCardComponent } from '@app/auction-results/components/auction-results-vehicle-card/auction-results-vehicle-card.component';
-import { AuctionResultsTypes } from '@app/auction-results/enums';
-import { AuctionResults } from '@app/auction-results/interfaces';
-import { ResultsAuctionService } from '@app/auction-results/services/results-auction.service';
+
 import { AuctionFilterMenuComponent } from '@auctions/components/auction-filter-menu/auction-filter-menu.component';
-import { MemorabiliaAuctionCard2Component } from '@auctions/components/memorabilia-auction-card2/memorabilia-auction-card2.component';
-import { AuctionTypesAll } from '@auctions/enums';
-import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { AuctionResults } from '@app/auction-results/interfaces';
+import { AuctionResultsVehicleCardComponent } from '@app/auction-results/components/auction-results-vehicle-card/auction-results-vehicle-card.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
+import { MemorabiliaAuctionCard2Component } from '@auctions/components/memorabilia-auction-card2/memorabilia-auction-card2.component';
+import { ResultsAuctionService } from '@app/auction-results/services/results-auction.service';
 import { states } from '@shared/states';
+import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -113,10 +112,6 @@ export class ResultsAuctionFilterResultsComponent {
   #resultsAuctionService = inject(ResultsAuctionService);
 
   auctions = signal<AuctionResults>({} as AuctionResults);
-
-  get auctionTypesAll(): typeof AuctionResultsTypes {
-    return AuctionResultsTypes;
-  }
 
   ngOnInit(): void {
     this.getLiveAuctions(true);

@@ -14,7 +14,7 @@ export class LastChanceVehicleDetailService {
   #http = inject(HttpClient);
 
   getAuctionDetails$(id: string): Observable<LastChanceAuctionVehicleDetail> {
-    const url = `${this.#baseUrl}/last-chance-auctions/${id}`;
+    const url = `${this.#baseUrl}/auctions-cars/last-chance-auction/${id}`;
 
     return this.#http.get<LastChanceAuctionVehicleDetail>(url);
   }
