@@ -1,7 +1,7 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, untracked } from '@angular/core';
-import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe, SlicePipe } from '@angular/common';
 import { Fancybox } from "@fancyapps/ui";
 import { forkJoin, switchMap } from 'rxjs';
 import { MomentModule } from 'ngx-moment';
@@ -66,6 +66,9 @@ import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-a
     AuctionDetailsTableComponentComponent,
     LastChanceBuyNowModalComponent
   ],
+  providers: [
+    DecimalPipe,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './last-chance-detail.component.html',
   styleUrl: './last-chance-detail.component.css',
@@ -107,6 +110,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   #route = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
   #lastChancePurchaseService = inject(LastChancePurchaseService);
+  #decimalPipe = inject(DecimalPipe);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -177,7 +181,8 @@ export class LastChanceDetailComponent implements AfterViewInit {
         ]);
 
         this.auctionDetails2.set([
-          { label: 'Km', value: this.auction().data.attributes.auctionCarForm.kmInput },
+          // { label: 'Km', value: this.auction().data.attributes.auctionCarForm.kmInput },
+          { label: 'Km', value: this.#decimalPipe.transform(this.auction().data.attributes.auctionCarForm.kmInput, '1.0-0')! },
           { label: 'Transmisión', value: this.auction().data.attributes.auctionCarForm.transmissionType },
           { label: 'Color', value: this.auction().data.attributes.auctionCarForm.exteriorColor },
           { label: 'Entregado en', value: 'CDMX, México' },

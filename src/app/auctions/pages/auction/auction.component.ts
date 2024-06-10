@@ -1,7 +1,7 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, untracked } from '@angular/core';
-import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe, SlicePipe } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
@@ -63,6 +63,9 @@ import { AuctionDetailsTableComponentComponent } from '@auctions/components/auct
     TwoColumnAuctionGridComponent,
     AuctionDetailsTableComponentComponent
   ],
+  providers: [
+    DecimalPipe,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction.component.html',
   styleUrl: './auction.component.css',
@@ -99,6 +102,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   #paymentMethodsService = inject(PaymentMethodsService);
   #route = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
+  decimalPipe = inject(DecimalPipe);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -169,7 +173,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
         ]);
 
         this.auctionDetails2.set([
-          { label: 'Km', value: this.auction().data.attributes.auctionCarForm.kmInput },
+          { label: 'Km', value: this.decimalPipe.transform(this.auction().data.attributes.auctionCarForm.kmInput, '1.0-0')! },
           { label: 'Transmisión', value: this.auction().data.attributes.auctionCarForm.transmissionType },
           { label: 'Color', value: this.auction().data.attributes.auctionCarForm.exteriorColor },
           { label: 'Entregado en', value: 'CDMX, México' },
