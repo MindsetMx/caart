@@ -231,6 +231,8 @@ export class MechanicsComponent {
       next: () => {
         this.#completeCarRegistrationService.indexTargetStep.set(4);
         this.#completeCarRegistrationService.indexCurrentStep.set(4);
+
+        window.scrollTo(0, 0);
       },
       error: (error) => console.error(error),
     }).add(() => {

@@ -220,6 +220,8 @@ export class InteriorOfTheCarComponent {
       next: () => {
         this.#completeCarRegistrationService.indexTargetStep.set(3);
         this.#completeCarRegistrationService.indexCurrentStep.set(3);
+
+        window.scrollTo(0, 0);
       },
       error: (error) => {
         this.interiorColorControl.disable();

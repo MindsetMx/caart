@@ -309,6 +309,8 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
         next: () => {
           this.#completeCarRegistrationService.indexTargetStep.set(2);
           this.#completeCarRegistrationService.indexCurrentStep.set(2);
+
+          window.scrollTo(0, 0);
         },
         error: (error) => {
           this.kmInputControl.disable();
