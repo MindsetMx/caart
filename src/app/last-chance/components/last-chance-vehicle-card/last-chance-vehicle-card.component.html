@@ -6,6 +6,11 @@
   <div class="mt-4">
     <p class="font-lato font-semibold text-xl">{{title()}}
     </p>
+    @if (isPremium()) {
+    <span
+      class="inline-block font-bold text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2 ng-star-inserted">
+      Premium </span>
+    }
     <p class="text-gray4 line-clamp-3">
       {{extract()}}
     </p>

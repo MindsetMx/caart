@@ -10,6 +10,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { PrimaryButtonDirective } from '@shared/directives';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { LastChanceArtPurchaseService } from '@app/last-chance/services/last-chance-art-purchase.service';
 
 @Component({
   selector: 'last-chance-buy-now-modal',
@@ -41,6 +42,7 @@ export class LastChanceBuyNowModalComponent {
 
   #appService = inject(AppService);
   #lastChancePurchaseService = inject(LastChancePurchaseService);
+  #lastChanceArtPurchaseService = inject(LastChanceArtPurchaseService);
   #validatorsService = inject(ValidatorsService);
 
   purchaseForm: FormGroup;
@@ -107,7 +109,17 @@ export class LastChanceBuyNowModalComponent {
         });
         break;
       case AuctionTypes.art:
-
+        this.#lastChanceArtPurchaseService.purchase$(this.purchaseForm).subscribe({
+          next: () => {
+            this.isOpen.set(false);
+            this.toastSuccess(`¡Felicidades! Has comprado ${this.name()} exitosamente.`);
+          },
+          error: (error) => {
+            this.serverError.set(error.error.message);
+          },
+        }).add(() => {
+          this.isBuyButtonDisabled.set(false);
+        });
         break;
       case AuctionTypes.memorabilia:
 

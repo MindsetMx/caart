@@ -36,6 +36,9 @@
             <span class="text-gray4 text-sm"> Ofertas</span>
           </div>
           @defer (when specificAuction().data) {
+          <pre>
+              {{specificAuction().data.status}}
+            </pre>
           @if (specificAuction().data.status === 'active') {
           <div class="md:hidden">
             <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"

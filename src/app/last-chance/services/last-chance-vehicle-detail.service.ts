@@ -24,10 +24,4 @@ export class LastChanceVehicleDetailService {
 
     return this.#http.get<AuctionMetrics>(url);
   }
-
-  getSpecificAuctionDetails$(id: string): Observable<SpecificAuction> {
-    const url = `${this.#baseUrl}/auctions-cars/auction/${id}`;
-
-    return this.#http.get<SpecificAuction>(url);
-  }
 }

@@ -135,7 +135,9 @@
               <li>Polarizado “X”</li>
             </ul> -->
           @if (auction().data) {
-          <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
+          <div class="text-gray4" style="word-wrap: break-word;">
+            {{auction().data.attributes.carHistory.extraInfo}}
+          </div>
 
           <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
 
@@ -197,7 +199,7 @@
           @for (item of auction().data.attributes.carHistory.blocks; track $index) {
           @switch (item.type) {
           @case ('text') {
-          <p>
+          <p style="word-wrap: break-word;">
             {{item.content}}
           </p>
           }
@@ -343,7 +345,9 @@
               <li>Polarizado “X”</li>
             </ul> -->
           @if (auction().data) {
-          <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
+          <div class="text-gray4" style="word-wrap: break-word;">
+            {{auction().data.attributes.carHistory.extraInfo}}
+          </div>
 
           <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
 

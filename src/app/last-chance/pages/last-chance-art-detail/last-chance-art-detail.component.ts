@@ -3,7 +3,7 @@ import { Carousel, Fancybox } from '@fancyapps/ui';
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
-import { switchMap } from 'rxjs';
+import { forkJoin, switchMap } from 'rxjs';
 import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 
 import { AppComponent } from '@app/app.component';
@@ -33,6 +33,9 @@ import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/au
 import { LastChanceAuctionArtDetail } from '@app/last-chance/interfaces';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
+import { LastChanceBidModalComponent } from '@auctions/modals/last-chance-bid-modal/last-chance-bid-modal.component';
+import { LastChanceBuyNowModalComponent } from '@auctions/modals/last-chance-buy-now-modal/last-chance-buy-now-modal.component';
+import { LastChanceArtPurchaseService } from '@app/last-chance/services/last-chance-art-purchase.service';
 
 @Component({
   standalone: true,
@@ -45,11 +48,12 @@ import { AuctionDetailsTableComponentComponent } from '@auctions/components/auct
     CommentComponent,
     AuctionSummaryComponent,
     MomentModule,
-    // MakeAnOfferModalComponent,
+    LastChanceBidModalComponent,
     PaymentMethodModalComponent,
     AuctionCancelledComponent,
     TwoColumnAuctionGridComponent,
     AuctionDetailsTableComponentComponent,
+    LastChanceBuyNowModalComponent
   ],
   templateUrl: './last-chance-art-detail.component.html',
   styleUrl: './last-chance-art-detail.component.css',
@@ -76,6 +80,9 @@ export class LastChanceArtDetailComponent {
   eventSource?: EventSource;
   auctionCancelledModalIsOpen = signal<boolean>(false);
   auctionDetails = signal<{ label: string, value: string | number }[]>([]);
+  reserveAmount = signal<number | undefined>(undefined);
+  comission = signal<number | undefined>(undefined);
+  buyNowModalIsOpen = signal<boolean>(false);
 
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
@@ -87,6 +94,7 @@ export class LastChanceArtDetailComponent {
   #paymentMethodsService = inject(PaymentMethodsService);
   #auctionFollowService = inject(AuctionFollowService);
   #commentsService = inject(CommentsService);
+  #lastChanceArtPurchaseService = inject(LastChanceArtPurchaseService);
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
@@ -235,6 +243,47 @@ export class LastChanceArtDetailComponent {
     });
   }
 
+  openBuyNowModal(): void {
+    console.log('openBuyNowModal');
+
+    if (this.authStatus === AuthStatus.notAuthenticated) {
+      this.openSignInModal();
+
+      return;
+    }
+
+    console.log('openBuyNowModal 2');
+
+
+    forkJoin({
+      conditions: this.#lastChanceArtPurchaseService.getConditions(this.auction().data.id),
+      paymentMethods: this.#paymentMethodsService.getPaymentMethods$()
+    }).subscribe(({ conditions, paymentMethods }) => {
+      console.log('openBuyNowModal 3');
+      console.log({ conditions, paymentMethods });
+
+
+      this.comission.set(conditions.data.commission);
+      this.reserveAmount.set(conditions.data.reserveAmount);
+
+      if (paymentMethods.data.length > 0) {
+        console.log('openBuyNowModal 4');
+
+        const paymentMethod = paymentMethods.data.find((paymentMethod) => paymentMethod.attributes.isDefault);
+
+        if (!paymentMethod) {
+          throw new Error('No default payment method found');
+        }
+
+        this.paymentMethodId.set(paymentMethod.id);
+        this.buyNowModalIsOpen.set(true);
+        return;
+      }
+
+      this.buyNowModalIsOpen.set(true);
+    });
+  }
+
   refreshPaymentMethods(): void {
     this.#paymentMethodsService.getPaymentMethods$().subscribe((paymentMethods) => {
       const paymentMethod = paymentMethods.data.find((paymentMethod) => paymentMethod.attributes.isDefault);
@@ -274,7 +323,7 @@ export class LastChanceArtDetailComponent {
         if (this.authStatus === AuthStatus.authenticated) {
           this.getComments();
         }
-        return this.#artAuctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.carHistory.originalAuctionArtId);
+        return this.#artAuctionDetailsService.getSpecificAuctionDetailsLastChance$(auctionDetails.data.attributes.carHistory.originalAuctionArtId);
       })
     ).subscribe({
       next: (specificAuctionDetails) => {

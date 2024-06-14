@@ -26,6 +26,12 @@ export class ArtAuctionDetailsService {
     return this.#http.get<SpecificArtAuction>(url);
   }
 
+  getSpecificAuctionDetailsLastChance$(id: string): Observable<any> {
+    const url = `${this.#baseUrl}/auctions-cars/auction/last-chance-art/${id}`;
+
+    return this.#http.get<any>(url);
+  }
+
   getArtMetrics$(id: string): Observable<ArtMetrics> {
     const url = `${this.#baseUrl}/auctions-cars/${id}/metrics-art`;
 

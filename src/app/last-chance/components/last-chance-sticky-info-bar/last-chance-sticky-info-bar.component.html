@@ -1,96 +1,62 @@
 <div class="bg-white pt-4 pb-2">
   <div class="container">
+    <!-- <pre class="text-xs">
+      {{specificAuction() | json}}
+    </pre> -->
     @defer (when auction().data) {
-    <h1 class="font-lato font-black flex text-2xl md:text-4xl mr-4 mb-2">
-      {{auction().data.attributes.title}}
-      @if (auction().data.attributes.auctionCarForm.reserve === false) {
-      <span class="hidden space-x-2 md:flex md:items-center ml-4">
-        @if (auction().data.attributes.auctionCarForm.reserve === false) {
-        <no-reserve-tag-component></no-reserve-tag-component>
-        }
-        <span
-          class="inline-block text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
-          Premium
-        </span>
+    <h1 class="font-lato font-black text-2xl md:text-4xl">
+      <span class="inline align-middle" [ngClass]="{'mr-4': auction().data.attributes.isWithReserve === false }">
+        {{auction().data.attributes.title}}
       </span>
+
+      @if (auction().data.attributes.isWithReserve === false) {
+      <no-reserve-tag-component class="inline-flex align-middle"></no-reserve-tag-component>
       }
     </h1>
     }
-    <div
-      class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
-      @if(specificAuction().data && specificAuction().data.bids.length > 0) {
-      <div class="py-1">
-        <p class="font-bold">
-          {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-        </p>
-      </div>
-      }
-      <div>
-        <div class="hidden md:block py-1">
-          <!-- <p class="font-bold text-lg">18</p> -->
-          <p class="inline lg:block font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</p>
-          <span class="text-gray4 text-sm"> Ofertas</span>
-        </div>
-        @defer (when specificAuction().data) {
-        @if (specificAuction().data.status === 'active') {
-        <div class="md:hidden">
-          <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-            py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-            HACER UNA OFERTA
-          </button>
-        </div>
-        }
-        }
-      </div>
-    </div>
-    <div class="grid gap-y-4 md:flex w-full md:justify-between">
-      <!-- bids: {{specificAuction().data.bids.length}} -->
-      <!-- status: {{specificAuction().data.status}} -->
-      <!-- auction: {{auction().data | json}} -->
+
+    <div class="flex w-full justify-between">
       <div
-        class="hidden md:grid items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
-        @if(specificAuction().data && specificAuction().data.bids.length > 0) {
+        class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
+        @if(specificAuction().data) {
         @if (specificAuction().data.status === 'completed') {
         @defer (when auction().data) {
-        <h3 class="text-xl">
+        <h3>
           {{specificAuction().data.winnerInfo.amount| currency:'USD':'symbol':'1.0-2'}} MXN
-          <p class="text-sm">
-            Vendido en
-          </p>
         </h3>
         }
         }
         @else {
+        @if (specificAuction().data.bids.length > 0) {
         <div class="py-1">
           @defer (when specificAuction().data) {
-          <p class="text-xl">
+          <p>
             {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
           </p>
-          <p class="text-sm">
+          <p class="md:text-sm">
             Puja más alta
           </p>
           }
         </div>
+        }@else {
+        <div class="py-1">
+          <p>
+            {{auction().data.attributes.lastBid| currency:'USD':'symbol':'1.0-2'}} MXN
+          </p>
+          <p class="md:text-sm">
+            Última puja
+          </p>
+        </div>
+        }
 
         <div>
           @defer (when auction().data) {
-          <h3 class="text-xl" [ngClass]="{'ml-4': specificAuction().data && specificAuction().data.bids.length > 0}">
+          <h3 class="ml-4">
             {{auction().data.attributes.reserveAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-            <p class="text-sm">
+            <p class="md:text-sm">
               Precio de venta
             </p>
           </h3>
-          }
-
-          @defer (when specificAuction().data) {
-          @if (specificAuction().data.status === 'active') {
-          <div class="md:hidden">
-            <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-              py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button>
-          </div>
-          }
           }
         </div>
         }
@@ -114,49 +80,28 @@
         }
         }
       </div>
-      <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
-        <span class="md:hidden space-x-2 inline-block">
-          @if (auction().data && auction().data.attributes.auctionCarForm.reserve === false) {
-          <no-reserve-tag-component></no-reserve-tag-component>
-          }
-          @if (auction().data) {
-          <span class="inline-block text-xs md:text-sm w-fit bg-black/30 text-black px-4 py-1 rounded">
-            Premium
-          </span>
-          }
-        </span>
-        <div class="ml-auto">
-          <img class="inline-block w-7 h-7" src="assets/img/icons/share.svg" alt="">
-        </div>
+      <div class="flex lg:grid lg:grid-flow-col gap-x-2 md:gap-x-4 gap-y-4 items-center md:text-center">
+        <!-- <div class="ml-auto">
+          <img class="inline-block w-5 h-5 md:w-7 md:h-7" src="assets/img/icons/share.svg" alt="">
+        </div> -->
         <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionCarId)">
-          <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block w-7 h-7"></shared-star>
+          <shared-star [shouldFill]="isFollowing() ? true : false"
+            classes="inline-block w-5 h-5 md:w-7 md:h-7"></shared-star>
         </button>
-        <div class="col-span-2 md:col-span-1">
-          @defer (when specificAuction().data) {
-          <!-- @if (specificAuction().data.status === 'active') { -->
-          <div class="flex gap-2">
-            @if (auction().data.attributes.status === 'active') {
-            <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
-              classes="hidden md:block font-lato font-semibold text-xs" sharedPrimaryButton>
-              OFERTAR
-            </button>
-            <!-- comprar -->
-            <button (click)="openBuyNowModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
-              classes="hidden md:block font-lato font-semibold text-xs" sharedPrimaryButton>
-              COMPRAR
-            </button>
-            }
-          </div>
-          <!-- } -->
+        @defer (when specificAuction().data) {
+        <div class="flex gap-2">
+          @if (auction().data.attributes.status === 'active') {
+          <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-3 md:px-6" py="py-2 md:py-3.5"
+            width="w-fit" class="font-lato font-semibold text-xxs md:text-xs" sharedPrimaryButton>
+            OFERTAR
+          </button>
+          <button (click)="openBuyNowModal()" rounded="rounded-xl" px="px-3 md:px-6" py="py-2 md:py-3.5" width="w-fit"
+            class="font-lato font-semibold text-xxs md:text-xs" sharedPrimaryButton>
+            COMPRAR
+          </button>
           }
-          <div class="block md:hidden">
-            <!-- <p class="font-bold text-lg">18</p> -->
-            @if (specificAuction().data) {
-            <p class="inline lg:block font-bold">{{specificAuction().data.bids.length}}</p>
-            }
-            <span class="text-gray4 text-sm"> Ofertas</span>
-          </div>
         </div>
+        }
       </div>
     </div>
   </div>

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ArtWizard } from '@dashboard/interfaces';
 
 import { ArtWizardService } from '@dashboard/services/art-wizard.service';
@@ -9,7 +10,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
   standalone: true,
   imports: [
     ModalComponent,
-    // MatTabsModule
+    MatTabsModule
   ],
   templateUrl: './auction-art-details-modal.component.html',
   styleUrl: './auction-art-details-modal.component.css',

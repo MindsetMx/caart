@@ -27,9 +27,10 @@
         @defer (when specificAuction().data) {
         @if (specificAuction().data.status === 'completed') {
         <div class="py-1">
-          <p>
-            {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
-          </p>
+          {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
+          <!-- <p class="text-sm">
+            Vendido en
+          </p> -->
         </div>
         } @else {
         @if(specificAuction().data.bids.length > 0) {
@@ -41,12 +42,14 @@
         }
         }
 
+        @if (specificAuction().data.status !== 'completed') {
         <div class="py-1" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
           <p class="inline lg:block">
             <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</span>
             Ofertas
           </p>
         </div>
+        }
         }
 
         @if (auction().data && countdownConfig().leftTime! > 0) {

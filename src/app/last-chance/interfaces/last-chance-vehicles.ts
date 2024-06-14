@@ -22,6 +22,7 @@ export interface LastChanceVehiclesAttributes {
   extract: string;
   state: string;
   city: string;
+  premium: boolean;
 }
 
 export interface LastChanceVehiclesMeta {

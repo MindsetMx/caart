@@ -130,7 +130,7 @@ export class ArtRegistrationExtraInfoComponent {
       // photos: [[]],
 
       certificadoAutenticidad: [true, Validators.required],
-      entidadCertificado: [true, Validators.required],
+      entidadCertificado: ['Entidad de prueba', Validators.required],
       entregaConMarco: [true, Validators.required],
       firmaArtista: [false, Validators.required],
       procedenciaObra: ['Museo de Arte Moderno, Nueva York', Validators.required],

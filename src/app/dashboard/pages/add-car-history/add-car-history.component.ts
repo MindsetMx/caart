@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AppService } from '@app/app.service';
 import { AuctionCarService } from '@dashboard/services/auction-car.service';
@@ -57,6 +57,14 @@ export class AddCarHistoryComponent {
     return this.blocksFormArray.controls as FormGroup[];
   }
 
+  get extraInfoFormArray(): FormArray {
+    return this.addCarHistoryForm.get('extraInfo') as FormArray;
+  }
+
+  get extraInfoFormArrayControls(): FormControl[] {
+    return this.extraInfoFormArray.controls as FormControl[];
+  }
+
   constructor() {
     this.originalAuctionCarId.set(this.#activatedRoute.snapshot.paramMap.get('id')!);
 
@@ -64,7 +72,9 @@ export class AddCarHistoryComponent {
       originalAuctionCarId: [this.originalAuctionCarId(), Validators.required],
       blocks: this.#formBuilder.array([], Validators.required),
       extract: ['', Validators.required],
-      extraInfo: ['', Validators.required],
+      extraInfo: this.#formBuilder.array([
+        this.#formBuilder.control('', Validators.required)
+      ], Validators.required)
     });
   }
 
@@ -96,6 +106,14 @@ export class AddCarHistoryComponent {
     });
 
     // this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.addCarHistoryForm).subscribe({
+  }
+
+  removeExtraInfo(index: number): void {
+    this.extraInfoFormArray.removeAt(index);
+  }
+
+  addExtraInfo(): void {
+    this.extraInfoFormArray.push(this.#formBuilder.control('', Validators.required));
   }
 
   deleteBlock(index: number): void {
@@ -137,6 +155,14 @@ export class AddCarHistoryComponent {
 
   openCarPhotoGallery(): void {
     this.carPhotoGalleryIsOpen.set(true);
+  }
+
+  controlHasError(control: FormControl): boolean {
+    return this.#validatorsService.controlHasError(control);
+  }
+
+  getErrorFromControl(control: FormControl): string | undefined {
+    return this.#validatorsService.getErrorFromControl(control);
   }
 
   hasError(field: string, form: FormGroup = this.addCarHistoryForm): boolean {

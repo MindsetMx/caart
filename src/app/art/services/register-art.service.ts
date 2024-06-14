@@ -17,6 +17,8 @@ export class RegisterArtService {
   registerArt$(formGroup: FormGroup): Observable<any> {
     const trimmedFormGroup = this.#appService.trimObjectValues(formGroup.value);
 
+    trimmedFormGroup.reserve = trimmedFormGroup.reserve === 'true';
+
     const url = `${this.#baseUrl}/auction-items/register-art`;
 
     return this.#http.post<any>(url, trimmedFormGroup);

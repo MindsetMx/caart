@@ -18,6 +18,7 @@ import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabi
 import { BiddingMemorabiliaConditionsService } from '@auctions/services/bidding-memorabilia-conditions.service';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { BiddingArtConditionsService } from '@auctions/services/bidding-art-conditions.service';
+import { AuctionStatus } from '@auctions/enums/auction-status';
 
 @Component({
   selector: 'auction-summary',
@@ -67,6 +68,10 @@ export class AuctionSummaryComponent {
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
+  }
+
+  get auctionStatus(): typeof AuctionStatus {
+    return AuctionStatus;
   }
 
   authStatusEffect = effect(() => {

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ArtAuctionsComponent } from '@auctions/components/art-auctions/art-auctions.component';
 import { CarAuctionsComponent } from '@auctions/components/car-auctions/car-auctions.component';
 import { AuctionTypes } from '@auctions/enums';
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
@@ -12,7 +13,8 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
   imports: [
     CommonModule,
     TabsWithIconsComponent,
-    CarAuctionsComponent
+    CarAuctionsComponent,
+    ArtAuctionsComponent
   ],
   templateUrl: './my-auctions.component.html',
   styleUrl: './my-auctions.component.css',

@@ -4,6 +4,23 @@ export interface ArtWizard {
 
 export interface ArtWizardData {
   registerArtDetails: ArtWizardRegisterArtDetails;
+  artDetails: ArtWizardArtDetails;
+}
+
+export interface ArtWizardArtDetails {
+  _id: string;
+  certificadoAutenticidad: boolean;
+  entidadCertificado: string;
+  entregaConMarco: boolean;
+  firmaArtista: boolean;
+  procedenciaObra: string;
+  historiaArtista: string;
+  originalAuctionArtId: string;
+  photos: any[];
+  videos: any[];
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
 }
 
 export interface ArtWizardRegisterArtDetails {

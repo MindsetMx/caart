@@ -1,5 +1,5 @@
-<form [formGroup]="registerArtForm" (ngSubmit)="registerArt()">
-  <div class="grid grid-cols-2 gap-4">
+<form [formGroup]="registerArtForm" (ngSubmit)="registerArt()" (click)="showModalBasedOnUserStatus()">
+  <div class="grid grid-cols-2 gap-4" [ngClass]="{'pointer-events-none': userIsNotAuthenticated}">
     <!-- artist: string; -->
     <div>
       <label for="artist" class="block mb-1 text-sm">Artista <span
@@ -242,10 +242,11 @@
         para potenciar las ofertas de tu pieza.
       </p>
       <fieldset>
-        <legend class="sr-only">¿En qué estas interesado?</legend>
+        <legend class="sr-only">Elige tu paquete</legend>
         <div class="space-y-2">
           <div>
-            <input value="ListInMarketplace" id="listInMarketplace" type="radio" checked class="h-4 w-4">
+            <input formControlName="interest" value="ListInMarketplace" id="listInMarketplace" type="radio" checked
+              class="h-4 w-4">
             <label for="listInMarketplace" class="ml-3 leading-6 inline mr-4">Publicar mi pieza + Sesión
               fotográfica
               profesional</label>
@@ -254,8 +255,8 @@
             </span>
           </div>
           <div class="flex items-center">
-            <input value="ListInMarketplacePlusPhotoshoot" id="listInMarketplacePlusPhotoshoot" type="radio"
-              class="h-4 w-4">
+            <input formControlName="interest" value="ListInMarketplacePlusPhotoshoot"
+              id="listInMarketplacePlusPhotoshoot" type="radio" class="h-4 w-4">
             <label for="listInMarketplacePlusPhotoshoot" class="ml-3 block leading-6">
               Publicar mi pieza</label>
           </div>

@@ -3,19 +3,43 @@
 
   <hr class="my-4">
 
+  @defer (when specificAuction().data) {
   <div class="md:grid md:grid-cols-12 gap-4">
     <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
+      @switch (specificAuction().data.status) {
+      @case (auctionStatus.active) {
       Oferta actual:
+      }
+      @case (auctionStatus.completed) {
+      Vendido en:
+      }
+      @case (auctionStatus.cancelled) {
+      Oferta actual:
+      }
+      }
     </div>
     <!-- <span class="col-span-8 lg:col-span-9 font-semibold">$1,650,500 MXN</span> -->
     @if (auction().data.attributes.bids.length > 0) {
     <span class="col-span-8 lg:col-span-9 font-semibold">
+      @switch (specificAuction().data.status) {
+      @case (auctionStatus.active) {
       {{auction().data.attributes.bids[auction().data.attributes.bids.length-1].bidAmount |
       currency:'USD':'symbol':'1.0-2'}}
       MXN
+      }
+      @case (auctionStatus.completed) {
+      {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
+      }
+      @case (auctionStatus.cancelled) {
+      {{auction().data.attributes.bids[auction().data.attributes.bids.length-1].bidAmount |
+      currency:'USD':'symbol':'1.0-2'}}
+      MXN
+      }
+      }
     </span>
     }
   </div>
+  }
 
   <hr class="my-4">
 
@@ -58,6 +82,8 @@
 
   <hr class="my-4">
 
+  @defer (when specificAuction().data) {
+  @if (specificAuction().data.status === auctionStatus.active) {
   <form [formGroup]="makeAnOfferForm" (ngSubmit)="makeAnOffer()" class="md:grid md:grid-cols-12 gap-4">
     <div class="flex items-center md:col-span-4 lg:col-span-3 text-gray4 mr-2 md:mr-0">
       Haz una oferta:
@@ -88,6 +114,8 @@
   </form>
 
   <hr class="my-4">
+  }
+  }
 
   @defer (when metrics().data) {
   <div class="lg:flex lg:justify-between">

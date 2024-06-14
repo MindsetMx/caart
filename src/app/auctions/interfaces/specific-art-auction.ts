@@ -13,8 +13,16 @@ export interface SpecificArtAuctionData {
   premium: boolean;
   categories: string[];
   title: string;
+  winnerInfo: SpecificAuctionBidWinnerInfo;
   bids: SpecificArtAuctionBid[];
   __v: number;
+}
+
+interface SpecificAuctionBidWinnerInfo {
+  userId: string;
+  amount: number;
+  chargeId: string;
+  purchaseDate: Date;
 }
 
 export interface SpecificArtAuctionBid {

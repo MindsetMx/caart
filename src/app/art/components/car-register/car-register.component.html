@@ -29,6 +29,9 @@
   @switch (currentSubastaAutomovilesType()) {
   @case (subastaAutomovilesType.AUTOMOVILES) {
   @defer (when brands().length > 0) {
+  <!-- <pre class="text-xs">
+      {{carRegisterForm.value | json}}
+    </pre> -->
   <form [formGroup]="carRegisterForm" (ngSubmit)="registerCar()" (click)="showModalBasedOnUserStatus()">
     <div class="grid grid-cols-2 gap-4" [ngClass]="{'pointer-events-none': userIsNotAuthenticated}">
       <div>
@@ -156,8 +159,8 @@
         <label for="reserve" class="block mb-1 text-sm">Reserva <span
             class="font-bold text-red-500 inline-block">*</span></label>
         <select formControlName="reserve" id="reserve" sharedInput>
-          <option value="true">Sí</option>
-          <option value="false">No</option>
+          <option [value]="true">Sí</option>
+          <option [value]="false">No</option>
         </select>
         @if (hasError('reserve')) {
         <shared-input-error [message]="getError('reserve')"></shared-input-error>
@@ -316,7 +319,7 @@
           para potenciar las ofertas de tu pieza.
         </p>
         <fieldset>
-          <legend class="sr-only">¿En qué estas interesado?</legend>
+          <legend class="sr-only">Elige tu paquete</legend>
           <div class="space-y-2">
             <div>
               <input formControlName="interest" value="ListInMarketplace" id="listInMarketplace" type="radio" checked

@@ -302,6 +302,8 @@ export class LastChanceDetailComponent implements AfterViewInit {
       })
     ).subscribe({
       next: (specificAuctionDetails) => {
+        console.log({ specificAuctionDetails });
+
         this.specificAuction.set(specificAuctionDetails);
       },
       error: (error) => {
@@ -313,6 +315,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   getSpecificAuctionDetails(): void {
     this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionCarId).subscribe({
       next: (specificAuctionDetails) => {
+        console.log({ specificAuctionDetails });
         this.specificAuction.set(specificAuctionDetails);
       },
       error: (error) => {

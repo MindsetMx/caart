@@ -12,6 +12,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { LastChanceBidService } from '@auctions/services/last-chance-bid.service';
 import { AppService } from '@app/app.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LastChanceArtBidService } from '@auctions/services/last-chance-art-bid.service';
 
 @Component({
   selector: 'last-chance-bid-modal-component',
@@ -53,6 +54,7 @@ export class LastChanceBidModalComponent {
 
   #validatorsService = inject(ValidatorsService);
   #lastChanceBidService = inject(LastChanceBidService);
+  #lastChanceArtBidService = inject(LastChanceArtBidService);
   #appService = inject(AppService);
   #formBuilder = inject(FormBuilder);
 
@@ -64,9 +66,9 @@ export class LastChanceBidModalComponent {
     this.paymentMethodControl.setValue(this.paymentMethodId());
   });
 
-  // minimumNextBidChangedEffect = effect(() => {
-  //   this.bidAmountControl.addValidators(Validators.min(this.minimumNextBid()));
-  // });
+  minimumNextBidChangedEffect = effect(() => {
+    this.bidAmountControl.addValidators(Validators.min(this.minimumNextBid()));
+  });
 
   newOfferMadeChangedEffect = effect(() => {
     if (this.newOfferMade()) {
@@ -75,7 +77,7 @@ export class LastChanceBidModalComponent {
           this.getBiddingConditions();
           break;
         case AuctionTypes.art:
-          // this.getBiddingArtConditions();
+          this.getBiddingArtConditions();
           break;
         case AuctionTypes.memorabilia:
           // this.getBiddingMemorabiliaConditions();
@@ -99,6 +101,7 @@ export class LastChanceBidModalComponent {
               this.getBiddingConditions();
               break;
             case AuctionTypes.art:
+              this.getBiddingArtConditions();
               break;
             case AuctionTypes.memorabilia:
               break;
@@ -133,7 +136,12 @@ export class LastChanceBidModalComponent {
         break;
 
       case AuctionTypes.art:
+        this.getBiddingArtConditions();
 
+        this.makeAnOfferForm.controls['bidAmount'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((value) => {
+            this.getBidArtConditions(value);
+          });
         break;
 
       case AuctionTypes.memorabilia:
@@ -173,7 +181,21 @@ export class LastChanceBidModalComponent {
         break;
 
       case AuctionTypes.art:
+        this.#lastChanceArtBidService.addBid$(this.auctionId(), this.bidAmountControl.value, this.paymentMethodControl.value).subscribe({
+          next: () => {
+            this.getBiddingArtConditions();
+            this.isOpen.set(false);
 
+            this.offerMade.emit();
+            this.toastSuccess('Oferta realizada con éxito');
+          },
+          error: (error) => {
+            console.error(error);
+            this.serverError.set(error.error.message);
+          }
+        }).add(() => {
+          this.isButtonMakeAnOfferDisabled.set(false);
+        });
         break;
 
       case AuctionTypes.memorabilia:
@@ -185,11 +207,13 @@ export class LastChanceBidModalComponent {
   getBiddingConditions(): void {
     this.#lastChanceBidService.getBiddingConditions$(this.auctionId()).subscribe({
       next: (biddingConditions) => {
-        // this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
+        console.log({ biddingConditions });
 
-        // this.bidAmount()
-        //   ? this.bidAmountControl.setValue(this.bidAmount())
-        //   : this.bidAmountControl.setValue(this.minimumNextBid());
+        this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
+
+        this.bidAmount()
+          ? this.bidAmountControl.setValue(this.bidAmount())
+          : this.bidAmountControl.setValue(this.minimumNextBid());
 
         this.getBidConditions(this.minimumNextBid());
       },
@@ -199,8 +223,34 @@ export class LastChanceBidModalComponent {
     });
   }
 
+  getBiddingArtConditions(): void {
+    this.#lastChanceArtBidService.getBiddingConditions$(this.auctionId()).subscribe({
+      next: (biddingConditions) => {
+        console.log({ biddingConditions });
+
+        this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
+
+        this.bidAmountControl.setValue(this.minimumNextBid());
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
   getBidConditions(userBidAmount: number): void {
     this.#lastChanceBidService.getBidConditions$(this.auctionId(), userBidAmount).subscribe({
+      next: (bidConditions) => {
+        this.holdAmount.set(bidConditions.data.holdAmount);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  getBidArtConditions(userBidAmount: number): void {
+    this.#lastChanceArtBidService.getBidConditions$(this.auctionId(), userBidAmount).subscribe({
       next: (bidConditions) => {
         this.holdAmount.set(bidConditions.data.holdAmount);
       },

@@ -58,7 +58,6 @@ export interface ArtAuctionDetailsAuctionArtForm {
   depth: string;
   unit: string;
   condition: string;
-  origin: string;
   userId: string;
   photos: string[];
   videos: string[];

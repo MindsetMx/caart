@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -58,6 +58,14 @@ export class AddArtHistoryComponent {
     return this.blocksFormArray.controls as FormGroup[];
   }
 
+  get extraInfoFormArray(): FormArray {
+    return this.addArtHistoryForm.get('extraInfo') as FormArray;
+  }
+
+  get extraInfoFormArrayControls(): FormControl[] {
+    return this.extraInfoFormArray.controls as FormControl[];
+  }
+
   constructor() {
     this.originalAuctionArtId.set(this.#activatedRoute.snapshot.paramMap.get('id')!);
 
@@ -65,6 +73,9 @@ export class AddArtHistoryComponent {
       originalAuctionArtId: [this.originalAuctionArtId(), Validators.required],
       blocks: this.#formBuilder.array([], Validators.required),
       extract: ['', Validators.required],
+      extraInfo: this.#formBuilder.array([
+        this.#formBuilder.control('', Validators.required)
+      ], Validators.required)
     });
   }
 
@@ -94,6 +105,14 @@ export class AddArtHistoryComponent {
     }).add(() => {
       this.addArtHistorySubmitButtonIsDisabled.set(false);
     });
+  }
+
+  removeExtraInfo(index: number): void {
+    this.extraInfoFormArray.removeAt(index);
+  }
+
+  addExtraInfo(): void {
+    this.extraInfoFormArray.push(this.#formBuilder.control('', Validators.required));
   }
 
   deleteBlock(index: number): void {
@@ -135,6 +154,14 @@ export class AddArtHistoryComponent {
 
   openArtPhotoGallery(): void {
     this.artPhotoGalleryIsOpen.set(true);
+  }
+
+  controlHasError(control: FormControl): boolean {
+    return this.#validatorsService.controlHasError(control);
+  }
+
+  getErrorFromControl(control: FormControl): string | undefined {
+    return this.#validatorsService.getErrorFromControl(control);
   }
 
   hasError(field: string, form: FormGroup = this.addArtHistoryForm): boolean {

@@ -116,12 +116,12 @@
   @defer () {
   @if (last) {
   <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionCarId"
-    [cover]="auction.attributes.cover" [title]="auction.attributes.title" [extract]="auction.attributes.extract"
-    intersection (visible)="getVehicles(false)"></last-chance-vehicle-card>
+    [isPremium]="auction.attributes.premium" [cover]="auction.attributes.cover" [title]="auction.attributes.title"
+    [extract]="auction.attributes.extract" intersection (visible)="getVehicles(false)"></last-chance-vehicle-card>
   }
   @else {
   <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionCarId"
-    [cover]="auction.attributes.cover" [title]="auction.attributes.title"
+    [isPremium]="auction.attributes.premium" [cover]="auction.attributes.cover" [title]="auction.attributes.title"
     [extract]="auction.attributes.extract"></last-chance-vehicle-card>
   }
   } @placeholder (minimum 300ms) {

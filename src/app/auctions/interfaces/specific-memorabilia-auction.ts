@@ -16,7 +16,15 @@ export interface SpecificMemorabiliaAuctionData {
   __v: number;
   reserveCommissionValue: number;
   reserveAmount: number;
+  winnerInfo: SpecificAuctionBidWinnerInfo;
   bids: SpecificMemorabiliaAuctionBid[];
+}
+
+interface SpecificAuctionBidWinnerInfo {
+  userId: string;
+  amount: number;
+  chargeId: string;
+  purchaseDate: Date;
 }
 
 export interface SpecificMemorabiliaAuctionBid {

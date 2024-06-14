@@ -76,6 +76,31 @@
           }
         </div>
 
+        <div class="col-span-2 grid gap-5" formArrayName="extraInfo">
+          @for (charge of extraInfoFormArrayControls; track charge; let i = $index) {
+          <div class="flex gap-5">
+            <div class="w-full">
+              <label [for]="'additionalCharge' + i" class="block text-sm mb-2">Información adicional {{i}}<span
+                  class="font-bold text-red-500 inline-block">*</span></label>
+              <textarea [formControlName]="i" [id]="'additionalCharge' + i" cols="30" rows="10" sharedInput></textarea>
+              @if (controlHasError(charge)) {
+              <shared-input-error [message]="getErrorFromControl(charge)"></shared-input-error>
+              }
+            </div>
+            <!-- eliminar cargo -->
+            <div class="flex items-center mt-5">
+              <button type="button" class="flex" (click)="removeExtraInfo(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+
+        <div class="col-span-2">
+          <button (click)="addExtraInfo()" type="button" class="underline">Añadir información adicional</button>
+        </div>
+
         <button class="inline-flex justify-center items-center" type="submit"
           [disabled]="addArtHistorySubmitButtonIsDisabled()" [class.opacity-50]="addArtHistorySubmitButtonIsDisabled()"
           sharedPrimaryButton>

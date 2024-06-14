@@ -89,13 +89,9 @@
     <two-column-auction-grid>
       <ng-container left>
         <section class="flex justify-between mt-4">
-          <!-- <div class="underline">5 Comentarios</div> -->
           @defer (when comments().data) {
-          <div class="underline">{{comments().data.length}} Comentarios</div>
+          <div class="underline text-xs">{{comments().data.length}} Comentarios</div>
           }
-          <!-- @defer (when comments().data) {
-            <div class="underline">{{comments().data.length}} Comentarios</div>
-            } -->
 
           @defer (when metrics().data) {
           <div class="text-gray4 text-sm flex space-x-4">
@@ -128,7 +124,9 @@
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           @if (auction().data) {
-          <div class="text-gray4" [innerHTML]="auction().data.attributes.carHistory.extraInfo"></div>
+          <div class="text-gray4" style="word-wrap: break-word;">
+            {{auction().data.attributes.carHistory.extraInfo}}
+          </div>
 
           <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
 
@@ -190,7 +188,7 @@
           @for (item of auction().data.attributes.carHistory.blocks; track $index) {
           @switch (item.type) {
           @case ('text') {
-          <p class="text-justify">
+          <p class="text-justify text-xs md:text-base" style="word-wrap: break-word;">
             {{item.content}}
           </p>
           }

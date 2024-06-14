@@ -77,7 +77,7 @@ export class CarRegisterComponent {
   #validatorsService = inject(ValidatorsService);
 
   uploadImageUrlEffect = effect(() => {
-    if (this.uppyDashboardImages()) {
+    if (this.uppyDashboardImages() && !this.uppyImages) {
       this.uppyImages = new Uppy({
         debug: true,
         autoProceed: true,
@@ -293,7 +293,7 @@ export class CarRegisterComponent {
       pipe(
         takeUntilDestroyed()
       ).subscribe((value) => {
-        if (value === 'true') {
+        if (value === true) {
           this.reserveAmountControl.setValidators([Validators.required]);
         } else {
           this.reserveAmountControl.setValue('');

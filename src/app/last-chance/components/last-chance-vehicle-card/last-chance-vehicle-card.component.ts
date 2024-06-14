@@ -38,6 +38,7 @@ export class LastChanceVehicleCardComponent {
   cover = input.required<string>();
   title = input.required<string>();
   extract = input.required<string>();
+  isPremium = input.required<boolean>();
 
   makeAnOfferModalIsOpen = signal<boolean>(false);
   newOfferMade = signal<number>(0);

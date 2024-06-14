@@ -17,7 +17,11 @@ export class RegisterCarService {
   #appService = inject(AppService);
 
   registerCar$(registerCar: FormGroup): Observable<any> {
+    console.log(registerCar.value);
+
     const trimmedRegisterCar = this.#appService.trimObjectValues(registerCar.value);
+
+    trimmedRegisterCar.reserve = trimmedRegisterCar.reserve === 'true';
 
     const token = localStorage.getItem('token');
 

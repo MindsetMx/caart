@@ -117,12 +117,11 @@ export class AuctionArtComponent {
           { label: 'Rareza', value: this.auction().data.attributes.auctionArtForm.rarity },
           { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.width} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.depth} ${this.auction().data.attributes.auctionArtForm.unit}` },
           { label: 'Condición', value: this.auction().data.attributes.auctionArtForm.condition },
-          { label: 'Origen', value: this.auction().data.attributes.auctionArtForm.origin },
           { label: 'Certificado de autenticidad', value: this.auction().data.attributes.artDetail.certificadoAutenticidad ? 'Sí' + ', ' + this.auction().data.attributes.artDetail.entidadCertificado : 'No' },
           // { label: 'Entidad del certificado', value: this.auction().data.attributes.artDetail.entidadCertificado },
           { label: 'Entrega con marco', value: this.auction().data.attributes.artDetail.entregaConMarco ? 'Sí' : 'No' },
           { label: 'Firma del artista', value: this.auction().data.attributes.artDetail.firmaArtista ? 'Sí' : 'No' },
-          // { label: 'Procedencia de la obra', value: this.auction().data.attributes.artDetail.procedenciaObra },
+          { label: 'Procedencia de la obra', value: this.auction().data.attributes.artDetail.procedenciaObra },
           // { label: 'Historia del artista', value: this.auction().data.attributes.artDetail.historiaArtista },
         ]);
       });

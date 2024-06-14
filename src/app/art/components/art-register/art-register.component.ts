@@ -19,8 +19,11 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Observable, map, startWith } from 'rxjs';
 import { states } from '@shared/states';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Rarity } from '../../enum/rarity.enum';
+import { AuthStatus } from '@auth/enums';
+import { AuthService } from '@auth/services/auth.service';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'art-register',
@@ -34,7 +37,8 @@ import { Rarity } from '../../enum/rarity.enum';
     UppyAngularDashboardModule,
     NgxMaskDirective,
     MatAutocompleteModule,
-    AsyncPipe
+    AsyncPipe,
+    NgClass
   ],
   templateUrl: './art-register.component.html',
   styleUrl: './art-register.component.css',
@@ -59,6 +63,8 @@ export class ArtRegisterComponent {
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
   #formBuilder = inject(FormBuilder);
+  #authService = inject(AuthService);
+  #appComponent = inject(AppComponent);
 
   uppyImages?: Uppy;
   uppyVideos?: Uppy;
@@ -85,6 +91,14 @@ export class ArtRegisterComponent {
 
   get reserveAmountControl(): FormControl {
     return this.registerArtForm.get('reserveAmount') as FormControl;
+  }
+
+  get authStatus(): AuthStatus {
+    return this.#authService.authStatus();
+  }
+
+  get userIsNotAuthenticated(): boolean {
+    return this.authStatus === AuthStatus.notAuthenticated;
   }
 
   // get rarity(): Rarity {
@@ -227,6 +241,7 @@ export class ArtRegisterComponent {
       reserveAmount: ['', [Validators.required]],
       photos: [[], [Validators.required]],
       videos: [[]],
+      interest: ['', Validators.required],
       acceptTerms: ['', [Validators.required]],
     });
 
@@ -275,6 +290,13 @@ export class ArtRegisterComponent {
     }).add(() => {
       this.isButtonRegisterArtDisabled.set(false);
     });
+  }
+
+  showModalBasedOnUserStatus(): void {
+    if (this.userIsNotAuthenticated) {
+      this.#appComponent.openSignInModal();
+      return;
+    }
   }
 
   batchTokenDirect(): void {

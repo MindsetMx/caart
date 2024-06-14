@@ -20,7 +20,6 @@ export class LastChanceCarAuctionsService {
     return this.#http.patch<any>(`${this.#baseUrl}/last-chance-auctions/${idLastChance}/accept-offer/${idOffer}`, {});
   }
 
-
   rejectBid$(auctionId: string, bidId: string): Observable<any> {
     return this.#http.patch<any>(`${this.#baseUrl}/last-chance-auctions/${auctionId}/reject-offer/${bidId}`, {});
   }
