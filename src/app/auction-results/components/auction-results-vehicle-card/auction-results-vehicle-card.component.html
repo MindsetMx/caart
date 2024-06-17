@@ -18,7 +18,8 @@
       }
     </div>
     }
-    <p class="text-gray4 line-clamp-3" [ngClass]="{'mt-9': !hasReserve() === false && !isPremium()}">
+    <p class="text-gray4 line-clamp-3" [ngClass]="{'mt-9': !hasReserve() === false && !isPremium()}"
+      style="word-wrap: break-word;">
       {{extract()}}
     </p>
 

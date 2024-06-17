@@ -199,7 +199,7 @@
           @for (item of auction().data.attributes.carHistory.blocks; track $index) {
           @switch (item.type) {
           @case ('text') {
-          <p style="word-wrap: break-word;">
+          <p class="text-justify text-xs md:text-base" style="word-wrap: break-word;">
             {{item.content}}
           </p>
           }

@@ -224,7 +224,7 @@
           @for (item of auction().data.attributes.artHistory.blocks; track $index) {
           @switch (item.type) {
           @case ('text') {
-          <p class="text-justify">
+          <p class="text-justify text-xs md:text-base" style="word-wrap: break-word;">
             {{item.content}}
           </p>
           }
