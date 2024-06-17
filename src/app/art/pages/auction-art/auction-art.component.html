@@ -355,5 +355,6 @@
   [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>
 
 @defer (when auctionId()) {
-<auction-cancelled [isOpen]="auctionCancelledModalIsOpen()" [auctionId]="auctionId()!"></auction-cancelled>
+<auction-cancelled [isOpen]="auctionCancelledModalIsOpen()" [auctionId]="auctionId()!"
+  lastChanceUrl="ultima-oportunidad-arte"></auction-cancelled>
 }

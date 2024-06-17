@@ -19,4 +19,5 @@ import { PrimaryButtonDirective } from '@shared/directives';
 export class AuctionCancelledComponent {
   isOpen = model.required<boolean>();
   auctionId = input.required<string>();
+  lastChanceUrl = input.required<string>();
 }
