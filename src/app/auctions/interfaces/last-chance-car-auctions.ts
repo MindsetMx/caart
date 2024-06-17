@@ -46,7 +46,7 @@ export interface LastChanceCarAuctionsCarDetails {
   kmInput: number;
   transmissionType: string;
   engine: string;
-  photos: string[];
+  cover: string;
   videos: string[];
   lotNumber: number;
 }

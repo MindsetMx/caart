@@ -1,0 +1,19 @@
+<section class="container mt-12 mb-32 sm:max-w-5xl">
+  <h1 class="font-optima font-bold text-4xl">Mis subastas en vivo</h1>
+
+  @if(tabs){
+  <shared-tabs-with-icons class="mb-10" [tabs]="tabs" (tabSelected)="onTabSelected($event)"></shared-tabs-with-icons>
+  }
+
+  @switch (currentTabId()) {
+  @case (1) {
+  <my-live-car-auctions></my-live-car-auctions>
+  }
+  @case (2) {
+  <my-live-art-auctions></my-live-art-auctions>
+  }
+  @case (3) {
+
+  }
+  }
+</section>

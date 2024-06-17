@@ -39,7 +39,7 @@ export interface ArtAuctionsArtDetails {
   condition: string;
   postalCode: string;
   state: string;
-  photos: string[];
+  cover: string;
   videos: any[];
 }
 

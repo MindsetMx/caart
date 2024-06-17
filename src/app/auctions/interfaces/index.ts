@@ -23,3 +23,5 @@ export * from './completed-auctions';
 export * from './completed-art-auctions';
 export * from './last-chance-car-purchase-conditions';
 export * from './last-chance-car-auctions';
+export * from './my-live-car-auctions';
+export * from './my-live-art-auctions';

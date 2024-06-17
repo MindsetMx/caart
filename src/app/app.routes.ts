@@ -140,6 +140,11 @@ export const routes: Routes = [
     loadComponent: () => import('./auctions/pages/my-auctions/my-auctions.component').then((m) => m.MyAuctionsComponent),
   },
   {
+    path: 'mis-subastas-en-vivo',
+    canActivate: [VerifiedGuard, AuthGuard],
+    loadComponent: () => import('./auctions/pages/my-live-auctions/my-live-auctions.component').then((m) => m.MyLiveAuctionsComponent),
+  },
+  {
     path: 'reestablecer-contrasena',
     canActivate: [VerifiedGuard, GuestGuard],
     loadComponent: () => import('./auth/components/password-reset/password-reset.component').then((m) => m.PasswordResetComponent),

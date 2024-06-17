@@ -1,0 +1,40 @@
+<shared-modal [verticalCenter]="true" [(isOpen)]="isOpen">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Actualizar precio de reserva</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <form [formGroup]="updateReservePriceForm" (ngSubmit)="updateReservePrice()" class="container">
+    <div>
+      <div class="relative mt-2 rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input formControlName="reserveAmount" type="text" placeholder="Precio de reserva"
+          class="block w-full rounded-md border-0 py-1.5 pl-7 pr-12  placeholder:text-gray-400" sharedInput
+          mask="separator" thousandSeparator="," required aria-describedby="price-currency">
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
+        </div>
+      </div>
+    </div>
+    @if(hasError('reserveAmount')) {
+    <shared-input-error class="mt-1" [message]="getError('reserveAmount')"></shared-input-error>
+    }
+
+    @if (serverError()) {
+    <shared-input-error class="mt-1" [message]="serverError()"></shared-input-error>
+    }
+
+    <button class="mt-8 flex justify-center" sharedPrimaryButton [disabled]="isButtonUpdateReservePriceDisabled()"
+      [class.opacity-50]="isButtonUpdateReservePriceDisabled()">
+      @if (isButtonUpdateReservePriceDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
+      Confirmar
+      }
+    </button>
+  </form>
+
+</shared-modal>

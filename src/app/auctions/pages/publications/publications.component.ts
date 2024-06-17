@@ -10,6 +10,8 @@ import { TabWithIcon } from '@shared/interfaces/tabWithIcon';
 import { AuctionCarPublicationsComponent } from '@auctions/components/auction-car-publications/auction-car-publications.component';
 import { AuctionMemorabiliaPublicationsComponent } from '@auctions/components/auction-memorabilia-publications/auction-memorabilia-publications.component';
 import { AuctionArtPublicationsComponent } from '@auctions/components/auction-art-publications/auction-art-publications.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -27,13 +29,16 @@ import { AuctionArtPublicationsComponent } from '@auctions/components/auction-ar
 export class AuctionCarPublishesComponent {
   #authService = inject(AuthService);
   #generalInfoService = inject(GeneralInfoService);
+  #activatedRoute = inject(ActivatedRoute);
+  #router = inject(Router);
 
   completeRegisterModalIsOpen = signal<boolean>(false);
   hasGeneralInfo = signal<boolean>(false);
   publicationId = signal<string>('');
   auctionType = signal<AuctionTypes>(AuctionTypes.car);
-  tabs: TabWithIcon[];
-  currentTab = signal<TabWithIcon>({} as TabWithIcon);
+  tabs?: TabWithIcon[];
+  currentTabId = signal<number>(1);
+  currentTabAuctionType = signal<AuctionTypes>(AuctionTypes.car);
 
   authStatusChangeEffect = effect(() => {
     if (this.authStatus === AuthStatus.authenticated) {
@@ -46,29 +51,42 @@ export class AuctionCarPublishesComponent {
   }
 
   constructor() {
-    this.tabs =
-      [
-        {
-          id: 1,
-          name: 'Automóviles',
-          img: 'assets/img/registrar auto/car-sport-outline.svg',
-          current: true
-        },
-        {
-          id: 2,
-          name: 'Arte',
-          img: 'assets/img/registrar auto/milo-venus.svg',
-          current: false
-        },
-        {
-          id: 3,
-          name: 'Memorabilia',
-          img: 'assets/img/registrar auto/milo-venus.svg',
-          current: false
-        }
-      ];
+    this.#activatedRoute.queryParams.
+      pipe(
+        takeUntilDestroyed(),
+      ).subscribe(params => {
+        let type: AuctionTypes = params['type'];
 
-    this.currentTab.set(this.tabs[this.tabs.findIndex(tab => tab.current)]);
+        if (!(type in AuctionTypes)) {
+          type = AuctionTypes.car;
+        }
+
+        this.currentTabAuctionType.set(type);
+
+        this.tabs =
+          [
+            {
+              id: 1,
+              name: 'Automóviles',
+              img: 'assets/img/registrar auto/car-sport-outline.svg',
+              current: this.currentTabAuctionType() === AuctionTypes.car
+            },
+            {
+              id: 2,
+              name: 'Arte',
+              img: 'assets/img/registrar auto/milo-venus.svg',
+              current: this.currentTabAuctionType() === AuctionTypes.art
+            },
+            {
+              id: 3,
+              name: 'Memorabilia',
+              img: 'assets/img/registrar auto/milo-venus.svg',
+              current: this.currentTabAuctionType() === AuctionTypes.memorabilia
+            }
+          ];
+
+        this.currentTabId.set(this.tabs.find(tab => tab.current)?.id || 1);
+      });
 
     this.getHasGeneralInfo();
   }
@@ -92,6 +110,29 @@ export class AuctionCarPublishesComponent {
   }
 
   onTabSelected(tab: TabWithIcon): void {
-    this.currentTab.set(tab);
+    this.currentTabId.set(tab.id);
+
+    switch (tab.id) {
+      case 1:
+        this.currentTabAuctionType.set(AuctionTypes.car);
+        break;
+      case 2:
+        this.currentTabAuctionType.set(AuctionTypes.art);
+        break;
+      case 3:
+        this.currentTabAuctionType.set(AuctionTypes.memorabilia);
+        break;
+    }
+
+    this.navigateWithQueryParams(this.currentTabAuctionType());
+  }
+
+  private navigateWithQueryParams(tabId: AuctionTypes): void {
+    this.#router.navigate([], {
+      queryParams: {
+        type: tabId
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 }

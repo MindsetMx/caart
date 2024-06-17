@@ -2,7 +2,7 @@
   @for (auction of auctions().data; track $index) {
   <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8">
     <div class="md:col-span-5">
-      <img class="w-full h-60 object-cover" [src]="auction.attributes.carDetails.photos[0]" alt="Foto del vehículo">
+      <img class="w-full h-60 object-cover" [src]="auction.attributes.carDetails.cover" alt="Foto del vehículo">
     </div>
     <div class="md:col-span-7">
       <h2 class="font-bold mb-4">Ofertas</h2>
