@@ -7,6 +7,7 @@ import { environments } from '@env/environments';
 import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabilia-details';
 import { SpecificMemorabiliaAuction } from '@auctions/interfaces/specific-memorabilia-auction';
 import { ArtMetrics } from '@auctions/interfaces/art-metrics';
+import { SpecificCarAuctionDetailsLastChance } from '@auctions/interfaces/specific-car-auction-details-last-chance';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +29,10 @@ export class AuctionDetailsService {
     return this.#http.get<SpecificAuction>(url);
   }
 
-  getSpecificAuctionDetailsLastChance$(id: string): Observable<SpecificAuction> {
-    // const url = `${this.#baseUrl}/auctions-cars/auction/active/${id}`;
-
-    // http://localhost:3000/auctions-cars/auction/last-chance/6662380e931aa3b5240e91e5
+  getSpecificAuctionDetailsLastChance$(id: string): Observable<SpecificCarAuctionDetailsLastChance> {
     const url = `${this.#baseUrl}/auctions-cars/auction/last-chance/${id}`;
 
-    return this.#http.get<SpecificAuction>(url);
+    return this.#http.get<SpecificCarAuctionDetailsLastChance>(url);
   }
 
   getMetrics$(id: string): Observable<AuctionMetrics> {

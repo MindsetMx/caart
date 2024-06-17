@@ -13,7 +13,7 @@ import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/au
 import { AuctionDetailsService } from '@auctions/services/auction-details.service';
 import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
 import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
-import { AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
+import { AuctionMetrics, SpecificAuction, SpecificCarAuctionDetailsLastChance } from '@auctions/interfaces';
 import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { AuctionTypesComments } from '@auctions/enums';
@@ -90,7 +90,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   metrics = signal<AuctionMetrics>({} as AuctionMetrics);
   paymentMethodId = signal<string>('');
   paymentMethodModalIsOpen = signal<boolean>(false);
-  specificAuction = signal<SpecificAuction>({} as SpecificAuction);
+  specificAuction = signal<SpecificCarAuctionDetailsLastChance>({} as SpecificCarAuctionDetailsLastChance);
   offeredAmount = signal<number | undefined>(undefined);
   newOfferMade = signal<number>(0);
   auctionCancelledModalIsOpen = signal<boolean>(false);
@@ -202,7 +202,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
         this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
-          this.getSpecificAuctionDetails();
+          // this.getSpecificAuctionDetails();
           this.getAuctionDetails(this.auctionId());
           this.getComments();
         }
@@ -312,17 +312,17 @@ export class LastChanceDetailComponent implements AfterViewInit {
     });
   }
 
-  getSpecificAuctionDetails(): void {
-    this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionCarId).subscribe({
-      next: (specificAuctionDetails) => {
-        console.log({ specificAuctionDetails });
-        this.specificAuction.set(specificAuctionDetails);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
+  // getSpecificAuctionDetails(): void {
+  //   this.#auctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionCarId).subscribe({
+  //     next: (specificAuctionDetails) => {
+  //       console.log({ specificAuctionDetails });
+  //       this.specificAuction.set(specificAuctionDetails);
+  //     },
+  //     error: (error) => {
+  //       console.error(error);
+  //     }
+  //   });
+  // }
 
   transformDate(dateString: string): Date {
     return new Date(dateString);

@@ -10,7 +10,7 @@ import { AuthStatus } from '@auth/enums';
 import { CountdownService } from '@shared/services/countdown.service';
 import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
 import { PrimaryButtonDirective } from '@shared/directives';
-import { SpecificAuction } from '@auctions/interfaces';
+import { SpecificCarAuctionDetailsLastChance } from '@auctions/interfaces';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 
@@ -30,7 +30,7 @@ import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-
 })
 export class LastChanceStickyInfoBarComponent {
   auction = input.required<LastChanceAuctionVehicleDetail>();
-  specificAuction = input.required<SpecificAuction>();
+  specificAuction = input.required<SpecificCarAuctionDetailsLastChance>();
   isFollowing = model.required<boolean>();
   openMakeAnOfferModalChange = output<void>();
   openBuyNowModalChange = output<void>();

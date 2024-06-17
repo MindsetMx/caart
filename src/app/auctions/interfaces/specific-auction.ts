@@ -29,7 +29,6 @@ export interface SpecificAuctionBid {
   userId: string;
   bidAmount: number;
   bidTime: string;
-  holdAmount: number;
   stripeTransactionId: null;
   isHoldActive: boolean;
   winner: boolean;

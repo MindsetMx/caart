@@ -13,7 +13,7 @@
         class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
         @if(specificAuction().data) {
         @if (specificAuction().data.status === 'completed') {
-        @defer (when auction().data) {
+        @defer (when specificAuction().data) {
         <h3>
           {{specificAuction().data.winnerInfo.amount| currency:'USD':'symbol':'1.0-2'}} MXN
         </h3>
@@ -98,7 +98,7 @@
           class="hidden md:grid items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
           @if(specificAuction().data) {
           @if (specificAuction().data.status === 'completed') {
-          @defer (when auction().data) {
+          @defer (when specificAuction().data) {
           <h3>
             {{specificAuction().data.winnerInfo.amount| currency:'USD':'symbol':'1.0-2'}} MXN
           </h3>
@@ -366,7 +366,7 @@
                 <p class="font-semibold text-black">
                   {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
                 <p>{{item.userName}}</p>
-                <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
+                <span>{{transformDate(item.bidDate) | amTimeAgo}}</span>
               </div>
             </div>
 
@@ -388,14 +388,12 @@
 
 @if (offeredAmount()) {
 <last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
-  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.art"
-  (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionArtId);getSpecificAuctionDetails();getComments()"
+  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.art" (offerMade)="getAuctionDetails();getComments()"
   [bidAmount]="offeredAmount()" [(isOpen)]="makeAnOfferModalIsOpen">
 </last-chance-bid-modal-component>
 }@else {
 <last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
-  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.art"
-  (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionArtId);getSpecificAuctionDetails();getComments()"
+  [newOfferMade]="newOfferMade()" [auctionType]="auctionType.art" (offerMade)="getAuctionDetails();getComments()"
   [(isOpen)]="makeAnOfferModalIsOpen"></last-chance-bid-modal-component>
 }
 }
@@ -404,8 +402,7 @@
 @if (reserveAmount() && paymentMethodId() && comission()) {
 <last-chance-buy-now-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   [name]="auction().data.attributes.title" [auctionType]="auctionType.art" [comission]="comission()!"
-  [reserveAmount]="reserveAmount()!"
-  (lastChanceItemPurchased)="getAuctionDetails(auction().data.attributes.originalAuctionArtId)"
+  [reserveAmount]="reserveAmount()!" (lastChanceItemPurchased)="getAuctionDetails()"
   [(isOpen)]="buyNowModalIsOpen"></last-chance-buy-now-modal>
 }
 }

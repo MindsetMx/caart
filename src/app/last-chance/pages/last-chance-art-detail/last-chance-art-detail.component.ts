@@ -19,7 +19,7 @@ import { AuthStatus } from '@auth/enums';
 import { CommentsService } from '@auctions/services/comments.service';
 import { CountdownService } from '@shared/services/countdown.service';
 import { environments } from '@env/environments';
-import { ArtAuctionDetails, GetComments, SpecificArtAuction } from '@auctions/interfaces';
+import { GetComments, SpecificArtAuctionDetailsLastChance } from '@auctions/interfaces';
 import { PaymentMethodsService } from '@shared/services/payment-methods.service';
 import { LastChanceArtDetailService } from '@lastChance/services/last-chance-art-detail.service';
 import { StarComponent } from '@shared/components/icons/star/star.component';
@@ -67,7 +67,7 @@ export class LastChanceArtDetailComponent {
   auction = signal<LastChanceAuctionArtDetail>({} as LastChanceAuctionArtDetail);
   auctionId = signal<string | null>(null);
   auctionId2 = signal<string | null>(null);
-  specificAuction = signal<SpecificArtAuction>({} as SpecificArtAuction);
+  specificAuction = signal<SpecificArtAuctionDetailsLastChance>({} as SpecificArtAuctionDetailsLastChance);
   imagesPublish = signal<ArtImagesPublish>({} as ArtImagesPublish);
   offeredAmount = signal<number | undefined>(undefined);
   paymentMethodId = signal<string>('');
@@ -125,9 +125,12 @@ export class LastChanceArtDetailComponent {
           { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
           { label: 'Materiales', value: this.auction().data.attributes.auctionArtForm.materials },
           { label: 'Rareza', value: this.auction().data.attributes.auctionArtForm.rarity },
-          { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} x ${this.auction().data.attributes.auctionArtForm.width} x ${this.auction().data.attributes.auctionArtForm.depth}` },
+          { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.width} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.depth} ${this.auction().data.attributes.auctionArtForm.unit}` },
           { label: 'Condición', value: this.auction().data.attributes.auctionArtForm.condition },
-          { label: 'Origen', value: this.auction().data.attributes.auctionArtForm.origin },
+          { label: 'Certificado de autenticidad', value: this.auction().data.attributes.artDetail.certificadoAutenticidad ? 'Sí' + ', ' + this.auction().data.attributes.artDetail.entidadCertificado : 'No' },
+          { label: 'Entrega con marco', value: this.auction().data.attributes.artDetail.entregaConMarco ? 'Sí' : 'No' },
+          { label: 'Firma del artista', value: this.auction().data.attributes.artDetail.firmaArtista ? 'Sí' : 'No' },
+          { label: 'Procedencia de la obra', value: this.auction().data.attributes.artDetail.procedenciaObra },
         ]);
       });
     }
@@ -144,8 +147,8 @@ export class LastChanceArtDetailComponent {
         this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
-          this.getSpecificAuctionDetails();
-          this.getAuctionDetails(this.auctionId());
+          // this.getSpecificAuctionDetails();
+          this.getAuctionDetails();
           this.getComments();
         }
 
@@ -238,7 +241,7 @@ export class LastChanceArtDetailComponent {
       let id = params.get('id');
 
       this.auctionId.set(id);
-      this.getAuctionDetails(id);
+      this.getAuctionDetails();
       this.getImagesPublish(id!);
     });
   }
@@ -312,10 +315,8 @@ export class LastChanceArtDetailComponent {
   }
 
 
-  getAuctionDetails(auctionId: string | null): void {
-    if (!auctionId) return;
-
-    this.#lastChanceArtDetailService.getAuctionDetails$(auctionId).pipe(
+  getAuctionDetails(): void {
+    this.#lastChanceArtDetailService.getAuctionDetails$(this.auctionId()!).pipe(
       switchMap((auctionDetails) => {
         this.auction.set(auctionDetails);
         this.auctionId2.set(auctionDetails.data.id);
@@ -335,16 +336,16 @@ export class LastChanceArtDetailComponent {
     });
   }
 
-  getSpecificAuctionDetails(): void {
-    this.#artAuctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.carHistory.originalAuctionArtId).subscribe({
-      next: (specificAuctionDetails) => {
-        this.specificAuction.set(specificAuctionDetails);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
+  // getSpecificAuctionDetails(): void {
+  //   this.#artAuctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.carHistory.originalAuctionArtId).subscribe({
+  //     next: (specificAuctionDetails) => {
+  //       this.specificAuction.set(specificAuctionDetails);
+  //     },
+  //     error: (error) => {
+  //       console.error(error);
+  //     }
+  //   });
+  // }
 
   getComments(): void {
     this.#commentsService.getComments$(this.auction().data.attributes.carHistory.originalAuctionArtId, this.auctionType.art, this.auctionTypesComments.lastChance).subscribe({
@@ -463,6 +464,12 @@ export class LastChanceArtDetailComponent {
   }
 
   transformDate(dateString: string): Date {
+
+    console.log({ dateString });
+
+
+    console.log(new Date(dateString));
+
     return new Date(dateString);
   }
 }

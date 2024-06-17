@@ -139,7 +139,7 @@ export class AuctionArtComponent {
         this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
-          this.getSpecificAuctionDetails();
+          // this.getSpecificAuctionDetails();
           this.getAuctionDetails(this.auctionId());
           this.getComments();
         }
@@ -289,16 +289,16 @@ export class AuctionArtComponent {
     });
   }
 
-  getSpecificAuctionDetails(): void {
-    this.#artAuctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionArtId).subscribe({
-      next: (specificAuctionDetails) => {
-        this.specificAuction.set(specificAuctionDetails);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
+  // getSpecificAuctionDetails(): void {
+  //   this.#artAuctionDetailsService.getSpecificAuctionDetails$(this.auction().data.attributes.originalAuctionArtId).subscribe({
+  //     next: (specificAuctionDetails) => {
+  //       this.specificAuction.set(specificAuctionDetails);
+  //     },
+  //     error: (error) => {
+  //       console.error(error);
+  //     }
+  //   });
+  // }
 
   getComments(): void {
     this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionArtId, this.auctionType.art, this.auctionTypesComments.active).subscribe({

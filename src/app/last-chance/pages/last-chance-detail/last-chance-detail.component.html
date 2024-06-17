@@ -135,9 +135,11 @@
               <li>Polarizado “X”</li>
             </ul> -->
           @if (auction().data) {
-          <div class="text-gray4" style="word-wrap: break-word;">
-            {{auction().data.attributes.carHistory.extraInfo}}
-          </div>
+          <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
+            @for (item of auction().data.attributes.carHistory.extraInfo; track $index) {
+            <li>{{item}}</li>
+            }
+          </ul>
 
           <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
 
@@ -345,9 +347,11 @@
               <li>Polarizado “X”</li>
             </ul> -->
           @if (auction().data) {
-          <div class="text-gray4" style="word-wrap: break-word;">
-            {{auction().data.attributes.carHistory.extraInfo}}
-          </div>
+          <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
+            @for (item of auction().data.attributes.carHistory.extraInfo; track $index) {
+            <li>{{item}}</li>
+            }
+          </ul>
 
           <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
 
@@ -437,7 +441,7 @@
                   <!-- <p>Jorge Sanders</p> -->
                 <p>{{item.userName}}</p>
                 <!-- <span>Hace 10 minutos</span> -->
-                <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
+                <span>{{transformDate(item.bidDate) | amTimeAgo}}</span>
               </div>
             </div>
 
@@ -478,13 +482,13 @@
 @if (offeredAmount()) {
 <last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
-  (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
+  (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getComments()"
   [bidAmount]="offeredAmount()" [(isOpen)]="makeAnOfferModalIsOpen">
 </last-chance-bid-modal-component>
 }@else {
 <last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
-  (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getSpecificAuctionDetails();getComments()"
+  (offerMade)="getAuctionDetails(auction().data.attributes.originalAuctionCarId);getComments()"
   [(isOpen)]="makeAnOfferModalIsOpen"></last-chance-bid-modal-component>
 }
 }

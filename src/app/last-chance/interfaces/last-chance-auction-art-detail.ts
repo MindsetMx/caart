@@ -9,30 +9,49 @@ export interface LastChanceAuctionArtDetailData {
 }
 
 export interface LastChanceAuctionArtDetailAttributes {
+  __v: number;
   _id: string;
-  originalAuctionArtId: string;
+  artDetail: LastChanceAuctionArtDetailArtDetail;
+  auctionArtForm: LastChanceAuctionArtDetailAuctionArtForm;
+  bids: any[];
+  carHistory: LastChanceAuctionArtDetailCarHistory;
+  categories: string[];
+  createdAt: Date;
+  dataUser: LastChanceAuctionArtDetailDataUser;
+  endDate: string;
   isWithReserve: boolean;
+  lastBid: number;
+  originalAuctionArtId: string;
+  reserveAmount: number;
   reserveCommissionValue: number;
   startDate: Date;
-  endDate: string;
-  title: string;
-  reserveAmount: number;
   status: string;
-  categories: string[];
-  lastBid: number;
-  bids: any[];
+  title: string;
+  updatedAt: Date;
+}
+
+export interface LastChanceAuctionArtDetailArtDetail {
+  _id: string;
+  certificadoAutenticidad: boolean;
+  entidadCertificado: string;
+  entregaConMarco: boolean;
+  firmaArtista: boolean;
+  procedenciaObra: string;
+  historiaArtista: string;
+  originalAuctionArtId: string;
+  photos: any[];
+  videos: any[];
   createdAt: Date;
   updatedAt: Date;
   __v: number;
-  carHistory: LastChanceAuctionArtDetailCarHistory;
-  auctionArtForm: LastChanceAuctionArtDetailAuctionArtForm;
-  dataUser: LastChanceAuctionArtDetailDataUser;
 }
+
 
 export interface LastChanceAuctionArtDetailAuctionArtForm {
   _id: string;
   artist: string;
   title: string;
+  unit: string;
   year: number;
   materials: string;
   category: string;

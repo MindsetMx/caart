@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ArtAuctionDetails, SpecificArtAuction } from '@auctions/interfaces';
+import { ArtAuctionDetails, SpecificArtAuction, SpecificArtAuctionDetailsLastChance } from '@auctions/interfaces';
 import { ArtMetrics } from '@auctions/interfaces/art-metrics';
 
 @Injectable({
@@ -26,10 +26,10 @@ export class ArtAuctionDetailsService {
     return this.#http.get<SpecificArtAuction>(url);
   }
 
-  getSpecificAuctionDetailsLastChance$(id: string): Observable<any> {
+  getSpecificAuctionDetailsLastChance$(id: string): Observable<SpecificArtAuctionDetailsLastChance> {
     const url = `${this.#baseUrl}/auctions-cars/auction/last-chance-art/${id}`;
 
-    return this.#http.get<any>(url);
+    return this.#http.get<SpecificArtAuctionDetailsLastChance>(url);
   }
 
   getArtMetrics$(id: string): Observable<ArtMetrics> {

@@ -67,7 +67,7 @@ export interface AuctionDetailsCarHistory {
   blocks: AuctionDetailsBlock[];
   originalAuctionCarId: string;
   extract: string;
-  extraInfo: string;
+  extraInfo: string[];
   createdAt: Date;
   __v: number;
 }
