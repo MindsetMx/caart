@@ -27,10 +27,12 @@
       }
       }
 
+      @if (publication.attributes.isWithReserve) {
       <button class="underline font-semibold text-lg"
         (click)="openUpdateReservePriceModal(publication.id, publication.attributes.reserveAmount)">
         Actualizar precio de reserva
       </button>
+      }
     </div>
   </div>
   } @empty {

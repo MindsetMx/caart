@@ -272,7 +272,15 @@
 
       <ng-container right>
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+          <h3 class="font-semibold mb-2">Información adicional</h3>
+
           @if (auction().data) {
+          <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
+            @for (item of auction().data.attributes.artHistory.extraInfo; track $index) {
+            <li>{{item}}</li>
+            }
+          </ul>
+
           <div class="my-4">
             <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
             <span class="align-middle">
@@ -356,5 +364,5 @@
 
 @defer (when auctionId()) {
 <auction-cancelled [isOpen]="auctionCancelledModalIsOpen()" [auctionId]="auctionId()!"
-  lastChanceUrl="ultima-oportunidad-arte"></auction-cancelled>
+  lastChanceUrl="/ultima-oportunidad-arte"></auction-cancelled>
 }

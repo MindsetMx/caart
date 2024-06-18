@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 
 import { AppService } from '@app/app.service';
+import { AuctionImageDeletionConfirmationModalComponent } from '@app/dashboard/modals/auction-image-deletion-confirmation-modal/auction-image-deletion-confirmation-modal.component';
 import { ArtImagesPublish } from '@dashboard/interfaces';
 import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { ArtPhotoGalleryComponent } from '@dashboard/modals/art-photo-gallery/art-photo-gallery.component';
@@ -29,7 +30,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
     PrimaryButtonDirective,
     CommonModule,
     MatIcon,
-    SpinnerComponent
+    SpinnerComponent,
+    AuctionImageDeletionConfirmationModalComponent,
   ],
   templateUrl: './art-auction-image-assignment-and-reorder.component.html',
   styleUrl: './art-auction-image-assignment-and-reorder.component.css',
@@ -86,7 +88,7 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
     this.auctionImagesForm = this.#formBuilder.group({
       fotoPrincipal: ['', Validators.required],
       fotoCatalogo: ['', Validators.required],
-      fotosCarrusel: this.#formBuilder.array([], [Validators.required, Validators.minLength(1)]),
+      fotosCarrusel: this.#formBuilder.array([]),
     });
 
     this.fotosCarruselFormArray.valueChanges
@@ -184,6 +186,8 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
   }
 
   setImage(imageUrl: string) {
+    console.log(this.formFieldName());
+
     switch (this.formFieldName()) {
       case 'fotoCatalogo':
         this.auctionImagesForm.setControl('fotoCatalogo', this.#formBuilder.control(imageUrl, Validators.required));
@@ -191,32 +195,26 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
       case 'fotoPrincipal':
         this.auctionImagesForm.setControl('fotoPrincipal', this.#formBuilder.control(imageUrl, Validators.required));
         break;
-      case 'fotosCarrusel':
-        console.log(this.index());
-        console.log(imageUrl);
+      // case 'fotosCarrusel':
+      //   console.log(this.index());
+      //   console.log(imageUrl);
 
-        if (this.index() !== undefined) {
-          this.fotosCarruselFormArray.at(this.index()!).patchValue(imageUrl);
-        }
-        break;
+      //   if (this.index() !== undefined) {
+      //     this.fotosCarruselFormArray.at(this.index()!).patchValue(imageUrl);
+      //   }
+      //   break;
     }
   }
 
-  // setImages(images: string[]) {
-  //   switch (this.formFieldName()) {
-  //     case 'fotosMecanicas':
-  //       images.forEach((imageUrl) => this.fotosMecanicas.push(this.#formBuilder.control(imageUrl, Validators.required)));
-  //       break;
-  //     case 'fotosInterior':
-  //       images.forEach((imageUrl) => this.fotosInterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
-  //       break;
-  //     case 'fotosExterior':
-  //       images.forEach((imageUrl) => this.fotosExterior.push(this.#formBuilder.control(imageUrl, Validators.required)));
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
+  setImages(images: string[]) {
+    switch (this.formFieldName()) {
+      case 'fotosCarrusel':
+        images.forEach((imageUrl) => this.fotosCarruselFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
+        break;
+      default:
+        break;
+    }
+  }
 
   dropPhotos(event: CdkDragDrop<{ imageUrl: string, index: number }>, formArray: FormArray) {
     const previousIndex = event.previousContainer.data.index;
@@ -260,10 +258,10 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
           this.aspectRatios.set([0]);
           this.maintainAspectRatio.set(false);
           break;
-        // case 'fotosCarrusel':
-        //   this.aspectRatios.set([0]);
-        //   this.maintainAspectRatio.set(false);
-        //   break;
+        case 'fotosCarrusel':
+          this.aspectRatios.set([0]);
+          this.maintainAspectRatio.set(false);
+          break;
       }
     }
 

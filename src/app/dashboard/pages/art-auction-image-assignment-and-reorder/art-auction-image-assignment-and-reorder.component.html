@@ -58,33 +58,34 @@
           {{fotosCarrusel() | json}}
         </pre> -->
         <h2 class="mb-2">Fotos carrusel</h2>
+
         <div class="board" cdkDropListGroup>
           @for (imageUrl of fotosCarrusel(); track i; let i = $index) {
           <div>
             <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosCarruselFormArray)"
-              [cdkDropListData]=" {imageUrl, index: i}">
-              @if (imageUrl) {
-              <button type="button" class="w-full"
+              [cdkDropListData]="{imageUrl, index: i}">
+              <button cdkDrag type="button" class="w-full relative"
                 (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, i)">
-                <img cdkDrag [src]="imageUrl" class="cell object-contain" />
+                <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
+
+                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosCarruselFormArray, i)"
+                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+                  <mat-icon class="text-red-500">delete</mat-icon>
+                </button>
               </button>
-              } @else {
-              <button cdkDrag type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, i)"
-                class="cell">
-                Subir foto
-              </button>
-              }
             </div>
             @if (formArrayHasError(fotosCarruselFormArray, i)) {
             <shared-input-error [message]="getErrorFromFormArray(fotosCarruselFormArray, i)"></shared-input-error>
             }
           </div>
           }
-        </div>
+          <!-- agregar nueva foto del carousel -->
+          <button type="button"
+            (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, fotosCarrusel.length, true)" class="cell">
+            <mat-icon class="text-gray-500">add</mat-icon>
+          </button>
 
-        @if (hasError('fotosCarrusel')) {
-        <shared-input-error message="Debes subir al menos una foto"></shared-input-error>
-        }
+        </div>
       </div>
       }
 
@@ -102,7 +103,11 @@
 
 </sidebar-layout>
 
+<auction-image-deletion-confirmation-modal (deleteImagesChange)="removePhoto()" [(isOpen)]="deleteImageModalIsOpen"
+  [isButtonSubmitDisabled]="deleteImageSubmitButtonIsDisabled()"></auction-image-deletion-confirmation-modal>
+
 <art-photo-gallery [isOpen]="artPhotoGalleryIsOpen()" [aspectRatios]="aspectRatios()"
   [allowMultipleSelection]="allowMultipleSelection()" (isOpenChange)="closeModal(artPhotoGalleryIsOpen)"
-  (selectedImageChange)="setImage($event)" [cropImage]="cropImage()" [auctionArtId]="originalAuctionArtId()">
+  (selectedImageChange)="setImage($event)" (selectedImagesChange)="setImages($event)" [cropImage]="cropImage()"
+  [auctionArtId]="originalAuctionArtId()">
 </art-photo-gallery>

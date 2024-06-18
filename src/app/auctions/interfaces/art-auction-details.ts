@@ -82,6 +82,7 @@ export interface ArtAuctionDetailsBid {
 export interface ArtHistory {
   _id: string;
   blocks: ArtHistoryBlock[];
+  extraInfo: string[];
   originalAuctionArtId: string;
   extract: string;
   createdAt: Date;

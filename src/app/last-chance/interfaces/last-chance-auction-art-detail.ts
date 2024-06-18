@@ -78,6 +78,7 @@ export interface LastChanceAuctionArtDetailCarHistory {
   originalAuctionArtId: string;
   extract: string;
   createdAt: Date;
+  extraInfo: string[];
   __v: number;
 }
 

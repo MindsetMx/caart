@@ -185,6 +185,7 @@
           <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionArtId)">
             <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block w-7 h-7"></shared-star>
           </button>
+          @if (auction().data.attributes.status === 'active') {
           <div class="col-span-2 md:col-span-1">
             @defer (when specificAuction().data) {
             <div class="flex gap-2">
@@ -201,14 +202,15 @@
             </div>
             }
             <!-- <div class="block md:hidden">
-              @if (specificAuction().data) {
-              <p class="inline lg:block font-bold">
-                {{specificAuction().data.bids.length}}
-              </p>
-              }
-              <span class="text-gray4 text-sm"> Ofertas</span>
-            </div> -->
+                @if (specificAuction().data) {
+                <p class="inline lg:block font-bold">
+                  {{specificAuction().data.bids.length}}
+                </p>
+                }
+                <span class="text-gray4 text-sm"> Ofertas</span>
+              </div> -->
           </div>
+          }
         </div>
       </div>
     </div>
@@ -220,6 +222,11 @@
         <div class="max-w-3xl mx-auto">
           @defer (when imagesPublish().data) {
           <div id="productCarousel" #myCarousel class="f-carousel">
+            <div class="f-carousel__slide" [attr.data-thumb-src]="imagesPublish().data.fotoPrincipal"
+              data-fancybox="gallery" [attr.data-src]="imagesPublish().data.fotoPrincipal">
+              <img class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
+                [attr.data-lazy-src]="imagesPublish().data.fotoPrincipal" />
+            </div>
             @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
             <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
               [attr.data-src]="auction">
@@ -246,26 +253,6 @@
         @if (auction().data) {
         <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
         }
-
-        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
-          @if (auction().data) {
-          <div class="my-4">
-            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
-            <span class="align-middle">
-              {{auction().data.attributes.dataUser.username}}
-            </span>
-          </div>
-
-          <div>
-            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
-          </div>
-          }
-
-
-          <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button> -->
-        </section>
       </ng-container>
     </two-column-auction-grid>
 
@@ -342,6 +329,34 @@
       </ng-container>
 
       <ng-container right>
+        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+          <h3 class="font-semibold mb-2">Información adicional</h3>
+
+          @if (auction().data) {
+          <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
+            @for (item of auction().data.attributes.carHistory.extraInfo; track $index) {
+            <li>{{item}}</li>
+            }
+          </ul>
+
+          <div class="my-4">
+            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+            <span class="align-middle">
+              {{auction().data.attributes.dataUser.username}}
+            </span>
+          </div>
+
+          <div>
+            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+          </div>
+          }
+
+
+          <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
+              HACER UNA OFERTA
+            </button> -->
+        </section>
+
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-6">¿Tienes una pieza de arte y quieres venderla?</h3>
 

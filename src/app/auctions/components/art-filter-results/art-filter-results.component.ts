@@ -63,9 +63,62 @@ export class ArtFilterResultsComponent {
     { value: 'no-reserve', label: 'Sin Reserva' },
   ];
 
-  categoryList: { value: string; label: string }[] = [
-    { value: 'classic', label: 'Clásico' },
-    { value: 'electric', label: 'Eléctrico' },
+  // categoryList: { value: string; label: string }[] = [
+  //   { value: 'classic', label: 'Clásico' },
+  //   { value: 'electric', label: 'Eléctrico' },
+  // ];
+
+  categoryList: { value: string, label: string }[] = [
+    // Pintura
+    {
+      value: "Pintura",
+      label: "Pintura"
+    },
+    // Escultura
+    {
+      value: "Escultura",
+      label: "Escultura"
+    },
+    // Fotografía,
+    {
+      value: "Fotografía",
+      label: "Fotografía"
+    },
+    // Impresión
+    {
+      value: "Impresión",
+      label: "Impresión"
+    },
+    // Dibujo o Collage en papel
+    {
+      value: "Dibujo o Collage en papel",
+      label: "Dibujo o Collage en papel"
+    },
+    // Técnica mixta
+    {
+      value: "Técnica mixta",
+      label: "Técnica mixta"
+    },
+    // Ceramica
+    {
+      value: "Ceramica",
+      label: "Ceramica"
+    },
+    // Joyeria
+    {
+      value: "Joyeria",
+      label: "Joyeria"
+    },
+    // Moda y Arte utilizable
+    {
+      value: "Moda y Arte utilizable",
+      label: "Moda y Arte utilizable"
+    },
+    // Arte decorativo
+    {
+      value: "Arte decorativo",
+      label: "Arte decorativo"
+    },
   ];
 
   currentOfferList: { value: string; label: string }[] = [
