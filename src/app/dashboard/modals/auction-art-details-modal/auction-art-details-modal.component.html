@@ -18,17 +18,21 @@
           <p><b>Materiales:</b> {{ wizardData().data.registerArtDetails.materials }}</p>
           <p><b>Categoría:</b> {{ wizardData().data.registerArtDetails.category }}</p>
           <p><b>Otra categoría:</b> {{ wizardData().data.registerArtDetails.otherCategory }}</p>
+          <p><b>Reserva:</b> {{ wizardData().data.registerArtDetails.reserve ? 'Sí' : 'No' }}</p>
+          <p><b>Monto de reserva:</b> {{ wizardData().data.registerArtDetails.reserveAmount }}</p>
           <p><b>Rareza:</b> {{ wizardData().data.registerArtDetails.rarity }}</p>
           <p><b>Altura:</b> {{ wizardData().data.registerArtDetails.height }}</p>
           <p><b>Ancho:</b> {{ wizardData().data.registerArtDetails.width }}</p>
           <p><b>Profundidad:</b> {{ wizardData().data.registerArtDetails.depth }}</p>
+          <p><b>Unidad:</b> {{ wizardData().data.registerArtDetails.unit }}</p>
           <p><b>Condición:</b> {{ wizardData().data.registerArtDetails.condition }}</p>
-          <p><b>Origen:</b> {{ wizardData().data.registerArtDetails.origin }}</p>
+          <p><b>Código postal:</b> {{ wizardData().data.registerArtDetails.postalCode }}</p>
+          <p><b>Estado:</b> {{ wizardData().data.registerArtDetails.state }}</p>
           <p><b>ID de usuario:</b> {{ wizardData().data.registerArtDetails.userId }}</p>
           <p><b>Fotos:</b></p>
           <div class="grid grid-cols-3 gap-4">
             @for (photo of wizardData().data.registerArtDetails.photos; track $index) {
-            <img [src]="photo" alt="Foto {{ $index + 1 }}">
+            <img [src]="photo" alt="Foto {{ $index + 1}">
             } @empty {
             <p>No hay fotos</p>
             }
@@ -41,6 +45,7 @@
             <p>No hay videos</p>
             }
           </div>
+          <p><b>Interés:</b> {{ wizardData().data.registerArtDetails.interest }}</p>
           <p><b>Estado:</b> {{ wizardData().data.registerArtDetails.status }}</p>
         </div>
       </mat-tab>
