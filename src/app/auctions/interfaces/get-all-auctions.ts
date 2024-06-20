@@ -15,7 +15,6 @@ export interface GetAllAuctionsAttributes {
   premium: boolean;
   lastBid: number;
   title: string;
-  startDate: Date;
   endDate: string;
   cover: string;
   artist?: string;

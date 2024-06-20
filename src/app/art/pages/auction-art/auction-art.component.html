@@ -1,4 +1,12 @@
 <div class="mb-32">
+  @if (specificAuction().data.status === 'preview') {
+  <div class="bg-yellow-500 h-14 flex justify-center items-center">
+    <h3 class="text-xl font-bold">
+      Esta es una subasta en modo preview
+    </h3>
+  </div>
+  }
+
   <div class="sticky inset-0 z-[5] bg-white pt-4 pb-2">
     <div class="container">
       @defer (when auction().data) {
@@ -242,6 +250,7 @@
           [specificAuction]="specificAuction()" (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
 
+        @if (specificAuction().data.status !== 'preview') {
         <section class="mt-12">
           @defer (when comments().data) {
           <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
@@ -266,6 +275,7 @@
           }
         </section>
         }
+        }
 
         <!-- <recently-completed-memorabilia-auctions [auctionId]="auctionId()!"></recently-completed-memorabilia-auctions> -->
       </ng-container>
@@ -281,6 +291,19 @@
             }
           </ul>
 
+          <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
+
+          <ul class="space-y-1">
+            <li>
+              <span class="text-gray4">Lote #:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionArtForm.lotNumber}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">
+                {{auction().data.attributes.auctionArtForm.state}}</span>
+            </li>
+          </ul>
+
           <div class="my-4">
             <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
             <span class="align-middle">
@@ -293,10 +316,13 @@
           </div>
           }
 
+          <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
 
-          <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button> -->
+          <ol class="list-inside list-disc mb-8">
+            @for (item of auction().data.attributes.artDetail.additionalCharges; track $index) {
+            <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+            }
+          </ol>
         </section>
 
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
@@ -305,6 +331,7 @@
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
+        @if (specificAuction().data.status !== 'preview') {
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <div class="xl:flex items-center justify-between">
             <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
@@ -316,6 +343,19 @@
 
           @defer (when specificAuction().data) {
           <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
+            @if (specificAuction().data.winnerInfo) {
+            <div class="flex gap-x-4 p-4 rounded-xl">
+              <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+              <div class="text-gray4">
+                <p class="text-gray4 text-sm">Vendido</p>
+                <p class="font-semibold text-black">
+                  {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
+                </p>
+                <p>{{specificAuction().data.winnerInfo.userName}}</p>
+                <span>{{transformDate(specificAuction().data.winnerInfo.purchaseDate) | amTimeAgo}}</span>
+              </div>
+            </div>
+            }
             @for (item of specificAuction().data.bids; track $index; let last = $last) {
             <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0}">
               <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
@@ -334,6 +374,7 @@
           </div>
           }
         </section>
+        }
 
         <!-- <current-memorabilia-auctions [auctionId]="auctionId()"></current-memorabilia-auctions> -->
       </ng-container>

@@ -1,0 +1,22 @@
+<shared-modal [verticalCenter]="true" [(isOpen)]="isOpen">
+  <div class="container relative">
+    <h3 class="font-bold text-center text-lg mb-12">
+      Copiar enlace de vista previa
+    </h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <section class="container">
+    <p class="text-center">
+      Copia el siguiente enlace para compartir la vista previa de la subasta.
+    </p>
+
+    <div class="flex items-center gap-x-4 mt-8">
+      <input id="previewLink" type="text" class="w-full rounded-lg border border-gray-300 p-2"
+        [value]="auctionPreviewLink()">
+      <button (click)="copyToClipboard()" class="rounded-lg bg-indigo-500 text-white px-4 py-2">Copiar</button>
+    </div>
+  </section>
+
+</shared-modal>

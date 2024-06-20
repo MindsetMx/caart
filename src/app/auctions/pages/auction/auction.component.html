@@ -1,5 +1,13 @@
 <div class="mb-32">
 
+  @if (specificAuction().data && specificAuction().data.status === 'preview') {
+  <div class="bg-yellow-500 h-14 flex justify-center items-center">
+    <h3 class="text-xl font-bold">
+      Esta es una subasta en modo preview
+    </h3>
+  </div>
+  }
+
   <sticky-auction-info-bar [auction]="auction()" [specificAuction]="specificAuction()" [(isFollowing)]="isFollowing"
     (openMakeAnOfferModalChange)="openMakeAnOfferModal()"
     (getMetricsChange)="getMetrics($event)"></sticky-auction-info-bar>
@@ -89,8 +97,10 @@
     <two-column-auction-grid>
       <ng-container left>
         <section class="flex justify-between mt-4">
+          @if (specificAuction().data && specificAuction().data.status !== 'preview') {
           @defer (when comments().data) {
           <div class="underline text-xs">{{comments().data.length}} Comentarios</div>
+          }
           }
 
           @defer (when metrics().data) {
@@ -271,6 +281,7 @@
           (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
 
+        @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <section class="mt-6">
           @defer (when comments().data) {
           <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
@@ -284,9 +295,9 @@
           }
 
           <!-- <div class="mt-4">
-              <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
-              <span class="underline">Mantenme en la conversación por correo</span>
-            </div> -->
+                <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
+                <span class="underline">Mantenme en la conversación por correo</span>
+              </div> -->
 
           @for (comment of comments().data; track $index) {
           <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
@@ -295,52 +306,53 @@
           }
 
           <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
-              <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-                Nov 15 a las 03:38 PM
-              </div>
-              <div class="md:col-span-9 mb-4 md:mb-0">
-                <div class="px-2 py-1 rounded-lg bg-gray1">
-                  <p class="font-semibold">John Smith (Vendedor)</p>
-                  <p>19,914 km</p>
-                  <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                  <span class="align-middle">2</span>
+                <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                  Nov 15 a las 03:38 PM
                 </div>
-              </div>
+                <div class="md:col-span-9 mb-4 md:mb-0">
+                  <div class="px-2 py-1 rounded-lg bg-gray1">
+                    <p class="font-semibold">John Smith (Vendedor)</p>
+                    <p>19,914 km</p>
+                    <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                    <span class="align-middle">2</span>
+                  </div>
+                </div>
 
-              <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-                Nov 15 a las 02:54 PM
-              </div>
-              <div class="md:col-span-9 mb-4 md:mb-0">
-                <div class="px-2 py-1">
-                  <p class="font-semibold">Andrés Gallardo</p>
-                  <p>¿Qué kilometraje tiene el auto?</p>
-                  <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                  <span class="align-middle">0</span>
+                <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                  Nov 15 a las 02:54 PM
                 </div>
-              </div>
+                <div class="md:col-span-9 mb-4 md:mb-0">
+                  <div class="px-2 py-1">
+                    <p class="font-semibold">Andrés Gallardo</p>
+                    <p>¿Qué kilometraje tiene el auto?</p>
+                    <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                    <span class="align-middle">0</span>
+                  </div>
+                </div>
 
-              <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-                Nov 15 a las 02:38 PM
-              </div>
-              <div class="md:col-span-9 mb-4 md:mb-0">
-                <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
-                  Nueva puja de $215,000 por Adam Smith
+                <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                  Nov 15 a las 02:38 PM
                 </div>
-              </div>
+                <div class="md:col-span-9 mb-4 md:mb-0">
+                  <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
+                    Nueva puja de $215,000 por Adam Smith
+                  </div>
+                </div>
 
-              <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-                Nov 15 a las 11:43 AM
-              </div>
-              <div class="md:col-span-9 mb-4 md:mb-0">
-                <div class="px-2 py-1">
-                  <p class="font-semibold">Andrés Gallardo</p>
-                  <p>El color es magnifico</p>
-                  <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                  <span class="align-middle">0</span>
+                <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                  Nov 15 a las 11:43 AM
                 </div>
-              </div>
-            </div> -->
+                <div class="md:col-span-9 mb-4 md:mb-0">
+                  <div class="px-2 py-1">
+                    <p class="font-semibold">Andrés Gallardo</p>
+                    <p>El color es magnifico</p>
+                    <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                    <span class="align-middle">0</span>
+                  </div>
+                </div>
+              </div> -->
         </section>
+        }
         }
 
         <recently-completed-auctions class="hidden md:block" [auctionId]="auctionId()!"></recently-completed-auctions>
@@ -422,6 +434,7 @@
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
+        @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <section class="shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
           <div class="xl:flex items-center justify-between">
             <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
@@ -437,14 +450,19 @@
 
           @defer (when specificAuction().data) {
           <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
-            <!-- <div class="flex gap-x-4 p-4 bg-green1/30 rounded-xl">
-                    <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-                    <div class="text-gray4">
-                      <p class="font-semibold text-black">$215,000</p>
-                      <p>Adam Smith</p>
-                      <span>Hace 2 minutos</span>
-                    </div>
-                  </div> -->
+            @if (specificAuction().data.winnerInfo) {
+            <div class="flex gap-x-4 p-4 rounded-xl">
+              <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+              <div class="text-gray4">
+                <p class="text-gray4 text-sm">Vendido</p>
+                <p class="font-semibold text-black">
+                  {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
+                </p>
+                <p>{{specificAuction().data.winnerInfo.userName}}</p>
+                <span>{{transformDate(specificAuction().data.winnerInfo.purchaseDate) | amTimeAgo}}</span>
+              </div>
+            </div>
+            }
             @for (item of specificAuction().data.bids; track $index; let last = $last) {
             <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0}">
               <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
@@ -463,26 +481,27 @@
             }
 
             <!-- <div class="flex gap-x-4 p-4 rounded-xl">
-                    <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-                    <div class="text-gray4">
-                      <p class="font-semibold text-black">$200,000</p>
-                      <p>Jorge Sanders</p>
-                      <span>Hace 10 minutos</span>
+                      <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+                      <div class="text-gray4">
+                        <p class="font-semibold text-black">$200,000</p>
+                        <p>Jorge Sanders</p>
+                        <span>Hace 10 minutos</span>
+                      </div>
                     </div>
-                  </div>
-                  <hr>
-                  <div class="flex gap-x-4 p-4 rounded-xl">
-                    <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-                    <div class="text-gray4">
-                      <p class="font-semibold text-black">$150,000</p>
-                      <p>Adam Smith</p>
-                      <span>Hace 10 minutos</span>
-                    </div>
-                  </div> -->
+                    <hr>
+                    <div class="flex gap-x-4 p-4 rounded-xl">
+                      <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+                      <div class="text-gray4">
+                        <p class="font-semibold text-black">$150,000</p>
+                        <p>Adam Smith</p>
+                        <span>Hace 10 minutos</span>
+                      </div>
+                    </div> -->
             }
           </div>
           }
         </section>
+        }
 
         <current-auctions class="hidden md:block" [auctionId]="auctionId()"></current-auctions>
       </ng-container>

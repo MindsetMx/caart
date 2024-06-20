@@ -1,15 +1,16 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal, computed } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { ModalComponent } from '@shared/components/modal/modal.component';
-import { ValidatorsService } from '@shared/services/validators.service';
-import { ReleaseCarForLiveAuctionService } from '../../services/release-car-for-live-auction.service';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { AppService } from '@app/app.service';
+import { CopyAuctionPreviewLinkModalComponent } from '@dashboard/modals/copy-auction-preview-link-modal/copy-auction-preview-link-modal.component';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { ModalComponent } from '@shared/components/modal/modal.component';
+import { ReleaseCarForLiveAuctionService } from '../../services/release-car-for-live-auction.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { AppService } from '@app/app.service';
+import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
   selector: 'release-car-for-live-auction-modal',
@@ -22,7 +23,8 @@ import { AppService } from '@app/app.service';
     MatFormFieldModule,
     MatSelectModule,
     PrimaryButtonDirective,
-    SpinnerComponent
+    SpinnerComponent,
+    CopyAuctionPreviewLinkModalComponent
   ],
   templateUrl: './release-car-for-live-auction-modal.component.html',
   styleUrl: './release-car-for-live-auction-modal.component.css',
@@ -34,8 +36,14 @@ export class ReleaseCarForLiveAuctionModalComponent {
   isOpenChange = output<boolean>();
   carReleaseForLiveAuction = output<void>();
 
+  fullAuctionPreviewLink = computed(() => {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/subasta/${this.originalAuctionCarId()}`;
+  });
+
   releaseCarForLiveAuctionForm: FormGroup;
   releaseCarForLiveAuctionSubmitButtonIsDisabled = signal<boolean>(false);
+  copyAuctionPreviewLinkModalIsOpen = signal<boolean>(false);
 
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
@@ -103,13 +111,15 @@ export class ReleaseCarForLiveAuctionModalComponent {
       return;
     }
 
-    this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.releaseCarForLiveAuctionForm).subscribe({
+    this.#releaseCarForLiveAuctionService.releaseCarForPreview$(this.releaseCarForLiveAuctionForm).subscribe({
       next: (response) => {
         this.releaseCarForLiveAuctionForm.reset();
         this.emitIsOpenChange(false);
         this.carReleaseForLiveAuction.emit();
 
-        this.toastSuccess('Auto publicado en subasta en vivo');
+        this.toastSuccess('Auto liberado para vista previa');
+
+        this.copyAuctionPreviewLinkModalIsOpen.set(true);
       },
       error: (error) => {
         console.error(error.error.error.error);

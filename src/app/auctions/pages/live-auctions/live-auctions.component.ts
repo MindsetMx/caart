@@ -8,6 +8,10 @@ import { VehicleFilterResultsComponent } from '@app/auctions/components/vehicle-
 import { MemorabiliaFilterResultsComponent } from '@auctions/components/memorabilia-filter-results/memorabilia-filter-results.component';
 import { AllAuctionsFilterResultsComponent } from '@auctions/components/all-auctions-filter-results/all-auctions-filter-results.component';
 import { ArtFilterResultsComponent } from '@auctions/components/art-filter-results/art-filter-results.component';
+import { environments } from '@env/environments';
+import { UpdatedAuctionTypes } from '@auctions/enums';
+import { LiveAuctionsService } from '@auctions/services/live-auctions.service';
+import { GetLiveCarAuction } from '@auctions/interfaces';
 
 @Component({
   standalone: true,
@@ -24,11 +28,18 @@ import { ArtFilterResultsComponent } from '@auctions/components/art-filter-resul
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LiveAuctionsComponent {
+  readonly #baseUrl = environments.baseUrl;
+
   tabs?: TabWithIcon[];
   currentTab = signal<number | undefined>(undefined);
+  eventSource?: EventSource;
+
+  updatedCarAuction = signal<GetLiveCarAuction>({} as GetLiveCarAuction);
+  updatedArtAuction = signal<any>({} as any);
 
   #router = inject(Router);
   #activatedRoute = inject(ActivatedRoute);
+  #liveAuctionsService = inject(LiveAuctionsService);
 
   constructor() {
     this.#activatedRoute.queryParams.subscribe(params => {
@@ -60,6 +71,43 @@ export class LiveAuctionsComponent {
           current: tabId === 3
         },
       ];
+    });
+
+    this.eventSource?.close();
+
+    this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-all-auctions`);
+
+    this.eventSource.onmessage = (event) => {
+      console.log('event', event);
+
+      if (JSON.parse(event.data).type === 'AUCTION_UPDATE') {
+        const auctionType = JSON.parse(event.data).auctionType;
+
+        console.log('auctionType', auctionType);
+
+        switch (auctionType) {
+          case UpdatedAuctionTypes.activeAuctionCar:
+            this.getUpdatedCarAuction(JSON.parse(event.data).auctionId);
+            break;
+
+          case UpdatedAuctionTypes.activeAuctionArt:
+            this.updatedArtAuction.set(JSON.parse(event.data).auctionId);
+            break;
+        }
+      }
+    };
+  }
+
+  getUpdatedCarAuction(auctionCarId: string): void {
+    this.#liveAuctionsService.getAuction$(auctionCarId).subscribe({
+      next: (auction: GetLiveCarAuction) => {
+        console.log('auction', auction);
+
+        this.updatedCarAuction.set(auction);
+      },
+      error: (err) => {
+        console.error(err);
+      },
     });
   }
 

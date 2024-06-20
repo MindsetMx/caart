@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { GetAllAuctions } from '@auctions/interfaces';
+import { GetAllAuctions, GetLiveCarAuction } from '@auctions/interfaces';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
 

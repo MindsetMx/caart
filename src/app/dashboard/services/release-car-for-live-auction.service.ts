@@ -16,10 +16,12 @@ export class ReleaseCarForLiveAuctionService {
   #http = inject(HttpClient);
   #appService = inject(AppService);
 
-  releaseCarForLiveAuction$(releaseCarForLiveAuctionForm: FormGroup): Observable<any> {
+  releaseCarForPreview$(releaseCarForLiveAuctionForm: FormGroup): Observable<any> {
     const trimmedReleaseCarForLiveAuctionForm = this.#appService.trimObjectValues(releaseCarForLiveAuctionForm.value);
 
-    const url = `${this.#baseUrl}/auctions-cars`;
+    // const url = `${this.#baseUrl}/auctions-cars`;
+    // auctions-cars/preview
+    const url = `${this.#baseUrl}/auctions-cars/preview`;
 
     return this.#http.post<any>(url, trimmedReleaseCarForLiveAuctionForm);
   }

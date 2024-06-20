@@ -85,11 +85,6 @@ export const routes: Routes = [
     loadComponent: () => import('./auctions/pages/auction/auction.component').then((m) => m.AuctionComponent),
   },
   {
-    path: 'vista-previa-subasta/:id',
-    canActivate: [VerifiedGuard],
-    loadComponent: () => import('./auctions/pages/auction-preview/auction-preview.component').then((m) => m.AuctionPreviewComponent),
-  },
-  {
     path: 'subasta-arte/:id',
     canActivate: [VerifiedGuard],
     loadComponent: () => import('./art/pages/auction-art/auction-art.component').then((m) => m.AuctionArtComponent),

@@ -42,7 +42,8 @@
 
       <div>
         <label for="scaleStep" class="block text-sm text-center">Escala</label>
-        <input type="number" [(ngModel)]="scaleStep" class="text-center mx-auto" width="w-fit" sharedInput />
+        <input type="number" [(ngModel)]="scaleStep" [ngModelOptions]="{standalone: true}" class="text-center mx-auto"
+          width="w-fit" sharedInput />
       </div>
 
       <div class="grid grid-cols-2 gap-4">

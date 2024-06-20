@@ -6,9 +6,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 
 import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
-import { AuctionCarInfo } from '@dashboard/interfaces';
+import { AuctionCarInfo, AuctionCarStatus } from '@dashboard/interfaces';
 import { AuctionCarService } from '@dashboard/services/auction-car.service';
+import { ConfirmReleaseAuctionModalComponent } from '@dashboard/modals/confirm-release-auction-modal/confirm-release-auction-modal.component';
 import { ReleaseCarForLiveAuctionModalComponent } from '@dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
+import { AppService } from '@app/app.service';
 
 @Component({
   selector: 'publish-cars',
@@ -21,6 +23,7 @@ import { ReleaseCarForLiveAuctionModalComponent } from '@dashboard/modals/releas
     RouterLink,
     AuctionCarDetailsModalComponent,
     ReleaseCarForLiveAuctionModalComponent,
+    ConfirmReleaseAuctionModalComponent
   ],
   templateUrl: './publish-cars.component.html',
   styleUrl: './publish-cars.component.css',
@@ -28,15 +31,40 @@ import { ReleaseCarForLiveAuctionModalComponent } from '@dashboard/modals/releas
 })
 export class PublishCarsComponent {
   #auctionCarService = inject(AuctionCarService);
+  #appService = inject(AppService);
 
   auctionCarInfo = signal<AuctionCarInfo>({} as AuctionCarInfo);
   auctionCarId = signal<string>('');
   auctionCarDetailsModalIsOpen = signal<boolean>(false);
   addCarHistoryModalIsOpen = signal<boolean>(false);
   releaseCarForLiveAuctionModalIsOpen = signal<boolean>(false);
+  confirmReleaseAuctionModalIsOpen = signal<boolean>(false);
+  isConfirmReleaseAuctionButtonDisabled = signal<boolean>(false);
 
   constructor() {
     this.dashboardInfo();
+  }
+
+  get status(): typeof AuctionCarStatus {
+    return AuctionCarStatus;
+  }
+
+  releaseCarForLiveAuction(): void {
+    this.isConfirmReleaseAuctionButtonDisabled.set(true);
+
+    this.#auctionCarService.releaseCarForLiveAuction$(this.auctionCarId()).subscribe({
+      next: () => {
+        this.releaseCarForLiveAuctionModalIsOpen.set(false);
+        this.confirmReleaseAuctionModalIsOpen.set(false);
+        this.dashboardInfo();
+        this.toastSuccess('El auto se ha publicado en subastas en vivo');
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    }).add(() => {
+      this.isConfirmReleaseAuctionButtonDisabled.set(false);
+    });
   }
 
   dashboardInfo(): void {
@@ -63,6 +91,11 @@ export class PublishCarsComponent {
     this.releaseCarForLiveAuctionModalIsOpen.set(false);
   }
 
+  openConfirmReleaseAuctionModal(auctionId: string): void {
+    this.auctionCarId.set(auctionId);
+    this.confirmReleaseAuctionModalIsOpen.set(true);
+  }
+
   openAuctionCarDetailsModal(auctionId: string): void {
     this.auctionCarId.set(auctionId);
     this.auctionCarDetailsModalIsOpen.set(true);
@@ -80,5 +113,9 @@ export class PublishCarsComponent {
 
   closeAuctionCarDetailsModal(): void {
     this.auctionCarDetailsModalIsOpen.set(false);
+  }
+
+  toastSuccess(message: string): void {
+    this.#appService.toastSuccess(message);
   }
 }

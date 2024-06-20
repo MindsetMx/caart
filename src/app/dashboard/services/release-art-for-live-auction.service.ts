@@ -16,10 +16,12 @@ export class ReleaseArtForLiveAuctionService {
   #http = inject(HttpClient);
   #appService = inject(AppService);
 
-  releaseArtForLiveAuction$(releaseArtForLiveAuctionForm: FormGroup): Observable<any> {
+  releaseArtForPreview$(releaseArtForLiveAuctionForm: FormGroup): Observable<any> {
     const trimmedReleaseArtForLiveAuctionForm = this.#appService.trimObjectValues(releaseArtForLiveAuctionForm.value);
 
-    const url = `${this.#baseUrl}/auctions-cars/create-auction-art`;
+    // const url = `${this.#baseUrl}/auctions-cars/create-auction-art`;
+    // auctions-cars/preview-ART
+    const url = `${this.#baseUrl}/auctions-cars/preview-art`;
 
     return this.#http.post<any>(url, trimmedReleaseArtForLiveAuctionForm);
   }

@@ -27,7 +27,8 @@ export interface SpecificCarAuctionDetailsLastChanceWinnerInfo {
   userId: string;
   amount: number;
   chargeId: string;
-  purchaseDate: Date;
+  purchaseDate: string;
+  userName: string;
 }
 
 export interface SpecificCarAuctionDetailsLastChanceBid {

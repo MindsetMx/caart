@@ -37,10 +37,10 @@
             </span>
           </td>
           <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-            <!-- <button (click)="openRequestsDetailsModal(publication.id)"
+            <button (click)="openRequestsDetailsModal(publication.id)"
               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-indigo-800 underline">
               Ver detalles
-            </button> -->
+            </button>
           </td>
           <!-- <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">Member</td> -->
           @if (publication.attributes.status === 'Pendiente') {
@@ -60,6 +60,5 @@
   </div>
 </div>
 
-<!-- <requests-details-modal [isOpen]="requestsDetailsModalIsOpen()" (isOpenChange)="closeRequestsDetailsModal($event)"
-  [publicationId]="publicationId()">
-</requests-details-modal> -->
+<art-requests-details-modal [(isOpen)]="requestsDetailsModalIsOpen" [publicationId]="publicationId()">
+</art-requests-details-modal>

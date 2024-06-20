@@ -1,7 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { AppService } from '@app/app.service';
 import { ArtRequests } from '@dashboard/interfaces';
+import { ArtRequestsDetailsModalComponent } from '@dashboard/modals/art-requests-details-modal/art-requests-details-modal.component';
 import { ArtRequestsService } from '@dashboard/services/art-requests.service';
 import { InputDirective } from '@shared/directives';
 
@@ -10,7 +12,8 @@ import { InputDirective } from '@shared/directives';
   standalone: true,
   imports: [
     CommonModule,
-    InputDirective
+    InputDirective,
+    ArtRequestsDetailsModalComponent
   ],
   templateUrl: './art-requests.component.html',
   styleUrl: './art-requests.component.css',
@@ -19,6 +22,8 @@ import { InputDirective } from '@shared/directives';
 export class ArtRequestsComponent {
   artRequests = signal<ArtRequests>({} as ArtRequests);
   acceptPublicationRequestButtonIsDisabled = signal<boolean>(false);
+  publicationId = signal<string>('');
+  requestsDetailsModalIsOpen = signal<boolean>(false);
 
   #artRequestsService = inject(ArtRequestsService);
   #appService = inject(AppService);
@@ -68,6 +73,11 @@ export class ArtRequestsComponent {
       },
       error: (error) => console.error(error),
     });
+  }
+
+  openRequestsDetailsModal(publicationId: string): void {
+    this.publicationId.set(publicationId);
+    this.requestsDetailsModalIsOpen.set(true);
   }
 
   toastSuccess(message: string): void {

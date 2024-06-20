@@ -73,8 +73,8 @@ export class AddCarHistoryComponent {
       blocks: this.#formBuilder.array([], Validators.required),
       extract: ['', Validators.required],
       extraInfo: this.#formBuilder.array([
-        this.#formBuilder.control('', Validators.required)
-      ], Validators.required)
+        this.#formBuilder.control('')
+      ])
     });
   }
 
@@ -104,8 +104,6 @@ export class AddCarHistoryComponent {
     }).add(() => {
       this.addCarHistorySubmitButtonIsDisabled.set(false);
     });
-
-    // this.#releaseCarForLiveAuctionService.releaseCarForLiveAuction$(this.addCarHistoryForm).subscribe({
   }
 
   removeExtraInfo(index: number): void {

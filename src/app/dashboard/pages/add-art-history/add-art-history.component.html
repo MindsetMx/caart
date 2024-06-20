@@ -80,8 +80,7 @@
           @for (charge of extraInfoFormArrayControls; track charge; let i = $index) {
           <div class="flex gap-5">
             <div class="w-full">
-              <label [for]="'additionalCharge' + i" class="block text-sm mb-2">Información adicional {{i + 1}}<span
-                  class="font-bold text-red-500 inline-block">*</span></label>
+              <label [for]="'additionalCharge' + i" class="block text-sm mb-2">Información adicional {{i + 1}}</label>
               <textarea [formControlName]="i" [id]="'additionalCharge' + i" cols="30" rows="10" sharedInput></textarea>
               @if (controlHasError(charge)) {
               <shared-input-error [message]="getErrorFromControl(charge)"></shared-input-error>

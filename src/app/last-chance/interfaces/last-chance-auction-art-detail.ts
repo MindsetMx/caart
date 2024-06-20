@@ -32,6 +32,7 @@ export interface LastChanceAuctionArtDetailAttributes {
 
 export interface LastChanceAuctionArtDetailArtDetail {
   _id: string;
+  additionalCharges: LastChanceAuctionArtDetailAdditionalCharge[];
   certificadoAutenticidad: boolean;
   entidadCertificado: string;
   entregaConMarco: boolean;
@@ -44,6 +45,12 @@ export interface LastChanceAuctionArtDetailArtDetail {
   createdAt: Date;
   updatedAt: Date;
   __v: number;
+}
+
+export interface LastChanceAuctionArtDetailAdditionalCharge {
+  chargeType: string;
+  amount: number;
+  _id: string;
 }
 
 

@@ -25,4 +25,9 @@ export class AuctionCarService {
 
     return this.#http.post(`${this.#baseUrl}/car-history`, trimmedAddCarHistoryForm);
   }
+
+  releaseCarForLiveAuction$(auctionCarId: string): Observable<any> {
+    // auctions-cars/activate/6670cd726819beabe0985141
+    return this.#http.patch(`${this.#baseUrl}/auctions-cars/activate/${auctionCarId}`, {});
+  }
 }

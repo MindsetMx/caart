@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit, effect, inject, model, signal, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,7 +8,7 @@ import { AuctionCardComponent } from '@app/auctions/components/auction-card/auct
 import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { VehicleAuction } from '@app/auctions/interfaces';
+import { GetLiveCarAuction, VehicleAuction } from '@app/auctions/interfaces';
 import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { RouterModule } from '@angular/router';
@@ -37,6 +37,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VehicleFilterResultsComponent implements OnInit {
+  updatedCarAuction = model<GetLiveCarAuction>({} as GetLiveCarAuction);
+
   currentPage = signal<number>(0);
   size = signal<number>(10);
 
@@ -119,10 +121,42 @@ export class VehicleFilterResultsComponent implements OnInit {
 
   #vehicleFilterService = inject(VehicleFilterService);
 
-  auctions = signal<VehicleAuction | undefined>(undefined);
+  auctions = signal<VehicleAuction>({} as VehicleAuction);
+
+  updatedAuctionCarEffect = effect(() => {
+    this.addCarAuction();
+  }, { allowSignalWrites: true });
 
   ngOnInit(): void {
     this.getLiveAuctions(true);
+  }
+
+  addCarAuction(): void {
+    if (this.updatedCarAuction().data) {
+      untracked(() => {
+        this.auctions.update((auctions) => {
+          const data = auctions.data.map((item) => {
+            if (item.id === this.updatedCarAuction().data.id) {
+              return {
+                id: this.updatedCarAuction().data.id,
+                type: this.updatedCarAuction().data.type,
+                originalAuctionCarId: this.updatedCarAuction().data.originalAuctionCarId,
+                attributes: this.updatedCarAuction().data.attributes,
+              };
+            }
+
+            return item;
+          });
+
+          return {
+            data,
+            meta: auctions.meta,
+          };
+        });
+
+        this.updatedCarAuction.set({} as GetLiveCarAuction);
+      });
+    }
   }
 
   getLiveAuctions(replace: boolean = false): void {

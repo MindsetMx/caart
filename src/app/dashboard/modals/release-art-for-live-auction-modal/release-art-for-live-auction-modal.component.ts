@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -9,6 +9,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { CopyAuctionPreviewLinkModalComponent } from '@dashboard/modals/copy-auction-preview-link-modal/copy-auction-preview-link-modal.component';
 
 @Component({
   selector: 'release-art-for-live-auction-modal',
@@ -21,7 +22,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
     MatFormFieldModule,
     MatSelectModule,
     PrimaryButtonDirective,
-    SpinnerComponent
+    SpinnerComponent,
+    CopyAuctionPreviewLinkModalComponent
   ],
   templateUrl: './release-art-for-live-auction-modal.component.html',
   styleUrl: './release-art-for-live-auction-modal.component.css',
@@ -32,6 +34,13 @@ export class ReleaseArtForLiveAuctionModalComponent {
   originalAuctionArtId = input.required<string>();
   isOpenChange = output<boolean>();
   artReleaseForLiveAuction = output<void>();
+
+  copyAuctionPreviewLinkModalIsOpen = signal<boolean>(false);
+
+  fullAuctionPreviewLink = computed(() => {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/subasta-arte/${this.originalAuctionArtId()}`;
+  });
 
   releaseArtForLiveAuctionForm: FormGroup;
   releaseArtForLiveAuctionSubmitButtonIsDisabled = signal<boolean>(false);
@@ -131,13 +140,13 @@ export class ReleaseArtForLiveAuctionModalComponent {
       return;
     }
 
-    this.#releaseArtForLiveAuctionService.releaseArtForLiveAuction$(this.releaseArtForLiveAuctionForm).subscribe({
+    this.#releaseArtForLiveAuctionService.releaseArtForPreview$(this.releaseArtForLiveAuctionForm).subscribe({
       next: (response) => {
         this.releaseArtForLiveAuctionForm.reset();
         this.emitIsOpenChange(false);
         this.artReleaseForLiveAuction.emit();
 
-        this.toastSuccess('El arte se ha liberado para la subasta en vivo');
+        this.toastSuccess('El arte se ha liberado para vista previa');
       },
       error: (error) => {
         console.error(error.error.error.error);

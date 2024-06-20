@@ -160,7 +160,7 @@ export class LastChanceArtDetailComponent {
   });
 
   imagesPublishEffect = effect(() => {
-    if (this.imagesPublish().data && this.imagesPublish().data.fotosCarrusel.length > 0 && this.myCarousel()) {
+    if (this.imagesPublish().data && this.myCarousel()) {
       new Carousel(
         this.myCarousel()?.nativeElement,
         {

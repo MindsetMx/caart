@@ -8,11 +8,19 @@ export interface AuctionArtInfoData {
   name: string;
   wizardSteps: AuctionArtInfoWizardSteps;
   paymentCompleted: boolean;
-  carHistoryExists: boolean;
+  artHistoryExists: boolean;
   published: boolean;
+  status: AuctionArtStatus;
 }
 
 export interface AuctionArtInfoWizardSteps {
   generalInfo: boolean;
   artDetails: boolean;
+}
+
+export enum AuctionArtStatus {
+  Active = 'active',
+  Completed = 'completed',
+  Cancelled = 'cancelled',
+  Preview = 'preview',
 }

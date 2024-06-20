@@ -10,14 +10,15 @@ export interface GetCommentsData {
 }
 
 export interface GetCommentsAttributes {
-  text: string;
   createdBy: string;
   dateCreated: string;
+  images: string[];
   isBid: boolean;
   isSeller: boolean;
-  likesCount: number;
   likedByMe: boolean;
+  likesCount: number;
   parentCommentId: null;
+  text: string;
 }
 
 export interface GetCommentsRelationships {

@@ -27,3 +27,4 @@ export * from './my-live-car-auctions';
 export * from './my-live-art-auctions';
 export * from './specific-car-auction-details-last-chance';
 export * from './specific-art-auction-details-last-chance';
+export * from './get-live-car-auction';

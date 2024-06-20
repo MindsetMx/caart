@@ -257,6 +257,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   getComments(): void {
     this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.active).subscribe({
       next: (response) => {
+        console.log('comments', response);
+
         this.comments.set(response);
 
         //invertir el orden de los comentarios

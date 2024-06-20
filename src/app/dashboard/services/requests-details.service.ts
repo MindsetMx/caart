@@ -15,4 +15,8 @@ export class RequestsDetailsService {
   getAuctionCarById$(id: string): Observable<AuctionDetails> {
     return this.#http.get<AuctionDetails>(`${this.#baseUrl}/auction-items/auction-car/${id}`);
   }
+
+  getAuctionArtById$(id: string): Observable<any> {
+    return this.#http.get<any>(`${this.#baseUrl}/auction-items/auction-art/${id}`);
+  }
 }

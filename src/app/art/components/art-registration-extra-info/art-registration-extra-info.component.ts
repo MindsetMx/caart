@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Uppy } from '@uppy/core';
 import Spanish from '@uppy/locales/lib/es_ES';
@@ -15,6 +15,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { AutoResizeTextareaDirective, InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'art-registration-extra-info',
@@ -26,7 +27,8 @@ import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinar
     AutoResizeTextareaDirective,
     InputDirective,
     PrimaryButtonDirective,
-    SpinnerComponent
+    SpinnerComponent,
+    MatIcon,
   ],
   templateUrl: './art-registration-extra-info.component.html',
   styleUrl: './art-registration-extra-info.component.css',
@@ -62,6 +64,14 @@ export class ArtRegistrationExtraInfoComponent {
 
   get photos(): FormControl {
     return this.extraInfoForm.get('photos') as FormControl;
+  }
+
+  get additionalChargesFormArray(): FormArray {
+    return this.extraInfoForm.get('additionalCharges') as FormArray;
+  }
+
+  get additionalChargesFormArrayControls(): FormGroup[] {
+    return this.additionalChargesFormArray.controls as FormGroup[];
   }
 
   uppyDashboardImagesEffect = effect(() => {
@@ -136,6 +146,22 @@ export class ArtRegistrationExtraInfoComponent {
       procedenciaObra: ['Museo de Arte Moderno, Nueva York', Validators.required],
       historiaArtista: ['Nacido en 1977 en Barcelona, España. Estudió Bellas Artes en la Universidad de Barcelona. Ha expuesto su obra en varias galerías internacionales.'],
       photos: [[]],
+      additionalCharges: this.#fb.array(
+        [
+          this.#fb.group({
+            chargeType: ['', Validators.required],
+            amount: ['', Validators.required],
+          },
+            {
+              validators: Validators.required,
+            }
+          )
+        ]
+        ,
+        {
+          validators: Validators.required,
+        }
+      ),
       originalAuctionArtId: [this.originalAuctionArtId, Validators.required],
     });
 
@@ -158,6 +184,19 @@ export class ArtRegistrationExtraInfoComponent {
 
   get originalAuctionArtId(): string {
     return this.#completeArtRegistrationService.originalAuctionArtId();
+  }
+
+  addAdditionalCharge(): void {
+    const nuevoCredito = this.#fb.group({
+      chargeType: ['', Validators.required],
+      amount: ['', Validators.required],
+    });
+
+    this.additionalChargesFormArray.push(nuevoCredito);
+  }
+
+  removeAdditionalCharge(index: number): void {
+    this.additionalChargesFormArray.removeAt(index);
   }
 
   batchTokenDirect(): void {

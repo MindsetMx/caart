@@ -74,8 +74,8 @@ export class AddArtHistoryComponent {
       blocks: this.#formBuilder.array([], Validators.required),
       extract: ['', Validators.required],
       extraInfo: this.#formBuilder.array([
-        this.#formBuilder.control('', Validators.required)
-      ], Validators.required)
+        this.#formBuilder.control('')
+      ])
     });
   }
 

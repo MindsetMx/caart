@@ -11,6 +11,7 @@ export interface AuctionCarInfoData {
   paymentCompleted: boolean;
   published: boolean;
   carHistoryExists: boolean;
+  status: AuctionCarStatus;
 }
 
 export interface AuctionCarInfoWizardSteps {
@@ -19,4 +20,11 @@ export interface AuctionCarInfoWizardSteps {
   interior: boolean;
   mechanics: boolean;
   extras: boolean;
+}
+
+export enum AuctionCarStatus {
+  Active = 'active',
+  Completed = 'completed',
+  Cancelled = 'cancelled',
+  Preview = 'preview',
 }

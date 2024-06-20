@@ -32,10 +32,10 @@
           <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
             <div class="flex items-center justify-end gap-x-2 sm:justify-start">
               <div class="flex-none rounded-full p-1 bg-green-400/10"
-                [ngClass]="auction.carHistoryExists ? 'text-green-400':'text-orange-400'">
+                [ngClass]="auction.artHistoryExists ? 'text-green-400':'text-orange-400'">
                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
               </div>
-              <div>{{ auction.carHistoryExists ? 'Completado':'Pendiente' }}</div>
+              <div>{{ auction.artHistoryExists ? 'Completado':'Pendiente' }}</div>
             </div>
           </td>
           <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
@@ -54,12 +54,17 @@
                 <span>Agregar historia del arte</span>
               </button>
               <button (click)="openReleaseArtForLiveAuctionModal(auction.auctionArtId)" mat-menu-item>
-                <span>Liberar arte para subasta en vivo</span>
+                <span>Liberar arte para vista previa</span>
               </button>
               <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta-arte', auction.auctionArtId]"
                 mat-menu-item>
                 <span>Asignar y reordenar imágenes</span>
               </button>
+              @if (auction.status === status.Preview) {
+              <button (click)="openConfirmReleaseAuctionModal(auction.auctionArtId)" mat-menu-item>
+                <span>Liberar arte para subasta en vivo</span>
+              </button>
+              }
             </mat-menu>
             }
           </td>
@@ -76,3 +81,7 @@
 <release-art-for-live-auction-modal [isOpen]="releaseArtForLiveAuctionModalIsOpen()"
   (artReleaseForLiveAuction)="dashboardInfo()" [originalAuctionArtId]="auctionArtId()"
   (isOpenChange)="closeReleaseArtForLiveAuctionModal()"></release-art-for-live-auction-modal>
+
+<confirm-release-auction-modal [(isOpen)]="confirmReleaseAuctionModalIsOpen"
+  [isButtonSubmitDisabled]="isConfirmReleaseAuctionButtonDisabled()"
+  (confirmReleaseChange)="releaseArtForLiveAuction()"></confirm-release-auction-modal>

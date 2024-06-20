@@ -16,11 +16,15 @@ export class CommentsService {
   #http = inject(HttpClient);
 
   createComment(body: FormGroup, itemType: string = AuctionTypes.car, auctionType: AuctionTypesComments): Observable<any> {
+    console.log('body', body.value);
+
+
     return this.#http.post<any>(`${this.#baseUrl}/comments`, {
       text: body.value.text,
       isBid: body.value.isBid,
       isSeller: body.value.isSeller,
       itemId: body.value.itemId,
+      images: body.value.images,
       parentCommentId: body.value.parentCommentId,
       itemType,
       auctionType

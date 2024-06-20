@@ -1,6 +1,6 @@
 <h1 class="font-optima text-4xl font-bold mb-8">Información extra</h1>
 
-<h2 class="text-xl font-bold mb-5">Información del auto</h2>
+<h2 class="text-xl font-bold mb-5">Información del arte</h2>
 <form [formGroup]="extraInfoForm" (ngSubmit)="carExtrasFormSubmit()" class="grid grid-cols-2 items-end gap-5">
   <!-- certificadoAutenticidad -->
   <div>
@@ -110,6 +110,50 @@
     @if (hasError('historiaArtista')) {
     <shared-input-error [message]="getError('historiaArtista')"></shared-input-error>
     }
+  </div>
+
+  <!-- Cargos adicionales input -->
+  <div class="col-span-2 grid gap-5" formArrayName="additionalCharges">
+    @for (charge of additionalChargesFormArrayControls; track charge; let i = $index) {
+    <div class="flex gap-5" [formGroupName]="i">
+      <div>
+        <label for="chargeType" class="block text-sm mb-2">Cargos adicionales <span
+            class="font-bold text-red-500 inline-block">*</span></label>
+        <input formControlName="chargeType" id="chargeType" type="text" sharedInput>
+        @if (hasError('chargeType', charge)) {
+        <shared-input-error [message]="getError('chargeType', charge)"></shared-input-error>
+        }
+      </div>
+      <!-- Monto del cargo $ -->
+      <div>
+        <label for="amount" class="block text-sm mb-2">Monto del cargo <span
+            class="font-bold text-red-500 inline-block">*</span></label>
+        <div class="relative rounded-md shadow-sm">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <span class="text-gray-500 sm:text-sm">$</span>
+          </div>
+          <input formControlName="amount" type="text" class="pl-7 pr-12" name="price" id="amount" mask="separator"
+            thousandSeparator="," autocomplete="off" placeholder="0.00" aria-describedby="price-currency" sharedInput>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+            <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
+          </div>
+        </div>
+        @if (hasError('amount', charge)) {
+        <shared-input-error [message]="getError('amount',charge)"></shared-input-error>
+        }
+      </div>
+      <!-- eliminar cargo -->
+      <div class="flex items-center mt-5">
+        <button type="button" class="flex" (click)="removeAdditionalCharge(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <button (click)="addAdditionalCharge()" type="button" class="underline">Añadir cargo</button>
   </div>
 
   <div class="col-span-2">

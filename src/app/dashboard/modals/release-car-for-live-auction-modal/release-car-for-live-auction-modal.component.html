@@ -1,6 +1,6 @@
 <shared-modal [isOpen]="isOpen()" (isOpenChange)="emitIsOpenChange($event)" [verticalCenter]="true">
   <div class="relative">
-    <h3 class="text-center font-bold text-lg mb-12">Liberar auto para subasta en vivo</h3>
+    <h3 class="text-center font-bold text-lg mb-12">Liberar auto para vista previa</h3>
 
     <hr class="absolute w-full -bottom-4">
   </div>
@@ -82,3 +82,7 @@
   </section>
 
 </shared-modal>
+
+<copy-auction-preview-link-modal [(isOpen)]="copyAuctionPreviewLinkModalIsOpen"
+  [auctionPreviewLink]="fullAuctionPreviewLink()">
+</copy-auction-preview-link-modal>

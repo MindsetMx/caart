@@ -8,10 +8,11 @@
 
   @switch (currentTab()) {
   @case (1) {
-  <all-auctions-filter-results></all-auctions-filter-results>
+  <all-auctions-filter-results [(updatedCarAuction)]="updatedCarAuction"
+    [(updatedArtAuction)]="updatedArtAuction"></all-auctions-filter-results>
   }
   @case (2) {
-  <vehicle-filter-results></vehicle-filter-results>
+  <vehicle-filter-results [(updatedCarAuction)]="updatedCarAuction"></vehicle-filter-results>
   }
   @case (3) {
   <art-filter-results></art-filter-results>

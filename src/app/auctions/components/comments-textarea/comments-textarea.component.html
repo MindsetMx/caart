@@ -1,10 +1,35 @@
 @if (createComment) {
 <form [formGroup]="createComment" (submit)="createCommentSubmit()">
   <textarea formControlName="text"
-    class="rounded-lg border border-gray-300 w-full px-4 focus:outline-none focus:ring-0 resize-none h-auto overflow-hidden pt-2 mb-2"
+    class="rounded-lg border border-gray-300 w-full px-4 focus:outline-none focus:ring-0 resize-none h-auto overflow-hidden pt-2"
     [rows]="rows()" [placeholder]="placeholder()" sharedAutoResizeTextarea></textarea>
 
-  <button rounded="rounded-lg" width="w-fit" py="py-3" px="px-12" class="text-sm"
+  <label>
+    <img class="w-5 h-5 mb-3 cursor-pointer" src="/assets/img/icons/camera2.svg" alt="">
+    <input type="file" class="hidden" accept="image/*" (change)="onFileChange($event)">
+  </label>
+
+  <div class="flex flex-wrap gap-4 mt-2">
+    @for (image of images(); track image) {
+    <div class="relative w-fit">
+      <img [src]="image" class="object-cover w-20 h-20">
+      <button (click)="removeImage($index)"
+        class="absolute flex items-center justify-center rounded-full top-0 right-0 bg-white p-1 shadow-md hover:bg-gray-100 text-red-500">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+
+  @if (hasError('text')) {
+  <shared-input-error [message]="getError('text')"></shared-input-error>
+  }
+
+  @if (hasError('images')) {
+  <shared-input-error message="No se pueden subir más de 5 imágenes"></shared-input-error>
+  }
+
+  <button rounded="rounded-lg" width="w-fit" py="py-3" px="px-12" class="text-sm mt-4"
     [disabled]="createCommentButtonIsDisabled()" [class.opacity-50]="createCommentButtonIsDisabled()"
     sharedPrimaryButton>
     @if (createCommentButtonIsDisabled()) {

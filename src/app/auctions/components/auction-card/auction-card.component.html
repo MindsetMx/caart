@@ -27,7 +27,8 @@
       }
     </div>
     }
-    <p class="text-gray4 line-clamp-3" [ngClass]="{'mt-9': !reserve() === false && !premium()}">
+    <p class="text-gray4 line-clamp-3" style="word-wrap: break-word;"
+      [ngClass]="{'mt-9': !reserve() === false && !premium()}">
       {{extract()}}
     </p>
     <span class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: {{ lastBid()

@@ -29,6 +29,7 @@ export interface ArtAuctionDetailsAttributes {
 
 export interface ArtAuctionDetailsArtDetail {
   _id: string;
+  additionalCharges: ArtAuctionDetailsAdditionalCharge[];
   certificadoAutenticidad: boolean;
   entidadCertificado: string;
   entregaConMarco: boolean;
@@ -43,6 +44,11 @@ export interface ArtAuctionDetailsArtDetail {
   __v: number;
 }
 
+export interface ArtAuctionDetailsAdditionalCharge {
+  chargeType: string;
+  amount: number;
+  _id: string;
+}
 
 export interface ArtAuctionDetailsAuctionArtForm {
   _id: string;
@@ -65,6 +71,9 @@ export interface ArtAuctionDetailsAuctionArtForm {
   status: string;
   __v: number;
   reserve: boolean;
+  lotNumber: number;
+  city: string;
+  state: string;
 }
 
 export interface ArtAuctionDetailsBid {
