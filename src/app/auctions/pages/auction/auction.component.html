@@ -2,8 +2,14 @@
 
   @if (specificAuction().data && specificAuction().data.status === 'preview') {
   <div class="bg-yellow-500 h-14 flex justify-center items-center">
-    <h3 class="text-xl font-bold">
-      Esta es una subasta en modo preview
+    <h3 class="text-md font-bold">
+      Esta es una subasta en modo preview.
+      @if (specificAuction().data.isWithReserve) {
+      <span>
+        El precio de reserva para esta subasta es de {{specificAuction().data.reserveAmount|
+        currency:'USD':'symbol':'1.0-2'}} MXN
+      </span>
+      }
     </h3>
   </div>
   }
@@ -355,7 +361,7 @@
         }
         }
 
-        <recently-completed-auctions class="hidden md:block" [auctionId]="auctionId()!"></recently-completed-auctions>
+        <!-- <recently-completed-auctions class="hidden md:block" [auctionId]="auctionId()!"></recently-completed-auctions> -->
       </ng-container>
 
       <ng-container right>

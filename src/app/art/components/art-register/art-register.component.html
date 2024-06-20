@@ -82,6 +82,18 @@
       <shared-input-error [message]="getError('rarity')"></shared-input-error>
       }
     </div>
+
+    <!-- edition -->
+    @if (rarityControl.value === rarity.LimitedEdition) {
+    <div>
+      <label for="edition" class="block mb-1 text-sm">Detalles de la edición</label>
+      <input formControlName="edition" id="edition" type="text" sharedInput>
+      @if (hasError('edition')) {
+      <shared-input-error [message]="getError('edition')"></shared-input-error>
+      }
+    </div>
+    }
+
     <!-- height: string; -->
     <div>
       <label for="height" class="block mb-1 text-sm">Altura <span

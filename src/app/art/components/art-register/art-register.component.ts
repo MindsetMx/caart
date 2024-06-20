@@ -89,6 +89,14 @@ export class ArtRegisterComponent {
     return this.registerArtForm.get('reserve') as FormControl;
   }
 
+  get rarityControl(): FormControl {
+    return this.registerArtForm.get('rarity') as FormControl
+  }
+
+  get editionControl(): FormControl {
+    return this.registerArtForm.get('edition') as FormControl;
+  }
+
   get reserveAmountControl(): FormControl {
     return this.registerArtForm.get('reserveAmount') as FormControl;
   }
@@ -99,6 +107,10 @@ export class ArtRegisterComponent {
 
   get userIsNotAuthenticated(): boolean {
     return this.authStatus === AuthStatus.notAuthenticated;
+  }
+
+  get rarity(): typeof Rarity {
+    return Rarity;
   }
 
   // get rarity(): Rarity {
@@ -230,6 +242,7 @@ export class ArtRegisterComponent {
       category: ['', [Validators.required]],
       otherCategory: [''],
       rarity: ['', [Validators.required]],
+      edition: [''],
       height: ['', [Validators.required]],
       width: ['', [Validators.required]],
       depth: [''],
@@ -257,6 +270,19 @@ export class ArtRegisterComponent {
       }
 
       this.reserveAmountControl.updateValueAndValidity();
+    });
+
+    this.rarityControl.valueChanges.pipe(
+      takeUntilDestroyed(),
+    ).subscribe((value) => {
+      if (value === Rarity.LimitedEdition) {
+        this.editionControl.setValidators([Validators.required]);
+      } else {
+        this.editionControl.setValue('');
+        this.editionControl.clearValidators();
+      }
+
+      this.editionControl.updateValueAndValidity();
     });
 
     this.filteredStates = this.stateControl.valueChanges.pipe(
