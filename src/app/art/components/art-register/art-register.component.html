@@ -28,29 +28,6 @@
       }
     </div>
 
-    <div>
-      <label for="state" class="block mb-1 text-sm">Estado <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input id="state" type="text" formControlName="state" [matAutocomplete]="states" autocomplete="abc" sharedInput>
-      <mat-autocomplete #states="matAutocomplete">
-        @for (state of filteredStates | async; track $index) {
-        <mat-option [value]="state">{{state}}</mat-option>
-        }
-      </mat-autocomplete>
-      @if (hasError('state')) {
-      <shared-input-error [message]="getError('state')"></shared-input-error>
-      }
-    </div>
-
-    <div>
-      <label for="postalCode" class="block mb-1 text-sm">Código Postal <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
-      @if (hasError('postalCode')) {
-      <shared-input-error [message]="getError('postalCode')"></shared-input-error>
-      }
-    </div>
-
     <!-- materials: string; -->
     <div>
       <label for="materials" class="block mb-1 text-sm">Materiales <span
@@ -208,6 +185,38 @@
       }
     </div>
     }
+
+    <div>
+      <label for="city" class="block mb-1 text-sm">Ciudad <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="city" id="city" type="text" sharedInput>
+      @if (hasError('city')) {
+      <shared-input-error [message]="getError('city')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="state" class="block mb-1 text-sm">Estado <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input id="state" type="text" formControlName="state" [matAutocomplete]="states" autocomplete="abc" sharedInput>
+      <mat-autocomplete #states="matAutocomplete">
+        @for (state of filteredStates | async; track $index) {
+        <mat-option [value]="state">{{state}}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (hasError('state')) {
+      <shared-input-error [message]="getError('state')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="postalCode" class="block mb-1 text-sm">Código Postal <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
+      @if (hasError('postalCode')) {
+      <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+      }
+    </div>
 
     <!-- Images -->
     <div class="col-span-2">

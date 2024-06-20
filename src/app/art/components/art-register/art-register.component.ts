@@ -235,6 +235,7 @@ export class ArtRegisterComponent {
       depth: [''],
       unit: ['', [Validators.required]],
       condition: ['', [Validators.required]],
+      city: ['', Validators.required],
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
       reserve: ['', [Validators.required]],
