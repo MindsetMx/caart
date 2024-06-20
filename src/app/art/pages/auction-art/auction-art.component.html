@@ -1,5 +1,5 @@
 <div class="mb-32">
-  @if (specificAuction().data.status === 'preview') {
+  @if (specificAuction().data && specificAuction().data.status === 'preview') {
   <div class="bg-yellow-500 h-14 flex justify-center items-center">
     <h3 class="text-md font-bold">
       Esta es una subasta en modo preview.
@@ -233,7 +233,7 @@
 
         <hr class="my-4">
 
-        @defer (when auction().data) {
+        @if (auction().data) {
         <section class="space-y-4">
           @for (item of auction().data.attributes.artHistory.blocks; track $index) {
           @switch (item.type) {
@@ -256,7 +256,7 @@
           [specificAuction]="specificAuction()" (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
 
-        @if (specificAuction().data.status !== 'preview') {
+        @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <section class="mt-12">
           @defer (when comments().data) {
           <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
@@ -320,7 +320,6 @@
           <div>
             <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
           </div>
-          }
 
           <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
 
@@ -329,6 +328,8 @@
             <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
             }
           </ol>
+          }
+
         </section>
 
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
@@ -337,7 +338,7 @@
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
-        @if (specificAuction().data.status !== 'preview') {
+        @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <div class="xl:flex items-center justify-between">
             <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>

@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { GetAllAuctions, GetLiveCarAuction, VehicleAuction } from '@app/auctions/interfaces';
+import { GetAllAuctions, GetLiveArtAuction, GetLiveCarAuction } from '@app/auctions/interfaces';
 import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { RouterModule } from '@angular/router';
@@ -44,7 +44,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
 })
 export class AllAuctionsFilterResultsComponent {
   updatedCarAuction = model<GetLiveCarAuction>({} as GetLiveCarAuction);
-  updatedArtAuction = model<any>({} as any);
+  updatedArtAuction = model<GetLiveArtAuction>({} as GetLiveArtAuction);
 
   currentPage = signal<number>(0);
   size = signal<number>(10);
@@ -124,6 +124,10 @@ export class AllAuctionsFilterResultsComponent {
     this.addCarAuction();
   }, { allowSignalWrites: true });
 
+  updatedAuctionArtEffect = effect(() => {
+    this.addArtAuction();
+  }, { allowSignalWrites: true });
+
   get auctionTypesAll(): typeof AuctionTypesAll {
     return AuctionTypesAll;
   }
@@ -156,6 +160,34 @@ export class AllAuctionsFilterResultsComponent {
         });
 
         this.updatedCarAuction.set({} as GetLiveCarAuction);
+      });
+    }
+  }
+
+  addArtAuction(): void {
+    if (this.updatedArtAuction().data) {
+      untracked(() => {
+        this.auctions.update((auctions) => {
+          const data = auctions.data.map((item) => {
+            if (item.id === this.updatedArtAuction().data.id) {
+              return {
+                id: this.updatedArtAuction().data.id,
+                type: this.updatedArtAuction().data.type,
+                originalAuctionId: this.updatedArtAuction().data.originalAuctionArtId,
+                attributes: this.updatedArtAuction().data.attributes,
+              };
+            }
+
+            return item;
+          });
+
+          return {
+            data,
+            meta: auctions.meta,
+          };
+        });
+
+        this.updatedArtAuction.set({} as any);
       });
     }
   }

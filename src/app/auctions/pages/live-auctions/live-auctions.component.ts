@@ -11,7 +11,7 @@ import { ArtFilterResultsComponent } from '@auctions/components/art-filter-resul
 import { environments } from '@env/environments';
 import { UpdatedAuctionTypes } from '@auctions/enums';
 import { LiveAuctionsService } from '@auctions/services/live-auctions.service';
-import { GetLiveCarAuction } from '@auctions/interfaces';
+import { GetLiveArtAuction, GetLiveCarAuction } from '@auctions/interfaces';
 
 @Component({
   standalone: true,
@@ -35,7 +35,7 @@ export class LiveAuctionsComponent {
   eventSource?: EventSource;
 
   updatedCarAuction = signal<GetLiveCarAuction>({} as GetLiveCarAuction);
-  updatedArtAuction = signal<any>({} as any);
+  updatedArtAuction = signal<GetLiveArtAuction>({} as GetLiveArtAuction);
 
   #router = inject(Router);
   #activatedRoute = inject(ActivatedRoute);
@@ -91,7 +91,7 @@ export class LiveAuctionsComponent {
             break;
 
           case UpdatedAuctionTypes.activeAuctionArt:
-            this.updatedArtAuction.set(JSON.parse(event.data).auctionId);
+            this.getUpdatedArtAuction(JSON.parse(event.data).auctionId);
             break;
         }
       }
@@ -99,11 +99,22 @@ export class LiveAuctionsComponent {
   }
 
   getUpdatedCarAuction(auctionCarId: string): void {
-    this.#liveAuctionsService.getAuction$(auctionCarId).subscribe({
+    this.#liveAuctionsService.getCarAuction$(auctionCarId).subscribe({
       next: (auction: GetLiveCarAuction) => {
+        this.updatedCarAuction.set(auction);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  getUpdatedArtAuction(auctionArtId: string): void {
+    this.#liveAuctionsService.getArtAuction$(auctionArtId).subscribe({
+      next: (auction: any) => {
         console.log('auction', auction);
 
-        this.updatedCarAuction.set(auction);
+        this.updatedArtAuction.set(auction);
       },
       error: (err) => {
         console.error(err);

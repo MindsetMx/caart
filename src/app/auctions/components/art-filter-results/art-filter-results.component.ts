@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, effect, inject, model, signal, untracked } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { ArtAuctionCardComponent } from '../art-auction-card/art-auction-card.component';
 import { ArtAuction } from '@auctions/interfaces/art-auction';
+import { GetLiveArtAuction } from '@auctions/interfaces';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -35,6 +36,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArtFilterResultsComponent {
+  updatedArtAuction = model<GetLiveArtAuction>({} as GetLiveArtAuction);
+
   currentPage = signal<number>(0);
   size = signal<number>(10);
 
@@ -166,10 +169,42 @@ export class ArtFilterResultsComponent {
 
   #artFilterService = inject(ArtFilterService);
 
-  auctions = signal<ArtAuction | undefined>(undefined);
+  auctions = signal<ArtAuction>({} as ArtAuction);
+
+  updatedAuctionArtEffect = effect(() => {
+    this.addArtAuction();
+  }, { allowSignalWrites: true });
 
   ngOnInit(): void {
     this.getLiveAuctions(true);
+  }
+
+  addArtAuction(): void {
+    if (this.updatedArtAuction().data) {
+      untracked(() => {
+        this.auctions.update((auctions) => {
+          const data = auctions.data.map((item) => {
+            if (item.id === this.updatedArtAuction().data.id) {
+              return {
+                id: this.updatedArtAuction().data.id,
+                type: this.updatedArtAuction().data.type,
+                originalAuctionArtId: this.updatedArtAuction().data.originalAuctionArtId,
+                attributes: this.updatedArtAuction().data.attributes,
+              };
+            }
+
+            return item;
+          });
+
+          return {
+            data,
+            meta: auctions.meta,
+          };
+        });
+
+        this.updatedArtAuction.set({} as any);
+      });
+    }
   }
 
   getLiveAuctions(replace: boolean = false): void {
