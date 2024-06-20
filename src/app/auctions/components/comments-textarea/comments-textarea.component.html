@@ -9,7 +9,7 @@
     <input type="file" class="hidden" accept="image/*" (change)="onFileChange($event)">
   </label>
 
-  <div class="flex flex-wrap gap-4 mt-2">
+  <!-- <div class="flex flex-wrap gap-4 mt-2">
     @for (image of images(); track image) {
     <div class="relative w-fit">
       <img [src]="image" class="object-cover w-20 h-20">
@@ -18,6 +18,23 @@
         <mat-icon>delete</mat-icon>
       </button>
     </div>
+    }
+  </div> -->
+
+  <div class="flex flex-wrap gap-4 mt-2">
+    @for (loading of isLoading(); track loading; let i = $index) {
+    @if (loading) {
+    <shared-spinner></shared-spinner>
+    }
+    @if (!loading && images()[i]) {
+    <div class="relative w-fit">
+      <img [src]="images()[i]" class="object-cover w-20 h-20">
+      <button (click)="removeImage(i)"
+        class="absolute flex items-center justify-center rounded-full top-0 right-0 bg-white p-1 shadow-md hover:bg-gray-100 text-red-500">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    }
     }
   </div>
 

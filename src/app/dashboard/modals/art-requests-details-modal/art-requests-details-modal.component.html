@@ -7,26 +7,40 @@
 
   <section class="container">
     @defer (when auction().data) {
-    <h4>
-      {{auction().data.attributes.brand}} {{auction().data.attributes.carModel}} ({{auction().data.attributes.year}})
-    </h4>
-    <p><b>Color exterior:</b> {{auction().data.attributes.exteriorColor}}</p>
-    <p><b>Color interior:</b> {{auction().data.attributes.interiorColor}}</p>
-    <p><b>Condición general:</b> {{auction().data.attributes.generalCondition}}</p>
-    <p><b>Tipo de transmisión:</b> {{auction().data.attributes.transmissionType}}</p>
-    <p><b>Motor:</b> {{auction().data.attributes.engine}}</p>
-    <p><b>Ciudad:</b> {{auction().data.attributes.city}}</p>
-    <p><b>Código postal:</b> {{auction().data.attributes.postalCode}}</p>
-    <p><b>Estado:</b> {{auction().data.attributes.state}}</p>
+    <h4>{{auction().data.attributes.title}}</h4>
+    <p><b>Artista:</b> {{auction().data.attributes.artist}}</p>
+    <p><b>Año:</b> {{auction().data.attributes.year}}</p>
+    <p><b>Materiales:</b> {{auction().data.attributes.materials}}</p>
+    <p><b>Categoría:</b> {{auction().data.attributes.category}}</p>
+    <p><b>Otra categoría:</b> {{auction().data.attributes.otherCategory}}</p>
     <p><b>Reserva:</b> {{auction().data.attributes.reserve ? 'Sí' : 'No'}}</p>
     <p><b>Monto de la reserva:</b> {{auction().data.attributes.reserveAmount}}</p>
-    <p><b>Kilometraje:</b> {{auction().data.attributes.kmInput}} {{auction().data.attributes.kmType}}</p>
-    <p><b>¿Cómo supiste de nosotros?:</b> {{auction().data.attributes.howDidYouHearAboutUs}}</p>
-    <p><b>Número de lote:</b> {{auction().data.attributes.lotNumber}}</p>
+    <p><b>Rareza:</b> {{auction().data.attributes.rarity}}</p>
+    <p><b>Alto:</b> {{auction().data.attributes.height}} {{auction().data.attributes.unit}}</p>
+    <p><b>Ancho:</b> {{auction().data.attributes.width}} {{auction().data.attributes.unit}}</p>
+    <p><b>Profundidad:</b> {{auction().data.attributes.depth}} {{auction().data.attributes.unit}}</p>
+    <p><b>Condición:</b> {{auction().data.attributes.condition}}</p>
+    <p><b>Código postal:</b> {{auction().data.attributes.postalCode}}</p>
+    <p><b>Estado:</b> {{auction().data.attributes.state}}</p>
+    <p><b>Usuario:</b> {{auction().data.attributes.userId}}</p>
+    <p><b>Interés:</b> {{auction().data.attributes.interest}}</p>
+    <p><b>Estado:</b> {{auction().data.attributes.status}}</p>
 
-    <div class="grid grid-cols-2 gap-4 mt-8">
+    <p><b>Fotos:</b></p>
+    <div class="grid grid-cols-3 gap-4">
       @for (photo of auction().data.attributes.photos; track $index) {
-      <img [src]="photo" alt="Foto del auto">
+      <img [src]="photo" alt="Foto {{ $index + 1}">
+      } @empty {
+      <p>No hay fotos</p>
+      }
+    </div>
+
+    <p><b>Videos:</b></p>
+    <div class="grid grid-cols-3 gap-4">
+      @for (video of auction().data.attributes.videos; track $index) {
+      <video [src]="video" controls></video>
+      } @empty {
+      <p>No hay videos</p>
       }
     </div>
     }

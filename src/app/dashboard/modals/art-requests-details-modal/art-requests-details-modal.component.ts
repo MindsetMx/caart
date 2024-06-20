@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, inject, input, model, signa
 
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { RequestsDetailsService } from '@app/dashboard/services/requests-details.service';
+import { AuctionArtDetails } from '@app/dashboard/interfaces';
 
 @Component({
   selector: 'art-requests-details-modal',
@@ -17,7 +18,7 @@ export class ArtRequestsDetailsModalComponent {
   isOpen = model.required<boolean>();
   publicationId = input.required<string>();
 
-  auction = signal<any>({} as any);
+  auction = signal<AuctionArtDetails>({} as AuctionArtDetails);
 
   #requestsDetailsService = inject(RequestsDetailsService);
 

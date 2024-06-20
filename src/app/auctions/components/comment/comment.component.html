@@ -8,7 +8,9 @@
     @if (comment().attributes.images.length > 0) {
     <div class="flex flex-wrap gap-4 mt-2">
       @for (image of comment().attributes.images; track image) {
-      <img [src]="image" class="object-cover w-28 h-28">
+      <a [href]="image" [attr.data-fancybox]="'gallery' + uniqueId()">
+        <img [src]="image" class="object-cover w-28 h-28" alt="">
+      </a>
       }
     </div>
     }

@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input, signal } from '@angular/core';
+import { Fancybox } from "@fancyapps/ui";
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input, signal } from '@angular/core';
+
 import { GetCommentsData } from '@auctions/interfaces';
 import { CommentsService } from '@auctions/services/comments.service';
-import { CommentsTextareaComponent } from '../comments-textarea/comments-textarea.component';
+import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
 import { ThumbsUpOutlineComponent } from '@shared/components/icons/thumbs-up-outline/thumbs-up-outline.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { AuctionTypesComments } from '@auctions/enums';
@@ -23,7 +25,7 @@ import { AppComponent } from '@app/app.component';
   styleUrl: './comment.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentComponent {
+export class CommentComponent implements AfterViewInit {
   comment = input.required<GetCommentsData>();
   auctionCarPublishId = input.required<string>();
   auctionType = input.required<AuctionTypes>();
@@ -32,6 +34,7 @@ export class CommentComponent {
 
   replyIsOpen = signal<boolean>(false);
   responsesIsOpen = signal<boolean>(false);
+  uniqueId = signal<string>(window.crypto.getRandomValues(new Uint32Array(1))[0].toString());
 
   #comments = inject(CommentsService);
   #authService = inject(AuthService);
@@ -43,6 +46,10 @@ export class CommentComponent {
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
+  }
+
+  ngAfterViewInit(): void {
+    Fancybox.bind("[data-fancybox='gallery" + this.uniqueId() + "']", { Hash: false });
   }
 
   likeComment(commentId = this.comment().id): void {

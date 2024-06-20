@@ -26,7 +26,8 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
     PrimaryButtonDirective,
     SpinnerComponent,
     MatIcon,
-    InputErrorComponent
+    InputErrorComponent,
+    SpinnerComponent,
   ],
   templateUrl: './comments-textarea.component.html',
   styleUrls: ['./comments-textarea.component.css'],
@@ -41,6 +42,7 @@ export class CommentsTextareaComponent {
   placeholder = input.required<string>();
   auctionType = input.required<AuctionTypes>();
   auctionTypeComment = input.required<AuctionTypesComments>();
+  isLoading = signal<boolean[]>([]);
 
   @Output() commentCreated = new EventEmitter<void>();
 
@@ -121,12 +123,18 @@ export class CommentsTextareaComponent {
   }
 
   onFileChange(event: Event): void {
-    console.log('onFileChange');
-
     const target = event.target as HTMLInputElement;
     const file = target.files?.item(0);
 
     if (!file) return;
+
+    const index = this.isLoading().length;
+
+    this.isLoading.update((isLoading) => {
+      isLoading[index] = true;
+
+      return isLoading;
+    });
 
     this.#cloudinaryCroppedImageService.uploadImageDirect$().pipe(
       switchMap((response) =>
@@ -134,13 +142,13 @@ export class CommentsTextareaComponent {
       )
     ).subscribe({
       next: (response) => {
-        console.log(response.result.variants[0]);
-
         this.createComment?.get('images')?.setValue([...this.createComment?.get('images')?.value, response.result.variants[0]]);
       },
       error: (error) => {
         console.error(error);
       }
+    }).add(() => {
+      this.isLoading.set(this.isLoading().map((value, i) => i === index ? false : value));
     });
   }
 
