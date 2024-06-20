@@ -147,6 +147,8 @@ export class ReleaseArtForLiveAuctionModalComponent {
         this.artReleaseForLiveAuction.emit();
 
         this.toastSuccess('El arte se ha liberado para vista previa');
+
+        this.copyAuctionPreviewLinkModalIsOpen.set(true);
       },
       error: (error) => {
         console.error(error.error.error.error);
