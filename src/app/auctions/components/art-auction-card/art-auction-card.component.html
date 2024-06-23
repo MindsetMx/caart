@@ -11,7 +11,7 @@
     <p class="font-lato font-semibold text-xl">
       {{title()}}
     </p>
-    @if (reserve() === false || premium()) {
+    @if (reserve() === false || premium() || status() === statusTypes.cancelled || status() === statusTypes.completed) {
     <div class="space-x-2">
       @if (reserve() === false) {
       <no-reserve-tag-component></no-reserve-tag-component>
@@ -20,6 +20,17 @@
       <span
         class="inline-block font-bold text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
         Premium
+      </span>
+      }
+      @if (status() === statusTypes.cancelled) {
+      <span class="text-xs md:text-sm w-fit bg-red-500 px-4 py-1 rounded-2xl border-red-700 text-red-700 border-2">
+        Reserva no alcanzada
+      </span>
+      }
+      @if (status() === statusTypes.completed) {
+      <span
+        class="text-xs md:text-sm w-fit bg-green-500 px-4 py-1 rounded-2xl border-green-700 text-green-700 border-2">
+        Vendido
       </span>
       }
     </div>

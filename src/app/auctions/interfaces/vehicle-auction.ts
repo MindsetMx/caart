@@ -1,3 +1,5 @@
+import { AuctionStatus } from "@auctions/enums";
+
 export interface VehicleAuction {
   data: VehicleAuctionData[];
   meta: VehicleAuctionMeta;
@@ -23,6 +25,7 @@ export interface VehicleAuctionAttributes {
   state: string;
   year: number;
   title: string;
+  status: AuctionStatus;
 }
 
 export interface VehicleAuctionMeta {

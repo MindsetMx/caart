@@ -45,6 +45,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
 export class AllAuctionsFilterResultsComponent {
   updatedCarAuction = model<GetLiveCarAuction>({} as GetLiveCarAuction);
   updatedArtAuction = model<GetLiveArtAuction>({} as GetLiveArtAuction);
+  // reserveNotMetCarId = signal<string>('');
+  // reserveNotMetArtId = signal<string>('');
 
   currentPage = signal<number>(0);
   size = signal<number>(10);

@@ -37,6 +37,9 @@ export class LiveAuctionsComponent {
   updatedCarAuction = signal<GetLiveCarAuction>({} as GetLiveCarAuction);
   updatedArtAuction = signal<GetLiveArtAuction>({} as GetLiveArtAuction);
 
+  reserveNotMetCarId = signal<string>('');
+  reserveNotMetArtId = signal<string>('');
+
   #router = inject(Router);
   #activatedRoute = inject(ActivatedRoute);
   #liveAuctionsService = inject(LiveAuctionsService);
@@ -80,10 +83,8 @@ export class LiveAuctionsComponent {
     this.eventSource.onmessage = (event) => {
       console.log('event', event);
 
-      if (JSON.parse(event.data).type === 'AUCTION_UPDATE') {
+      if (JSON.parse(event.data).type === 'AUCTION_UPDATE' || JSON.parse(event.data).type === 'LAST_CHANCE' || JSON.parse(event.data).type === 'COMPLETED') {
         const auctionType = JSON.parse(event.data).auctionType;
-
-        console.log('auctionType', auctionType);
 
         switch (auctionType) {
           case UpdatedAuctionTypes.activeAuctionCar:
@@ -95,6 +96,20 @@ export class LiveAuctionsComponent {
             break;
         }
       }
+
+      // if (JSON.parse(event.data).type === 'LAST_CHANCE') {
+      //   const auctionType = JSON.parse(event.data).auctionType;
+
+      //   switch (auctionType) {
+      //     case UpdatedAuctionTypes.activeAuctionCar:
+      //       this.reserveNotMetCarId.set(JSON.parse(event.data).auctionId);
+      //       break;
+
+      //     case UpdatedAuctionTypes.activeAuctionArt:
+      //       this.reserveNotMetArtId.set(JSON.parse(event.data).auctionId);
+      //       break;
+      //   }
+      // }
     };
   }
 

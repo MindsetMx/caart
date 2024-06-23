@@ -1,3 +1,5 @@
+import { AuctionStatus } from "@auctions/enums";
+
 export interface ArtAuction {
   data: ArtAuctionData[];
   meta: ArtAuctionMeta;
@@ -19,6 +21,7 @@ export interface ArtAuctionAttributes {
   year: number;
   extract: string;
   reserve: boolean;
+  status: AuctionStatus;
 }
 
 export interface ArtAuctionMeta {

@@ -1,3 +1,5 @@
+import { AuctionStatus } from "@auctions/enums";
+
 export interface GetLiveCarAuction {
   data: GetLiveCarAuctionData;
 }
@@ -22,4 +24,5 @@ export interface GetLiveCarAuctionAttributes {
   state: string;
   city: string;
   cover: string;
+  status: AuctionStatus;
 }

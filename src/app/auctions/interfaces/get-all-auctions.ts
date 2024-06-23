@@ -1,3 +1,5 @@
+import { AuctionStatus } from "@auctions/enums";
+
 export interface GetAllAuctions {
   data: GetAllAuctionsData[];
   meta: GetAllAuctionsMeta;
@@ -22,6 +24,7 @@ export interface GetAllAuctionsAttributes {
   materials?: string;
   rarity?: string;
   extract: string;
+  status: AuctionStatus;
 }
 
 export interface GetAllAuctionsMeta {

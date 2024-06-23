@@ -1,3 +1,5 @@
+import { AuctionStatus } from "@auctions/enums";
+
 export interface GetLiveArtAuction {
   data: GetLiveArtAuctionData;
 }
@@ -18,4 +20,5 @@ export interface GetLiveArtAuctionAttributes {
   cover: string;
   year: number;
   extract: string;
+  status: AuctionStatus;
 }

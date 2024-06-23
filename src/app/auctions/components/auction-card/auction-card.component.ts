@@ -8,6 +8,7 @@ import { FollowButtonComponent } from '@shared/components/follow-button/follow-b
 import { VehicleAuctionData } from '@app/auctions/interfaces';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { NoReserveTagComponentComponent } from '../no-reserve-tag-component/no-reserve-tag-component.component';
+import { AuctionStatus } from '@auctions/enums';
 
 @Component({
   selector: 'auction-card',
@@ -33,11 +34,16 @@ export class AuctionCardComponent {
   extract = input.required<string>();
   lastBid = input.required<number>();
   endDate = input.required<string>();
+  status = input.required<AuctionStatus>();
 
   #countdownService = inject(CountdownService);
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
+  }
+
+  get statusTypes(): typeof AuctionStatus {
+    return AuctionStatus;
   }
 
   countdownConfig(): CountdownConfig {
