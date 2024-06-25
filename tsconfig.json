@@ -33,6 +33,9 @@
       "@dashboard/*": [
         "./src/app/dashboard/*"
       ],
+      "@activity/*": [
+        "./src/app/activity/*"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

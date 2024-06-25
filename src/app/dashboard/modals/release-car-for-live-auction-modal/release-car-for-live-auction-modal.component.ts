@@ -50,29 +50,15 @@ export class ReleaseCarForLiveAuctionModalComponent {
   #releaseCarForLiveAuctionService = inject(ReleaseCarForLiveAuctionService);
   #appService = inject(AppService);
 
-  categoriesList: { name: string, value: string }[] =
-    [
-      // Automóviles,
-      {
-        name: "Autopartes",
-        value: "Autopartes"
-      },
-      // Eléctricos,
-      {
-        name: "Eléctricos",
-        value: "Eléctricos"
-      },
-      // Proyectos,
-      {
-        name: "Proyectos",
-        value: "Proyectos"
-      },
-      // Autopartes
-      {
-        name: "Autopartes",
-        value: "Autopartes"
-      },
-    ];
+
+  categoriesList: { name: string; value: string }[] = [
+    { name: 'Automóviles', value: 'Automóviles' },
+    { name: 'Motos', value: 'Motos' },
+    { name: 'Eléctricos', value: 'Eléctricos' },
+    { name: 'Proyectos', value: 'Proyectos' },
+    { name: 'Autopartes', value: 'Autopartes' },
+    { name: 'Rines', value: 'Rines' },
+  ];
 
   originalAuctionCarIdEffect = effect(() => {
     this.releaseCarForLiveAuctionForm.reset();

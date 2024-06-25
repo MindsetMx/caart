@@ -14,7 +14,7 @@ export class SecondaryButtonDirective {
   defaultClasses?: string;
 
   ngOnInit(): void {
-    this.defaultClasses = `border rounded-lg ${this.px} ${this.py} font-optima font-semibold`;
+    this.defaultClasses = `border rounded-lg ${this.px} ${this.py} font-lato font-semibold`;
 
     const classes = this.#element.nativeElement.getAttribute('class');
 

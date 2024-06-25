@@ -68,12 +68,12 @@ export class VehicleFilterResultsComponent implements OnInit {
   ];
 
   categoryList: { value: string; label: string }[] = [
-    { value: 'automoviles', label: 'Automóviles' },
-    { value: 'motos', label: 'Motos' },
-    { value: 'electric', label: 'Eléctricos' },
-    { value: 'proyectos', label: 'Proyectos' },
-    { value: 'autopartes', label: 'Autopartes' },
-    { value: 'rines', label: 'Rines' },
+    { value: 'Automóviles', label: 'Automóviles' },
+    { value: 'Motos', label: 'Motos' },
+    { value: 'Eléctricos', label: 'Eléctricos' },
+    { value: 'Proyectos', label: 'Proyectos' },
+    { value: 'Autopartes', label: 'Autopartes' },
+    { value: 'Rines', label: 'Rines' },
   ];
 
   currentOfferList: { value: string; label: string }[] = [
