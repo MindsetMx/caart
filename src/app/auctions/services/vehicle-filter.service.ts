@@ -26,7 +26,6 @@ export class VehicleFilterService {
     states?: string,
     search?: string,
     excludeId?: string | null,
-    auctionType2?: string
   ): Observable<VehicleAuction> {
     const url = `${this.#baseUrl}/auctions-cars/live-auctions`;
 

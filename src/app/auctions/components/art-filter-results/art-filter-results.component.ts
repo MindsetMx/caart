@@ -213,6 +213,15 @@ export class ArtFilterResultsComponent {
     this.#artFilterService.getLiveAuctions$(
       this.currentPage(),
       this.size(),
+      this.auctionType().join(','),
+      this.category().join(','),
+      this.era().join(','),
+      this.yearRange(),
+      this.currentOffer().join(','),
+      this.orderBy(),
+      this.endsIn().join(','),
+      this.states().join(','),
+      this.search(),
     ).subscribe({
       next: (auctions: ArtAuction) => {
         if (replace) {
