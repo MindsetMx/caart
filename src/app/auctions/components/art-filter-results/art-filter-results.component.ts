@@ -179,6 +179,21 @@ export class ArtFilterResultsComponent {
     this.getLiveAuctions(true);
   }
 
+  clearFilters(): void {
+    this.auctionType.set([]);
+    this.category.set([]);
+    this.era.set([]);
+    this.yearRange.set(undefined);
+    this.currentOffer.set([]);
+    this.orderBy.set('EndingSoonest');
+    this.endsIn.set([]);
+    this.states.set([]);
+    this.search.set('');
+    // TODO: eliminar cuando se implemente el menu de filtros
+    this.resetPage();
+    this.getLiveAuctions(true);
+  }
+
   addArtAuction(): void {
     if (this.updatedArtAuction().data) {
       untracked(() => {

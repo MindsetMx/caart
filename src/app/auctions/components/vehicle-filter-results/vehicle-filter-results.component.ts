@@ -182,6 +182,18 @@ export class VehicleFilterResultsComponent {
     return value && value.yearFrom && value.yearTo && value.yearFrom <= value.yearTo;
   }
 
+  clearFilters(): void {
+    this.auctionType.set([]);
+    this.category.set([]);
+    this.era.set([]);
+    this.yearRange.set(undefined);
+    this.currentOffer.set([]);
+    this.orderBy.set('EndingSoonest');
+    this.endsIn.set([]);
+    this.states.set([]);
+    this.search.set('');
+  }
+
   addCarAuction(): void {
     if (this.updatedCarAuction().data) {
       untracked(() => {

@@ -136,6 +136,20 @@ export class AllAuctionsFilterResultsComponent {
     this.getLiveAuctions(true);
   }
 
+  clearFilters(): void {
+    this.auctionType.set([]);
+    this.era.set([]);
+    this.yearRange.set(undefined);
+    this.currentOffer.set([]);
+    this.orderBy.set('EndingSoonest');
+    this.endsIn.set([]);
+    this.states.set([]);
+    this.search.set('');
+    // TODO: eliminar cuando se implemente el menu de filtros
+    this.resetPage();
+    this.getLiveAuctions(true);
+  }
+
   addCarAuction(): void {
     if (this.updatedCarAuction().data) {
       untracked(() => {
