@@ -5,13 +5,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ArtFilterService } from '@auctions/services/art-filter.service';
 import { states } from '@shared/states';
-import { AuctionFilterMenuComponent } from '@auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { RouterModule } from '@angular/router';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { ArtAuctionCardComponent } from '../art-auction-card/art-auction-card.component';
 import { ArtAuction } from '@auctions/interfaces/art-auction';
 import { GetLiveArtAuction } from '@auctions/interfaces';
+import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -23,7 +23,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    AuctionFilterMenuComponent,
+    CarAuctionFilterMenuMobileComponent,
     ArtAuctionCardComponent,
     IntersectionDirective,
     PrimaryButtonDirective,

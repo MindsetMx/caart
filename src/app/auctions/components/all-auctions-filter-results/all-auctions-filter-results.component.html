@@ -22,17 +22,6 @@
     </mat-form-field>
   </div>
 
-  <!-- <div class="hidden md:flex gap-4">
-    <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
-      class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
-      Última oportunidad
-    </a>
-    <a routerLink="/resultados" px="px-4" width="lg:w-fit w-full" class="text-sm flex items-center justify-center"
-      sharedTertiaryButton>
-      Resultados
-    </a>
-  </div> -->
-
   @if (isMobile) {
   <button (click)="openAuctionFilterMenu()" px="px-4" width="lg:w-fit w-full"
     class="text-sm inline-flex justify-center bg-black" sharedPrimaryButton>
@@ -60,23 +49,6 @@
       }
     </mat-select>
   </mat-form-field>
-
-  <!-- <mat-form-field name="mat-form-field1">
-    <mat-label>Categoría</mat-label>
-    <mat-select [ngModel]="category()" (ngModelChange)="setCategory($event)" multiple>
-      <mat-select-trigger>
-        {{category()[0]}}
-        @if (category().length > 1) {
-        <span>
-          (+{{category().length - 1}} {{category().length === 2 ? 'other' : 'others'}})
-        </span>
-        }
-      </mat-select-trigger>
-      @for (category of categoryList; track category) {
-      <mat-option name="mat-option1" [value]="category.value">{{category.label}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field> -->
 
   <mat-form-field name="mat-form-field1">
     <mat-label>Era</mat-label>
@@ -189,12 +161,6 @@
     [endDate]="auction.attributes.endDate"></art-auction-card>
   }
   }
-
-  <!-- @if (auction?.auctionCarDetails) {
-  <auction-card3 [auction]="auction"></auction-card3>
-  } @else {
-  <memorabilia-auction-card2 [auction]="auction"></memorabilia-auction-card2>
-  } -->
   }
   } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
@@ -215,11 +181,11 @@
 
 </div>
 
-<auction-filter-menu [auctionTypeList]="auctionTypeList" [currentOfferList]="currentOfferList" [endsInList]="endsInList"
-  [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen"
-  (setCurrentOfferChange)="setCurrentOffer($event)" (setEndsInChange)="setEndsIn($event)"
-  (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
-  (setYearRangeChange)="setYearRange($event)"></auction-filter-menu>
+<!-- <car-auction-filter-menu-mobile [auctionTypeList]="auctionTypeList" [currentOfferList]="currentOfferList"
+  [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList"
+  [isOpen]="auctionFilterMenuIsOpen" (setCurrentOfferChange)="setCurrentOffer($event)"
+  (setEndsInChange)="setEndsIn($event)" (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
+  (setYearRangeChange)="setYearRange($event)"></car-auction-filter-menu-mobile> -->
 
 <ng-template #auctionCardSkeleton>
   @for (item of [].constructor(8); track $index) {

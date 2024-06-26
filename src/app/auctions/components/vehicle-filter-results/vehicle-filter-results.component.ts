@@ -1,17 +1,19 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, effect, inject, model, signal, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, WritableSignal, effect, inject, model, signal, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Observable, debounceTime } from 'rxjs';
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { AuctionCardComponent } from '@app/auctions/components/auction-card/auction-card.component';
-import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
+import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
+import { GetLiveCarAuction, VehicleAuction } from '@app/auctions/interfaces';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { GetLiveCarAuction, VehicleAuction } from '@app/auctions/interfaces';
 import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
-import { RouterModule } from '@angular/router';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -20,14 +22,13 @@ const MOBILE_SCREEN_WIDTH = 1024;
   standalone: true,
   imports: [
     AuctionCardComponent,
-    AuctionFilterMenuComponent,
+    CarAuctionFilterMenuMobileComponent,
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     IntersectionDirective,
     MatFormFieldModule,
     MatSelectModule,
     PrimaryButtonDirective,
-    // ReactiveFormsModule,
     TertiaryButtonDirective,
     YearRangeComponent,
     RouterModule
@@ -36,10 +37,10 @@ const MOBILE_SCREEN_WIDTH = 1024;
   styleUrl: './vehicle-filter-results.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VehicleFilterResultsComponent implements OnInit {
+export class VehicleFilterResultsComponent {
   updatedCarAuction = model<GetLiveCarAuction>({} as GetLiveCarAuction);
 
-  currentPage = signal<number>(0);
+  currentPage = signal<number>(1);
   size = signal<number>(10);
 
   auctionType = signal<string[]>([]);
@@ -52,6 +53,16 @@ export class VehicleFilterResultsComponent implements OnInit {
   states = signal<string[]>([]);
 
   search = signal<string>('');
+
+  auctionTypeControl = new FormControl<string[]>([]);
+  categoryControl = new FormControl<string[]>([]);
+  eraControl = new FormControl<string[]>([]);
+  yearRangeControl = new FormControl<{ yearFrom: number, yearTo: number } | undefined>(undefined);
+  currentOfferControl = new FormControl<string[]>([]);
+  orderByControl = new FormControl<string>('EndingSoonest');
+  endsInControl = new FormControl<string[]>([]);
+  statesControl = new FormControl<string[]>([]);
+  searchControl = new FormControl<string>('');
 
   auctionFilterMenuIsOpen = signal<boolean>(false);
 
@@ -127,8 +138,48 @@ export class VehicleFilterResultsComponent implements OnInit {
     this.addCarAuction();
   }, { allowSignalWrites: true });
 
-  ngOnInit(): void {
+  getLiveAuctionsEffect = effect(() => {
+    untracked(() => {
+      this.currentPage.set(1);
+    });
+
     this.getLiveAuctions(true);
+  }, { allowSignalWrites: true });
+
+  auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType()));
+  categoryEffect = effect(() => this.categoryControl.setValue(this.category()));
+  eraEffect = effect(() => this.eraControl.setValue(this.era()));
+  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange()));
+  currentOfferEffect = effect(() => this.currentOfferControl.setValue(this.currentOffer()));
+  orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy()));
+  endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn()));
+  statesEffect = effect(() => this.statesControl.setValue(this.states()));
+
+  constructor() {
+    this.initializeControl(this.searchControl, this.search, 300);
+    this.initializeControl(this.orderByControl, this.orderBy);
+    this.initializeControl(this.auctionTypeControl, this.auctionType);
+    this.initializeControl(this.categoryControl, this.category);
+    this.initializeControl(this.eraControl, this.era);
+    this.initializeControl(this.yearRangeControl, this.yearRange, 500, this.yearRangeValidator);
+    this.initializeControl(this.endsInControl, this.endsIn);
+    this.initializeControl(this.currentOfferControl, this.currentOffer);
+    this.initializeControl(this.statesControl, this.states);
+  }
+
+  private initializeControl(control: AbstractControl, target: WritableSignal<any>, debounce: number = 0, validator: (value: any) => boolean = () => true) {
+    control.valueChanges.pipe(
+      takeUntilDestroyed(),
+      debounceTime(debounce),
+    ).subscribe((value) => {
+      if (validator(value)) {
+        target.set(value);
+      }
+    });
+  }
+
+  private yearRangeValidator(value: any): boolean {
+    return value && value.yearFrom && value.yearTo && value.yearFrom <= value.yearTo;
   }
 
   addCarAuction(): void {
@@ -160,10 +211,12 @@ export class VehicleFilterResultsComponent implements OnInit {
   }
 
   getLiveAuctions(replace: boolean = false): void {
-    this.currentPage.update((page) => page + 1);
+    if (this.yearRange() && (!this.yearRange()?.yearFrom || !this.yearRange()?.yearTo)) {
+      return;
+    }
 
     this.#vehicleFilterService.getLiveAuctions$(
-      this.currentPage(),
+      untracked(() => this.currentPage()),
       this.size(),
       this.auctionType().join(','),
       this.category().join(','),
@@ -176,81 +229,26 @@ export class VehicleFilterResultsComponent implements OnInit {
       this.search(),
     ).subscribe({
       next: (auctions: VehicleAuction) => {
-        if (replace) {
-          this.auctions.set(auctions);
-          this.getLiveAuctions(false);
-          return;
-        }
+        untracked(() => {
+          if (replace) {
+            this.auctions.set(auctions);
+            this.currentPage.update((page) => page + 1);
+            this.getLiveAuctions(false);
+            return;
+          }
 
-        this.auctions.update((auction) => {
-          return {
-            data: auction ? [...auction.data, ...auctions.data] : auctions.data,
-            meta: auctions.meta,
-          };
+          this.auctions.update((auction) => {
+            return {
+              data: auction ? [...auction.data, ...auctions.data] : auctions.data,
+              meta: auctions.meta,
+            };
+          });
         });
       },
       error: (err) => {
         console.error(err);
       },
     });
-  }
-
-  resetPage(): void {
-    this.currentPage.set(0);
-  }
-
-  setSearch(value: string): void {
-    this.search.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setAuctionType(value: string[]): void {
-    this.auctionType.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setCategory(value: string[]): void {
-    this.category.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setEra(value: string[]): void {
-    this.era.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setEndsIn(value: string[]): void {
-    this.endsIn.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setCurrentOffer(value: string[]): void {
-    this.currentOffer.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setStates(value: string[]): void {
-    this.states.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setOrderBy(value: string): void {
-    this.orderBy.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setYearRange(value: { yearFrom: number, yearTo: number }): void {
-    this.yearRange.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
   }
 
   openAuctionFilterMenu(): void {

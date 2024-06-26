@@ -50,13 +50,13 @@
           @if (listingTypeIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-0">
             <div class="space-y-6">
-              @for (_auctionType of auctionTypeList; track $index) {
+              @for (_auctionType of auctionTypeList(); track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-auctionType-{{ $index }}"
-                  [checked]="auctionType().includes(_auctionType.value)"
-                  (change)="toggleSelection(_auctionType.value, auctionType)" type="checkbox"
+                <input [id]="'filter-mobile-auctionType-' + $index" type="checkbox"
+                  (change)="toggleSelection(_auctionType.value, auctionType)"
+                  [checked]="isSelected(_auctionType.value, auctionType)"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                <label for="filter-mobile-auctionType-{{ $index }}"
+                <label [for]="'filter-mobile-auctionType-' + $index"
                   class="ml-3 min-w-0 flex-1 text-gray-500">{{_auctionType.label}}</label>
               </div>
               }
@@ -93,12 +93,13 @@
           <!-- Filter section, show/hide based on section state. -->
           <div class="pt-6" id="filter-section-mobile-1">
             <div class="space-y-6">
-              @for (_category of categoryList; track $index) {
+              @for (_category of categoryList(); track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-category-{{ $index }}" [checked]="category().includes(_category.value)"
-                  (change)="toggleSelection(_category.value, category)" type="checkbox"
+                <input [id]="'filter-mobile-category-' + $index" type="checkbox"
+                  (change)="toggleSelection(_category.value, category)"
+                  [checked]="isSelected(_category.value, category)"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                <label for="filter-mobile-category-{{ $index }}"
+                <label [for]="'filter-mobile-category-' + $index"
                   class="ml-3 min-w-0 flex-1 text-gray-500">{{_category.label}}</label>
               </div>
               }
@@ -135,10 +136,10 @@
           @if (eraIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-2">
             <div class="space-y-6">
-              @for (_era of eraList; track $index) {
+              @for (_era of eraList(); track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-era-{{ $index }}" [checked]="era().includes(_era.value)"
-                  (change)="toggleSelection(_era.value, era)" type="checkbox"
+                <input [id]="'filter-mobile-era-' + $index" type="checkbox" (change)="toggleSelection(_era.value, era)"
+                  [checked]="isSelected(_era.value, era)"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <label for="filter-mobile-era-{{ $index }}"
                   class="ml-3 min-w-0 flex-1 text-gray-500">{{_era.label}}</label>
@@ -175,15 +176,15 @@
           </h3>
           <!-- Filter section, show/hide based on section state. -->
           @if (yearsRangeIsOpen()) {
-          <div class="pt-6" id="filter-section-mobile-3">
+          <form [formGroup]="yearRangeForm" class="pt-6">
             <div class="flex gap-3 items-center w-44">
-              <input [ngModel]="yearFrom()" (ngModelChange)="setYearFrom($event)" type="number" min="0" max="9999"
-                background="bg-transparent" class="border" sharedInput>
+              <input formControlName="yearFrom" type="number" min="0" max="9999" background="bg-transparent"
+                class="border" sharedInput>
               <span class="text-center text-sm">a</span>
-              <input [ngModel]="yearTo()" (ngModelChange)="setYearTo($event)" type="number" min="0" max="9999"
-                background="bg-transparent" class="border" sharedInput>
+              <input formControlName="yearTo" type="number" min="0" max="9999" background="bg-transparent"
+                class="border" sharedInput>
             </div>
-          </div>
+          </form>
           }
         </div>
         <!-- Termina en -->
@@ -215,10 +216,10 @@
           @if (endsInIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-3">
             <div class="space-y-6">
-              @for (_endsIn of endsInList; track $index) {
+              @for (_endsIn of endsInList(); track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-endsIn-{{ $index }}" [checked]="endsIn().includes(_endsIn.value)"
-                  (change)="toggleSelection(_endsIn.value, endsIn)" type="checkbox"
+                <input id="filter-mobile-endsIn-{{ $index }}" type="checkbox"
+                  (change)="toggleSelection(_endsIn.value, endsIn)" [checked]="isSelected(_endsIn.value, endsIn)"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <label for="filter-mobile-endsIn-{{ $index }}"
                   class="ml-3 min-w-0 flex-1 text-gray-500">{{_endsIn.label}}</label>
@@ -257,11 +258,11 @@
           @if (currentOfferIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-4">
             <div class="space-y-6">
-              @for (_currentOffer of currentOfferList; track $index) {
+              @for (_currentOffer of currentOfferList(); track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-currentOffer-{{ $index }}"
-                  [checked]="currentOffer().includes(_currentOffer.value)"
-                  (change)="toggleSelection(_currentOffer.value, currentOffer)" type="checkbox"
+                <input id="filter-mobile-currentOffer-{{ $index }}" type="checkbox"
+                  (change)="toggleSelection(_currentOffer.value, currentOffer)"
+                  [checked]="isSelected(_currentOffer.value, currentOffer)"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <label for="filter-mobile-currentOffer-{{ $index }}"
                   class="ml-3 min-w-0 flex-1 text-gray-500">{{_currentOffer.label}}</label>
@@ -300,10 +301,10 @@
           @if (statesIsOpen()) {
           <div class="pt-6" id="filter-section-mobile-5">
             <div class="space-y-6">
-              @for (_state of statesList; track $index) {
+              @for (_state of statesList(); track $index) {
               <div class="flex items-center">
-                <input id="filter-mobile-state-{{ $index }}" [checked]="states().includes(_state.value)"
-                  (change)="toggleSelection(_state.value, states)" type="checkbox"
+                <input id="filter-mobile-state-{{ $index }}" type="checkbox"
+                  (change)="toggleSelection(_state.value, states)" [checked]="isSelected(_state.value, states)"
                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <label for="filter-mobile-state-{{ $index }}"
                   class="ml-3 min-w-0 flex-1 text-gray-500">{{_state.label}}</label>
@@ -317,12 +318,13 @@
         <div class="border-t border-gray-200 px-4 py-6 space-y-4">
           <mat-form-field class="w-full" name="mat-form-field1">
             <mat-label>Ordenar por</mat-label>
-            <mat-select [ngModel]="orderByControl" (ngModelChange)="setOrderBy($event)">
-              @for (orderBy of orderByList; track $index) {
-              <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
+            <mat-select [formControl]="orderByControl">
+              @for (orderBy of orderByList(); track orderBy.value; let i = $index) {
+              <mat-option [value]="orderBy.value">{{orderBy.label}}</mat-option>
               }
             </mat-select>
           </mat-form-field>
+
           <a routerLink="/ultima-oportunidad" px="px-4" width="lg:w-fit w-full"
             class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>
             Última oportunidad

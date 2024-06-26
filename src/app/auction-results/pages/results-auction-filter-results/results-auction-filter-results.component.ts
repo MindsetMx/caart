@@ -5,7 +5,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
-import { AuctionFilterMenuComponent } from '@auctions/components/auction-filter-menu/auction-filter-menu.component';
 import { AuctionResults } from '@app/auction-results/interfaces';
 import { AuctionResultsVehicleCardComponent } from '@app/auction-results/components/auction-results-vehicle-card/auction-results-vehicle-card.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
@@ -13,6 +12,7 @@ import { MemorabiliaAuctionCard2Component } from '@auctions/components/memorabil
 import { ResultsAuctionService } from '@app/auction-results/services/results-auction.service';
 import { states } from '@shared/states';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -22,7 +22,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
   imports: [
     // AuctionCardComponent,
     AuctionResultsVehicleCardComponent,
-    AuctionFilterMenuComponent,
+    CarAuctionFilterMenuMobileComponent,
     CommonModule,
     FormsModule,
     IntersectionDirective,

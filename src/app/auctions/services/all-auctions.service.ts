@@ -21,7 +21,8 @@ export class GetAllAuctionsService {
     currentBid?: string,
     state?: string,
     range?: { yearFrom: number, yearTo: number },
-    endingIn?: string
+    endingIn?: string,
+    searchTerm?: string,
   ): Observable<GetAllAuctions> {
     let params = new HttpParams()
       .set('page', page.toString())
@@ -34,6 +35,7 @@ export class GetAllAuctionsService {
     if (state) { params = params.set('state', state); }
     if (range && range.yearFrom && range.yearTo) { params = params.set('yearFrom', range.yearFrom.toString()); params = params.set('yearTo', range.yearTo.toString()); }
     if (endingIn) { params = params.set('endingIn', endingIn); }
+    if (searchTerm) { params = params.set('searchTerm', searchTerm); }
 
     return this.#http.get<GetAllAuctions>(`${this.#baseUrl}/auctions-cars/live-auctions-all`, { params });
   }

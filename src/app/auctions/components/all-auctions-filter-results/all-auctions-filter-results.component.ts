@@ -1,21 +1,20 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, effect, inject, input, model, signal, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, effect, inject, model, signal, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-
-import { AuctionFilterMenuComponent } from '@app/auctions/components/auction-filter-menu/auction-filter-menu.component';
-import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
-import { states } from '@shared/states';
-import { GetAllAuctions, GetLiveArtAuction, GetLiveCarAuction } from '@app/auctions/interfaces';
-import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
-import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { RouterModule } from '@angular/router';
+
+import { ArtAuctionCardComponent } from '@auctions/components/art-auction-card/art-auction-card.component';
+import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
+import { AuctionTypesAll } from '@auctions/enums';
+import { GetAllAuctions, GetLiveArtAuction, GetLiveCarAuction } from '@auctions/interfaces';
 import { GetAllAuctionsService } from '@auctions/services/all-auctions.service';
-import { MemorabiliaAuctionCard2Component } from '../memorabilia-auction-card2/memorabilia-auction-card2.component';
-import { AuctionTypesAll } from '../../enums/auction-types-all';
-import { ArtAuctionCardComponent } from '../art-auction-card/art-auction-card.component';
-import { AuctionCardComponent } from '../auction-card/auction-card.component';
+import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
+import { MemorabiliaAuctionCard2Component } from '@auctions/components/memorabilia-auction-card2/memorabilia-auction-card2.component';
+import { states } from '@shared/states';
+import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
+import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -23,20 +22,19 @@ const MOBILE_SCREEN_WIDTH = 1024;
   selector: 'all-auctions-filter-results',
   standalone: true,
   imports: [
+    ArtAuctionCardComponent,
     AuctionCardComponent,
-    AuctionFilterMenuComponent,
+    CarAuctionFilterMenuMobileComponent,
     CommonModule,
     FormsModule,
     IntersectionDirective,
     MatFormFieldModule,
     MatSelectModule,
+    MemorabiliaAuctionCard2Component,
     PrimaryButtonDirective,
-    // ReactiveFormsModule,
+    RouterModule,
     TertiaryButtonDirective,
     YearRangeComponent,
-    RouterModule,
-    MemorabiliaAuctionCard2Component,
-    ArtAuctionCardComponent
   ],
   templateUrl: './all-auctions-filter-results.component.html',
   styleUrl: './all-auctions-filter-results.component.css',
@@ -207,6 +205,7 @@ export class AllAuctionsFilterResultsComponent {
       this.states().join(','),
       this.yearRange(),
       this.endsIn().join(','),
+      this.search(),
     ).subscribe({
       next: (auctions: GetAllAuctions) => {
         if (replace) {

@@ -9,6 +9,8 @@ import { environments } from '@env/environments';
 import { routes } from '@app/app.routes';
 import { tokenInterceptor } from '@shared/interceptors/token.interceptor';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { getSpanishPaginatorIntl } from '@shared/common/spanish-paginator-intl';
 
 const scrollConfig: InMemoryScrollingOptions = {
   scrollPositionRestoration: 'top',
@@ -19,6 +21,7 @@ const inMemoryScrollingFeature: InMemoryScrollingFeature = withInMemoryScrolling
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
     provideRouter(
       routes,
       inMemoryScrollingFeature,

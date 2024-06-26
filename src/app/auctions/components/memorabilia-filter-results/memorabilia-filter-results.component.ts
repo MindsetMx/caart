@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MemorabiliaFilterService } from '@auctions/services/memorabilia-filter.service';
 
 import { states } from '@shared/states';
-import { AuctionFilterMenuComponent } from '../auction-filter-menu/auction-filter-menu.component';
+import { CarAuctionFilterMenuMobileComponent } from '../car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
 import { MemorabiliaAuction } from '@auctions/interfaces';
 import { MemorabiliaAuctionCardComponent } from '../memorabilia-auction-card/memorabilia-auction-card.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
@@ -23,7 +23,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    AuctionFilterMenuComponent,
+    CarAuctionFilterMenuMobileComponent,
     MemorabiliaAuctionCardComponent,
     IntersectionDirective,
     PrimaryButtonDirective,

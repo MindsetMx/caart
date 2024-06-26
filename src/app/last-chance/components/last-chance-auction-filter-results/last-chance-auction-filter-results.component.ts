@@ -5,16 +5,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
-import { AuctionFilterMenuComponent } from '@auctions/components/auction-filter-menu/auction-filter-menu.component';
+import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { LastChanceArtCardComponent } from '@lastChance/components/last-chance-art-card/last-chance-art-card.component';
+import { LastChanceAuctions } from '@lastChance/interfaces';
+import { LastChanceAuctionService } from '@lastChance/services/last-chance-auction.service';
+import { LastChanceAuctionTypes } from '@lastChance/enums';
 import { LastChanceVehicleCardComponent } from '@lastChance/components/last-chance-vehicle-card/last-chance-vehicle-card.component';
-import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { states } from '@shared/states';
-import { LastChanceAuctionService } from '@app/last-chance/services/last-chance-auction.service';
-import { AuctionTypesAll } from '@auctions/enums';
-import { LastChanceAuctions } from '@app/last-chance/interfaces';
-import { LastChanceAuctionTypes } from '@app/last-chance/enums';
+import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -23,7 +22,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
   standalone: true,
   imports: [
     LastChanceVehicleCardComponent,
-    AuctionFilterMenuComponent,
+    CarAuctionFilterMenuMobileComponent,
     CommonModule,
     FormsModule,
     IntersectionDirective,

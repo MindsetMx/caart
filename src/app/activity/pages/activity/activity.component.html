@@ -26,288 +26,141 @@
   @switch (currentActivityTab()) {
   @case (activityTabs.requests) {
   <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-8">
+    @for (request of requests().data; track request.id) {
     <div class="col-span-4">
       <div class="flex gap-4">
-        <div class="text-sm my-auto">
-          <p class="font-semibold">
-            # de lote
-          </p>
-
-          123456
-        </div>
-        <img class="rounded-lg w-32"
-          src="https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/62d4bc35-a263-4197-03d9-3cb2b3563200/public" alt="">
-
+        <img class="rounded-lg min-w-32 min-h-32 w-32 h-32 object-cover border border-gray-200"
+          [src]="request.attributes.portada" [alt]="request.attributes.titulo">
         <div>
           <h3 class="font-lato font-bold text-lg">
-            Alfa Romeo
+            {{ request.attributes.titulo }}
           </h3>
           <p>
-            1990
+            {{ request.attributes['año'] }}
           </p>
-          <span class="font-semibold text-sm">
-            80% completo
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="col-span-8">
-      <nav aria-label="Progress">
-        <ol role="list" class="space-y-4 md:flex md:space-x-8 md:space-y-0">
-          <li class="md:flex-1">
-            <!-- Completed Step -->
-            <a href="#"
-              class="group flex flex-col border-l-4 border-green-500 py-2 pl-4 hover:border-green-800 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium group-hover:text-green-800">Solicitud</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Job details</span> -->
-            </a>
-          </li>
-          <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#"
-              class="flex flex-col border-l-4 border-green-500 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-              aria-current="step">
-              <!-- info -->
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium tex">Pago</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
-          </li>
-          <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#"
-              class="flex flex-col border-l-4 border-green-500 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-              aria-current="step">
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium tex">Formularios</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
-          </li>
-          <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#"
-              class="flex flex-col border-l-4 border-green-500 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-              aria-current="step">
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium tex">Autorización</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
-          </li>
-
-
-          <li class="md:flex-1">
-            <!-- Upcoming Step -->
-            <a href="#"
-              class="group flex flex-col border-l-4 border-gray-200 py-2 pl-4 hover:border-gray-300 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium text-gray-500 group-hover:text-gray-700">¡En vivo!</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Preview</span> -->
-            </a>
-          </li>
-        </ol>
-      </nav>
-
-    </div>
-
-    <div class="col-span-4">
-      <div class="flex gap-4">
-        <div class="text-sm my-auto">
-          <p class="font-semibold">
-            # de lote
+          <p class="font-semibold text-sm">
+            {{ request.attributes.porcentaje }}% completo
           </p>
-
-          123456
-        </div>
-
-        <img class="rounded-lg w-32"
-          src="https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/62d4bc35-a263-4197-03d9-3cb2b3563200/public" alt="">
-
-        <div>
-          <h3 class="font-lato font-bold text-lg">
-            Alfa Romeo
-          </h3>
-          <p>
-            1990
+          @switch (request.attributes.status) {
+          @case (activityRequestsStatus.Pending) {
+          <p class="font-semibold text-sm text-yellow-500">
+            Pendiente
           </p>
-          <span class="font-semibold text-red-500 text-sm">
-            Rechazada
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="col-span-8">
-      <nav aria-label="Progress">
-        <ol role="list" class="space-y-4 md:flex md:space-x-8 md:space-y-0">
-          <li class="md:flex-1">
-            <!-- Completed Step -->
-            <a href="#"
-              class="group flex flex-col border-l-4 border-red-500 py-2 pl-4 hover:border-green-800 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium group-hover:text-red-800">Solicitud</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Job details</span> -->
-            </a>
-          </li>
-          <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#" class="flex flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-              aria-current="step">
-              <!-- info -->
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium tex">Pago</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
-          </li>
-          <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#" class="flex flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-              aria-current="step">
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium tex">Formularios</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
-          </li>
-          <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#" class="flex flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-              aria-current="step">
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium tex">Autorización</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
-          </li>
-
-
-          <li class="md:flex-1">
-            <!-- Upcoming Step -->
-            <a href="#"
-              class="group flex flex-col border-l-4 border-gray-200 py-2 pl-4 hover:border-gray-300 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-              <div class="flex items-center gap-2">
-                <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium text-gray-500 group-hover:text-gray-700">¡En vivo!</span>
-              </div>
-              <!-- <span class="text-sm font-medium">Preview</span> -->
-            </a>
-          </li>
-        </ol>
-      </nav>
-
-    </div>
-
-    <div class="col-span-4">
-      <div class="flex gap-4">
-        <div class="text-sm my-auto">
-          <p class="font-semibold">
-            # de lote
-          </p>
-
-          123456
-        </div>
-
-        <img class="rounded-lg w-32"
-          src="https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/62d4bc35-a263-4197-03d9-3cb2b3563200/public" alt="">
-
-        <div>
-          <h3 class="font-lato font-bold text-lg">
-            Alfa Romeo
-          </h3>
-          <p>
-            1990
-          </p>
-          <span class="font-semibold text-sm text-green-500">
+          }
+          @case (activityRequestsStatus.Accepted) {
+          <p class="font-semibold text-sm text-green-500">
             Aprobada
+          </p>
+          }
+          @case (activityRequestsStatus.rejected) {
+          <p class="font-semibold text-sm text-red-500">
+            Rechazada
+          </p>
+          }
+          }
+          <span class="text-sm">
+            Lote: <b>{{ request.attributes.lote }}</b>
           </span>
         </div>
       </div>
     </div>
+
     <div class="col-span-8">
       <nav aria-label="Progress">
         <ol role="list" class="space-y-4 md:flex md:space-x-8 md:space-y-0">
           <li class="md:flex-1">
-            <!-- Completed Step -->
-            <a href="#"
-              class="group flex flex-col border-l-4 border-green-500 py-2 pl-4 hover:border-green-800 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
+            <div
+              [class.border-green-500]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.border-red-500]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.rejected"
+              [class.border-yellow-500]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.Pending"
+              [class.hover:border-green-800]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.hover:border-red-800]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.rejected"
+              [class.hover:border-yellow-800]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.Pending"
+              class="group cursor-pointer flex flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
               <div class="flex items-center gap-2">
                 <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium group-hover:text-green-800">Solicitud</span>
+                <span class="text-sm font-medium">Solicitud</span>
               </div>
-              <!-- <span class="text-sm font-medium">Job details</span> -->
-            </a>
+            </div>
           </li>
           <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#"
-              class="flex flex-col border-l-4 border-green-500 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
+            <div
+              [class.border-green-500]="request.attributes.pago && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.border-red-500]="request.attributes.pago && request.attributes.status === activityRequestsStatus.rejected"
+              [class.border-yellow-500]="request.attributes.pago && request.attributes.status === activityRequestsStatus.Pending"
+              [class.hover:border-green-800]="request.attributes.pago && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.hover:border-red-800]="request.attributes.pago && request.attributes.status === activityRequestsStatus.rejected"
+              [class.hover:border-yellow-800]="request.attributes.pago && request.attributes.status === activityRequestsStatus.Pending"
+              class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
               aria-current="step">
-              <!-- info -->
               <div class="flex items-center gap-2">
                 <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
                 <span class="text-sm font-medium tex">Pago</span>
               </div>
-              <button class="underline text-sm mt-1 font-semibold text-left">
-                Realizar pago
-              </button>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
+            </div>
           </li>
           <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#" class="flex flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
+            <div
+              [class.border-green-500]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.border-red-500]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.rejected"
+              [class.border-yellow-500]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.Pending"
+              [class.hover:border-green-800]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.hover:border-red-800]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.rejected"
+              [class.hover:border-yellow-800]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.Pending"
+              class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
               aria-current="step">
               <div class="flex items-center gap-2">
                 <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
                 <span class="text-sm font-medium tex">Formularios</span>
               </div>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
+            </div>
           </li>
           <li class="md:flex-1">
-            <!-- Current Step -->
-            <a href="#" class="flex flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
+            <div
+              [class.border-green-500]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.border-red-500]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.rejected"
+              [class.border-yellow-500]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.Pending"
+              [class.hover:border-green-800]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.hover:border-red-800]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.rejected"
+              [class.hover:border-yellow-800]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.Pending"
+              class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
               aria-current="step">
               <div class="flex items-center gap-2">
                 <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
                 <span class="text-sm font-medium tex">Autorización</span>
               </div>
-              <!-- <span class="text-sm font-medium">Application form</span> -->
-            </a>
+            </div>
           </li>
 
 
           <li class="md:flex-1">
-            <!-- Upcoming Step -->
-            <a href="#"
-              class="group flex flex-col border-l-4 border-gray-200 py-2 pl-4 hover:border-gray-300 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
+            <div
+              [class.border-green-500]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.border-red-500]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.rejected"
+              [class.border-yellow-500]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.Pending"
+              [class.hover:border-green-800]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.Accepted"
+              [class.hover:border-red-800]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.rejected"
+              [class.hover:border-yellow-800]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.Pending"
+              class="group cursor-pointer flex flex-col border-l-4 border-gray-200 py-2 pl-4 hover:border-gray-300 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
               <div class="flex items-center gap-2">
                 <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-                <span class="text-sm font-medium text-gray-500 group-hover:text-gray-700">¡En vivo!</span>
+                <span class="text-sm font-medium">¡En vivo!</span>
               </div>
-              <!-- <span class="text-sm font-medium">Preview</span> -->
-            </a>
+            </div>
           </li>
         </ol>
       </nav>
 
     </div>
+    }
   </div>
+
+  @if (requests().data) {
+  <mat-paginator [length]="requests().meta.totalCount" [pageSize]="requests().meta.pageSize"
+    [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
+  </mat-paginator>
+  }
+
   }
   @case (activityTabs.approved) {
   <div class="px-4 sm:px-6 lg:px-8">

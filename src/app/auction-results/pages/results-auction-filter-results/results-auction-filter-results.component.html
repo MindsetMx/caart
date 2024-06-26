@@ -188,10 +188,10 @@
 
 </div>
 
-<auction-filter-menu [auctionTypeList]="auctionTypeList" [currentOfferList]="currentOfferList" [endsInList]="endsInList"
-  [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen"
-  (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
-  (setYearRangeChange)="setYearRange($event)"></auction-filter-menu>
+<!-- <car-auction-filter-menu-mobile [auctionTypeList]="auctionTypeList" [currentOfferList]="currentOfferList"
+  [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList"
+  [isOpen]="auctionFilterMenuIsOpen" (setOrderByChange)="setOrderBy($event)" (setStatesChange)="setStates($event)"
+  (setYearRangeChange)="setYearRange($event)"></car-auction-filter-menu-mobile> -->
 
 <ng-template #auctionCardSkeleton>
   @for (item of [].constructor(8); track $index) {
