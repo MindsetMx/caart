@@ -19,7 +19,7 @@ import { PrimaryButtonDirective, SecondaryButtonDirective } from '@shared/direct
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActivityComponent {
-  currentActivityTab = signal<ActivityTabs>(ActivityTabs.approved);
+  currentActivityTab = signal<ActivityTabs>(ActivityTabs.requests);
 
   get activityTabs(): typeof ActivityTabs {
     return ActivityTabs;

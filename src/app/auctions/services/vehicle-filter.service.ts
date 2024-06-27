@@ -19,7 +19,7 @@ export class VehicleFilterService {
     auctionType?: string,
     category?: string,
     era?: string,
-    range?: { yearFrom: number, yearTo: number },
+    range?: { yearFrom: number | undefined, yearTo: number | undefined },
     currentOffer?: string,
     orderBy?: string,
     endsIn?: string,

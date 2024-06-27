@@ -22,7 +22,7 @@ export const AuthGuard: CanActivateFn = (route, state) => {
 
       //Redireccionamos a la página de login
       if (authService.authStatus() === AuthStatus.notAuthenticated) {
-        router.navigate(['/iniciar-sesion']);
+        router.navigate(['/iniciar-sesion'], { skipLocationChange: true });
       }
 
       return false;

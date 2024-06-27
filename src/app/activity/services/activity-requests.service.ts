@@ -13,6 +13,6 @@ export class ActivityRequestsService {
   #http = inject(HttpClient);
 
   getMyRequests$(page: number, size: number): Observable<ActivityRequests> {
-    return this.#http.get<ActivityRequests>(`${this.#baseUrl}/auctions-cars/mis-solicitudes?size=${size}&page=${page}&orderBy=-1`);
+    return this.#http.get<ActivityRequests>(`${this.#baseUrl}/auctions-cars/mis-solicitudes?size=${size}&page=${page}&orderBy=1`);
   }
 }

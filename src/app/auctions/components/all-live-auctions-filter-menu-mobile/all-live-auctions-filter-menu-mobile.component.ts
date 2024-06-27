@@ -1,17 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, WritableSignal, effect, model, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, WritableSignal, model, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime } from 'rxjs';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { trigger, style, animate, transition } from '@angular/animations';
 
 import { InputDirective, TertiaryButtonDirective } from '@shared/directives';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime } from 'rxjs';
 
 @Component({
-  selector: 'car-auction-filter-menu-mobile',
+  selector: 'all-live-auctions-filter-menu-mobile',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,8 +22,8 @@ import { debounceTime } from 'rxjs';
     TertiaryButtonDirective,
     RouterLink
   ],
-  templateUrl: './car-auction-filter-menu-mobile.component.html',
-  styleUrl: './car-auction-filter-menu-mobile.component.css',
+  templateUrl: './all-live-auctions-filter-menu-mobile.component.html',
+  styleUrl: './all-live-auctions-filter-menu-mobile.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('openClose', [
@@ -46,20 +46,18 @@ import { debounceTime } from 'rxjs';
     ]),
   ]
 })
-export class CarAuctionFilterMenuMobileComponent {
+export class AllLiveAuctionsFilterMenuMobileComponent {
   isOpen = model.required<boolean>();
 
   auctionType = model.required<string[]>();
-  category = model.required<string[]>();
   era = model.required<string[]>();
-  yearRange = model.required<{ yearFrom: number | undefined, yearTo: number | undefined } | undefined>();
+  yearRange = model.required<{ yearFrom: number, yearTo: number } | undefined>();
   currentOffer = model.required<string[]>();
   orderBy = model.required<string>();
   endsIn = model.required<string[]>();
   states = model.required<string[]>();
 
   auctionTypeList = model.required<{ value: string; label: string }[]>();
-  categoryList = model.required<{ value: string; label: string }[]>();
   currentOfferList = model.required<{ value: string; label: string }[]>();
   endsInList = model.required<{ value: string; label: string }[]>();
   eraList = model.required<{ value: string; label: string }[]>();
@@ -69,7 +67,6 @@ export class CarAuctionFilterMenuMobileComponent {
   filterMenu = viewChild<ElementRef>('filterMenu');
 
   listingTypeIsOpen = signal<boolean>(false);
-  categoryIsOpen = signal<boolean>(false);
   eraIsOpen = signal<boolean>(false);
   yearsRangeIsOpen = signal<boolean>(false);
   endsInIsOpen = signal<boolean>(false);
@@ -77,19 +74,10 @@ export class CarAuctionFilterMenuMobileComponent {
   statesIsOpen = signal<boolean>(false);
 
   yearRangeForm: FormGroup = new FormGroup({
-    yearFrom: new FormControl(''),
-    yearTo: new FormControl('')
+    yearFrom: new FormControl(),
+    yearTo: new FormControl()
   });
   orderByControl: FormControl = new FormControl<string>('EndingSoonest');
-
-  yearRangeEffect = effect(() => {
-    if (this.yearRange()) {
-      const yearRange = this.yearRange();
-      this.yearRangeForm.setValue({ yearFrom: yearRange?.yearFrom || '', yearTo: yearRange?.yearTo || '' }, { emitEvent: false });
-    }
-  });
-
-  orderBYEffect = effect(() => this.orderByControl.setValue(this.orderBy(), { emitEvent: false }));
 
   constructor() {
     this.yearRangeForm.valueChanges.pipe(

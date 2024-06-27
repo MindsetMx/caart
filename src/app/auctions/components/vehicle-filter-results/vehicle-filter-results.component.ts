@@ -146,14 +146,14 @@ export class VehicleFilterResultsComponent {
     this.getLiveAuctions(true);
   }, { allowSignalWrites: true });
 
-  auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType()));
-  categoryEffect = effect(() => this.categoryControl.setValue(this.category()));
-  eraEffect = effect(() => this.eraControl.setValue(this.era()));
-  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange()));
-  currentOfferEffect = effect(() => this.currentOfferControl.setValue(this.currentOffer()));
-  orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy()));
-  endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn()));
-  statesEffect = effect(() => this.statesControl.setValue(this.states()));
+  auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
+  categoryEffect = effect(() => this.categoryControl.setValue(this.category(), { emitEvent: false }));
+  eraEffect = effect(() => this.eraControl.setValue(this.era(), { emitEvent: false }));
+  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange(), { emitEvent: false }), { allowSignalWrites: true });
+  currentOfferEffect = effect(() => this.currentOfferControl.setValue(this.currentOffer(), { emitEvent: false }));
+  orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy(), { emitEvent: false }));
+  endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn(), { emitEvent: false }));
+  statesEffect = effect(() => this.statesControl.setValue(this.states(), { emitEvent: false }));
 
   constructor() {
     this.initializeControl(this.searchControl, this.search, 300);
@@ -161,25 +161,19 @@ export class VehicleFilterResultsComponent {
     this.initializeControl(this.auctionTypeControl, this.auctionType);
     this.initializeControl(this.categoryControl, this.category);
     this.initializeControl(this.eraControl, this.era);
-    this.initializeControl(this.yearRangeControl, this.yearRange, 500, this.yearRangeValidator);
+    this.initializeControl(this.yearRangeControl, this.yearRange, 500);
     this.initializeControl(this.endsInControl, this.endsIn);
     this.initializeControl(this.currentOfferControl, this.currentOffer);
     this.initializeControl(this.statesControl, this.states);
   }
 
-  private initializeControl(control: AbstractControl, target: WritableSignal<any>, debounce: number = 0, validator: (value: any) => boolean = () => true) {
+  private initializeControl(control: AbstractControl, target: WritableSignal<any>, debounce: number = 0) {
     control.valueChanges.pipe(
       takeUntilDestroyed(),
       debounceTime(debounce),
     ).subscribe((value) => {
-      if (validator(value)) {
-        target.set(value);
-      }
+      target.set(value);
     });
-  }
-
-  private yearRangeValidator(value: any): boolean {
-    return value && value.yearFrom && value.yearTo && value.yearFrom <= value.yearTo;
   }
 
   clearFilters(): void {

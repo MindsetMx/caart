@@ -24,6 +24,8 @@ export interface ActivityRequestsAttributes {
   artista?: string;
   titulo?: string;
   portada: string;
+  auctionPaymentId: string;
+  auctionLiveId: string;
 }
 
 export enum ActivityRequestsStatus {

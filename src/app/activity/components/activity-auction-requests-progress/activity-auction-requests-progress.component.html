@@ -3,10 +3,18 @@
   <div class="col-span-4">
     <div class="flex gap-4">
       <img class="rounded-lg min-w-32 min-h-32 w-32 h-32 object-cover border border-gray-200"
-        [src]="request.attributes.portada" [alt]="request.attributes.titulo">
+        [src]="request.attributes.portada"
+        [alt]="(request.type === activityRequestsType.Autos) ? request.attributes.marca + ' ' + request.attributes.modelo + ' ' + request.attributes['año'] : request.attributes.titulo">
       <div>
         <h3 class="font-lato font-bold text-lg">
+          @switch (request.type) {
+          @case (activityRequestsType.Autos) {
+          {{ request.attributes.marca }} {{ request.attributes.modelo }} {{ request.attributes['año']}}
+          }
+          @case (activityRequestsType.Arte) {
           {{ request.attributes.titulo }}
+          }
+          }
         </h3>
         <p>
           {{ request.attributes['año'] }}
@@ -68,8 +76,25 @@
             aria-current="step">
             <div class="flex items-center gap-2">
               <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
-              <span class="text-sm font-medium tex">Pago</span>
+              <p class="text-sm font-medium tex">Pago</p>
             </div>
+            @if (request.attributes.status === activityRequestsStatus.Accepted && request.attributes.solicitud === true
+            && request.attributes.pago === false) {
+            @switch (request.type) {
+            @case (activityRequestsType.Autos) {
+            <a [routerLink]="['/completar-registro-vehiculo', request.attributes.auctionPaymentId]"
+              class="underline font-semibold text-sm">
+              Realizar pago
+            </a>
+            }
+            @case (activityRequestsType.Arte) {
+            <a [routerLink]="['/completar-registro-arte', request.attributes.auctionPaymentId]"
+              class="underline font-semibold text-sm">
+              Realizar pago
+            </a>
+            }
+            }
+            }
           </div>
         </li>
         <li class="md:flex-1">
@@ -86,6 +111,23 @@
               <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
               <span class="text-sm font-medium tex">Formularios</span>
             </div>
+            @if (request.attributes.status === activityRequestsStatus.Accepted && request.attributes.pago === true
+            && request.attributes.formularios === false) {
+            @switch (request.type) {
+            @case (activityRequestsType.Autos) {
+            <a [routerLink]="['/completar-registro-vehiculo', request.attributes.auctionPaymentId]"
+              class="underline font-semibold text-sm">
+              Completar formulario
+            </a>
+            }
+            @case (activityRequestsType.Arte) {
+            <a [routerLink]="['/completar-registro-arte', request.attributes.auctionPaymentId]"
+              class="underline font-semibold text-sm">
+              Completar formulario
+            </a>
+            }
+            }
+            }
           </div>
         </li>
         <li class="md:flex-1">
@@ -102,6 +144,25 @@
               <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
               <span class="text-sm font-medium tex">Autorización</span>
             </div>
+            @if (request.attributes.status === activityRequestsStatus.Accepted && request.attributes.autorizacion ===
+            true && request.attributes.enVivo === false) {
+            @switch (request.type) {
+            @case (activityRequestsType.Autos) {
+            <a [routerLink]="['/subasta', request.id]" class="underline font-semibold text-sm">
+              Vista previa
+            </a>
+
+            <button (click)="openConfirmReleaseAuctionModal(request.id)">
+              <span class="underline font-semibold text-sm">Liberar auto para subasta en vivo</span>
+            </button>
+            }
+            @case (activityRequestsType.Arte) {
+            <a [routerLink]="['/subasta-arte', request.id]" class="underline font-semibold text-sm">
+              Vista previa
+            </a>
+            }
+            }
+            }
           </div>
         </li>
 
@@ -133,3 +194,15 @@
   [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
 </mat-paginator>
 }
+
+<release-car-for-live-auction-modal [isOpen]="releaseCarForLiveAuctionModalIsOpen()"
+  (carReleaseForLiveAuction)="getMyRequests()" [originalAuctionCarId]="auctionCarId()"
+  (isOpenChange)="closeReleaseCarForLiveAuctionModal()"></release-car-for-live-auction-modal>
+
+<!-- <release-art-for-live-auction-modal [isOpen]="releaseArtForLiveAuctionModalIsOpen()"
+  (artReleaseForLiveAuction)="dashboardInfo()" [originalAuctionArtId]="auctionArtId()"
+  (isOpenChange)="closeReleaseArtForLiveAuctionModal()"></release-art-for-live-auction-modal> -->
+
+<confirm-release-auction-modal [(isOpen)]="confirmReleaseAuctionModalIsOpen"
+  [isButtonSubmitDisabled]="isConfirmReleaseAuctionButtonDisabled()"
+  (confirmReleaseChange)="releaseCarForLiveAuction()"></confirm-release-auction-modal>

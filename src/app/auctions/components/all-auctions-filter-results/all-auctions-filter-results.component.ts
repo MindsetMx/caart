@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, HostListener, effect, inject, model, signal, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, WritableSignal, effect, inject, model, signal, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
@@ -14,7 +14,9 @@ import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective 
 import { MemorabiliaAuctionCard2Component } from '@auctions/components/memorabilia-auction-card2/memorabilia-auction-card2.component';
 import { states } from '@shared/states';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
-import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
+import { AllLiveAuctionsFilterMenuMobileComponent } from '@auctions/components/all-live-auctions-filter-menu-mobile/all-live-auctions-filter-menu-mobile.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -24,9 +26,9 @@ const MOBILE_SCREEN_WIDTH = 1024;
   imports: [
     ArtAuctionCardComponent,
     AuctionCardComponent,
-    CarAuctionFilterMenuMobileComponent,
+    AllLiveAuctionsFilterMenuMobileComponent,
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     IntersectionDirective,
     MatFormFieldModule,
     MatSelectModule,
@@ -43,10 +45,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
 export class AllAuctionsFilterResultsComponent {
   updatedCarAuction = model<GetLiveCarAuction>({} as GetLiveCarAuction);
   updatedArtAuction = model<GetLiveArtAuction>({} as GetLiveArtAuction);
-  // reserveNotMetCarId = signal<string>('');
-  // reserveNotMetArtId = signal<string>('');
 
-  currentPage = signal<number>(0);
+  currentPage = signal<number>(1);
   size = signal<number>(10);
 
   auctionType = signal<string[]>([]);
@@ -58,6 +58,15 @@ export class AllAuctionsFilterResultsComponent {
   states = signal<string[]>([]);
 
   search = signal<string>('');
+
+  auctionTypeControl = new FormControl<string[]>([]);
+  eraControl = new FormControl<string[]>([]);
+  yearRangeControl = new FormControl<{ yearFrom: number, yearTo: number } | undefined>(undefined);
+  currentOfferControl = new FormControl<string[]>([]);
+  orderByControl = new FormControl<string>('EndingSoonest');
+  endsInControl = new FormControl<string[]>([]);
+  statesControl = new FormControl<string[]>([]);
+  searchControl = new FormControl<string>('');
 
   auctionFilterMenuIsOpen = signal<boolean>(false);
 
@@ -120,6 +129,10 @@ export class AllAuctionsFilterResultsComponent {
 
   auctions = signal<GetAllAuctions>({} as GetAllAuctions);
 
+  get auctionTypesAll(): typeof AuctionTypesAll {
+    return AuctionTypesAll;
+  }
+
   updatedAuctionCarEffect = effect(() => {
     this.addCarAuction();
   }, { allowSignalWrites: true });
@@ -128,12 +141,40 @@ export class AllAuctionsFilterResultsComponent {
     this.addArtAuction();
   }, { allowSignalWrites: true });
 
-  get auctionTypesAll(): typeof AuctionTypesAll {
-    return AuctionTypesAll;
+  getLiveAuctionsEffect = effect(() => {
+    untracked(() => {
+      this.currentPage.set(1);
+    });
+
+    this.getLiveAuctions(true);
+  }, { allowSignalWrites: true });
+
+  auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
+  eraEffect = effect(() => this.eraControl.setValue(this.era(), { emitEvent: false }));
+  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange(), { emitEvent: false }), { allowSignalWrites: true });
+  currentOfferEffect = effect(() => this.currentOfferControl.setValue(this.currentOffer(), { emitEvent: false }));
+  orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy(), { emitEvent: false }));
+  endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn(), { emitEvent: false }));
+  statesEffect = effect(() => this.statesControl.setValue(this.states(), { emitEvent: false }));
+
+  constructor() {
+    this.initializeControl(this.searchControl, this.search, 300);
+    this.initializeControl(this.orderByControl, this.orderBy);
+    this.initializeControl(this.auctionTypeControl, this.auctionType);
+    this.initializeControl(this.eraControl, this.era);
+    this.initializeControl(this.yearRangeControl, this.yearRange, 500);
+    this.initializeControl(this.endsInControl, this.endsIn);
+    this.initializeControl(this.currentOfferControl, this.currentOffer);
+    this.initializeControl(this.statesControl, this.states);
   }
 
-  ngOnInit(): void {
-    this.getLiveAuctions(true);
+  private initializeControl(control: AbstractControl, target: WritableSignal<any>, debounce: number = 0) {
+    control.valueChanges.pipe(
+      takeUntilDestroyed(),
+      debounceTime(debounce),
+    ).subscribe((value) => {
+      target.set(value);
+    });
   }
 
   clearFilters(): void {
@@ -145,9 +186,6 @@ export class AllAuctionsFilterResultsComponent {
     this.endsIn.set([]);
     this.states.set([]);
     this.search.set('');
-    // TODO: eliminar cuando se implemente el menu de filtros
-    this.resetPage();
-    this.getLiveAuctions(true);
   }
 
   addCarAuction(): void {
@@ -207,10 +245,12 @@ export class AllAuctionsFilterResultsComponent {
   }
 
   getLiveAuctions(replace: boolean = false): void {
-    this.currentPage.update((page) => page + 1);
+    if (this.yearRange() && (!this.yearRange()?.yearFrom || !this.yearRange()?.yearTo)) {
+      return;
+    }
 
     this.#allAuctionsService.getAllLiveAuctions$(
-      this.currentPage(),
+      untracked(() => this.currentPage()),
       this.size(),
       this.orderBy(),
       this.auctionType().join(','),
@@ -222,75 +262,26 @@ export class AllAuctionsFilterResultsComponent {
       this.search(),
     ).subscribe({
       next: (auctions: GetAllAuctions) => {
-        if (replace) {
-          this.auctions.set(auctions);
-          this.getLiveAuctions(false);
-          return;
-        }
+        untracked(() => {
+          if (replace) {
+            this.auctions.set(auctions);
+            this.currentPage.update((page) => page + 1);
+            this.getLiveAuctions(false);
+            return;
+          }
 
-        this.auctions.update((auction) => {
-          return {
-            data: auction ? [...auction.data, ...auctions.data] : auctions.data,
-            meta: auctions.meta,
-          };
+          this.auctions.update((auction) => {
+            return {
+              data: auction ? [...auction.data, ...auctions.data] : auctions.data,
+              meta: auctions.meta,
+            };
+          });
         });
       },
       error: (err) => {
         console.error(err);
       },
     });
-  }
-
-  resetPage(): void {
-    this.currentPage.set(0);
-  }
-
-  setAuctionType(value: string[]): void {
-    this.auctionType.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setSearch(value: string): void {
-    this.search.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setEndsIn(value: string[]): void {
-    this.endsIn.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setCurrentOffer(value: string[]): void {
-    this.currentOffer.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setStates(value: string[]): void {
-    this.states.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setOrderBy(value: string): void {
-    this.orderBy.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setEra(value: string[]): void {
-    this.era.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setYearRange(value: { yearFrom: number, yearTo: number }): void {
-    this.yearRange.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
   }
 
   openAuctionFilterMenu(): void {

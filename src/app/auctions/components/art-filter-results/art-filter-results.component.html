@@ -189,12 +189,11 @@
 
 </div>
 
-<!-- <car-auction-filter-menu-mobile [auctionTypeList]="auctionTypeList" [categoryList]="categoryList"
-  [currentOfferList]="currentOfferList" [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList"
-  [statesList]="statesList" [isOpen]="auctionFilterMenuIsOpen" (setAuctionTypeChange)="setAuctionType($event)"
-  (setCategoryChange)="setCategory($event)" (setCurrentOfferChange)="setCurrentOffer($event)"
-  (setEndsInChange)="setEndsIn($event)" (setEraChange)="setEra($event)" (setOrderByChange)="setOrderBy($event)"
-  (setStatesChange)="setStates($event)" (setYearRangeChange)="setYearRange($event)"></car-auction-filter-menu-mobile> -->
+<car-auction-filter-menu-mobile [(auctionType)]="auctionType" [(orderBy)]="orderBy" [(category)]="category"
+  [(era)]="era" [(yearRange)]="yearRange" [(currentOffer)]="currentOffer" [(endsIn)]="endsIn" [(states)]="states"
+  [auctionTypeList]="auctionTypeList" [categoryList]="categoryList" [currentOfferList]="currentOfferList"
+  [endsInList]="endsInList" [eraList]="eraList" [orderByList]="orderByList" [statesList]="statesList"
+  [(isOpen)]="auctionFilterMenuIsOpen"></car-auction-filter-menu-mobile>
 
 <ng-template #auctionCardSkeleton>
   @for (item of [].constructor(8); track $index) {
