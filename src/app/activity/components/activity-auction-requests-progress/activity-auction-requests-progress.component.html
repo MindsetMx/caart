@@ -152,14 +152,26 @@
               Vista previa
             </a>
 
-            <button (click)="openConfirmReleaseAuctionModal(request.id)">
-              <span class="underline font-semibold text-sm">Liberar auto para subasta en vivo</span>
+            @if (request.attributes.acceptedBySeller === false) {
+            <button class="text-left" (click)="openConfirmAcceptPreviewCarModal(request.id)">
+              <span class="underline font-semibold text-sm">
+                Aceptar subasta
+              </span>
             </button>
+            }
             }
             @case (activityRequestsType.Arte) {
             <a [routerLink]="['/subasta-arte', request.id]" class="underline font-semibold text-sm">
               Vista previa
             </a>
+
+            @if (request.attributes.acceptedBySeller === false) {
+            <button class="text-left" (click)="openConfirmAcceptPreviewArtModal(request.id)">
+              <span class="underline font-semibold text-sm">
+                Aceptar subasta
+              </span>
+            </button>
+            }
             }
             }
             }
@@ -195,14 +207,22 @@
 </mat-paginator>
 }
 
-<release-car-for-live-auction-modal [isOpen]="releaseCarForLiveAuctionModalIsOpen()"
-  (carReleaseForLiveAuction)="getMyRequests()" [originalAuctionCarId]="auctionCarId()"
-  (isOpenChange)="closeReleaseCarForLiveAuctionModal()"></release-car-for-live-auction-modal>
+<confirmation-modal [(isOpen)]="confirmAcceptPreviewCarModalIsOpen"
+  [isButtonSubmitDisabled]="isAcceptPreviewCarAuctionButtonDisabled()" (acceptChange)="acceptPreviewCar()">
+  <ng-container title>
+    Aceptar subasta
+  </ng-container>
+  <ng-container body>
+    ¿Estás seguro que deseas aceptar esta subasta para vista previa?
+  </ng-container>
+</confirmation-modal>
 
-<!-- <release-art-for-live-auction-modal [isOpen]="releaseArtForLiveAuctionModalIsOpen()"
-  (artReleaseForLiveAuction)="dashboardInfo()" [originalAuctionArtId]="auctionArtId()"
-  (isOpenChange)="closeReleaseArtForLiveAuctionModal()"></release-art-for-live-auction-modal> -->
-
-<confirm-release-auction-modal [(isOpen)]="confirmReleaseAuctionModalIsOpen"
-  [isButtonSubmitDisabled]="isConfirmReleaseAuctionButtonDisabled()"
-  (confirmReleaseChange)="releaseCarForLiveAuction()"></confirm-release-auction-modal>
+<confirmation-modal [(isOpen)]="confirmAcceptPreviewArtModalIsOpen"
+  [isButtonSubmitDisabled]="isAcceptPreviewArtAuctionButtonDisabled()" (acceptChange)="acceptPreviewArt()">
+  <ng-container title>
+    Aceptar subasta
+  </ng-container>
+  <ng-container body>
+    ¿Estás seguro que deseas aceptar esta subasta para vista previa?
+  </ng-container>
+</confirmation-modal>

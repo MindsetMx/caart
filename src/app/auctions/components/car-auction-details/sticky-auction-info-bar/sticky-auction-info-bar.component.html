@@ -52,7 +52,14 @@
         }
         }
 
-        @if (auction().data && countdownConfig().leftTime! > 0) {
+        @if (auction().data) {
+        @switch (auction().data.attributes.status) {
+        @case (auctionCarStatus.Preview) {
+        {{auction().data.attributes.daysActive}} días
+        }
+
+        @case (auctionCarStatus.Active) {
+        @if (countdownConfig().leftTime! > 0) {
         <div>
           <div class="ml-4">
             <countdown class="text-red2 font-bold text-sm md:text-xl" [config]="countdownConfig()"
@@ -61,6 +68,10 @@
           </div>
         </div>
         }
+        }
+        }
+        }
+
         @defer (when specificAuction().data) {
         @switch (specificAuction().data.status) {
         @case ('cancelled') {

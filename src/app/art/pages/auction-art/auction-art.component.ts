@@ -9,7 +9,7 @@ import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 // import { Thumbs } from '@fancyapps/ui/types/Carousel/plugins/Thumbs/Thumbs';
 import { ArtAuctionDetailsService } from '@auctions/services/art-auction-details.service';
 import { ArtAuctionImageAssigmentAndReorderService } from '@dashboard/services/art-auction-image-assigment-and-reorder.service';
-import { ArtImagesPublish } from '@dashboard/interfaces';
+import { ArtImagesPublish, AuctionCarStatus } from '@dashboard/interfaces';
 import { AuctionTypes, AuctionTypesComments } from '@auctions/enums';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
@@ -96,6 +96,10 @@ export class AuctionArtComponent {
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
+  }
+
+  get auctionCarStatus(): typeof AuctionCarStatus {
+    return AuctionCarStatus;
   }
 
   authStatusEffect = effect(() => {

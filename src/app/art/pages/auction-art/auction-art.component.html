@@ -29,7 +29,15 @@
           </p>
         </div>
         }
-        @if (auction().data && countdownConfig().leftTime! > 0) {
+
+        @if (auction().data) {
+        @switch (auction().data.attributes.status) {
+        @case (auctionCarStatus.Preview) {
+        {{auction().data.attributes.daysActive}} días
+        }
+
+        @case (auctionCarStatus.Active) {
+        @if (countdownConfig().leftTime! > 0) {
         <div>
           <div class="bg-gray1 rounded-lg px-3 py-1">
             <countdown class="text-red2 font-bold" [config]="countdownConfig()"
@@ -41,6 +49,10 @@
           </div>
         </div>
         }
+        }
+        }
+        }
+
         <div>
           <div class="hidden md:block py-1">
             <!-- <p class="font-bold text-lg">18</p> -->
@@ -252,9 +264,11 @@
         }
 
         @defer (when auction().data) {
+        @if (auction().data.attributes.status !== auctionCarStatus.Preview) {
         <auction-summary [auction]="auction()" [metrics]="metrics()" [auctionType]="auctionType.art"
           [specificAuction]="specificAuction()" (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
+        }
 
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <section class="mt-12">

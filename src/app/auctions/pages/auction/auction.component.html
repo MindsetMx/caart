@@ -282,10 +282,12 @@
             [index]="5"></image-gallery>
         </section>
 
+        @if (auction().data.attributes.status !== auctionCarStatus.Preview) {
         <auction-summary class="hidden md:block" [auction]="auction()" [metrics]="metrics()"
           [specificAuction]="specificAuction()" [auctionType]="auctionType.car"
           (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
+        }
 
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <section class="mt-6">

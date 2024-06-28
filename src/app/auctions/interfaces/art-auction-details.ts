@@ -25,6 +25,7 @@ export interface ArtAuctionDetailsAttributes {
   artHistory: ArtHistory;
   dataUser: ArtAuctionDetailsDataUser;
   artDetail: ArtAuctionDetailsArtDetail;
+  daysActive: number;
 }
 
 export interface ArtAuctionDetailsArtDetail {

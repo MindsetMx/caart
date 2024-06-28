@@ -39,6 +39,7 @@ import { AuctionTypesComments } from '@auctions/enums';
 import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
+import { AuctionCarStatus } from '@app/dashboard/interfaces';
 
 @Component({
   standalone: true,
@@ -110,6 +111,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
   get auctionTypesComments(): typeof AuctionTypesComments {
     return AuctionTypesComments;
+  }
+
+  get auctionCarStatus(): typeof AuctionCarStatus {
+    return AuctionCarStatus;
   }
 
   get swiperParams(): any {

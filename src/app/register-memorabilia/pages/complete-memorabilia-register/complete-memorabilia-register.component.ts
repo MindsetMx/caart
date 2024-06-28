@@ -87,7 +87,7 @@ export class CompleteMemorabiliaRegisterComponent implements OnInit {
     this.#completeMemorabiliaRegistrationService.saveGeneralInformation$(this.generalInformationForm)
       .subscribe({
         next: () => {
-          this.#router.navigate(['registro-completado']);
+          this.#router.navigate(['registro-completado'], { replaceUrl: true });
         },
         error: (error) => {
           console.error(error);

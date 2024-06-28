@@ -19,6 +19,7 @@ import { BiddingMemorabiliaConditionsService } from '@auctions/services/bidding-
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { BiddingArtConditionsService } from '@auctions/services/bidding-art-conditions.service';
 import { AuctionStatus } from '@auctions/enums/auction-status';
+import { AuctionCarStatus } from '@dashboard/interfaces';
 
 @Component({
   selector: 'auction-summary',

@@ -223,7 +223,7 @@ export class ArtRegistrationExtraInfoComponent {
 
     this.#completeArtRegistrationService.saveArtDetailInfo$(this.extraInfoForm).subscribe({
       next: () => {
-        this.#router.navigate(['/registro-completado']);
+        this.#router.navigate(['/registro-completado'], { replaceUrl: true });
       },
       error: (error) => console.error(error),
     }).add(() => {

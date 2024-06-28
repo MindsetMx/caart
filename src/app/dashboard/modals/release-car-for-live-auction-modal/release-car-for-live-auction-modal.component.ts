@@ -11,6 +11,8 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { ReleaseCarForLiveAuctionService } from '../../services/release-car-for-live-auction.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { NgxMaskDirective } from 'ngx-mask';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'release-car-for-live-auction-modal',
@@ -24,7 +26,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
     MatSelectModule,
     PrimaryButtonDirective,
     SpinnerComponent,
-    CopyAuctionPreviewLinkModalComponent
+    CopyAuctionPreviewLinkModalComponent,
+    NgxMaskDirective,
   ],
   templateUrl: './release-car-for-live-auction-modal.component.html',
   styleUrl: './release-car-for-live-auction-modal.component.css',
@@ -35,6 +38,8 @@ export class ReleaseCarForLiveAuctionModalComponent {
   originalAuctionCarId = input.required<string>();
   isOpenChange = output<boolean>();
   carReleaseForLiveAuction = output<void>();
+  isWithReserve = signal<boolean>(false);
+  reserveAmount = signal<number>(0);
 
   fullAuctionPreviewLink = computed(() => {
     const baseUrl = window.location.origin;
@@ -49,7 +54,6 @@ export class ReleaseCarForLiveAuctionModalComponent {
   #validatorsService = inject(ValidatorsService);
   #releaseCarForLiveAuctionService = inject(ReleaseCarForLiveAuctionService);
   #appService = inject(AppService);
-
 
   categoriesList: { name: string; value: string }[] = [
     { name: 'Automóviles', value: 'Automóviles' },
@@ -68,19 +72,49 @@ export class ReleaseCarForLiveAuctionModalComponent {
     }
   });
 
+  isWithReserveEffect = effect(() => {
+    this.isWithReserveControl.setValue(this.isWithReserve());
+  });
+
   get originalAuctionCarIdControl(): FormControl {
     return this.releaseCarForLiveAuctionForm.get('originalAuctionCarId') as FormControl;
+  }
+
+  get isWithReserveControl(): FormControl {
+    return this.releaseCarForLiveAuctionForm.get('isWithReserve') as FormControl;
+  }
+
+  get reserveAmountControl(): FormControl {
+    return this.releaseCarForLiveAuctionForm.get('reserveAmount') as FormControl;
   }
 
   constructor() {
     this.releaseCarForLiveAuctionForm = this.#formBuilder.group({
       originalAuctionCarId: ['', Validators.required],
       title: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      daysActive: ['', Validators.required],
       premium: ['', Validators.required],
-      categories: [[], Validators.required]
+      categories: [[], Validators.required],
+      reserveAmount: ['', Validators.required],
+      isWithReserve: ['', Validators.required],
     });
+
+    this.isWithReserveControl.valueChanges.
+      pipe(
+        takeUntilDestroyed()
+      ).subscribe((value) => {
+        this.isWithReserve.set(value);
+
+        if (value === true) {
+          this.reserveAmountControl.setValue(this.reserveAmount());
+          this.reserveAmountControl.setValidators([Validators.required]);
+        } else {
+          this.reserveAmountControl.setValue('');
+          this.reserveAmountControl.clearValidators();
+        }
+
+        this.reserveAmountControl.updateValueAndValidity();
+      });
   }
 
   emitIsOpenChange(isOpen: boolean): void {
@@ -121,6 +155,9 @@ export class ReleaseCarForLiveAuctionModalComponent {
     this.#releaseCarForLiveAuctionService.getTentativeTitle$(this.originalAuctionCarIdControl.value).subscribe({
       next: (tentativeTitle) => {
         this.releaseCarForLiveAuctionForm.patchValue({ title: tentativeTitle.data.attributes.year + ' ' + tentativeTitle.data.attributes.brand + ' ' + tentativeTitle.data.attributes.carModel });
+        this.releaseCarForLiveAuctionForm.patchValue({ reserveAmount: tentativeTitle.data.attributes.reserveAmount });
+        this.reserveAmount.set(tentativeTitle.data.attributes.reserveAmount);
+        this.releaseCarForLiveAuctionForm.patchValue({ isWithReserve: tentativeTitle.data.attributes.reserve });
       },
       error: (error) => {
         console.error(error);

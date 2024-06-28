@@ -15,4 +15,12 @@ export class ActivityRequestsService {
   getMyRequests$(page: number, size: number): Observable<ActivityRequests> {
     return this.#http.get<ActivityRequests>(`${this.#baseUrl}/auctions-cars/mis-solicitudes?size=${size}&page=${page}&orderBy=1`);
   }
+
+  acceptPreviewCar$(originalAuctionCarId: string): Observable<any> {
+    return this.#http.post(`${this.#baseUrl}/auctions-cars/accept-preview-car`, { originalAuctionCarId });
+  }
+
+  acceptPreviewArt$(originalAuctionArtId: string): Observable<any> {
+    return this.#http.post(`${this.#baseUrl}/auctions-cars/accept-preview-art`, { originalAuctionArtId });
+  }
 }

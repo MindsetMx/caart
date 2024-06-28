@@ -6,11 +6,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { RouterLink } from '@angular/router';
-import { ConfirmReleaseAuctionModalComponent } from '@app/dashboard/modals/confirm-release-auction-modal/confirm-release-auction-modal.component';
 import { AuctionCarService } from '@dashboard/services/auction-car.service';
 import { AppService } from '@app/app.service';
-import { ReleaseCarForLiveAuctionModalComponent } from '@app/dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
-import { ReleaseArtForLiveAuctionModalComponent } from '@app/dashboard/modals/release-art-for-live-auction-modal/release-art-for-live-auction-modal.component';
+import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'activity-auction-requests-progress',
@@ -20,9 +18,7 @@ import { ReleaseArtForLiveAuctionModalComponent } from '@app/dashboard/modals/re
     MatTooltipModule,
     MatPaginatorModule,
     RouterLink,
-    ConfirmReleaseAuctionModalComponent,
-    ReleaseCarForLiveAuctionModalComponent,
-    ReleaseArtForLiveAuctionModalComponent,
+    ConfirmationModalComponent,
   ],
   templateUrl: './activity-auction-requests-progress.component.html',
   styleUrl: './activity-auction-requests-progress.component.css',
@@ -34,12 +30,13 @@ export class ActivityAuctionRequestsProgressComponent {
   size = signal<number>(10);
   pageSizeOptions = signal<number[]>([]);
   auctionCarId = signal<string>('');
-  confirmReleaseAuctionModalIsOpen = signal<boolean>(false);
-  isConfirmReleaseAuctionButtonDisabled = signal<boolean>(false);
-  releaseCarForLiveAuctionModalIsOpen = signal<boolean>(false);
+  isAcceptPreviewCarAuctionButtonDisabled = signal<boolean>(false);
+  confirmAcceptPreviewCarModalIsOpen = signal<boolean>(false);
+  auctionArtId = signal<string>('');
+  isAcceptPreviewArtAuctionButtonDisabled = signal<boolean>(false);
+  confirmAcceptPreviewArtModalIsOpen = signal<boolean>(false);
 
   #activityRequestsService = inject(ActivityRequestsService);
-  #auctionCarService = inject(AuctionCarService);
   #appService = inject(AppService);
 
   get activityRequestsStatus(): typeof ActivityRequestsStatus {
@@ -63,31 +60,48 @@ export class ActivityAuctionRequestsProgressComponent {
     });
   }
 
-  releaseCarForLiveAuction(): void {
-    this.isConfirmReleaseAuctionButtonDisabled.set(true);
+  acceptPreviewCar(): void {
+    this.isAcceptPreviewCarAuctionButtonDisabled.set(true);
 
-    this.#auctionCarService.releaseCarForLiveAuction$(this.auctionCarId()).subscribe({
+    this.#activityRequestsService.acceptPreviewCar$(this.auctionCarId()).subscribe({
       next: () => {
-        this.releaseCarForLiveAuctionModalIsOpen.set(false);
-        this.confirmReleaseAuctionModalIsOpen.set(false);
         this.getMyRequests();
-        this.toastSuccess('El auto se ha publicado en subastas en vivo');
+        this.confirmAcceptPreviewCarModalIsOpen.set(false);
+        this.toastSuccess('El auto fue aceptado para vista previa');
       },
       error: (error) => {
         console.error(error);
       },
     }).add(() => {
-      this.isConfirmReleaseAuctionButtonDisabled.set(false);
+      this.isAcceptPreviewCarAuctionButtonDisabled.set(false);
     });
   }
 
-  openConfirmReleaseAuctionModal(auctionId: string): void {
-    this.auctionCarId.set(auctionId);
-    this.confirmReleaseAuctionModalIsOpen.set(true);
+  acceptPreviewArt(): void {
+    this.isAcceptPreviewArtAuctionButtonDisabled.set(true);
+
+    this.#activityRequestsService.acceptPreviewArt$(this.auctionArtId()).subscribe({
+      next: () => {
+        this.getMyRequests();
+        this.confirmAcceptPreviewArtModalIsOpen.set(false);
+        this.toastSuccess('La obra fue aceptada para vista previa');
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    }).add(() => {
+      this.isAcceptPreviewArtAuctionButtonDisabled.set(false);
+    });
   }
 
-  closeReleaseCarForLiveAuctionModal(): void {
-    this.releaseCarForLiveAuctionModalIsOpen.set(false);
+  openConfirmAcceptPreviewCarModal(auctionId: string): void {
+    this.auctionCarId.set(auctionId);
+    this.confirmAcceptPreviewCarModalIsOpen.set(true);
+  }
+
+  openConfirmAcceptPreviewArtModal(auctionId: string): void {
+    this.auctionArtId.set(auctionId);
+    this.confirmAcceptPreviewArtModalIsOpen.set(true);
   }
 
   private calculatePageSizeOptions(totalItems: number): number[] {

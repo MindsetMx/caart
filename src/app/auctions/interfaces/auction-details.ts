@@ -1,3 +1,5 @@
+import { AuctionCarStatus } from "@app/dashboard/interfaces";
+
 export interface AuctionDetails {
   data: AuctionDetailsData;
 }
@@ -16,7 +18,8 @@ export interface AuctionDetailsAttributes {
   startDate: string;
   endDate: string;
   reserveAmount: number;
-  status: string;
+  status: AuctionCarStatus;
+  daysActive: number;
   premium: boolean;
   categories: string[];
   title: string;

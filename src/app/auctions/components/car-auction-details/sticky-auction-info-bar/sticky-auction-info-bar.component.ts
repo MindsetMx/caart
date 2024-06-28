@@ -12,6 +12,7 @@ import { CountdownService } from '@shared/services/countdown.service';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { PrimaryButtonDirective } from '@shared/directives';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
+import { AuctionCarStatus } from '@dashboard/interfaces';
 
 @Component({
   selector: 'sticky-auction-info-bar',
@@ -41,6 +42,10 @@ export class StickyAuctionInfoBarComponent {
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
+  }
+
+  get auctionCarStatus(): typeof AuctionCarStatus {
+    return AuctionCarStatus;
   }
 
   followOrUnfollowAuction(auctionId: string): void {

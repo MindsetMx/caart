@@ -16,21 +16,12 @@
         }
       </div>
 
-      <!-- startDate -->
       <div>
-        <label for="startDate" class="block mb-1 text-sm">Fecha de inicio</label>
-        <input id="startDate" formControlName="startDate" type="datetime-local" sharedInput>
-        @if (hasError('startDate')) {
-        <shared-input-error [message]="getError('startDate')"></shared-input-error>
-        }
-      </div>
-
-      <!-- endDate -->
-      <div>
-        <label for="endDate" class="block mb-1 text-sm">Fecha de fin</label>
-        <input id="endDate" formControlName="endDate" type="datetime-local" sharedInput>
-        @if (hasError('endDate')) {
-        <shared-input-error [message]="getError('endDate')"></shared-input-error>
+        <label for="daysActive" class="block mb-1 text-sm">Días activo</label>
+        <input id="daysActive" formControlName="daysActive" type="text" mask="separator.0" thousandSeparator=","
+          autocomplete="off" [suffix]="' días'" sharedInput>
+        @if (hasError('daysActive')) {
+        <shared-input-error [message]="getError('daysActive')"></shared-input-error>
         }
       </div>
 
@@ -67,6 +58,36 @@
         <shared-input-error [message]="getError('categories')"></shared-input-error>
         }
       </div>
+
+      <!-- isWithReserve -->
+      <div>
+        <label for="isWithReserve" class="block mb-1 text-sm">¿Con precio de reserva?</label>
+        <div class="flex items-center gap-x-4">
+          <div class="flex items-center">
+            <input id="isWithReserve" formControlName="isWithReserve" type="radio" [value]="true" sharedInput>
+            <label for="isWithReserve" class="block ml-1 text-sm">Sí</label>
+          </div>
+          <div class="flex items-center">
+            <input id="isWithReserve" formControlName="isWithReserve" type="radio" [value]="false" sharedInput>
+            <label for="isWithReserve" class="block ml-1 text-sm">No</label>
+          </div>
+        </div>
+        @if (hasError('isWithReserve')) {
+        <shared-input-error [message]="getError('isWithReserve')"></shared-input-error>
+        }
+      </div>
+
+      <!-- reserveAmount -->
+      @if (isWithReserve() === true) {
+      <div>
+        <label for="reserveAmount" class="block mb-1 text-sm">Precio de reserva</label>
+        <input id="reserveAmount" formControlName="reserveAmount" type="text" mask="separator.0" thousandSeparator=","
+          prefix="$" suffix=" MXN" autocomplete="off" sharedInput>
+        @if (hasError('reserveAmount')) {
+        <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
+        }
+      </div>
+      }
 
       <button class="inline-flex justify-center items-center" type="submit"
         [disabled]="releaseArtForLiveAuctionSubmitButtonIsDisabled()"

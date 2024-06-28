@@ -25,8 +25,8 @@ export class AuctionArtService {
     return this.#http.post(`${this.#baseUrl}/car-history/art`, trimmedAddArtHistoryForm);
   }
 
-  releaseArtForLiveAuction$(auctionArtId: string): Observable<any> {
+  releaseArtForLiveAuction$(auctionArtId: string, startDate: string, endDate: string): Observable<any> {
     // auctions-cars/activate-art/6670cd726819beabe0985141
-    return this.#http.patch(`${this.#baseUrl}/auctions-cars/activate-art/${auctionArtId}`, {});
+    return this.#http.patch(`${this.#baseUrl}/auctions-cars/activate-art/${auctionArtId}`, { startDate, endDate });
   }
 }

@@ -83,5 +83,5 @@
   (isOpenChange)="closeReleaseArtForLiveAuctionModal()"></release-art-for-live-auction-modal>
 
 <confirm-release-auction-modal [(isOpen)]="confirmReleaseAuctionModalIsOpen"
-  [isButtonSubmitDisabled]="isConfirmReleaseAuctionButtonDisabled()"
-  (confirmReleaseChange)="releaseArtForLiveAuction()"></confirm-release-auction-modal>
+  [(isButtonSubmitDisabled)]="isConfirmReleaseAuctionButtonDisabled"
+  (confirmReleaseChange)="releaseArtForLiveAuction($event)"></confirm-release-auction-modal>

@@ -3,6 +3,7 @@ export interface AuctionCarInfo {
 }
 
 export interface AuctionCarInfoData {
+  aceeptedByUser: boolean;
   auctionCarId: string;
   brand: string;
   model: string;

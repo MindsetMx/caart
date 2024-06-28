@@ -10,6 +10,8 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CopyAuctionPreviewLinkModalComponent } from '@dashboard/modals/copy-auction-preview-link-modal/copy-auction-preview-link-modal.component';
+import { NgxMaskDirective } from 'ngx-mask';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'release-art-for-live-auction-modal',
@@ -23,7 +25,8 @@ import { CopyAuctionPreviewLinkModalComponent } from '@dashboard/modals/copy-auc
     MatSelectModule,
     PrimaryButtonDirective,
     SpinnerComponent,
-    CopyAuctionPreviewLinkModalComponent
+    CopyAuctionPreviewLinkModalComponent,
+    NgxMaskDirective,
   ],
   templateUrl: './release-art-for-live-auction-modal.component.html',
   styleUrl: './release-art-for-live-auction-modal.component.css',
@@ -34,8 +37,9 @@ export class ReleaseArtForLiveAuctionModalComponent {
   originalAuctionArtId = input.required<string>();
   isOpenChange = output<boolean>();
   artReleaseForLiveAuction = output<void>();
-
   copyAuctionPreviewLinkModalIsOpen = signal<boolean>(false);
+  isWithReserve = signal<boolean>(false);
+  reserveAmount = signal<number>(0);
 
   fullAuctionPreviewLink = computed(() => {
     const baseUrl = window.location.origin;
@@ -111,6 +115,18 @@ export class ReleaseArtForLiveAuctionModalComponent {
     }
   });
 
+  isWithReserveEffect = effect(() => {
+    this.isWithReserveControl.setValue(this.isWithReserve());
+  });
+
+  get isWithReserveControl(): FormControl {
+    return this.releaseArtForLiveAuctionForm.get('isWithReserve') as FormControl;
+  }
+
+  get reserveAmountControl(): FormControl {
+    return this.releaseArtForLiveAuctionForm.get('reserveAmount') as FormControl;
+  }
+
   get originalAuctionArtIdControl(): FormControl {
     return this.releaseArtForLiveAuctionForm.get('originalAuctionArtId') as FormControl;
   }
@@ -119,11 +135,29 @@ export class ReleaseArtForLiveAuctionModalComponent {
     this.releaseArtForLiveAuctionForm = this.#formBuilder.group({
       originalAuctionArtId: ['', Validators.required],
       title: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      daysActive: ['', Validators.required],
       premium: ['', Validators.required],
-      categories: [[], Validators.required]
+      categories: [[], Validators.required],
+      reserveAmount: ['', Validators.required],
+      isWithReserve: ['', Validators.required],
     });
+
+    this.isWithReserveControl.valueChanges.
+      pipe(
+        takeUntilDestroyed()
+      ).subscribe((value) => {
+        this.isWithReserve.set(value);
+
+        if (value === true) {
+          this.reserveAmountControl.setValue(this.reserveAmount());
+          this.reserveAmountControl.setValidators([Validators.required]);
+        } else {
+          this.reserveAmountControl.setValue('');
+          this.reserveAmountControl.clearValidators();
+        }
+
+        this.reserveAmountControl.updateValueAndValidity();
+      });
   }
 
   emitIsOpenChange(isOpen: boolean): void {
@@ -164,6 +198,9 @@ export class ReleaseArtForLiveAuctionModalComponent {
     this.#releaseArtForLiveAuctionService.getTentativeTitle$(this.originalAuctionArtIdControl.value).subscribe({
       next: (tentativeTitle) => {
         this.releaseArtForLiveAuctionForm.patchValue({ title: tentativeTitle.data.attributes.title });
+        this.releaseArtForLiveAuctionForm.patchValue({ reserveAmount: tentativeTitle.data.attributes.reserveAmount });
+        this.reserveAmount.set(tentativeTitle.data.attributes.reserveAmount);
+        this.releaseArtForLiveAuctionForm.patchValue({ isWithReserve: tentativeTitle.data.attributes.reserve });
       },
       error: (error) => {
         console.error(error);

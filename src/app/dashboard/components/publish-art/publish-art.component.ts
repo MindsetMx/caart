@@ -49,10 +49,10 @@ export class PublishArtComponent {
     this.dashboardInfo();
   }
 
-  releaseArtForLiveAuction(): void {
+  releaseArtForLiveAuction(event: { startDate: string; endDate: string }): void {
     this.isConfirmReleaseAuctionButtonDisabled.set(true);
 
-    this.#auctionArtService.releaseArtForLiveAuction$(this.auctionArtId()).subscribe({
+    this.#auctionArtService.releaseArtForLiveAuction$(this.auctionArtId(), event.startDate, event.endDate).subscribe({
       next: () => {
         this.releaseArtForLiveAuctionModalIsOpen.set(false);
         this.confirmReleaseAuctionModalIsOpen.set(false);

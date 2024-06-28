@@ -16,6 +16,8 @@ export interface TentativeTitleAttributes {
   carModel: string;
   exteriorColor: string;
   engine: string;
+  reserve: boolean;
+  reserveAmount: number;
 }
 
 export interface TentativeTitleMeta {

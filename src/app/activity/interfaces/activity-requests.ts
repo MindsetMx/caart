@@ -26,6 +26,7 @@ export interface ActivityRequestsAttributes {
   portada: string;
   auctionPaymentId: string;
   auctionLiveId: string;
+  acceptedBySeller: boolean;
 }
 
 export enum ActivityRequestsStatus {

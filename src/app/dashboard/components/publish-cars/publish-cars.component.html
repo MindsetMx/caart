@@ -104,7 +104,7 @@
                 <span>Asignar y reordenar imágenes</span>
               </button>
               <!-- liberar-auto-para-subasta-en-vivo -->
-              @if (auction.status === status.Preview) {
+              @if (auction.status === status.Preview && auction.aceeptedByUser === true) {
               <button (click)="openConfirmReleaseAuctionModal(auction.auctionCarId)" mat-menu-item>
                 <span>Liberar auto para subasta en vivo</span>
               </button>
@@ -127,5 +127,5 @@
   (isOpenChange)="closeReleaseCarForLiveAuctionModal()"></release-car-for-live-auction-modal>
 
 <confirm-release-auction-modal [(isOpen)]="confirmReleaseAuctionModalIsOpen"
-  [isButtonSubmitDisabled]="isConfirmReleaseAuctionButtonDisabled()"
-  (confirmReleaseChange)="releaseCarForLiveAuction()"></confirm-release-auction-modal>
+  [(isButtonSubmitDisabled)]="isConfirmReleaseAuctionButtonDisabled"
+  (confirmReleaseChange)="releaseCarForLiveAuction($event)"></confirm-release-auction-modal>

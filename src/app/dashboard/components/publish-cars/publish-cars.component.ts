@@ -49,10 +49,10 @@ export class PublishCarsComponent {
     return AuctionCarStatus;
   }
 
-  releaseCarForLiveAuction(): void {
+  releaseCarForLiveAuction(event: { startDate: string; endDate: string }): void {
     this.isConfirmReleaseAuctionButtonDisabled.set(true);
 
-    this.#auctionCarService.releaseCarForLiveAuction$(this.auctionCarId()).subscribe({
+    this.#auctionCarService.releaseCarForLiveAuction$(this.auctionCarId(), event.startDate, event.endDate).subscribe({
       next: () => {
         this.releaseCarForLiveAuctionModalIsOpen.set(false);
         this.confirmReleaseAuctionModalIsOpen.set(false);
