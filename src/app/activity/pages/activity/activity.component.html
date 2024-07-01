@@ -25,10 +25,10 @@
 
   @switch (currentActivityTab()) {
   @case (activityTabs.requests) {
-  <activity-auction-requests-progress></activity-auction-requests-progress>
+  <activity-auction-requests-progress [(page)]="page1" [(size)]="size1"></activity-auction-requests-progress>
   }
   @case (activityTabs.approved) {
-  <activity-approved-auctions></activity-approved-auctions>
+  <activity-approved-auctions [(page)]="page2" [(size)]="size2"></activity-approved-auctions>
   }
   }
 

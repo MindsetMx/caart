@@ -97,6 +97,7 @@ export class ReleaseCarForLiveAuctionModalComponent {
       categories: [[], Validators.required],
       reserveAmount: ['', Validators.required],
       isWithReserve: ['', Validators.required],
+      startingBid: ['', Validators.required],
     });
 
     this.isWithReserveControl.valueChanges.

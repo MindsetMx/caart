@@ -89,6 +89,16 @@
       </div>
       }
 
+      <!-- startingBid -->
+      <div>
+        <label for="startingBid" class="block mb-1 text-sm">Precio de salida</label>
+        <input id="startingBid" formControlName="startingBid" type="text" mask="separator.0" thousandSeparator=","
+          prefix="$" suffix=" MXN" autocomplete="off" sharedInput>
+        @if (hasError('startingBid')) {
+        <shared-input-error [message]="getError('startingBid')"></shared-input-error>
+        }
+      </div>
+
       <button class="inline-flex justify-center items-center" type="submit"
         [disabled]="releaseCarForLiveAuctionSubmitButtonIsDisabled()"
         [class.opacity-50]="releaseCarForLiveAuctionSubmitButtonIsDisabled()" sharedPrimaryButton>

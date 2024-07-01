@@ -21,7 +21,7 @@ import { InputDirective } from '@shared/directives';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PublicationsComponent {
-  publicationType: FormControl = new FormControl(TypesOfRequests.Art);
+  publicationType: FormControl = new FormControl(TypesOfRequests.Car);
 
   get typesOfPublications(): typeof TypesOfRequests {
     return TypesOfRequests;

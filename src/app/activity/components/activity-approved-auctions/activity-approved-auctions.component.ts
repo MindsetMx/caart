@@ -1,10 +1,13 @@
-import { CommonModule, CurrencyPipe, NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-
-import { ApprovedService } from '@activity/services/approved.service';
-import { Approved } from '@app/activity/interfaces';
-import { CountdownService } from '@shared/services/countdown.service';
+import { ChangeDetectionStrategy, Component, effect, inject, model, signal } from '@angular/core';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
+import { CurrencyPipe, NgClass } from '@angular/common';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
+import { Approved } from '@activity/interfaces';
+import { ApprovedService } from '@activity/services/approved.service';
+import { CountdownService } from '@shared/services/countdown.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ActivityTabs } from '@activity/enums/activityTabs.enum';
 
 @Component({
   selector: 'activity-approved-auctions',
@@ -12,27 +15,30 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
   imports: [
     CountdownModule,
     NgClass,
-    CurrencyPipe
+    CurrencyPipe,
+    MatPaginatorModule,
   ],
   templateUrl: './activity-approved-auctions.component.html',
   styleUrl: './activity-approved-auctions.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActivityApprovedAuctionsComponent {
+  page = model.required<number>();
+  size = model.required<number>();
+
   #approvedService = inject(ApprovedService);
   #countdownService = inject(CountdownService);
+  #router = inject(Router);
 
   approvedAuctions = signal<Approved>({} as Approved);
-  currentPage = signal<number>(1);
-  size = signal<number>(10);
   pageSizeOptions = signal<number[]>([]);
 
-  constructor() {
+  getMyApprovedEffect = effect(() => {
     this.getMyApproved();
-  }
+  });
 
   getMyApproved(): void {
-    this.#approvedService.getMyApproved$(this.currentPage(), this.size()).subscribe((requests) => {
+    this.#approvedService.getMyApproved$(this.page(), this.size()).subscribe((requests) => {
       this.approvedAuctions.set(requests);
 
       if (this.pageSizeOptions().length === 0)
@@ -65,5 +71,18 @@ export class ActivityApprovedAuctionsComponent {
     }
 
     return pageSizeOptions;
+  }
+
+  onPageChange(event: any): void {
+    this.page.set(event.pageIndex + 1);
+    this.size.set(event.pageSize);
+
+    this.#router.navigate([], {
+      queryParams: {
+        page2: this.page(),
+        size2: this.size()
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 }

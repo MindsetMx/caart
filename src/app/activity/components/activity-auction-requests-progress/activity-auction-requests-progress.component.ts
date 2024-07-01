@@ -1,12 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, model, signal } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router, RouterLink } from '@angular/router';
+
 import { ActivityRequests, ActivityRequestsStatus, ActivityRequestsType } from '@activity/interfaces';
 import { ActivityRequestsService } from '@activity/services/activity-requests.service';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { RouterLink } from '@angular/router';
-import { AuctionCarService } from '@dashboard/services/auction-car.service';
 import { AppService } from '@app/app.service';
 import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
 
@@ -25,9 +24,10 @@ import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/co
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActivityAuctionRequestsProgressComponent {
+  page = model.required<number>();
+  size = model.required<number>();
+
   requests = signal<ActivityRequests>({} as ActivityRequests);
-  currentPage = signal<number>(1);
-  size = signal<number>(10);
   pageSizeOptions = signal<number[]>([]);
   auctionCarId = signal<string>('');
   isAcceptPreviewCarAuctionButtonDisabled = signal<boolean>(false);
@@ -38,6 +38,7 @@ export class ActivityAuctionRequestsProgressComponent {
 
   #activityRequestsService = inject(ActivityRequestsService);
   #appService = inject(AppService);
+  #router = inject(Router);
 
   get activityRequestsStatus(): typeof ActivityRequestsStatus {
     return ActivityRequestsStatus;
@@ -47,12 +48,12 @@ export class ActivityAuctionRequestsProgressComponent {
     return ActivityRequestsType;
   }
 
-  constructor() {
+  getMyRequestsEffect = effect(() => {
     this.getMyRequests();
-  }
+  });
 
   getMyRequests(): void {
-    this.#activityRequestsService.getMyRequests$(this.currentPage(), this.size()).subscribe((requests) => {
+    this.#activityRequestsService.getMyRequests$(this.page(), this.size()).subscribe((requests) => {
       this.requests.set(requests);
 
       if (this.pageSizeOptions().length === 0)
@@ -116,9 +117,16 @@ export class ActivityAuctionRequestsProgressComponent {
   }
 
   onPageChange(event: any): void {
-    this.currentPage.set(event.pageIndex + 1);
+    this.page.set(event.pageIndex + 1);
     this.size.set(event.pageSize);
-    this.getMyRequests();
+
+    this.#router.navigate([], {
+      queryParams: {
+        page1: this.page(),
+        size1: this.size()
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
   toastSuccess(message: string): void {

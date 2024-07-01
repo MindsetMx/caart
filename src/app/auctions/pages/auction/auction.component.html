@@ -511,7 +511,9 @@
         </section>
         }
 
+        @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <current-auctions class="hidden md:block" [auctionId]="auctionId()"></current-auctions>
+        }
       </ng-container>
     </two-column-auction-grid>
   </div>
