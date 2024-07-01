@@ -14,3 +14,5 @@ export * from './auction-art-details';
 export * from './car-auction-preview';
 export * from './art-auction-preview';
 export * from './all-auction-art';
+export * from './calculate-starting-bid-car-auction';
+export * from './calculate-starting-bid-art-auction';

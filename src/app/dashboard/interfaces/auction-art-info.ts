@@ -9,6 +9,7 @@ export interface AuctionArtInfoData {
   wizardSteps: AuctionArtInfoWizardSteps;
   paymentCompleted: boolean;
   artHistoryExists: boolean;
+  publishImages: boolean;
   published: boolean;
   status: AuctionArtStatus;
 }

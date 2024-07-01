@@ -12,6 +12,7 @@ export interface AuctionCarInfoData {
   paymentCompleted: boolean;
   published: boolean;
   carHistoryExists: boolean;
+  publishImages: boolean;
   status: AuctionCarStatus;
 }
 

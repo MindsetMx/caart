@@ -96,12 +96,16 @@
           class="hidden md:grid items-center text-sm md:text-base gap-3 grid-flow-col lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
           @if(specificAuction().data && specificAuction().data.bids.length > 0) {
           <div class="py-1">
-            <p class="text-xl">
+            <p class="text-xl leading-5">
               {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
             </p>
+            @if (specificAuction().data.bids[0].userId === null && specificAuction().data.status === 'preview') {
+            <span class="text-sm">Precio de salida</span>
+            }
           </div>
           }
           <div>
+            @if (specificAuction().data.bids[0].userId !== null) {
             <div class="hidden md:block py-1 ml-4">
               <!-- <p class="font-bold text-lg">18</p> -->
               <p class="inline lg:block text-xl">
@@ -111,6 +115,7 @@
                 Ofertas
               </p>
             </div>
+            }
             @defer (when specificAuction().data) {
             @if (specificAuction().data.status === 'active') {
             <div class="md:hidden">

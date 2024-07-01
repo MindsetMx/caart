@@ -69,6 +69,7 @@ export class ReleaseCarAuctionForPreviewModalComponent {
     if (this.isOpen()) {
       this.originalAuctionCarIdControl.setValue(this.originalAuctionCarId());
       this.getTentativeTitle();
+      this.calculateStartingBid();
     }
   });
 
@@ -159,6 +160,17 @@ export class ReleaseCarAuctionForPreviewModalComponent {
         this.releaseCarForLiveAuctionForm.patchValue({ reserveAmount: tentativeTitle.data.attributes.reserveAmount });
         this.reserveAmount.set(tentativeTitle.data.attributes.reserveAmount);
         this.releaseCarForLiveAuctionForm.patchValue({ isWithReserve: tentativeTitle.data.attributes.reserve });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  calculateStartingBid(): void {
+    this.#releaseCarForLiveAuctionService.calculateStartingBid$(this.originalAuctionCarIdControl.value).subscribe({
+      next: (response) => {
+        this.releaseCarForLiveAuctionForm.patchValue({ startingBid: response.data.attributes.startingBid });
       },
       error: (error) => {
         console.error(error);

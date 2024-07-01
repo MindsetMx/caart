@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { AppService } from '@app/app.service';
 import { environments } from '@env/environments';
-import { TentativeArtTitle } from '@dashboard/interfaces';
+import { CalculateStartingBidArtAuction, TentativeArtTitle } from '@dashboard/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +30,12 @@ export class ReleaseArtForLiveAuctionService {
     const url = `${this.#baseUrl}/auction-items/${auctionItemId}/tentative-title-art`;
 
     return this.#http.get<TentativeArtTitle>(url);
+  }
+
+  // auctions-cars/calculate-starting-bid-art/{{id}}
+  calculateStartingBid$(auctionItemId: string): Observable<CalculateStartingBidArtAuction> {
+    const url = `${this.#baseUrl}/auctions-cars/calculate-starting-bid-art/${auctionItemId}`;
+
+    return this.#http.get<CalculateStartingBidArtAuction>(url);
   }
 }

@@ -112,6 +112,7 @@ export class ReleaseArtAuctionForPreviewModalComponent {
     if (this.isOpen()) {
       this.originalAuctionArtIdControl.setValue(this.originalAuctionArtId());
       this.getTentativeTitle();
+      this.calculateStartingBid();
     }
   });
 
@@ -202,6 +203,17 @@ export class ReleaseArtAuctionForPreviewModalComponent {
         this.releaseArtForLiveAuctionForm.patchValue({ reserveAmount: tentativeTitle.data.attributes.reserveAmount });
         this.reserveAmount.set(tentativeTitle.data.attributes.reserveAmount);
         this.releaseArtForLiveAuctionForm.patchValue({ isWithReserve: tentativeTitle.data.attributes.reserve });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  calculateStartingBid(): void {
+    this.#releaseArtForLiveAuctionService.calculateStartingBid$(this.originalAuctionArtIdControl.value).subscribe({
+      next: (response) => {
+        this.releaseArtForLiveAuctionForm.patchValue({ startingBid: response.data.attributes.startingBid });
       },
       error: (error) => {
         console.error(error);

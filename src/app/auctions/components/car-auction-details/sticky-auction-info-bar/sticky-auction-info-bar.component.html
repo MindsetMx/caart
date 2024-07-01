@@ -21,7 +21,7 @@
     </h1>
     }
 
-    <div class="flex w-full justify-between">
+    <div class="flex w-full justify-between mt-1">
       <div
         class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
         @defer (when specificAuction().data) {
@@ -34,15 +34,19 @@
         </div>
         } @else {
         @if(specificAuction().data.bids.length > 0) {
-        <div class="py-1">
+        <div class="py-1 leading-5">
           <p>
             {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
           </p>
+          @if (specificAuction().data.bids[0].userId === null && specificAuction().data.status ===
+          auctionCarStatus.Preview) {
+          <span class="text-sm">Precio de salida</span>
+          }
         </div>
         }
         }
 
-        @if (specificAuction().data.status !== 'completed') {
+        @if (specificAuction().data.status !== 'completed' && specificAuction().data.bids[0].userId !== null) {
         <div class="py-1" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
           <p class="inline lg:block">
             <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</span>
@@ -55,7 +59,7 @@
         @if (auction().data) {
         @switch (auction().data.attributes.status) {
         @case (auctionCarStatus.Preview) {
-        {{auction().data.attributes.daysActive}} días
+        <div class="pl-4">{{auction().data.attributes.daysActive}} días</div>
         }
 
         @case (auctionCarStatus.Active) {
