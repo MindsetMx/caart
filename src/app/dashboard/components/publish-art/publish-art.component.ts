@@ -5,12 +5,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 
+import { AppService } from '@app/app.service';
 import { AuctionArtDetailsModalComponent } from '@dashboard/modals/auction-art-details-modal/auction-art-details-modal.component';
 import { AuctionArtInfo, AuctionArtStatus } from '@dashboard/interfaces';
 import { AuctionArtService } from '@dashboard/services/auction-art.service';
 import { ConfirmReleaseAuctionModalComponent } from '@dashboard/modals/confirm-release-auction-modal/confirm-release-auction-modal.component';
-import { ReleaseArtForLiveAuctionModalComponent } from '@dashboard/modals/release-art-for-live-auction-modal/release-art-for-live-auction-modal.component';
-import { AppService } from '@app/app.service';
+import { ReleaseArtAuctionForPreviewModalComponent } from '@dashboard/modals/release-art-auction-for-preview-modal/release-art-auction-for-preview-modal.component';
+import { EditArtAuctionPreviewComponent } from '@dashboard/modals/edit-art-auction-preview-modal/edit-art-auction-preview-modal.component';
 
 @Component({
   selector: 'publish-art',
@@ -22,8 +23,9 @@ import { AppService } from '@app/app.service';
     MatIconModule,
     RouterLink,
     AuctionArtDetailsModalComponent,
-    ReleaseArtForLiveAuctionModalComponent,
+    ReleaseArtAuctionForPreviewModalComponent,
     ConfirmReleaseAuctionModalComponent,
+    EditArtAuctionPreviewComponent
   ],
   templateUrl: './publish-art.component.html',
   styleUrl: './publish-art.component.css',
@@ -36,10 +38,11 @@ export class PublishArtComponent {
   auctionArtInfo = signal<AuctionArtInfo>({} as AuctionArtInfo);
   auctionArtId = signal<string>('');
   auctionArtDetailsModalIsOpen = signal<boolean>(false);
-  releaseArtForLiveAuctionModalIsOpen = signal<boolean>(false);
+  releaseAuctionForPreviewModalIsOpen = signal<boolean>(false);
   // auctionArtDetailsModalIsOpen = signal<boolean>(false);
   confirmReleaseAuctionModalIsOpen = signal<boolean>(false);
   isConfirmReleaseAuctionButtonDisabled = signal<boolean>(false);
+  editAuctionPreviewModalIsOpen = signal<boolean>(false);
 
   get status(): typeof AuctionArtStatus {
     return AuctionArtStatus;
@@ -54,7 +57,7 @@ export class PublishArtComponent {
 
     this.#auctionArtService.releaseArtForLiveAuction$(this.auctionArtId(), event.startDate, event.endDate).subscribe({
       next: () => {
-        this.releaseArtForLiveAuctionModalIsOpen.set(false);
+        this.releaseAuctionForPreviewModalIsOpen.set(false);
         this.confirmReleaseAuctionModalIsOpen.set(false);
         this.dashboardInfo();
         this.toastSuccess('La obra se ha publicado en subastas en vivo');
@@ -66,7 +69,6 @@ export class PublishArtComponent {
       this.isConfirmReleaseAuctionButtonDisabled.set(false);
     });
   }
-
 
   openConfirmReleaseAuctionModal(auctionId: string): void {
     this.auctionArtId.set(auctionId);
@@ -89,13 +91,18 @@ export class PublishArtComponent {
     });
   }
 
-  openReleaseArtForLiveAuctionModal(auctionId: string): void {
+  openModalToReleaseAuctionForPreview(auctionId: string): void {
     this.auctionArtId.set(auctionId);
-    this.releaseArtForLiveAuctionModalIsOpen.set(true);
+    this.releaseAuctionForPreviewModalIsOpen.set(true);
   }
 
-  closeReleaseArtForLiveAuctionModal(): void {
-    this.releaseArtForLiveAuctionModalIsOpen.set(false);
+  openEditAuctionPreviewModal(auctionId: string): void {
+    this.auctionArtId.set(auctionId);
+    this.editAuctionPreviewModalIsOpen.set(true);
+  }
+
+  closeReleaseAuctionForPreviewModal(): void {
+    this.releaseAuctionForPreviewModalIsOpen.set(false);
   }
 
   openAuctionArtDetailsModal(auctionId: string): void {

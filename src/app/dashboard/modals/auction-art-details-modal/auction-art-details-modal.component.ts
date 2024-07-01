@@ -26,7 +26,7 @@ export class AuctionArtDetailsModalComponent {
   #artWizardService = inject(ArtWizardService);
 
   auctionCarIdEffect = effect(() => {
-    if (this.auctionArtId()) {
+    if (this.auctionArtId() && this.isOpen()) {
       this.#artWizardService.getArtWizardData$(this.auctionArtId()).subscribe({
         next: (response) => {
           this.wizardData.set(response);

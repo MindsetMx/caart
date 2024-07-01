@@ -94,10 +94,16 @@
                 <!-- <mat-icon>dialpad</mat-icon> -->
                 <span>Agregar historia del auto</span>
               </button>
-              <button (click)="openReleaseCarForLiveAuctionModal(auction.auctionCarId)" mat-menu-item>
+              <button (click)="openModalToReleaseAuctionForPreview(auction.auctionCarId)" mat-menu-item>
                 <!-- <mat-icon>notifications_off</mat-icon> -->
                 <span>Liberar auto para vista previa</span>
               </button>
+              @if (auction.status === status.Preview) {
+              <button (click)="openEditAuctionPreviewModal(auction.auctionCarId)" mat-menu-item>
+                <!-- <mat-icon>notifications_off</mat-icon> -->
+                <span>Editar vista previa</span>
+              </button>
+              }
               <!-- asignar-y-reordenar-imagenes-subasta/:id -->
               <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta', auction.auctionCarId]"
                 mat-menu-item>
@@ -122,9 +128,12 @@
 <auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"
   [auctionCarId]="auctionCarId()"></auction-car-details-modal>
 
-<release-car-for-live-auction-modal [isOpen]="releaseCarForLiveAuctionModalIsOpen()"
+<release-car-auction-for-preview-modal [isOpen]="releaseAuctionForPreviewModalIsOpen()"
   (carReleaseForLiveAuction)="dashboardInfo()" [originalAuctionCarId]="auctionCarId()"
-  (isOpenChange)="closeReleaseCarForLiveAuctionModal()"></release-car-for-live-auction-modal>
+  (isOpenChange)="closeReleaseAuctionForPreviewModal()"></release-car-auction-for-preview-modal>
+
+<edit-car-auction-preview-modal [(isOpen)]="editAuctionPreviewModalIsOpen"
+  [originalAuctionCarId]="auctionCarId()"></edit-car-auction-preview-modal>
 
 <confirm-release-auction-modal [(isOpen)]="confirmReleaseAuctionModalIsOpen"
   [(isButtonSubmitDisabled)]="isConfirmReleaseAuctionButtonDisabled"

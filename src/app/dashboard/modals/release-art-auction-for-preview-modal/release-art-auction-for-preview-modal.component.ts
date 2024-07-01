@@ -14,7 +14,7 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'release-art-for-live-auction-modal',
+  selector: 'release-art-auction-for-preview-modal',
   standalone: true,
   imports: [
     ModalComponent,
@@ -28,11 +28,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     CopyAuctionPreviewLinkModalComponent,
     NgxMaskDirective,
   ],
-  templateUrl: './release-art-for-live-auction-modal.component.html',
-  styleUrl: './release-art-for-live-auction-modal.component.css',
+  templateUrl: './release-art-auction-for-preview-modal.component.html',
+  styleUrl: './release-art-auction-for-preview-modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReleaseArtForLiveAuctionModalComponent {
+export class ReleaseArtAuctionForPreviewModalComponent {
   isOpen = input.required<boolean>();
   originalAuctionArtId = input.required<string>();
   isOpenChange = output<boolean>();

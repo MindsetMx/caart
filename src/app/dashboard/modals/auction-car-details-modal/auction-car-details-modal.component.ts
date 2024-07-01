@@ -26,7 +26,7 @@ export class AuctionCarDetailsModalComponent {
 
 
   auctionCarIdEffect = effect(() => {
-    if (this.auctionCarId()) {
+    if (this.auctionCarId() && this.isOpen()) {
       this.#wizardDataService.getWizardData$(this.auctionCarId()).subscribe({
         next: (response) => {
           this.wizardData.set(response);

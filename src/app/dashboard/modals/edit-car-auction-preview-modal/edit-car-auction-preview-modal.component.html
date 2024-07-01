@@ -1,0 +1,115 @@
+<shared-modal [(isOpen)]="isOpen" [verticalCenter]="true">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Liberar auto para vista previa</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <section class="container">
+    <form [formGroup]="editCarAuctionPreviewForm" (ngSubmit)="editCarAuctionPreview()" class="space-y-6">
+      <!-- title -->
+      <div>
+        <label for="title" class="block mb-1 text-sm">Título</label>
+        <input id="title" formControlName="title" type="text" sharedInput>
+        @if (hasError('title')) {
+        <shared-input-error [message]="getError('title')"></shared-input-error>
+        }
+      </div>
+
+      <div>
+        <label for="daysActive" class="block mb-1 text-sm">Días activo</label>
+        <input id="daysActive" formControlName="daysActive" type="text" mask="separator.0" thousandSeparator=","
+          autocomplete="off" [suffix]="' días'" sharedInput>
+        @if (hasError('daysActive')) {
+        <shared-input-error [message]="getError('daysActive')"></shared-input-error>
+        }
+      </div>
+
+      <!-- premium boolean -->
+      <div>
+        <label for="premium" class="block mb-1 text-sm">¿Subasta premium?</label>
+        <div class="flex items-center gap-x-4">
+          <div class="flex items-center">
+            <input id="premium" formControlName="premium" type="radio" [value]="true" sharedInput>
+            <label for="premium" class="block ml-1 text-sm">Sí</label>
+          </div>
+          <div class="flex items-center">
+            <input id="premium" formControlName="premium" type="radio" [value]="false" sharedInput>
+            <label for="premium" class="block ml-1 text-sm">No</label>
+          </div>
+        </div>
+        @if (hasError('premium')) {
+        <shared-input-error [message]="getError('premium')"></shared-input-error>
+        }
+      </div>
+
+      <!-- categories select -->
+      <div>
+        <label (click)="categoriesSelect.open()" for="categories" class="block mb-1 text-sm">Categorías</label>
+        <mat-form-field class="w-full" name="mat-form-field1">
+          <!-- <mat-label>Toppings</mat-label> -->
+          <mat-select #categoriesSelect formControlName="categories" multiple>
+            @for (category of categoriesList; track category) {
+            <mat-option [value]="category.value">{{ category.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        @if (hasError('categories')) {
+        <shared-input-error [message]="getError('categories')"></shared-input-error>
+        }
+      </div>
+
+      <!-- isWithReserve -->
+      <div>
+        <label for="isWithReserve" class="block mb-1 text-sm">¿Con precio de reserva?</label>
+        <div class="flex items-center gap-x-4">
+          <div class="flex items-center">
+            <input id="isWithReserve" formControlName="isWithReserve" type="radio" [value]="true" sharedInput>
+            <label for="isWithReserve" class="block ml-1 text-sm">Sí</label>
+          </div>
+          <div class="flex items-center">
+            <input id="isWithReserve" formControlName="isWithReserve" type="radio" [value]="false" sharedInput>
+            <label for="isWithReserve" class="block ml-1 text-sm">No</label>
+          </div>
+        </div>
+        @if (hasError('isWithReserve')) {
+        <shared-input-error [message]="getError('isWithReserve')"></shared-input-error>
+        }
+      </div>
+
+      <!-- reserveAmount -->
+      @if (isWithReserveControl.value === true) {
+      <div>
+        <label for="reserveAmount" class="block mb-1 text-sm">Precio de reserva</label>
+        <input id="reserveAmount" formControlName="reserveAmount" type="text" mask="separator.0" thousandSeparator=","
+          prefix="$" suffix=" MXN" autocomplete="off" sharedInput>
+        @if (hasError('reserveAmount')) {
+        <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
+        }
+      </div>
+      }
+
+      <!-- startingBid -->
+      <div>
+        <label for="startingBid" class="block mb-1 text-sm">Precio de salida</label>
+        <input id="startingBid" formControlName="startingBid" type="text" mask="separator.0" thousandSeparator=","
+          prefix="$" suffix=" MXN" autocomplete="off" sharedInput>
+        @if (hasError('startingBid')) {
+        <shared-input-error [message]="getError('startingBid')"></shared-input-error>
+        }
+      </div>
+
+      <button class="inline-flex justify-center items-center" type="submit"
+        [disabled]="editCarAuctionPreviewSubmitButtonIsDisabled()"
+        [class.opacity-50]="editCarAuctionPreviewSubmitButtonIsDisabled()" sharedPrimaryButton>
+        @if (editCarAuctionPreviewSubmitButtonIsDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Liberar auto
+        }
+      </button>
+    </form>
+
+  </section>
+
+</shared-modal>

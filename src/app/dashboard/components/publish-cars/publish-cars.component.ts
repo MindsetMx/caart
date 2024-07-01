@@ -5,12 +5,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 
+import { AppService } from '@app/app.service';
 import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 import { AuctionCarInfo, AuctionCarStatus } from '@dashboard/interfaces';
 import { AuctionCarService } from '@dashboard/services/auction-car.service';
 import { ConfirmReleaseAuctionModalComponent } from '@dashboard/modals/confirm-release-auction-modal/confirm-release-auction-modal.component';
-import { ReleaseCarForLiveAuctionModalComponent } from '@dashboard/modals/release-car-for-live-auction-modal/release-car-for-live-auction-modal.component';
-import { AppService } from '@app/app.service';
+import { ReleaseCarAuctionForPreviewModalComponent } from '@dashboard/modals/release-car-auction-for-preview-modal/release-car-auction-for-preview-modal.component';
+import { EditCarAuctionPreviewModalComponent } from '@app/dashboard/modals/edit-car-auction-preview-modal/edit-car-auction-preview-modal.component';
 
 @Component({
   selector: 'publish-cars',
@@ -22,8 +23,9 @@ import { AppService } from '@app/app.service';
     MatIconModule,
     RouterLink,
     AuctionCarDetailsModalComponent,
-    ReleaseCarForLiveAuctionModalComponent,
-    ConfirmReleaseAuctionModalComponent
+    ReleaseCarAuctionForPreviewModalComponent,
+    ConfirmReleaseAuctionModalComponent,
+    EditCarAuctionPreviewModalComponent
   ],
   templateUrl: './publish-cars.component.html',
   styleUrl: './publish-cars.component.css',
@@ -37,9 +39,10 @@ export class PublishCarsComponent {
   auctionCarId = signal<string>('');
   auctionCarDetailsModalIsOpen = signal<boolean>(false);
   addCarHistoryModalIsOpen = signal<boolean>(false);
-  releaseCarForLiveAuctionModalIsOpen = signal<boolean>(false);
+  releaseAuctionForPreviewModalIsOpen = signal<boolean>(false);
   confirmReleaseAuctionModalIsOpen = signal<boolean>(false);
   isConfirmReleaseAuctionButtonDisabled = signal<boolean>(false);
+  editAuctionPreviewModalIsOpen = signal<boolean>(false);
 
   constructor() {
     this.dashboardInfo();
@@ -54,7 +57,7 @@ export class PublishCarsComponent {
 
     this.#auctionCarService.releaseCarForLiveAuction$(this.auctionCarId(), event.startDate, event.endDate).subscribe({
       next: () => {
-        this.releaseCarForLiveAuctionModalIsOpen.set(false);
+        this.releaseAuctionForPreviewModalIsOpen.set(false);
         this.confirmReleaseAuctionModalIsOpen.set(false);
         this.dashboardInfo();
         this.toastSuccess('El auto se ha publicado en subastas en vivo');
@@ -87,8 +90,8 @@ export class PublishCarsComponent {
     this.addCarHistoryModalIsOpen.set(false);
   }
 
-  closeReleaseCarForLiveAuctionModal(): void {
-    this.releaseCarForLiveAuctionModalIsOpen.set(false);
+  closeReleaseAuctionForPreviewModal(): void {
+    this.releaseAuctionForPreviewModalIsOpen.set(false);
   }
 
   openConfirmReleaseAuctionModal(auctionId: string): void {
@@ -106,9 +109,14 @@ export class PublishCarsComponent {
     this.addCarHistoryModalIsOpen.set(true);
   }
 
-  openReleaseCarForLiveAuctionModal(auctionId: string): void {
+  openModalToReleaseAuctionForPreview(auctionId: string): void {
     this.auctionCarId.set(auctionId);
-    this.releaseCarForLiveAuctionModalIsOpen.set(true);
+    this.releaseAuctionForPreviewModalIsOpen.set(true);
+  }
+
+  openEditAuctionPreviewModal(auctionId: string): void {
+    this.auctionCarId.set(auctionId);
+    this.editAuctionPreviewModalIsOpen.set(true);
   }
 
   closeAuctionCarDetailsModal(): void {

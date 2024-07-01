@@ -53,9 +53,14 @@
               <button [routerLink]="['/dashboard/agregar-historia-arte', auction.auctionArtId]" mat-menu-item>
                 <span>Agregar historia del arte</span>
               </button>
-              <button (click)="openReleaseArtForLiveAuctionModal(auction.auctionArtId)" mat-menu-item>
+              <button (click)="openModalToReleaseAuctionForPreview(auction.auctionArtId)" mat-menu-item>
                 <span>Liberar arte para vista previa</span>
               </button>
+              @if (auction.status === status.Preview) {
+              <button (click)="openEditAuctionPreviewModal(auction.auctionArtId)" mat-menu-item>
+                <span>Editar vista previa</span>
+              </button>
+              }
               <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta-arte', auction.auctionArtId]"
                 mat-menu-item>
                 <span>Asignar y reordenar imágenes</span>
@@ -78,9 +83,12 @@
 <auction-art-details-modal [isOpen]="auctionArtDetailsModalIsOpen()" (isOpenChange)="closeAuctionArtDetailsModal()"
   [auctionArtId]="auctionArtId()"></auction-art-details-modal>
 
-<release-art-for-live-auction-modal [isOpen]="releaseArtForLiveAuctionModalIsOpen()"
+<release-art-auction-for-preview-modal [isOpen]="releaseAuctionForPreviewModalIsOpen()"
   (artReleaseForLiveAuction)="dashboardInfo()" [originalAuctionArtId]="auctionArtId()"
-  (isOpenChange)="closeReleaseArtForLiveAuctionModal()"></release-art-for-live-auction-modal>
+  (isOpenChange)="closeReleaseAuctionForPreviewModal()"></release-art-auction-for-preview-modal>
+
+<edit-art-auction-preview-modal [(isOpen)]="editAuctionPreviewModalIsOpen"
+  [originalAuctionArtId]="auctionArtId()"></edit-art-auction-preview-modal>
 
 <confirm-release-auction-modal [(isOpen)]="confirmReleaseAuctionModalIsOpen"
   [(isButtonSubmitDisabled)]="isConfirmReleaseAuctionButtonDisabled"
