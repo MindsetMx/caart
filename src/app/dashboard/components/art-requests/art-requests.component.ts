@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { CommonModule } from '@angular/common';
 
 import { AppService } from '@app/app.service';
-import { ArtRequests } from '@dashboard/interfaces';
+import { AllAuctionArt } from '@dashboard/interfaces';
 import { ArtRequestsDetailsModalComponent } from '@dashboard/modals/art-requests-details-modal/art-requests-details-modal.component';
 import { ArtRequestsService } from '@dashboard/services/art-requests.service';
 import { InputDirective } from '@shared/directives';
@@ -20,7 +20,7 @@ import { InputDirective } from '@shared/directives';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArtRequestsComponent {
-  artRequests = signal<ArtRequests>({} as ArtRequests);
+  artRequests = signal<AllAuctionArt>({} as AllAuctionArt);
   acceptPublicationRequestButtonIsDisabled = signal<boolean>(false);
   publicationId = signal<string>('');
   requestsDetailsModalIsOpen = signal<boolean>(false);
@@ -33,7 +33,7 @@ export class ArtRequestsComponent {
   }
 
   getArtRequests(): void {
-    this.#artRequestsService.getArtRequests$().subscribe((response) => {
+    this.#artRequestsService.getAllAuctionArt$().subscribe((response) => {
       this.artRequests.set(response);
     });
   }

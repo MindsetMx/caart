@@ -13,3 +13,4 @@ export * from './tentative-art-title';
 export * from './auction-art-details';
 export * from './car-auction-preview';
 export * from './art-auction-preview';
+export * from './all-auction-art';

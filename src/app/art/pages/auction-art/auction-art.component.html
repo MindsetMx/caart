@@ -62,9 +62,6 @@
             <span class="text-gray4 text-sm"> Ofertas</span>
           </div>
           @defer (when specificAuction().data) {
-          <pre>
-              {{specificAuction().data.status}}
-            </pre>
           @if (specificAuction().data.status === 'active') {
           <div class="md:hidden">
             <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
@@ -125,14 +122,24 @@
             }
             }
           </div>
-          @if (auction().data && countdownConfig().leftTime! > 0) {
+          @if (auction().data) {
+          @switch (auction().data.attributes.status) {
+          @case (auctionCarStatus.Preview) {
+          <span class="md:text-xl pl-4">{{auction().data.attributes.daysActive}} días</span>
+          }
+
+          @case (auctionCarStatus.Active) {
+          @if (countdownConfig().leftTime! > 0) {
           <div>
             <div class="ml-4">
-              <countdown class="text-red2 font-bold text-xl" [config]="countdownConfig()"
+              <countdown class="text-red2 font-bold text-sm md:text-xl" [config]="countdownConfig()"
                 [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
               <br>
             </div>
           </div>
+          }
+          }
+          }
           }
           @defer (when specificAuction().data) {
           @switch (specificAuction().data.status) {

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { ArtRequests } from '@dashboard/interfaces';
+import { AllAuctionArt, ArtRequests } from '@dashboard/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,11 @@ export class ArtRequestsService {
 
   getArtRequests$(): Observable<ArtRequests> {
     return this.#http.get<ArtRequests>(`${this.#baseUrl}/auction-items/auction-arts`);
+  }
+
+  // aucion-items/all-auction-art
+  getAllAuctionArt$(): Observable<AllAuctionArt> {
+    return this.#http.get<any>(`${this.#baseUrl}/auction-items/all-auction-art`);
   }
 
   acceptPublicationRequest$(id: string): Observable<void> {
