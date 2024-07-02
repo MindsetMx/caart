@@ -9,6 +9,7 @@ export interface ArtAuctionDetailsData {
 }
 
 export interface ArtAuctionDetailsAttributes {
+  acceptedBySeller: boolean;
   _id: string;
   originalAuctionArtId: string;
   isWithReserve: boolean;

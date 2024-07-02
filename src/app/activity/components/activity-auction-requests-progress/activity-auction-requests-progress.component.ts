@@ -7,7 +7,6 @@ import { Router, RouterLink } from '@angular/router';
 import { ActivityRequests, ActivityRequestsStatus, ActivityRequestsType } from '@activity/interfaces';
 import { ActivityRequestsService } from '@activity/services/activity-requests.service';
 import { AppService } from '@app/app.service';
-import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'activity-auction-requests-progress',
@@ -17,7 +16,6 @@ import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/co
     MatTooltipModule,
     MatPaginatorModule,
     RouterLink,
-    ConfirmationModalComponent,
   ],
   templateUrl: './activity-auction-requests-progress.component.html',
   styleUrl: './activity-auction-requests-progress.component.css',
@@ -29,12 +27,6 @@ export class ActivityAuctionRequestsProgressComponent {
 
   requests = signal<ActivityRequests>({} as ActivityRequests);
   pageSizeOptions = signal<number[]>([]);
-  auctionCarId = signal<string>('');
-  isAcceptPreviewCarAuctionButtonDisabled = signal<boolean>(false);
-  confirmAcceptPreviewCarModalIsOpen = signal<boolean>(false);
-  auctionArtId = signal<string>('');
-  isAcceptPreviewArtAuctionButtonDisabled = signal<boolean>(false);
-  confirmAcceptPreviewArtModalIsOpen = signal<boolean>(false);
 
   #activityRequestsService = inject(ActivityRequestsService);
   #appService = inject(AppService);
@@ -59,50 +51,6 @@ export class ActivityAuctionRequestsProgressComponent {
       if (this.pageSizeOptions().length === 0)
         this.pageSizeOptions.set(this.calculatePageSizeOptions(requests.meta.totalCount));
     });
-  }
-
-  acceptPreviewCar(): void {
-    this.isAcceptPreviewCarAuctionButtonDisabled.set(true);
-
-    this.#activityRequestsService.acceptPreviewCar$(this.auctionCarId()).subscribe({
-      next: () => {
-        this.getMyRequests();
-        this.confirmAcceptPreviewCarModalIsOpen.set(false);
-        this.toastSuccess('El auto fue aceptado para vista previa');
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    }).add(() => {
-      this.isAcceptPreviewCarAuctionButtonDisabled.set(false);
-    });
-  }
-
-  acceptPreviewArt(): void {
-    this.isAcceptPreviewArtAuctionButtonDisabled.set(true);
-
-    this.#activityRequestsService.acceptPreviewArt$(this.auctionArtId()).subscribe({
-      next: () => {
-        this.getMyRequests();
-        this.confirmAcceptPreviewArtModalIsOpen.set(false);
-        this.toastSuccess('La obra fue aceptada para vista previa');
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    }).add(() => {
-      this.isAcceptPreviewArtAuctionButtonDisabled.set(false);
-    });
-  }
-
-  openConfirmAcceptPreviewCarModal(auctionId: string): void {
-    this.auctionCarId.set(auctionId);
-    this.confirmAcceptPreviewCarModalIsOpen.set(true);
-  }
-
-  openConfirmAcceptPreviewArtModal(auctionId: string): void {
-    this.auctionArtId.set(auctionId);
-    this.confirmAcceptPreviewArtModalIsOpen.set(true);
   }
 
   private calculatePageSizeOptions(totalItems: number): number[] {

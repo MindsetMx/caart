@@ -50,28 +50,34 @@
     <nav aria-label="Progress">
       <ol role="list" class="space-y-4 md:flex md:space-x-8 md:space-y-0">
         <li class="md:flex-1">
-          <div
-            [class.border-green-500]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.Accepted"
-            [class.border-red-500]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.rejected"
-            [class.border-yellow-500]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.Pending"
+          <div [class.border-green-500]="request.attributes.solicitud"
             [class.hover:border-green-800]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.Accepted"
-            [class.hover:border-red-800]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.rejected"
-            [class.hover:border-yellow-800]="request.attributes.solicitud && request.attributes.status === activityRequestsStatus.Pending"
             class="group cursor-pointer flex flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
             <div class="flex items-center gap-2">
               <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
               <span class="text-sm font-medium">Solicitud</span>
             </div>
+            @switch (request.attributes.status) {
+            @case (activityRequestsStatus.Pending) {
+            <span class="text-sm font-semibold text-yellow-500">
+              En espera de aprobación
+            </span>
+            }
+
+            @case (activityRequestsStatus.rejected) {
+            <span class="text-sm font-semibold text-red-500">
+              La solicitud fue rechazada
+            </span>
+            }
+            }
           </div>
         </li>
         <li class="md:flex-1">
           <div
             [class.border-green-500]="request.attributes.pago && request.attributes.status === activityRequestsStatus.Accepted"
-            [class.border-red-500]="request.attributes.pago && request.attributes.status === activityRequestsStatus.rejected"
-            [class.border-yellow-500]="request.attributes.pago && request.attributes.status === activityRequestsStatus.Pending"
+            [class.border-yellow-500]="!request.attributes.pago && request.attributes.solicitud === true && request.attributes.status === activityRequestsStatus.Accepted"
             [class.hover:border-green-800]="request.attributes.pago && request.attributes.status === activityRequestsStatus.Accepted"
-            [class.hover:border-red-800]="request.attributes.pago && request.attributes.status === activityRequestsStatus.rejected"
-            [class.hover:border-yellow-800]="request.attributes.pago && request.attributes.status === activityRequestsStatus.Pending"
+            [class.hover:border-yellow-800]="!request.attributes.pago && request.attributes.solicitud === true && request.attributes.status === activityRequestsStatus.Accepted"
             class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
             aria-current="step">
             <div class="flex items-center gap-2">
@@ -100,11 +106,9 @@
         <li class="md:flex-1">
           <div
             [class.border-green-500]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.Accepted"
-            [class.border-red-500]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.rejected"
-            [class.border-yellow-500]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.Pending"
+            [class.border-yellow-500]="!request.attributes.formularios && request.attributes.pago === true"
             [class.hover:border-green-800]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.Accepted"
-            [class.hover:border-red-800]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.rejected"
-            [class.hover:border-yellow-800]="request.attributes.formularios && request.attributes.status === activityRequestsStatus.Pending"
+            [class.hover:border-yellow-800]="!request.attributes.formularios && request.attributes.pago === true"
             class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
             aria-current="step">
             <div class="flex items-center gap-2">
@@ -132,12 +136,10 @@
         </li>
         <li class="md:flex-1">
           <div
-            [class.border-green-500]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.Accepted"
-            [class.border-red-500]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.rejected"
-            [class.border-yellow-500]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.Pending"
-            [class.hover:border-green-800]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.Accepted"
-            [class.hover:border-red-800]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.rejected"
-            [class.hover:border-yellow-800]="request.attributes.autorizacion && request.attributes.status === activityRequestsStatus.Pending"
+            [class.border-green-500]="request.attributes.acceptedBySeller && request.attributes.status === activityRequestsStatus.Accepted"
+            [class.border-yellow-500]="!request.attributes.acceptedBySeller && request.attributes.formularios === true"
+            [class.hover:border-green-800]="request.attributes.acceptedBySeller && request.attributes.status === activityRequestsStatus.Accepted"
+            [class.hover:border-yellow-800]="!request.attributes.acceptedBySeller && request.attributes.formularios === true"
             class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
             aria-current="step">
             <div class="flex items-center gap-2">
@@ -151,27 +153,12 @@
             <a [routerLink]="['/subasta', request.id]" class="underline font-semibold text-sm">
               Vista previa
             </a>
+            }
 
-            @if (request.attributes.acceptedBySeller === false) {
-            <button class="text-left" (click)="openConfirmAcceptPreviewCarModal(request.id)">
-              <span class="underline font-semibold text-sm">
-                Aceptar subasta
-              </span>
-            </button>
-            }
-            }
             @case (activityRequestsType.Arte) {
             <a [routerLink]="['/subasta-arte', request.id]" class="underline font-semibold text-sm">
               Vista previa
             </a>
-
-            @if (request.attributes.acceptedBySeller === false) {
-            <button class="text-left" (click)="openConfirmAcceptPreviewArtModal(request.id)">
-              <span class="underline font-semibold text-sm">
-                Aceptar subasta
-              </span>
-            </button>
-            }
             }
             }
             }
@@ -183,10 +170,10 @@
           <div
             [class.border-green-500]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.Accepted"
             [class.border-red-500]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.rejected"
-            [class.border-yellow-500]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.Pending"
+            [class.border-yellow-500]="!request.attributes.enVivo && request.attributes.acceptedBySeller === true"
             [class.hover:border-green-800]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.Accepted"
             [class.hover:border-red-800]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.rejected"
-            [class.hover:border-yellow-800]="request.attributes.enVivo && request.attributes.status === activityRequestsStatus.Pending"
+            [class.hover:border-yellow-800]="!request.attributes.enVivo && request.attributes.acceptedBySeller === true"
             class="group cursor-pointer flex flex-col border-l-4 border-gray-200 py-2 pl-4 hover:border-gray-300 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
             <div class="flex items-center gap-2">
               <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
@@ -206,23 +193,3 @@
   [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
 </mat-paginator>
 }
-
-<confirmation-modal [(isOpen)]="confirmAcceptPreviewCarModalIsOpen"
-  [isButtonSubmitDisabled]="isAcceptPreviewCarAuctionButtonDisabled()" (acceptChange)="acceptPreviewCar()">
-  <ng-container title>
-    Aceptar subasta
-  </ng-container>
-  <ng-container body>
-    ¿Estás seguro que deseas aceptar esta subasta para vista previa?
-  </ng-container>
-</confirmation-modal>
-
-<confirmation-modal [(isOpen)]="confirmAcceptPreviewArtModalIsOpen"
-  [isButtonSubmitDisabled]="isAcceptPreviewArtAuctionButtonDisabled()" (acceptChange)="acceptPreviewArt()">
-  <ng-container title>
-    Aceptar subasta
-  </ng-container>
-  <ng-container body>
-    ¿Estás seguro que deseas aceptar esta subasta para vista previa?
-  </ng-container>
-</confirmation-modal>

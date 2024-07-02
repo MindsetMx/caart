@@ -33,6 +33,9 @@ import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-me
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
+import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
+import { ActivityRequestsService } from '@activity/services/activity-requests.service';
+import { AppService } from '@app/app.service';
 @Component({
   standalone: true,
   imports: [
@@ -49,6 +52,7 @@ import { AuctionDetailsTableComponentComponent } from '@auctions/components/auct
     PrimaryButtonDirective,
     StarComponent,
     TwoColumnAuctionGridComponent,
+    ConfirmationModalComponent
   ],
   templateUrl: './auction-art.component.html',
   styleUrl: './auction-art.component.css',
@@ -75,6 +79,9 @@ export class AuctionArtComponent {
   paymentMethodId = signal<string>('');
   paymentMethodModalIsOpen = signal<boolean>(false);
   specificAuction = signal<SpecificArtAuction>({} as SpecificArtAuction);
+  auctionArtId = signal<string>('');
+  confirmAcceptPreviewArtModalIsOpen = signal<boolean>(false);
+  isAcceptPreviewArtAuctionButtonDisabled = signal<boolean>(false);
 
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
@@ -85,6 +92,8 @@ export class AuctionArtComponent {
   #paymentMethodsService = inject(PaymentMethodsService);
   #auctionFollowService = inject(AuctionFollowService);
   #commentsService = inject(CommentsService);
+  #activityRequestsService = inject(ActivityRequestsService);
+  #appService = inject(AppService);
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
@@ -239,6 +248,28 @@ export class AuctionArtComponent {
       this.auctionId.set(id);
       this.getAuctionDetails(id);
       this.getImagesPublish(id!);
+    });
+  }
+
+  openConfirmAcceptPreviewArtModal(auctionId: string): void {
+    this.auctionArtId.set(auctionId);
+    this.confirmAcceptPreviewArtModalIsOpen.set(true);
+  }
+
+  acceptPreviewArt(): void {
+    this.isAcceptPreviewArtAuctionButtonDisabled.set(true);
+
+    this.#activityRequestsService.acceptPreviewArt$(this.auctionArtId()).subscribe({
+      next: () => {
+        this.getAuctionDetails(this.auctionId());
+        this.confirmAcceptPreviewArtModalIsOpen.set(false);
+        this.toastSuccess('La obra fue aceptada para vista previa');
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    }).add(() => {
+      this.isAcceptPreviewArtAuctionButtonDisabled.set(false);
     });
   }
 
@@ -422,5 +453,9 @@ export class AuctionArtComponent {
 
   transformDate(dateString: string): Date {
     return new Date(dateString);
+  }
+
+  toastSuccess(message: string): void {
+    this.#appService.toastSuccess(message);
   }
 }
