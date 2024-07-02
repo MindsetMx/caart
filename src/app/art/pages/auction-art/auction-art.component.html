@@ -395,7 +395,7 @@
               <div class="text-gray4">
                 <p class="font-semibold text-black">
                   {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-                <p>{{item.userName}}</p>
+                <p>{{item.userName || 'Precio de salida'}}</p>
                 <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
               </div>
             </div>

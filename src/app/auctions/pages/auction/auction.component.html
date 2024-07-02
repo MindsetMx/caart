@@ -466,6 +466,9 @@
                 <p class="font-semibold text-black">
                   {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
                 </p>
+                <!-- <pre>
+                  specificAuction: {{specificAuction().data | json}}
+                </pre> -->
                 <p>{{specificAuction().data.winnerInfo.userName}}</p>
                 <span>{{transformDate(specificAuction().data.winnerInfo.purchaseDate) | amTimeAgo}}</span>
               </div>
@@ -478,7 +481,7 @@
                 <p class="font-semibold text-black">
                   {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
                   <!-- <p>Jorge Sanders</p> -->
-                <p>{{item.userName}}</p>
+                <p>{{item.userName || 'Precio de salida'}}</p>
                 <!-- <span>Hace 10 minutos</span> -->
                 <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
               </div>
