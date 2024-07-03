@@ -38,6 +38,7 @@ export class AlertModalComponent {
   // modalContent = viewChild<ElementRef>('modalContent');
   isOpen = input.required<boolean>();
   showIcon = input<boolean>(true);
+  alertIconColor = input<string>('red');
   // isOpenChange = output<boolean>();
   // modalMaxWidth = input<string>('sm:max-w-xl');
   // verticalCenter = input<boolean>(false);

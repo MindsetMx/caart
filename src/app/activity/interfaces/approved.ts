@@ -1,10 +1,12 @@
+import { AuctionTypes } from "@activity/enums";
+
 export interface Approved {
   data: ApprovedData[];
   meta: ApprovedMeta;
 }
 
 export interface ApprovedData {
-  type: string;
+  type: AuctionTypes;
   id: string;
   attributes: ApprovedAttributes;
 }
@@ -13,7 +15,7 @@ export interface ApprovedAttributes {
   lote?: number;
   portada: string;
   title: string;
-  status: string;
+  status: MyAuctionsStatus;
   tiempo: string;
   reserva: number;
   ofertaMasAlta: number;
@@ -25,4 +27,9 @@ export interface ApprovedMeta {
   pageCount: number;
   currentPage: number;
   pageSize: number;
+}
+
+export enum MyAuctionsStatus {
+  lastChance = 'Última oportunidad',
+  liveAuction = 'Subasta en vivo',
 }

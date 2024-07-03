@@ -79,7 +79,11 @@
       Ofertas:
     </div>
     <!-- <span class="col-span-8 lg:col-span-9 font-semibold">3</span> -->
-    <span class="col-span-8 lg:col-span-9 font-semibold">{{auction().data.attributes.bids.length}}</span>
+    <span class="col-span-8 lg:col-span-9 font-semibold">
+      <!-- {{auction().data.attributes.bids.length}} -->
+      {{auction().data.attributes.bids[auction().data.attributes.bids.length - 1].userId === null ? 0 :
+      auction().data.attributes.bids.length - 1}}
+    </span>
   </div>
 
   <hr class="my-4">

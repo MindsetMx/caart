@@ -2,12 +2,14 @@ import { ChangeDetectionStrategy, Component, effect, inject, model, signal } fro
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { CurrencyPipe, NgClass } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
-import { Approved } from '@activity/interfaces';
+import { Approved, MyAuctionsStatus } from '@activity/interfaces';
 import { ApprovedService } from '@activity/services/approved.service';
+import { AuctionOffersApprovalTableModalComponent } from '@activity/modals/auction-offers-approval-table-modal/auction-offers-approval-table-modal.component';
 import { CountdownService } from '@shared/services/countdown.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ActivityTabs } from '@activity/enums/activityTabs.enum';
+import { AuctionTypes } from '@activity/enums';
+import { AuctionOffersTableModalComponent } from '@activity/modals/auction-offers-table-modal/auction-offers-table-modal.component';
 
 @Component({
   selector: 'activity-approved-auctions',
@@ -17,6 +19,8 @@ import { ActivityTabs } from '@activity/enums/activityTabs.enum';
     NgClass,
     CurrencyPipe,
     MatPaginatorModule,
+    AuctionOffersApprovalTableModalComponent,
+    AuctionOffersTableModalComponent,
   ],
   templateUrl: './activity-approved-auctions.component.html',
   styleUrl: './activity-approved-auctions.component.css',
@@ -33,9 +37,30 @@ export class ActivityApprovedAuctionsComponent {
   approvedAuctions = signal<Approved>({} as Approved);
   pageSizeOptions = signal<number[]>([]);
 
+  isAuctionOffersApprovalTableModalOpen = signal<boolean>(false);
+  isAuctionOffersTableModalOpen = signal<boolean>(false);
+  auctionId = signal<string>('');
+  auctionType = signal<AuctionTypes>(AuctionTypes.auto);
+
   getMyApprovedEffect = effect(() => {
     this.getMyApproved();
   });
+
+  get myAuctionsStatus(): typeof MyAuctionsStatus {
+    return MyAuctionsStatus;
+  }
+
+  openAuctionOffersApprovalTableModal(auctionId: string, auctionType: AuctionTypes): void {
+    this.auctionId.set(auctionId);
+    this.auctionType.set(auctionType);
+    this.isAuctionOffersApprovalTableModalOpen.set(true);
+  }
+
+  openAuctionOffersTableModal(auctionId: string, auctionType: AuctionTypes): void {
+    this.auctionId.set(auctionId);
+    this.auctionType.set(auctionType);
+    this.isAuctionOffersTableModalOpen.set(true);
+  }
 
   getMyApproved(): void {
     this.#approvedService.getMyApproved$(this.page(), this.size()).subscribe((requests) => {

@@ -49,7 +49,7 @@
         @if (specificAuction().data.status !== 'completed' && specificAuction().data.bids[0].userId !== null) {
         <div class="py-1" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
           <p class="inline lg:block">
-            <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length : 0}}</span>
+            <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length - 1 : 0}}</span>
             Ofertas
           </p>
         </div>

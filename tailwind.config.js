@@ -53,6 +53,8 @@ module.exports = {
     "px-8",
     "max-h-[48px]",
     "h-64",
+    "bg-indigo-100",
+    "bg-red-100",
   ]
 }
 

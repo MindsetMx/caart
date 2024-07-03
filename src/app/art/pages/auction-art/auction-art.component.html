@@ -84,7 +84,7 @@
           <div class="hidden md:block py-1">
             <!-- <p class="font-bold text-lg">18</p> -->
             <p class="inline lg:block font-bold">
-              {{specificAuction().data ? specificAuction().data.bids.length : 0}}
+              {{specificAuction().data ? specificAuction().data.bids.length - 1 : 0}}
             </p>
             <span class="text-gray4 text-sm"> Ofertas</span>
           </div>
@@ -137,7 +137,7 @@
               <!-- <p class="font-bold text-lg">18</p> -->
               <p class="inline lg:block text-xl">
                 <span class="font-bold">
-                  {{specificAuction().data ? specificAuction().data.bids.length : 0}}
+                  {{specificAuction().data ? specificAuction().data.bids.length - 1: 0}}
                 </span>
                 Ofertas
               </p>
@@ -212,7 +212,7 @@
               <!-- <p class="font-bold text-lg">18</p> -->
               @if (specificAuction().data) {
               <p class="inline lg:block font-bold">
-                {{specificAuction().data.bids.length}}
+                {{specificAuction().data.bids.length - 1}}
               </p>
               }
               <span class="text-gray4 text-sm"> Ofertas</span>

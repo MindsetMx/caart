@@ -1,0 +1,101 @@
+<shared-modal [verticalCenter]="true" [(isOpen)]="isOpen">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Aprobar ofertas</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <div class="px-4 sm:px-6 lg:px-8">
+    <div class="flow-root">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Fecha
+                </th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nombre de usuario</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Monto</th>
+                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                  <span class="sr-only">Edit</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+
+              @switch (auctionType()) {
+              @case (auctionTypes.auto) {
+              @for (offer of carAuctionOffers().data; track offer.id) {
+              <tr>
+                <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                  {{ offer.attributes.fecha | date:'dd/MM/yyyy' }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm">
+                  {{ offer.attributes.userName }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm">
+                  {{ offer.attributes.bidAmount| currency:'MXN':'symbol':'1.0-0' }}
+                </td>
+                <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                  <button (click)="openAcceptLastChanceBidModal(offer.attributes.lastChanceAuctionId)" type="button"
+                    class="underline font-bold">Aprobar</button>
+                  <button (click)="openRejectBidModal(offer.attributes.lastChanceAuctionId)" type="button"
+                    class="underline font-bold ml-2">Rechazar</button>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0" colspan="3">
+                  No hay ofertas
+                </td>
+              </tr>
+              }
+              }
+
+              @case (auctionTypes.arte) {
+              @for (offer of artAuctionOffers().data; track offer.id) {
+              <tr>
+                <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                  {{ offer.attributes.fecha | date:'dd/MM/yyyy' }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm">
+                  {{ offer.attributes.userName }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm">
+                  {{ offer.attributes.bidAmount| currency:'MXN':'symbol':'1.0-0' }}
+                </td>
+                <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                  <button (click)="openAcceptLastChanceBidModal(offer.attributes.lastChanceAuctionId)" type="button"
+                    class="underline font-bold">Aprobar</button>
+                  <button (click)="openRejectBidModal(offer.attributes.lastChanceAuctionId)" type="button"
+                    class="underline font-bold ml-2">Rechazar</button>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0" colspan="3">
+                  No hay ofertas
+                </td>
+              </tr>
+              }
+              }
+              }
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</shared-modal>
+
+<accept-last-chance-bid-modal [(isOpen)]="isAcceptLastChanceBidModalOpen"
+  (isOpenChange)="isAcceptLastChanceBidModalOpenChange($event)"
+  [isButtonSubmitDisabled]="isAcceptLastChanceBidButtonDisabled()" [auctionId]="auctionId()" [bidId]="bidId()"
+  (aceptLastChanceBid)="acceptOffer()"></accept-last-chance-bid-modal>
+
+<reject-last-chance-bid-modal [(isOpen)]="isRejectBidModalOpen" (isOpenChange)="isRejectBidModalOpenChange($event)"
+  [isButtonSubmitDisabled]="isRejectBidButtonDisabled()" [auctionId]="auctionId()" [bidId]="bidId()"
+  (rejectLastChanceBid)="rejectBid()">
+</reject-last-chance-bid-modal>
