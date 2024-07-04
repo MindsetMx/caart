@@ -18,12 +18,6 @@ export class AuctionService {
     return this.#http.get<AuctionCarPublications>(url);
   }
 
-  getPublicationRequests$(): Observable<any> {
-    const url = `${this.#baseUrl}/auction-items/auction-cars`;
-
-    return this.#http.get<any>(url);
-  }
-
   acceptPublicationRequest$(id: string): Observable<any> {
     const url = `${this.#baseUrl}/auction-items/${id}/accept`;
 

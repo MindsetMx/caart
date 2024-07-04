@@ -12,10 +12,6 @@ export class LastChanceCarAuctionsService {
 
   #http = inject(HttpClient);
 
-  getMyAuctions$(): Observable<LastChanceCarAuctions> {
-    return this.#http.get<LastChanceCarAuctions>(`${this.#baseUrl}/last-chance-auctions/my-auctions`);
-  }
-
   acceptOffer$(idLastChance: string, idOffer: string): Observable<any> {
     return this.#http.patch<any>(`${this.#baseUrl}/last-chance-auctions/${idLastChance}/accept-offer/${idOffer}`, {});
   }

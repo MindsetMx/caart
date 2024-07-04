@@ -125,27 +125,6 @@ export const routes: Routes = [
     loadComponent: () => import('./last-chance/pages/last-chance/last-chance.component').then((m) => m.LastChanceComponent),
   },
   {
-    path: 'publicaciones',
-    canActivate: [VerifiedGuard, AuthGuard],
-    loadComponent: () => import('./auctions/pages/publications/publications.component').then((m) => m.AuctionCarPublishesComponent),
-  },
-  {
-    path: 'solicitudes',
-    canActivate: [VerifiedGuard, AuthGuard],
-    loadComponent: () => import('./auctions/pages/publication-requests/publication-requests.component').then((m) => m.PublicationRequestsComponent),
-  },
-  // TODO: Remove this route and the component
-  // {
-  //   path: 'mis-subastas',
-  //   canActivate: [VerifiedGuard, AuthGuard],
-  //   loadComponent: () => import('./auctions/pages/my-auctions/my-auctions.component').then((m) => m.MyAuctionsComponent),
-  // },
-  {
-    path: 'mis-subastas-en-vivo',
-    canActivate: [VerifiedGuard, AuthGuard],
-    loadComponent: () => import('./auctions/pages/my-live-auctions/my-live-auctions.component').then((m) => m.MyLiveAuctionsComponent),
-  },
-  {
     path: 'reestablecer-contrasena',
     canActivate: [VerifiedGuard, GuestGuard],
     loadComponent: () => import('./auth/components/password-reset/password-reset.component').then((m) => m.PasswordResetComponent),

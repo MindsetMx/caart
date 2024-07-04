@@ -4,7 +4,6 @@ export * from './auction-details';
 export * from './upload-image-direct';
 export * from './tentative-title';
 export * from './batch-token';
-export * from './art-requests';
 export * from './auction-art-info';
 export * from './art-wizard';
 export * from './art-media';
