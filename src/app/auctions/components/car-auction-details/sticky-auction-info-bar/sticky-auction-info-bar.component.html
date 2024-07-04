@@ -46,11 +46,16 @@
         }
         }
 
-        @if (specificAuction().data.status !== 'completed' && specificAuction().data.bids[0].userId !== null) {
+        @if (specificAuction().data.status !== 'completed' && specificAuction().data.bids.length > 0 &&
+        specificAuction().data.bids[0].userId !== null) {
         <div class="py-1" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
           <p class="inline lg:block">
             <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length - 1 : 0}}</span>
+            @if (specificAuction().data.bids.length - 1 === 1) {
+            Oferta
+            } @else {
             Ofertas
+            }
           </p>
         </div>
         }
@@ -59,7 +64,16 @@
         @if (auction().data) {
         @switch (auction().data.attributes.status) {
         @case (auctionCarStatus.Preview) {
-        <div class="pl-4">{{auction().data.attributes.daysActive}} días</div>
+        @if (specificAuction().data) {
+        <div [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
+          {{auction().data.attributes.daysActive}}
+          @if (auction().data.attributes.daysActive === 1) {
+          día
+          } @else {
+          días
+          }
+        </div>
+        }
         }
 
         @case (auctionCarStatus.Active) {

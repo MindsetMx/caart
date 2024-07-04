@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, model, output, signal } from '@angular/core';
 
 import { AcceptLastChanceBidModalComponent } from '@auctions/modals/accept-last-chance-bid-modal/accept-last-chance-bid-modal.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
@@ -31,11 +31,14 @@ export class AuctionOffersApprovalTableModalComponent {
   auctionId = input.required<string>();
   auctionType = input.required<AuctionTypes>();
 
+  offerAccepted = output<void>();
+
   bidId = signal<string>('');
   isAcceptLastChanceBidModalOpen = signal<boolean>(false);
   isAcceptLastChanceBidButtonDisabled = signal<boolean>(false);
   carAuctionOffers = signal<CarAuctionOffersApproval>({} as CarAuctionOffersApproval);
   artAuctionOffers = signal<ArtAuctionOffersApproval>({} as ArtAuctionOffersApproval);
+  lastChanceAuctionId = signal<string>('');
 
   isRejectBidModalOpen = signal<boolean>(false);
   isRejectBidButtonDisabled = signal<boolean>(false);
@@ -50,8 +53,6 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   isOpenEffect = effect(() => {
-    console.log(this.isOpen());
-
     if (!this.isOpen()) {
       this.carAuctionOffers.set({} as CarAuctionOffersApproval);
       this.artAuctionOffers.set({} as ArtAuctionOffersApproval);
@@ -106,13 +107,15 @@ export class AuctionOffersApprovalTableModalComponent {
     }
   }
 
-  openAcceptLastChanceBidModal(bidId: string): void {
+  openAcceptLastChanceBidModal(bidId: string, lastChanceAuctionId: string): void {
+    this.lastChanceAuctionId.set(lastChanceAuctionId);
     this.bidId.set(bidId);
     this.isOpen.set(false);
     this.isAcceptLastChanceBidModalOpen.set(true);
   }
 
-  openRejectBidModal(bidId: string): void {
+  openRejectBidModal(bidId: string, lastChanceAuctionId: string): void {
+    this.lastChanceAuctionId.set(lastChanceAuctionId);
     this.bidId.set(bidId);
     this.isOpen.set(false);
     this.isRejectBidModalOpen.set(true);
@@ -141,7 +144,7 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   acceptCarOffer(): void {
-    this.#lastChanceCarAuctionsService.acceptOffer$(this.auctionId(), this.bidId()).subscribe({
+    this.#lastChanceCarAuctionsService.acceptOffer$(this.lastChanceAuctionId(), this.bidId()).subscribe({
       next: () => {
         // this.getMyAuctions();
         this.toastSuccess('Solicitud aceptada');
@@ -151,12 +154,12 @@ export class AuctionOffersApprovalTableModalComponent {
       }
     }).add(() => {
       this.isAcceptLastChanceBidModalOpen.set(false);
-      this.isOpen.set(true);
+      this.offerAccepted.emit();
     });
   }
 
   rejectCarBid(): void {
-    this.#lastChanceCarAuctionsService.rejectBid$(this.auctionId(), this.bidId()).subscribe({
+    this.#lastChanceCarAuctionsService.rejectBid$(this.lastChanceAuctionId(), this.bidId()).subscribe({
       next: () => {
         // this.getMyAuctions();
         this.toastSuccess('Solicitud rechazada');
@@ -167,6 +170,7 @@ export class AuctionOffersApprovalTableModalComponent {
     }).add(() => {
       this.isRejectBidModalOpen.set(false);
       this.isOpen.set(true);
+      this.getCarAuctionOffersApproval();
     });
   }
 
@@ -181,7 +185,7 @@ export class AuctionOffersApprovalTableModalComponent {
       }
     }).add(() => {
       this.isAcceptLastChanceBidModalOpen.set(false);
-      this.isOpen.set(true);
+      this.offerAccepted.emit();
     });
   }
 
@@ -197,6 +201,7 @@ export class AuctionOffersApprovalTableModalComponent {
     }).add(() => {
       this.isRejectBidModalOpen.set(false);
       this.isOpen.set(true);
+      this.getArtAuctionOffersApproval();
     });
   }
 

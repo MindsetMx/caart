@@ -13,6 +13,7 @@ import { LastChanceBidService } from '@auctions/services/last-chance-bid.service
 import { AppService } from '@app/app.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LastChanceArtBidService } from '@auctions/services/last-chance-art-bid.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'last-chance-bid-modal-component',
@@ -25,7 +26,8 @@ import { LastChanceArtBidService } from '@auctions/services/last-chance-art-bid.
     ReactiveFormsModule,
     InputErrorComponent,
     SpinnerComponent,
-    NgxMaskDirective
+    NgxMaskDirective,
+    RouterLink,
   ],
   templateUrl: './last-chance-bid-modal.component.html',
   styleUrl: './last-chance-bid-modal.component.css',
@@ -207,8 +209,6 @@ export class LastChanceBidModalComponent {
   getBiddingConditions(): void {
     this.#lastChanceBidService.getBiddingConditions$(this.auctionId()).subscribe({
       next: (biddingConditions) => {
-        console.log({ biddingConditions });
-
         this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
 
         this.bidAmount()
@@ -226,8 +226,6 @@ export class LastChanceBidModalComponent {
   getBiddingArtConditions(): void {
     this.#lastChanceArtBidService.getBiddingConditions$(this.auctionId()).subscribe({
       next: (biddingConditions) => {
-        console.log({ biddingConditions });
-
         this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
 
         this.bidAmountControl.setValue(this.minimumNextBid());

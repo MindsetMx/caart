@@ -19,7 +19,7 @@ module.exports = {
       },
       fontFamily: {
         montserrat: ["Montserrat"],
-        optima: ["optima"],
+        // optima: ["optima"],
         lato: ["Lato"],
         robotoflex: ["Roboto Flex"],
       },

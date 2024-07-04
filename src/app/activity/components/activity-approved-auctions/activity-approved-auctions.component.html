@@ -47,12 +47,18 @@
                 </span>
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
+                @if (auction.attributes.tiempo) {
                 <countdown [config]="countdownConfig(auction.attributes.tiempo)"
                   [ngClass]="{'text-red-500': countdownConfig(auction.attributes.tiempo).leftTime! <= 86400}">
                 </countdown>
+                } @else {
+                <span class="block text-center">-</span>
+                }
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
-                {{ auction.attributes.reserva | currency:'MXN':'symbol':'1.0-0' }}
+                <button (click)="openUpdateReservePriceModal(auction.id, auction.type, auction.attributes.reserva)">
+                  {{ auction.attributes.reserva | currency:'MXN':'symbol':'1.0-0' }}
+                </button>
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
                 {{ auction.attributes.ofertaMasAlta| currency:'MXN':'symbol':'1.0-0' }}
@@ -90,7 +96,11 @@
 }
 
 <auction-offers-approval-table-modal [(isOpen)]="isAuctionOffersApprovalTableModalOpen" [auctionId]="auctionId()"
-  [auctionType]="auctionType()"></auction-offers-approval-table-modal>
+  [auctionType]="auctionType()" (offerAccepted)="getMyApproved()"></auction-offers-approval-table-modal>
 
 <auction-offers-table-modal [(isOpen)]="isAuctionOffersTableModalOpen" [auctionId]="auctionId()"
   [auctionType]="auctionType()"></auction-offers-table-modal>
+
+<update-reserve-price-modal [(isOpen)]="isUpdateReservePriceModalOpen" [currentReservePrice]="reserveAmount()"
+  [auctionType]="auctionType()" [auctionId]="auctionId()">
+</update-reserve-price-modal>

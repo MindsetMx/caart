@@ -1,4 +1,35 @@
 <div class="mb-32">
+  @if (specificAuction().data && specificAuction().data.isOwner && specificAuction().data.status === 'active') {
+  <div
+    class="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+    <div class="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+      aria-hidden="true">
+      <div class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+        style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)">
+      </div>
+    </div>
+    <div class="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+      aria-hidden="true">
+      <div class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+        style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)">
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+      <p class="text-sm leading-6 text-gray-900">
+        Precio de reserva actual {{specificAuction().data.reserveAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+      </p>
+
+      <button (click)="openUpdateReservePriceModal()"
+        class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+        Cambiar precio de reserva
+        <span aria-hidden="true">&rarr;</span>
+      </button>
+    </div>
+    <div class="flex flex-1 justify-end">
+
+    </div>
+  </div>
+  }
 
   @if (specificAuction().data && specificAuction().data.status === 'preview') {
   <div
@@ -35,6 +66,13 @@
         <span aria-hidden="true">&rarr;</span>
       </button>
       }
+
+      <a href="mailto:hola@caart.com.mx?subject=Comentarios sobre vista previa Lote:{{auction().data.attributes.auctionCarForm.lotNumber}}, {{auction().data.attributes.title}}"
+        class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+        Comentarios
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+
     </div>
     <div class="flex flex-1 justify-end">
     </div>
@@ -132,8 +170,10 @@
         <section class="flex justify-between mt-4">
           @if (specificAuction().data && specificAuction().data.status !== 'preview') {
           @defer (when comments().data) {
-          <div class="underline text-xs">{{comments().data.length}} Comentarios</div>
+          <div class="underline text-xs md:text-base">{{comments().data.length}} Comentarios</div>
           }
+          }@else {
+          <div></div>
           }
 
           @defer (when metrics().data) {
@@ -571,7 +611,7 @@
   [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>
 
 @defer (when auctionId()) {
-<auction-cancelled [isOpen]="auctionCancelledModalIsOpen()" [auctionId]="auctionId()!"
+<auction-cancelled [(isOpen)]="auctionCancelledModalIsOpen" [auctionId]="auctionId()!"
   lastChanceUrl="/ultima-oportunidad"></auction-cancelled>
 }
 
@@ -584,3 +624,10 @@
     <span class="text-sm text-gray-500">¿Estás seguro que deseas aceptar esta subasta para vista previa?</span>
   </ng-container>
 </confirmation-modal>
+
+@if (specificAuction().data) {
+<update-reserve-price-modal [(isOpen)]="isUpdateReservePriceModalOpen"
+  [currentReservePrice]="specificAuction().data.reserveAmount" [auctionType]="auctionType.car"
+  [auctionId]="auction().data.id">
+</update-reserve-price-modal>
+}

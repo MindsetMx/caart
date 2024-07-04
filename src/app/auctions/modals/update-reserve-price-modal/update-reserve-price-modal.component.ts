@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl } 
 
 import { AppService } from '@app/app.service';
 import { AuctionTypes } from '@auctions/enums';
+import { AuctionTypes as AuctionTypes2 } from '@activity/enums';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
@@ -32,7 +33,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 })
 export class UpdateReservePriceModalComponent {
   isOpen = model.required<boolean>();
-  auctionType = input.required<AuctionTypes>();
+  auctionType = input.required<AuctionTypes | AuctionTypes2>();
   auctionId = input.required<string>();
   currentReservePrice = input.required<number>();
 
@@ -48,8 +49,6 @@ export class UpdateReservePriceModalComponent {
   #appService = inject(AppService);
 
   currentReservePriceEffect = effect(() => {
-    console.log('currentReservePrice', this.currentReservePrice());
-
     this.reserveAmountControl.setValue(this.currentReservePrice());
   });
 
@@ -75,36 +74,25 @@ export class UpdateReservePriceModalComponent {
       return;
     }
 
+    console.log('this.auctionType()', this.auctionType());
+
     switch (this.auctionType()) {
       case AuctionTypes.car:
-        this.#myLiveCarAuctionsService.updateCarAuctionReservePrice$(this.auctionId(), this.reserveAmountControl.value).subscribe({
-          next: () => {
-            this.isOpen.set(false);
-            this.toastSuccess('Precio de reserva actualizado con éxito');
-          },
-          error: (error) => {
-            console.error(error);
-            this.serverError.set(error.error.message);
-          }
-        }).add(() => {
-          this.isButtonUpdateReservePriceDisabled.set(false);
-        });
+        this.updateCarAuctionReservePrice();
 
         break;
 
+      case AuctionTypes2.auto:
+        this.updateCarAuctionReservePrice();
+        break;
+
       case AuctionTypes.art:
-        this.#myLiveArtAuctionsService.updateArtAuctionReservePrice$(this.auctionId(), this.reserveAmountControl.value).subscribe({
-          next: () => {
-            this.isOpen.set(false);
-            this.toastSuccess('Precio de reserva actualizado con éxito');
-          },
-          error: (error) => {
-            console.error(error);
-            this.serverError.set(error.error.message);
-          }
-        }).add(() => {
-          this.isButtonUpdateReservePriceDisabled.set(false);
-        });
+        this.updateArtAuctionReservePrice();
+
+        break;
+
+      case AuctionTypes2.arte:
+        this.updateArtAuctionReservePrice();
 
         break;
 
@@ -112,6 +100,36 @@ export class UpdateReservePriceModalComponent {
 
         break;
     }
+  }
+
+  updateCarAuctionReservePrice(): void {
+    this.#myLiveCarAuctionsService.updateCarAuctionReservePrice$(this.auctionId(), this.reserveAmountControl.value).subscribe({
+      next: () => {
+        this.isOpen.set(false);
+        this.toastSuccess('Precio de reserva actualizado con éxito');
+      },
+      error: (error) => {
+        console.error(error);
+        this.serverError.set(error.error.message);
+      }
+    }).add(() => {
+      this.isButtonUpdateReservePriceDisabled.set(false);
+    });
+  }
+
+  updateArtAuctionReservePrice(): void {
+    this.#myLiveArtAuctionsService.updateArtAuctionReservePrice$(this.auctionId(), this.reserveAmountControl.value).subscribe({
+      next: () => {
+        this.isOpen.set(false);
+        this.toastSuccess('Precio de reserva actualizado con éxito');
+      },
+      error: (error) => {
+        console.error(error);
+        this.serverError.set(error.error.message);
+      }
+    }).add(() => {
+      this.isButtonUpdateReservePriceDisabled.set(false);
+    });
   }
 
   toastSuccess(message: string): void {

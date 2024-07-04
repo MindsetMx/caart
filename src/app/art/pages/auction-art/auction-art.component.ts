@@ -36,6 +36,7 @@ import { AuctionDetailsTableComponentComponent } from '@auctions/components/auct
 import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
 import { ActivityRequestsService } from '@activity/services/activity-requests.service';
 import { AppService } from '@app/app.service';
+import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 @Component({
   standalone: true,
   imports: [
@@ -52,7 +53,8 @@ import { AppService } from '@app/app.service';
     PrimaryButtonDirective,
     StarComponent,
     TwoColumnAuctionGridComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    UpdateReservePriceModalComponent,
   ],
   templateUrl: './auction-art.component.html',
   styleUrl: './auction-art.component.css',
@@ -82,6 +84,7 @@ export class AuctionArtComponent {
   auctionArtId = signal<string>('');
   confirmAcceptPreviewArtModalIsOpen = signal<boolean>(false);
   isAcceptPreviewArtAuctionButtonDisabled = signal<boolean>(false);
+  isUpdateReservePriceModalOpen = signal<boolean>(false);
 
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
@@ -249,6 +252,10 @@ export class AuctionArtComponent {
       this.getAuctionDetails(id);
       this.getImagesPublish(id!);
     });
+  }
+
+  openUpdateReservePriceModal(): void {
+    this.isUpdateReservePriceModalOpen.set(true);
   }
 
   openConfirmAcceptPreviewArtModal(auctionId: string): void {

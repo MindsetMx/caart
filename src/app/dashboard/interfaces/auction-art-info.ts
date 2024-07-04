@@ -12,6 +12,7 @@ export interface AuctionArtInfoData {
   publishImages: boolean;
   published: boolean;
   status: AuctionArtStatus;
+  aceeptedByUser: boolean;
 }
 
 export interface AuctionArtInfoWizardSteps {

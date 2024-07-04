@@ -6,6 +6,7 @@ export interface SpecificArtAuctionData {
   _id: string;
   originalAuctionArtId: string;
   isWithReserve: boolean;
+  isOwner: boolean;
   reserveCommissionValue: null;
   reserveAmount: number;
   startDate: Date;

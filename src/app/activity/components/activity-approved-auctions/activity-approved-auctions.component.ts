@@ -10,6 +10,7 @@ import { AuctionOffersApprovalTableModalComponent } from '@activity/modals/aucti
 import { CountdownService } from '@shared/services/countdown.service';
 import { AuctionTypes } from '@activity/enums';
 import { AuctionOffersTableModalComponent } from '@activity/modals/auction-offers-table-modal/auction-offers-table-modal.component';
+import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 
 @Component({
   selector: 'activity-approved-auctions',
@@ -21,6 +22,7 @@ import { AuctionOffersTableModalComponent } from '@activity/modals/auction-offer
     MatPaginatorModule,
     AuctionOffersApprovalTableModalComponent,
     AuctionOffersTableModalComponent,
+    UpdateReservePriceModalComponent,
   ],
   templateUrl: './activity-approved-auctions.component.html',
   styleUrl: './activity-approved-auctions.component.css',
@@ -36,11 +38,13 @@ export class ActivityApprovedAuctionsComponent {
 
   approvedAuctions = signal<Approved>({} as Approved);
   pageSizeOptions = signal<number[]>([]);
+  isUpdateReservePriceModalOpen = signal<boolean>(false);
 
   isAuctionOffersApprovalTableModalOpen = signal<boolean>(false);
   isAuctionOffersTableModalOpen = signal<boolean>(false);
   auctionId = signal<string>('');
   auctionType = signal<AuctionTypes>(AuctionTypes.auto);
+  reserveAmount = signal<number>(0);
 
   getMyApprovedEffect = effect(() => {
     this.getMyApproved();
@@ -48,6 +52,13 @@ export class ActivityApprovedAuctionsComponent {
 
   get myAuctionsStatus(): typeof MyAuctionsStatus {
     return MyAuctionsStatus;
+  }
+
+  openUpdateReservePriceModal(auctionId: string, auctionType: AuctionTypes, reservePrice: number): void {
+    this.auctionId.set(auctionId);
+    this.auctionType.set(auctionType);
+    this.reserveAmount.set(reservePrice);
+    this.isUpdateReservePriceModalOpen.set(true);
   }
 
   openAuctionOffersApprovalTableModal(auctionId: string, auctionType: AuctionTypes): void {

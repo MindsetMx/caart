@@ -247,31 +247,20 @@ export class LastChanceArtDetailComponent {
   }
 
   openBuyNowModal(): void {
-    console.log('openBuyNowModal');
-
     if (this.authStatus === AuthStatus.notAuthenticated) {
       this.openSignInModal();
 
       return;
     }
 
-    console.log('openBuyNowModal 2');
-
-
     forkJoin({
       conditions: this.#lastChanceArtPurchaseService.getConditions(this.auction().data.id),
       paymentMethods: this.#paymentMethodsService.getPaymentMethods$()
     }).subscribe(({ conditions, paymentMethods }) => {
-      console.log('openBuyNowModal 3');
-      console.log({ conditions, paymentMethods });
-
-
       this.comission.set(conditions.data.commission);
       this.reserveAmount.set(conditions.data.reserveAmount);
 
       if (paymentMethods.data.length > 0) {
-        console.log('openBuyNowModal 4');
-
         const paymentMethod = paymentMethods.data.find((paymentMethod) => paymentMethod.attributes.isDefault);
 
         if (!paymentMethod) {
@@ -464,12 +453,6 @@ export class LastChanceArtDetailComponent {
   }
 
   transformDate(dateString: string): Date {
-
-    console.log({ dateString });
-
-
-    console.log(new Date(dateString));
-
     return new Date(dateString);
   }
 }

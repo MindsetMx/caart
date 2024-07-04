@@ -1,4 +1,36 @@
 <div class="mb-32">
+  @if (specificAuction().data && specificAuction().data.isOwner && specificAuction().data.status === 'active') {
+  <div
+    class="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+    <div class="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+      aria-hidden="true">
+      <div class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+        style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)">
+      </div>
+    </div>
+    <div class="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+      aria-hidden="true">
+      <div class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+        style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)">
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+      <p class="text-sm leading-6 text-gray-900">
+        Precio de reserva actual {{specificAuction().data.reserveAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+      </p>
+
+      <button (click)="openUpdateReservePriceModal()"
+        class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+        Cambiar precio de reserva
+        <span aria-hidden="true">&rarr;</span>
+      </button>
+    </div>
+    <div class="flex flex-1 justify-end">
+
+    </div>
+  </div>
+  }
+
   @if (specificAuction().data && specificAuction().data.status === 'preview') {
   <div
     class="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
@@ -34,6 +66,12 @@
         <span aria-hidden="true">&rarr;</span>
       </button>
       }
+
+      <a href="mailto:hola@caart.com.mx?subject=Comentarios sobre vista previa Lote:{{auction().data.attributes.auctionArtForm.lotNumber}}, {{auction().data.attributes.title}}"
+        class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+        Comentarios
+        <span aria-hidden="true">&rarr;</span>
+      </a>
     </div>
     <div class="flex flex-1 justify-end">
     </div>
@@ -47,117 +85,51 @@
         {{auction().data.attributes.title}}
       </h1>
       }
-      <div
-        class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
-        @if(specificAuction().data && specificAuction().data.bids.length > 0) {
-        <div class="py-1">
-          <p class="font-bold">
-            {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-          </p>
-        </div>
-        }
 
-        @if (auction().data) {
-        @switch (auction().data.attributes.status) {
-        @case (auctionCarStatus.Preview) {
-        {{auction().data.attributes.daysActive}} días
-        }
-
-        @case (auctionCarStatus.Active) {
-        @if (countdownConfig().leftTime! > 0) {
-        <div>
-          <div class="bg-gray1 rounded-lg px-3 py-1">
-            <countdown class="text-red2 font-bold" [config]="countdownConfig()"
-              [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}"></countdown>
-            <br>
-            <span class="hidden md:block text-gray4 text-sm">
-              {{auction().data.attributes.endDate | date:'MMM d, y, h:mm a'}}
-            </span>
-          </div>
-        </div>
-        }
-        }
-        }
-        }
-
-        <div>
-          <div class="hidden md:block py-1">
-            <!-- <p class="font-bold text-lg">18</p> -->
-            <p class="inline lg:block font-bold">
-              {{specificAuction().data ? specificAuction().data.bids.length - 1 : 0}}
-            </p>
-            <span class="text-gray4 text-sm"> Ofertas</span>
-          </div>
-          @defer (when specificAuction().data) {
-          @if (specificAuction().data.status === 'active') {
-          <div class="md:hidden">
-            <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-              py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button>
-          </div>
-          }
-          }
-        </div>
-        @defer (when specificAuction().data) {
-        @switch (specificAuction().data.status) {
-        @case ('cancelled') {
-        <div class="py-1">
-          <p class="font-bold border border-red-700 bg-[#f0aeae] text-red-700 px-2 py-1 rounded-xl text-xs">
-            Reserva no alcanzada
-          </p>
-        </div>
-        }
-        @case ('completed') {
-        <div class="py-1">
-          <p class="font-bold border border-green-700 bg-[#b6f0ae] text-green-700 px-2 py-1 rounded-xl text-xs">
-            Vendido
-          </p>
-        </div>
-        }
-        }
-        }
-      </div>
-      <div class="grid gap-y-4 md:flex w-full md:justify-between">
+      <div class="flex w-full justify-between">
         <div
-          class="hidden md:grid items-center text-sm md:text-base gap-3 grid-flow-col lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
+          class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
           @if(specificAuction().data && specificAuction().data.bids.length > 0) {
           <div class="py-1">
-            <p class="text-xl leading-5">
+            <p class="leading-5">
               {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
             </p>
             @if (specificAuction().data.bids[0].userId === null && specificAuction().data.status === 'preview') {
-            <span class="text-sm">Precio de salida</span>
+            <span>Precio de salida</span>
             }
           </div>
-          }
+
           <div>
             @if (specificAuction().data.bids[0].userId !== null) {
-            <div class="hidden md:block py-1 ml-4">
+            <div class="py-1 ml-4">
               <!-- <p class="font-bold text-lg">18</p> -->
-              <p class="inline lg:block text-xl">
+              <p class="inline lg:block">
                 <span class="font-bold">
                   {{specificAuction().data ? specificAuction().data.bids.length - 1: 0}}
                 </span>
+                @if (specificAuction().data.bids.length - 1 === 1) {
+                Oferta
+                } @else {
                 Ofertas
+                }
               </p>
             </div>
             }
-            @defer (when specificAuction().data) {
-            @if (specificAuction().data.status === 'active') {
-            <div class="md:hidden">
-              <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-                py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-                HACER UNA OFERTA
-              </button>
-            </div>
-            }
-            }
           </div>
+          }
           @if (auction().data) {
           @switch (auction().data.attributes.status) {
           @case (auctionCarStatus.Preview) {
-          <span class="md:text-xl pl-4">{{auction().data.attributes.daysActive}} días</span>
+          @if (specificAuction().data) {
+          <span class="md:text-xl" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
+            {{auction().data.attributes.daysActive}}
+            @if (auction().data.attributes.daysActive === 1) {
+            día
+            } @else {
+            días
+            }
+          </span>
+          }
           }
 
           @case (auctionCarStatus.Active) {
@@ -192,31 +164,23 @@
           }
           }
         </div>
-        <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
-          <div class="ml-auto">
+        <div class="flex lg:grid lg:grid-flow-col gap-x-2 md:gap-x-4 items-center md:text-center">
+          <!-- <div class="ml-auto">
             <img class="inline-block w-7 h-7" src="assets/img/icons/share.svg" alt="">
-          </div>
+          </div> -->
           <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionArtId)">
-            <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block w-7 h-7"></shared-star>
+            <shared-star [shouldFill]="isFollowing() ? true : false"
+              classes="inline-block w-5 h-5 md:w-7 md:h-7"></shared-star>
           </button>
           <div class="col-span-2 md:col-span-1">
             @defer (when specificAuction().data) {
             @if (specificAuction().data.status === 'active') {
-            <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-4 md:px-6" width="w-fit"
-              classes="hidden md:block font-lato font-semibold text-xs" sharedPrimaryButton>
+            <button (click)="openMakeAnOfferModal()" rounded="rounded-xl" px="px-3 md:px-6" py="py-2 md:py-3.5"
+              width="w-fit" class="font-lato font-semibold text-xxs md:text-xs" sharedPrimaryButton>
               OFERTAR
             </button>
             }
             }
-            <div class="block md:hidden">
-              <!-- <p class="font-bold text-lg">18</p> -->
-              @if (specificAuction().data) {
-              <p class="inline lg:block font-bold">
-                {{specificAuction().data.bids.length - 1}}
-              </p>
-              }
-              <span class="text-gray4 text-sm"> Ofertas</span>
-            </div>
           </div>
         </div>
       </div>
@@ -266,7 +230,11 @@
     <two-column-auction-grid>
       <ng-container left>
         <section class="flex justify-between mt-8">
-          <div class="underline">{{comments().data ? comments().data.length : 0}} comentarios</div>
+          @if (specificAuction().data && specificAuction().data.status !== 'preview') {
+          <div class="underline text-xs md:text-base">{{comments().data ? comments().data.length : 0}} comentarios</div>
+          } @else {
+          <div></div>
+          }
 
           @defer (when metrics().data) {
           <div class="text-gray4 text-sm flex space-x-4">
@@ -464,7 +432,7 @@
   [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>
 
 @defer (when auctionId()) {
-<auction-cancelled [isOpen]="auctionCancelledModalIsOpen()" [auctionId]="auctionId()!"
+<auction-cancelled [(isOpen)]="auctionCancelledModalIsOpen" [auctionId]="auctionId()!"
   lastChanceUrl="/ultima-oportunidad-arte"></auction-cancelled>
 }
 
@@ -477,3 +445,10 @@
     <span class="text-sm text-gray-500">¿Estás seguro que deseas aceptar esta subasta para vista previa?</span>
   </ng-container>
 </confirmation-modal>
+
+@if (specificAuction().data) {
+<update-reserve-price-modal [(isOpen)]="isUpdateReservePriceModalOpen"
+  [currentReservePrice]="specificAuction().data.reserveAmount" [auctionType]="auctionType.art"
+  [auctionId]="auction().data.id">
+</update-reserve-price-modal>
+}

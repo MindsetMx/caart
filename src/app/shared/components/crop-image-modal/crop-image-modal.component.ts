@@ -159,8 +159,6 @@ export class CropImageModalComponent {
     // show cropper
   }
   cropperReady(): void {
-    console.log('cropperReady');
-
     // cropper ready
   }
   loadImageFailed(): void {

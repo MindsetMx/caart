@@ -28,7 +28,9 @@
 
     <input formControlName="acceptTerms" class="align-middle mr-2" type="checkbox" id="terms">
     <label class="text-xs align-middle" for="terms">
-      Estoy consiente de que estoy haciendo una oferta y debo pagarlo
+      Estoy consciente de que estoy haciendo una oferta y <a
+        routerLink="/contrato-de-prestación-de-servicios-de-subasta-para-compradores" class="underline font-semibold">
+        acepto el contrato de prestación de servicios para compradores.</a>
     </label>
 
     @if(controlHasError(acceptTermsControl)) {

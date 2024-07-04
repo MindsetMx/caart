@@ -99,34 +99,34 @@
             <div menu-items>
               <a routerLink="/configuracion-de-la-cuenta" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                 tabindex="-1" id="user-menu-item-1">
-                Tu perfil
+                Configuración
               </a>
               <a routerLink="/registrar-subasta" (click)="closeDropdown(userDropdownIsOpen)"
                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
                 Publicar
               </a>
-              <a routerLink="/publicaciones" (click)="closeDropdown(userDropdownIsOpen)"
+              <!-- <a routerLink="/publicaciones" (click)="closeDropdown(userDropdownIsOpen)"
                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
                 Publicaciones
-              </a>
-              <a routerLink="/solicitudes" (click)="closeDropdown(userDropdownIsOpen)"
+              </a> -->
+              <!-- <a routerLink="/solicitudes" (click)="closeDropdown(userDropdownIsOpen)"
                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
                 Solicitudes
-              </a>
+              </a> -->
               <!-- Mis subastas -->
+              <!-- <a routerLink="/mis-subastas" (click)="closeDropdown(userDropdownIsOpen)"
+                class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
+                Mis subastas
+              </a> -->
+              <!-- Mis subastas en vivo -->
+              <!-- <a routerLink="/mis-subastas-en-vivo" (click)="closeDropdown(userDropdownIsOpen)"
+                class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
+                Mis subastas en vivo
+              </a> -->
+              <!-- actividad -->
               <a routerLink="/mis-subastas" (click)="closeDropdown(userDropdownIsOpen)"
                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
                 Mis subastas
-              </a>
-              <!-- Mis subastas en vivo -->
-              <a routerLink="/mis-subastas-en-vivo" (click)="closeDropdown(userDropdownIsOpen)"
-                class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
-                Mis subastas en vivo
-              </a>
-              <!-- actividad -->
-              <a routerLink="/actividad" (click)="closeDropdown(userDropdownIsOpen)"
-                class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
-                Actividad
               </a>
               <button (click)="logout()" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                 id="user-menu-item-2">
@@ -193,33 +193,33 @@
       <a (click)="closeMenu()" routerLink="/home" routerLinkActive="bg-gray-100 text-gray-900"
         class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 block rounded-md py-2 px-3 text-base font-medium"
         aria-current="page">
-        INICIO
+        Inicio
       </a>
       <!-- SOBRE NOSOTROS -->
       <a (click)="closeMenu()" routerLink="/nosotros" routerLinkActive="bg-gray-100 text-gray-900"
         class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 block rounded-md py-2 px-3 text-base font-medium"
         aria-current="page">
-        SOBRE NOSOTROS
+        Sobre nosotros
       </a>
       <!-- CÓMO FUNCIONA -->
       <a (click)="closeMenu()" routerLink="/como-funciona" routerLinkActive="bg-gray-100 text-gray-900"
         class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 block rounded-md py-2 px-3 text-base font-medium">
-        CÓMO FUNCIONA
+        Cómo funciona
       </a>
       <!-- VENDE CON NOSOTROS -->
       <a (click)="closeMenu()" routerLink="/vende-con-nosotros" routerLinkActive="bg-gray-100 text-gray-900"
         class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 block rounded-md py-2 px-3 text-base font-medium">
-        VENDE CON NOSOTROS
+        Vende con nosotros
       </a>
       <!-- ÚLTIMA OPORTUNIDAD -->
       <a (click)="closeMenu()" routerLink="/ultima-oportunidad" routerLinkActive="bg-gray-100 text-gray-900"
         class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 block rounded-md py-2 px-3 text-base font-medium">
-        ÚLTIMA OPORTUNIDAD
+        Última oportunidad
       </a>
       <!-- RESULTADOS -->
       <a (click)="closeMenu()" routerLink="/resultados" routerLinkActive="bg-gray-100 text-gray-900"
         class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 block rounded-md py-2 px-3 text-base font-medium">
-        RESULTADOS
+        Resultados
       </a>
     </div>
     <div class="border-t border-gray-200 pb-3 pt-4">
@@ -257,11 +257,11 @@
           Sign out
         </button> -->
         <!-- Tu perfil -->
-        <a (click)="closeMenu()"
+        <!-- <a (click)="closeMenu()"
           class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
           role="menuitem" tabindex="-1" id="user-menu-item-0">
           Tu perfil
-        </a>
+        </a> -->
         <!-- Configuración -->
         <a (click)="closeMenu()" routerLink="/configuracion-de-la-cuenta"
           class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
@@ -275,17 +275,17 @@
           Publicar
         </a>
         <!-- Publicaciones -->
-        <a (click)="closeMenu()" routerLink="/publicaciones"
+        <!-- <a (click)="closeMenu()" routerLink="/publicaciones"
           class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
           role="menuitem" tabindex="-1" id="user-menu-item-1">
           Publicaciones
-        </a>
+        </a> -->
         <!-- Solicitudes -->
-        <a (click)="closeMenu()" routerLink="/solicitudes"
+        <!-- <a (click)="closeMenu()" routerLink="/solicitudes"
           class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
           role="menuitem" tabindex="-1" id="user-menu-item-1">
           Solicitudes
-        </a>
+        </a> -->
         <!-- Mis subastas -->
         <a (click)="closeMenu()" routerLink="/mis-subastas"
           class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"

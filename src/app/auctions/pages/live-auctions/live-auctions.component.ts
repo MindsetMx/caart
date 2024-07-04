@@ -127,8 +127,6 @@ export class LiveAuctionsComponent {
   getUpdatedArtAuction(auctionArtId: string): void {
     this.#liveAuctionsService.getArtAuction$(auctionArtId).subscribe({
       next: (auction: any) => {
-        console.log('auction', auction);
-
         this.updatedArtAuction.set(auction);
       },
       error: (err) => {

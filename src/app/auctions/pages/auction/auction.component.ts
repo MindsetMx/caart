@@ -43,6 +43,7 @@ import { AuctionCarStatus } from '@app/dashboard/interfaces';
 import { ActivityRequestsService } from '@activity/services/activity-requests.service';
 import { AppService } from '@app/app.service';
 import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
+import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 
 @Component({
   standalone: true,
@@ -67,6 +68,7 @@ import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/co
     TwoColumnAuctionGridComponent,
     AuctionDetailsTableComponentComponent,
     ConfirmationModalComponent,
+    UpdateReservePriceModalComponent,
   ],
   providers: [
     DecimalPipe,
@@ -101,6 +103,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   auctionCarId = signal<string>('');
   confirmAcceptPreviewCarModalIsOpen = signal<boolean>(false);
   isAcceptPreviewCarAuctionButtonDisabled = signal<boolean>(false);
+  isUpdateReservePriceModalOpen = signal<boolean>(false);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -247,6 +250,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     Fancybox.bind("[data-fancybox='gallery6']", { Hash: false });
   }
 
+  openUpdateReservePriceModal(): void {
+    this.isUpdateReservePriceModalOpen.set(true);
+  }
+
   openConfirmAcceptPreviewCarModal(auctionId: string): void {
     this.auctionCarId.set(auctionId);
     this.confirmAcceptPreviewCarModalIsOpen.set(true);
@@ -294,8 +301,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   getComments(): void {
     this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.active).subscribe({
       next: (response) => {
-        console.log('comments', response);
-
         this.comments.set(response);
 
         //invertir el orden de los comentarios

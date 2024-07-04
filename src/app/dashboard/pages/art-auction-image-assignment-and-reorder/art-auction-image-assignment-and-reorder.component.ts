@@ -104,15 +104,6 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
 
     const isValid = this.#validatorsService.isValidForm(this.auctionImagesForm);
 
-    console.log(isValid);
-
-    console.log(this.auctionImagesForm.value);
-
-    console.log(this.auctionImagesForm.errors);
-
-
-
-
     if (!isValid) {
       this.saveImagesButtonIsDisabled.set(false);
       return;
@@ -186,8 +177,6 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
   }
 
   setImage(imageUrl: string) {
-    console.log(this.formFieldName());
-
     switch (this.formFieldName()) {
       case 'fotoCatalogo':
         this.auctionImagesForm.setControl('fotoCatalogo', this.#formBuilder.control(imageUrl, Validators.required));

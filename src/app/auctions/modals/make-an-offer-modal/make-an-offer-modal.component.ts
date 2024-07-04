@@ -17,6 +17,7 @@ import { AuctionComponent } from '@auctions/pages/auction/auction.component';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { BiddingMemorabiliaConditionsService } from '@auctions/services/bidding-memorabilia-conditions.service';
 import { BiddingArtConditionsService } from '@auctions/services/bidding-art-conditions.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'auction-make-an-offer-modal',
@@ -29,7 +30,8 @@ import { BiddingArtConditionsService } from '@auctions/services/bidding-art-cond
     ReactiveFormsModule,
     InputErrorComponent,
     SpinnerComponent,
-    NgxMaskDirective
+    NgxMaskDirective,
+    RouterLink
   ],
   templateUrl: './make-an-offer-modal.component.html',
   styleUrl: './make-an-offer-modal.component.css',

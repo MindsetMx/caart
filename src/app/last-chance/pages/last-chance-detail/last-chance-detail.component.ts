@@ -302,8 +302,6 @@ export class LastChanceDetailComponent implements AfterViewInit {
       })
     ).subscribe({
       next: (specificAuctionDetails) => {
-        console.log({ specificAuctionDetails });
-
         this.specificAuction.set(specificAuctionDetails);
       },
       error: (error) => {
@@ -355,7 +353,6 @@ export class LastChanceDetailComponent implements AfterViewInit {
         }
 
         this.paymentMethodId.set(paymentMethod.id);
-        console.log({ offeredAmount });
 
         this.offeredAmount.set(offeredAmount);
         this.makeAnOfferModalIsOpen.set(true);

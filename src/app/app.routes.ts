@@ -95,7 +95,7 @@ export const routes: Routes = [
     loadComponent: () => import('./auctions/pages/auction-memorabilia/auction-memorabilia.component').then((m) => m.AuctionMemorabiliaComponent),
   },
   {
-    path: 'actividad',
+    path: 'mis-subastas',
     canActivate: [VerifiedGuard, AuthGuard],
     loadComponent: () => import('./activity/pages/activity/activity.component').then((m) => m.ActivityComponent),
   },
@@ -134,11 +134,12 @@ export const routes: Routes = [
     canActivate: [VerifiedGuard, AuthGuard],
     loadComponent: () => import('./auctions/pages/publication-requests/publication-requests.component').then((m) => m.PublicationRequestsComponent),
   },
-  {
-    path: 'mis-subastas',
-    canActivate: [VerifiedGuard, AuthGuard],
-    loadComponent: () => import('./auctions/pages/my-auctions/my-auctions.component').then((m) => m.MyAuctionsComponent),
-  },
+  // TODO: Remove this route and the component
+  // {
+  //   path: 'mis-subastas',
+  //   canActivate: [VerifiedGuard, AuthGuard],
+  //   loadComponent: () => import('./auctions/pages/my-auctions/my-auctions.component').then((m) => m.MyAuctionsComponent),
+  // },
   {
     path: 'mis-subastas-en-vivo',
     canActivate: [VerifiedGuard, AuthGuard],
@@ -153,6 +154,11 @@ export const routes: Routes = [
     path: 'configuracion-de-la-cuenta',
     canActivate: [VerifiedGuard, AuthGuard],
     loadComponent: () => import('./account/pages/account-settings/account-settings.component').then((m) => m.AccountSettingsComponent),
+  },
+  {
+    path: 'contrato-de-prestación-de-servicios-de-subasta-para-compradores',
+    canActivate: [VerifiedGuard],
+    loadComponent: () => import('./infoPages/pages/auction-services-contract/auction-services-contract.component').then((m) => m.AuctionServicesContractComponent),
   },
   {
     path: 'dashboard',

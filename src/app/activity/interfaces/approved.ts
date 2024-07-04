@@ -16,7 +16,7 @@ export interface ApprovedAttributes {
   portada: string;
   title: string;
   status: MyAuctionsStatus;
-  tiempo: string;
+  tiempo?: string;
   reserva: number;
   ofertaMasAlta: number;
 }

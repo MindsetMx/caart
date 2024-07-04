@@ -6,6 +6,7 @@ export interface SpecificAuctionData {
   _id: string;
   originalAuctionCarId: string;
   isWithReserve: boolean;
+  isOwner: boolean;
   reserveCommissionValue: number;
   startDate: string;
   endDate: string;

@@ -9,6 +9,7 @@
           <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Info general</th>
           <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Historia del arte</th>
           <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Fotos recortadas</th>
+          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Preview aceptado</th>
           <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Detalles</th>
           <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
             <span class="sr-only">Acciones</span>
@@ -46,6 +47,15 @@
                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
               </div>
               <!-- <div>{{ auction.carHistoryExists ? 'Completado':'Pendiente' }}</div> -->
+            </div>
+          </td>
+          <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+            <div class="flex items-center justify-center gap-x-2">
+              <div class="flex-none rounded-full p-1 bg-green-400/10"
+                [ngClass]="auction.aceeptedByUser ? 'text-green-400':'text-orange-400'">
+                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+              </div>
+              <!-- <div>{{ auction.aceeptedByUser ? 'Completado':'Pendiente' }}</div> -->
             </div>
           </td>
           <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
