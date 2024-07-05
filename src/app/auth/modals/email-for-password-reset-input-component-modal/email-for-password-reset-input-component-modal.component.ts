@@ -33,6 +33,8 @@ export class EmailForPasswordResetInputComponentModalComponent {
   #appService = inject(AppService);
 
   resetPasswordButtonIsDisabled = signal<boolean>(false);
+  errorMessage = signal<string>('');
+
   resetPasswordForm: FormGroup;
 
   constructor() {
@@ -60,6 +62,7 @@ export class EmailForPasswordResetInputComponentModalComponent {
       },
       error: (error) => {
         console.error('error', error);
+        this.errorMessage.set(error.error.message);
       }
     }).add(() => {
       this.resetPasswordButtonIsDisabled.set(false);

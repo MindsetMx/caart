@@ -140,6 +140,11 @@ export const routes: Routes = [
     loadComponent: () => import('./infoPages/pages/auction-services-contract/auction-services-contract.component').then((m) => m.AuctionServicesContractComponent),
   },
   {
+    path: 'mis-favoritos',
+    canActivate: [VerifiedGuard, AuthGuard],
+    loadComponent: () => import('./favorites/pages/favorites/favorites.component').then((m) => m.FavoritesComponent),
+  },
+  {
     path: 'dashboard',
     canActivate: [VerifiedGuard, AuthGuard],
     children: [

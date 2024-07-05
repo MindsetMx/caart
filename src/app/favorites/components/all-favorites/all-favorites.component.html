@@ -1,0 +1,99 @@
+<div class="grid lg:flex gap-4 mb-4 mt-4">
+  <div class="w-full my-auto mt-4 md:mt-0">
+    <label for="search" class="sr-only">Buscar</label>
+    <div class="relative">
+      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+        <img class="h-7 w-7" src="assets/img/navbar/search-outline.svg" alt="ícono lupa">
+      </div>
+      <input [formControl]="searchControl" autocomplete="off"
+        class="block w-full rounded-full bg-gray1 py-3 pl-[3.25rem] pr-4 text-gray-900 placeholder:text-gray2 placeholder:font-montserrat focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        placeholder="Buscar" type="search">
+    </div>
+  </div>
+
+  <div class="hidden md:block w-fit">
+    <mat-form-field name="mat-form-field1">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select [formControl]="orderByControl">
+        @for (orderBy of orderByList; track $index) {
+        <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8 mt-4">
+  @if ( favorites()) {
+  @for (auction of favorites().data; track $index; let last = $last) {
+  @defer () {
+  @if (last) {
+  @switch (auction.type) {
+  @case (auctionTypes.car){
+  <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [status]="auction.attributes.status" intersection (visible)="getFavorites(false)"></auction-card>
+  }
+
+  @case (auctionTypes.art) {
+  <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
+    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate" intersection (visible)="getFavorites(false)"></art-auction-card>
+  }
+  }
+  }
+  @else {
+  @switch (auction.type) {
+  @case (auctionTypes.car) {
+  <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
+    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate"></auction-card>
+  }
+
+  @case (auctionTypes.art) {
+  <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
+    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate"></art-auction-card>
+  }
+  }
+  }
+  } @placeholder (minimum 300ms) {
+  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+  @loading (after 100ms) {
+  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+  }
+  @empty {
+  <div class="col-span-3 mt-12">
+    <p class=" text-center text-gray4">No se encontraron resultados.</p>
+  </div>
+  }
+  }
+  @else {
+  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+
+</div>
+
+<ng-template #auctionCardSkeleton>
+  @for (item of [].constructor(8); track $index) {
+  <div class="relative cursor-pointer">
+    <div class="w-full h-64 bg-gray-200 animate-pulse"></div>
+    <div class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
+      <div class="w-6 h-6 animate-pulse"></div>
+    </div>
+
+    <div class="mt-4">
+      <div class="font-optima font-semibold text-xl bg-gray-200 animate-pulse w-32 h-4 mb-2"></div>
+      <div class="text-gray4 bg-gray-200 animate-pulse w-20 h-4 mb-2"></div>
+      <div class="inline-block text-sm w-full px-4 py-1 rounded bg-gray-200 animate-pulse h-6"></div>
+      <div class="mt-1 flex items-center bg-gray1 animate-pulse rounded-md px-4 py-2 h-8"></div>
+    </div>
+  </div>
+  }
+</ng-template>

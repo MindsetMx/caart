@@ -263,8 +263,10 @@ export class AllAuctionsFilterResultsComponent {
     ).subscribe({
       next: (auctions: GetAllAuctions) => {
         untracked(() => {
+
           if (replace) {
             this.auctions.set(auctions);
+            console.log({ currentPage: this.currentPage() });
             this.currentPage.update((page) => page + 1);
             this.getLiveAuctions(false);
             return;

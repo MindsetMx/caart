@@ -194,7 +194,7 @@
 
         @defer (when auction().data) {
         <h1 class="font-bold mb-4">Detalles del auto</h1>
-        <section class="grid grid-cols-2 gap-4">
+        <section class="grid grid-cols-1 xs:grid-cols-2 gap-4">
           @defer (when auctionDetails().length > 0) {
           <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
 
@@ -621,7 +621,9 @@
     Aceptar subasta
   </ng-container>
   <ng-container body>
-    <span class="text-sm text-gray-500">¿Estás seguro que deseas aceptar esta subasta para vista previa?</span>
+    <span class="text-sm text-gray-500">
+      ¿Estás seguro que deseas aceptar estas condiciones para subastar tu pieza?
+    </span>
   </ng-container>
 </confirmation-modal>
 

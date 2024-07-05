@@ -110,6 +110,11 @@
                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
                 Mis subastas
               </a>
+              <!-- Mis favoritos -->
+              <a routerLink="/mis-favoritos" (click)="closeDropdown(userDropdownIsOpen)"
+                class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
+                Mis favoritos
+              </a>
               <button (click)="logout()" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                 id="user-menu-item-2">
                 Cerrar sesión
@@ -161,6 +166,92 @@
 
   @if (menuIsOpen()) {
   <nav class="lg:hidden" aria-label="Global" id="mobile-menu">
+    <div class="border-b border-gray-200 pb-3 pt-4">
+      @if (isAuthenticated) {
+      <div class="flex items-center px-4">
+        <div class="flex-shrink-0">
+          <img class="h-10 w-10 rounded-full" [src]="profileImage" alt="">
+        </div>
+        <div class="ml-3">
+          <div class="text-base font-medium text-gray-800">{{ user?.attributes?.firstName }} {{
+            user?.attributes?.lastName }}</div>
+          <div class="text-sm font-medium text-gray-500">{{ user?.attributes?.email }}</div>
+        </div>
+        <!-- <button type="button"
+            class="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <span class="absolute -inset-1.5"></span>
+            <span class="sr-only">View notifications</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+              aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+          </button> -->
+      </div>
+      }
+      <div class="space-y-1 px-2" [ngClass]="{'mt-3': isAuthenticated}">
+        @if (isAuthenticated) {
+        <!-- <a href="#"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900">Your
+          Profile</a>
+        <a href="#"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900">Settings</a>
+        <button type="button" (click)="logout()"
+          class="w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          Sign out
+        </button> -->
+        <!-- Tu perfil -->
+        <!-- <a (click)="closeMenu()"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900"
+          role="menuitem" tabindex="-1" id="user-menu-item-0">
+          Tu perfil
+        </a> -->
+        <!-- Configuración -->
+        <a (click)="closeMenu()" routerLink="/configuracion-de-la-cuenta"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900" role="menuitem"
+          tabindex="-1" id="user-menu-item-1">
+          Configuración
+        </a>
+        <!-- Publicar -->
+        <a (click)="closeMenu()" routerLink="/registrar-subasta"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900" role="menuitem"
+          tabindex="-1" id="user-menu-item-1">
+          Publicar
+        </a>
+        <!-- Mis subastas -->
+        <a (click)="closeMenu()" routerLink="/mis-subastas"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900" role="menuitem"
+          tabindex="-1" id="user-menu-item-1">
+          Mis subastas
+        </a>
+        <!-- Mis favoritos -->
+        <a (click)="closeMenu()" routerLink="/mis-favoritos"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900" role="menuitem"
+          tabindex="-1" id="user-menu-item-1">
+          Mis favoritos
+        </a>
+        <!-- Cerrar sesión -->
+        <button (click)="logout(); closeMenu()"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900" role="menuitem"
+          tabindex="-1" id="user-menu-item-2">
+          Cerrar sesión
+        </button>
+        }
+
+        @if (isNotAuthenticated) {
+        <a (click)="openSignInModal(); closeMenu()"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900" role="menuitem"
+          tabindex="-1" id="user-menu-item-2">
+          Iniciar sesión
+        </a>
+        <a (click)="openRegisterModal(); closeMenu()"
+          class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-50 hover:text-gray-900" role="menuitem"
+          tabindex="-1" id="user-menu-item-2">
+          Registrarse
+        </a>
+        }
+      </div>
+    </div>
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-900 hover:bg-gray-50 hover:text-gray-900" -->
       <!-- INICIO -->
@@ -195,86 +286,6 @@
         class="text-gray-900 hover:bg-gray-50 hover:text-gray-900 block rounded-md py-2 px-3 text-base font-medium">
         Resultados
       </a>
-    </div>
-    <div class="border-t border-gray-200 pb-3 pt-4">
-      @if (isAuthenticated) {
-      <div class="flex items-center px-4">
-        <div class="flex-shrink-0">
-          <img class="h-10 w-10 rounded-full" [src]="profileImage" alt="">
-        </div>
-        <div class="ml-3">
-          <div class="text-base font-medium text-gray-800">{{ user?.attributes?.firstName }} {{
-            user?.attributes?.lastName }}</div>
-          <div class="text-sm font-medium text-gray-500">{{ user?.attributes?.email }}</div>
-        </div>
-        <!-- <button type="button"
-            class="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-            <span class="absolute -inset-1.5"></span>
-            <span class="sr-only">View notifications</span>
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-              aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-            </svg>
-          </button> -->
-      </div>
-      }
-      <div class="space-y-1 px-2" [ngClass]="{'mt-3': isAuthenticated}">
-        @if (isAuthenticated) {
-        <!-- <a href="#"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Your
-          Profile</a>
-        <a href="#"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Settings</a>
-        <button type="button" (click)="logout()"
-          class="w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-          Sign out
-        </button> -->
-        <!-- Tu perfil -->
-        <!-- <a (click)="closeMenu()"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-          role="menuitem" tabindex="-1" id="user-menu-item-0">
-          Tu perfil
-        </a> -->
-        <!-- Configuración -->
-        <a (click)="closeMenu()" routerLink="/configuracion-de-la-cuenta"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-          role="menuitem" tabindex="-1" id="user-menu-item-1">
-          Configuración
-        </a>
-        <!-- Publicar -->
-        <a (click)="closeMenu()" routerLink="/registrar-subasta"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-          role="menuitem" tabindex="-1" id="user-menu-item-1">
-          Publicar
-        </a>
-        <!-- Mis subastas -->
-        <a (click)="closeMenu()" routerLink="/mis-subastas"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-          role="menuitem" tabindex="-1" id="user-menu-item-1">
-          Mis subastas
-        </a>
-        <!-- Cerrar sesión -->
-        <button (click)="logout(); closeMenu()"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-          role="menuitem" tabindex="-1" id="user-menu-item-2">
-          Cerrar sesión
-        </button>
-        }
-
-        @if (isNotAuthenticated) {
-        <a (click)="openSignInModal(); closeMenu()"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-          role="menuitem" tabindex="-1" id="user-menu-item-2">
-          Iniciar sesión
-        </a>
-        <a (click)="openRegisterModal(); closeMenu()"
-          class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-          role="menuitem" tabindex="-1" id="user-menu-item-2">
-          Registrarse
-        </a>
-        }
-      </div>
     </div>
   </nav>
   }

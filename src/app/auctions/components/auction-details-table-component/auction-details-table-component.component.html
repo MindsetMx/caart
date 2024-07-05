@@ -2,7 +2,7 @@
   <tbody class="table-row-group">
     @for (detail of auctionDetails(); track $index) {
     <tr class="bg-[rgba(0,0,0,.04)] even:bg-white">
-      <th class="text-left" style="padding: 15px 24px 15px 16px;">{{detail.label}}</th>
+      <th class="text-left py-[10px] md:py-[15px] pr-[24px] pl-[16px]">{{detail.label}}</th>
       <td>{{detail.value}}</td>
     </tr>
     }

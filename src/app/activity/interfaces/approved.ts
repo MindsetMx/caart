@@ -8,6 +8,7 @@ export interface Approved {
 export interface ApprovedData {
   type: AuctionTypes;
   id: string;
+  _id: string;
   attributes: ApprovedAttributes;
 }
 

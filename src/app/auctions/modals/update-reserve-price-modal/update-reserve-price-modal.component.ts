@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, model, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective } from 'ngx-mask';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -36,6 +36,8 @@ export class UpdateReservePriceModalComponent {
   auctionType = input.required<AuctionTypes | AuctionTypes2>();
   auctionId = input.required<string>();
   currentReservePrice = input.required<number>();
+
+  reserveAmountUpdated = output<void>();
 
   isButtonUpdateReservePriceDisabled = signal<boolean>(false);
   serverError = signal<string | undefined>(undefined);
@@ -79,21 +81,22 @@ export class UpdateReservePriceModalComponent {
     switch (this.auctionType()) {
       case AuctionTypes.car:
         this.updateCarAuctionReservePrice();
-
+        this.reserveAmountUpdated.emit();
         break;
 
       case AuctionTypes2.auto:
         this.updateCarAuctionReservePrice();
+        this.reserveAmountUpdated.emit();
         break;
 
       case AuctionTypes.art:
         this.updateArtAuctionReservePrice();
-
+        this.reserveAmountUpdated.emit();
         break;
 
       case AuctionTypes2.arte:
         this.updateArtAuctionReservePrice();
-
+        this.reserveAmountUpdated.emit();
         break;
 
       case AuctionTypes.memorabilia:

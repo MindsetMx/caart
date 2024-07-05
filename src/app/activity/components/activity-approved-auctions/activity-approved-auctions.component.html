@@ -56,9 +56,15 @@
                 }
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
-                <button (click)="openUpdateReservePriceModal(auction.id, auction.type, auction.attributes.reserva)">
+                @if (auction.attributes.status === myAuctionsStatus.liveAuction) {
+                <button class="underline"
+                  (click)="openUpdateReservePriceModal(auction._id, auction.type, auction.attributes.reserva)">
                   {{ auction.attributes.reserva | currency:'MXN':'symbol':'1.0-0' }}
                 </button>
+                }
+                @else {
+                {{ auction.attributes.reserva | currency:'MXN':'symbol':'1.0-0' }}
+                }
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
                 {{ auction.attributes.ofertaMasAlta| currency:'MXN':'symbol':'1.0-0' }}
@@ -102,5 +108,5 @@
   [auctionType]="auctionType()"></auction-offers-table-modal>
 
 <update-reserve-price-modal [(isOpen)]="isUpdateReservePriceModalOpen" [currentReservePrice]="reserveAmount()"
-  [auctionType]="auctionType()" [auctionId]="auctionId()">
+  [auctionType]="auctionType()" [auctionId]="auctionId()" (reserveAmountUpdated)="getMyApproved()">
 </update-reserve-price-modal>
