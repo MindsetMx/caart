@@ -12,6 +12,10 @@ export class ArtPublicationsService {
 
   #http = inject(HttpClient);
 
+  get baseUrl(): string {
+    return this.#baseUrl;
+  }
+
   getAuctionArtPublications$(): Observable<AuctionArtPublications> {
     return this.#http.get<AuctionArtPublications>(`${this.#baseUrl}/auction-items/auction-art-publishes`);
   }

@@ -14,6 +14,8 @@ import { FollowButtonComponent } from '@shared/components/follow-button/follow-b
 import { AuctionMemorabiliaCardComponent } from '@auctions/components/auction-memorabilia-card/auction-memorabilia-card.component';
 import { MemorabiliaFilterService } from '@auctions/services/memorabilia-filter.service';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { PrimaryButtonDirective } from '@shared/directives';
+import { RegisterModalComponent } from '@auth/modals/register-modal/register-modal.component';
 
 @Component({
   selector: 'home',
@@ -25,7 +27,9 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
     AuctionCard2Component,
     CountdownModule,
     FollowButtonComponent,
-    AuctionMemorabiliaCardComponent
+    AuctionMemorabiliaCardComponent,
+    PrimaryButtonDirective,
+    RegisterModalComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -42,6 +46,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   auctions = signal<VehicleAuction>({} as VehicleAuction);
   memorabiliaAuctions = signal<MemorabiliaAuction>({} as MemorabiliaAuction);
+  registerModalIsOpen = signal<boolean>(false);
 
   currentIndex = signal<number>(0);
 
@@ -96,6 +101,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.carousel.nativeElement.swiper.on('slideChangeTransitionEnd', () => {
       this.currentIndex.set(this.carousel.nativeElement.swiper.activeIndex);
     });
+  }
+
+  openRegisterModal(): void {
+    this.registerModalIsOpen.set(true);
   }
 
   getLiveAuctions(): void {

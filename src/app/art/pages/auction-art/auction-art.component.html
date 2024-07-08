@@ -95,7 +95,7 @@
               {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
             </p>
             @if (specificAuction().data.bids[0].userId === null && specificAuction().data.status === 'preview') {
-            <span>Precio de salida</span>
+            <span class="text-sm">Precio de salida</span>
             }
           </div>
 
@@ -442,7 +442,11 @@
     Aceptar subasta
   </ng-container>
   <ng-container body>
-    <span class="text-sm text-gray-500">¿Estás seguro que deseas aceptar esta subasta para vista previa?</span>
+    <span class="text-sm text-gray-500">
+      Yo, {{user?.attributes?.firstName}} en calidad de propietario y/o dealer de la pieza descrita, acepto las
+      condiciones establecidas para la subasta
+      de la misma.
+    </span>
   </ng-container>
 </confirmation-modal>
 

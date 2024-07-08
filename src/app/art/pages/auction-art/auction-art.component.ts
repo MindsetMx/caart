@@ -37,6 +37,7 @@ import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/co
 import { ActivityRequestsService } from '@activity/services/activity-requests.service';
 import { AppService } from '@app/app.service';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
+import { UserData } from '@auth/interfaces';
 @Component({
   standalone: true,
   imports: [
@@ -97,6 +98,10 @@ export class AuctionArtComponent {
   #commentsService = inject(CommentsService);
   #activityRequestsService = inject(ActivityRequestsService);
   #appService = inject(AppService);
+
+  get user(): UserData | null {
+    return this.#authService.currentUser();
+  }
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;

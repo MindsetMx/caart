@@ -16,6 +16,7 @@ import { AutoResizeTextareaDirective, InputDirective, PrimaryButtonDirective } f
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 import { MatIcon } from '@angular/material/icon';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'art-registration-extra-info',
@@ -29,6 +30,7 @@ import { MatIcon } from '@angular/material/icon';
     PrimaryButtonDirective,
     SpinnerComponent,
     MatIcon,
+    NgxMaskDirective,
   ],
   templateUrl: './art-registration-extra-info.component.html',
   styleUrl: './art-registration-extra-info.component.css',

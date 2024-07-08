@@ -44,6 +44,7 @@ import { ActivityRequestsService } from '@activity/services/activity-requests.se
 import { AppService } from '@app/app.service';
 import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
+import { UserData } from '@auth/interfaces';
 
 @Component({
   standalone: true,
@@ -127,6 +128,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
   get auctionCarStatus(): typeof AuctionCarStatus {
     return AuctionCarStatus;
+  }
+
+  get user(): UserData | null {
+    return this.#authService.currentUser();
   }
 
   get swiperParams(): any {
