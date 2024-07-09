@@ -108,6 +108,8 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   openAcceptLastChanceBidModal(bidId: string, lastChanceAuctionId: string): void {
+    console.log({ bidId, lastChanceAuctionId });
+
     this.lastChanceAuctionId.set(lastChanceAuctionId);
     this.bidId.set(bidId);
     this.isOpen.set(false);
@@ -175,7 +177,7 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   acceptArtOffer(): void {
-    this.#lastChanceArtAuctionsService.acceptOffer$(this.auctionId(), this.bidId()).subscribe({
+    this.#lastChanceArtAuctionsService.acceptOffer$(this.lastChanceAuctionId(), this.bidId()).subscribe({
       next: () => {
         // this.getMyAuctions();
         this.toastSuccess('Solicitud aceptada');
@@ -190,7 +192,7 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   rejectArtBid(): void {
-    this.#lastChanceArtAuctionsService.rejectBid$(this.auctionId(), this.bidId()).subscribe({
+    this.#lastChanceArtAuctionsService.rejectBid$(this.lastChanceAuctionId(), this.bidId()).subscribe({
       next: () => {
         // this.getMyAuctions();
         this.toastSuccess('Solicitud rechazada');

@@ -1,3 +1,4 @@
+@if (requests().data && requests().data.length > 0) {
 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-8">
   @for (request of requests().data; track request.id) {
   <div class="col-span-4">
@@ -192,4 +193,9 @@
 <mat-paginator [length]="requests().meta.totalCount" [pageSize]="requests().meta.pageSize" [pageIndex]="page() - 1"
   [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
 </mat-paginator>
+}
+} @else {
+<div class="flex justify-center items-center h-64">
+  <p class="text-gray4 text-lg">No tienes solicitudes</p>
+</div>
 }

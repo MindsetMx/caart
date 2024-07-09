@@ -1,17 +1,15 @@
 <swiper-container init="false" #carousel>
   <swiper-slide>
-    <div class="bg-gray-900">
-      <div class="relative isolate overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
-          alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
-        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+    <div class="bg-gray-900/65">
+      <div class="relative overflow-hidden">
+        <img src="assets/img/home/auto.jpg" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
+        <!-- <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
           aria-hidden="true">
           <div
             class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-white to-white opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
             style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
           </div>
-        </div>
+        </div> -->
         <div class="mx-auto max-w-2xl py-32 sm:py-48">
           <div class="text-center">
             <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">CAART
@@ -35,14 +33,14 @@
             </div>
           </div>
         </div>
-        <div
+        <!-- <div
           class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
           aria-hidden="true">
           <div
             class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-white to-white opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
             style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </swiper-slide>
@@ -129,11 +127,30 @@
     <a routerLink="/subastas-en-vivo" class="ml-auto underline font-optima font-semibold">Ver todo</a>
   </div>
 
-  <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:gap-y-0 lg:grid-cols-3 lg:gap-x-8">
+  <swiper-container init="false" #carousel2>
     @for (auction of auctions().data; track $index) {
-    <auction-card2 [auction]="auction"></auction-card2>
+    <swiper-slide>
+      @switch (auction.type) {
+      @case (auctionTypesAll.auctionsCar) {
+      <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
+        [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+        [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+        [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-card>
+      }
+
+      @case (auctionTypesAll.auctionsArt) {
+      <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
+        [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+        [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+        [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></art-auction-card>
+      }
+      }
+    </swiper-slide>
     }
-  </div>
+  </swiper-container>
+
+  <!-- <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:gap-y-0 lg:grid-cols-3 lg:gap-x-8">
+  </div> -->
 </section>
 
 <!-- <section class="container mt-16 mb-32">
@@ -150,15 +167,15 @@
   </div>
 </section> -->
 
-<div class="overflow-hidden bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+<div class="container overflow-hidden bg-white py-24 sm:py-32">
+  <div>
     <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
       <div class="lg:pr-8 lg:pt-4">
         <div class="lg:max-w-lg">
           <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Somos un empresa mexicana dedicada a subastar obras de arte y autos en línea.
           </h2>
-          <p class="mt-6 text-lg leading-8 text-gray-600">
+          <p class="mt-6 text-lg leading-8 text-gray-600 text-justify">
             Reinventamos la experiencia de las subastas a través de una
             plataforma digital accesible para todos. Nos especializamos en la curación y selección de cada pieza. En
             <b>CAART</b> puedes adquirir o vender objetos únicos.
@@ -170,8 +187,7 @@
         </div>
       </div>
       <img src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png" alt="Product screenshot"
-        class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
-        width="2432" height="1442">
+        class="rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-fit md:-ml-4 lg:-ml-0">
     </div>
   </div>
 </div>

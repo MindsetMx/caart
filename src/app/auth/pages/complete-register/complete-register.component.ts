@@ -28,16 +28,16 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompleteRegisterComponent implements OnInit, OnDestroy {
-  @Input() mb: string = 'mb-32';
-  publicationId = input.required<string>();
-  auctionType = input.required<AuctionTypes>();
+  // @Input() mb: string = 'mb-32';
+  // publicationId = input<string>();
+  // auctionType = input<AuctionTypes>();
 
-  @Output() completeRegisterModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  // @Output() completeRegisterModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   #appService = inject(AppService);
   #authService = inject(AuthService);
   #fb = inject(FormBuilder);
-  #router = inject(Router);
+  // #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
@@ -96,18 +96,29 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
       next: () => {
         this.toastSuccess('Registro completado con éxito');
 
-        this.completeRegisterForm.reset();
+        // this.completeRegisterForm.reset();
 
-        switch (this.auctionType()) {
-          case AuctionTypes.car:
-            this.#router.navigate(['/completar-registro-vehiculo', this.publicationId()]);
-            break;
-          case AuctionTypes.memorabilia:
-            this.#router.navigate(['/completar-registro-memorabilia', this.publicationId()]);
-            break;
-        }
+        window.history.back();
 
-        this.completeRegisterModalIsOpenChange.emit(false);
+        // if (!this.auctionType() || !this.publicationId()) {
+        //   window.history.back();
+        //   return
+        // }
+
+        // switch (this.auctionType()) {
+        //   case AuctionTypes.car:
+        //     this.#router.navigate(['/completar-registro-vehiculo', this.publicationId()]);
+        //     break;
+        //   case AuctionTypes.memorabilia:
+        //     this.#router.navigate(['/completar-registro-memorabilia', this.publicationId()]);
+        //     break;
+
+        //   case AuctionTypes.art:
+        //     this.#router.navigate(['/completar-registro-arte', this.publicationId()]);
+        //     break;
+        // }
+
+        // this.completeRegisterModalIsOpenChange.emit(false);
       },
       error: (error) => {
         console.error(error);

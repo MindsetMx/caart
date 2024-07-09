@@ -21,7 +21,7 @@ export class ArtAuctionDetailsService {
   }
 
   getSpecificAuctionDetails$(id: string): Observable<SpecificArtAuction> {
-    const url = `${this.#baseUrl}/auctions-cars/auction-art/${id}`;
+    const url = `${this.#baseUrl}/auctions-cars/auction-art/active/${id}`;
 
     return this.#http.get<SpecificArtAuction>(url);
   }

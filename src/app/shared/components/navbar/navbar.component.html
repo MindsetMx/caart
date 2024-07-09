@@ -99,25 +99,30 @@
             <div menu-items>
               <a routerLink="/configuracion-de-la-cuenta" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                 tabindex="-1" id="user-menu-item-1">
-                Configuración
+                <img class="inline w-4 h-4 mr-1" src="assets/img/icons/configuracion.svg" alt="">
+                <span class="align-middle">Configuración</span>
               </a>
               <a routerLink="/registrar-subasta" (click)="closeDropdown(userDropdownIsOpen)"
                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
-                Publicar
+                <img class="inline w-4 h-4 mr-1" src="assets/img/icons/publicar.svg" alt="">
+                <span class="align-middle">Publicar</span>
               </a>
               <!-- actividad -->
               <a routerLink="/mis-subastas" (click)="closeDropdown(userDropdownIsOpen)"
                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
-                Mis subastas
+                <img class="inline w-4 h-4 mr-1" src="assets/img/icons/mis-subastas.svg" alt="">
+                <span class="align-middle">Mis subastas</span>
               </a>
               <!-- Mis favoritos -->
               <a routerLink="/mis-favoritos" (click)="closeDropdown(userDropdownIsOpen)"
                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
-                Mis favoritos
+                <img class="inline w-4 h-4 mr-1" src="assets/img/icons/mis-favoritos.svg" alt="">
+                <span class="align-middle">Mis favoritos</span>
               </a>
               <button (click)="logout()" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                 id="user-menu-item-2">
-                Cerrar sesión
+                <img class="inline w-4 h-4 mr-1" src="assets/img/icons/cerrar-sesion.svg" alt="">
+                <span class="align-middle">Cerrar sesión</span>
               </button>
             </div>
           </shared-dropdown>

@@ -13,6 +13,7 @@ export class LastChanceArtAuctionsService {
   #http = inject(HttpClient);
 
   acceptOffer$(idLastChance: string, idOffer: string): Observable<any> {
+    // http://localhost:3000/last-chance-auctions/art/668c6140d4f3d8d4cd4e027b/accept-offer/668c6149d4f3d8d4cd4e0307
     return this.#http.patch<any>(`${this.#baseUrl}/last-chance-auctions/art/${idLastChance}/accept-offer/${idOffer}`, {});
   }
 

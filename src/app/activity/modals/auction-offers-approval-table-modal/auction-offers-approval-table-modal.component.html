@@ -92,10 +92,10 @@
 
 <accept-last-chance-bid-modal [(isOpen)]="isAcceptLastChanceBidModalOpen"
   (isOpenChange)="isAcceptLastChanceBidModalOpenChange($event)"
-  [isButtonSubmitDisabled]="isAcceptLastChanceBidButtonDisabled()" [auctionId]="auctionId()" [bidId]="bidId()"
+  [isButtonSubmitDisabled]="isAcceptLastChanceBidButtonDisabled()" [auctionId]="lastChanceAuctionId()" [bidId]="bidId()"
   (aceptLastChanceBid)="acceptOffer()"></accept-last-chance-bid-modal>
 
 <reject-last-chance-bid-modal [(isOpen)]="isRejectBidModalOpen" (isOpenChange)="isRejectBidModalOpenChange($event)"
-  [isButtonSubmitDisabled]="isRejectBidButtonDisabled()" [auctionId]="auctionId()" [bidId]="bidId()"
+  [isButtonSubmitDisabled]="isRejectBidButtonDisabled()" [auctionId]="lastChanceAuctionId()" [bidId]="bidId()"
   (rejectLastChanceBid)="rejectBid()">
 </reject-last-chance-bid-modal>
