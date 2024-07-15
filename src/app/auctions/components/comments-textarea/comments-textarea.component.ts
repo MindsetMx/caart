@@ -76,15 +76,34 @@ export class CommentsTextareaComponent {
       parentCommentId: [this.parentCommentId() || null],
     });
 
-    this.createComment?.get('images')?.valueChanges.pipe(
-      takeUntilDestroyed()
-    ).subscribe((images) => {
-      this.images.set(images);
-    });
+    this.setupConditionalValidation();
+
+    // this.createComment?.get('images')?.valueChanges.pipe(
+    //   takeUntilDestroyed()
+    // ).subscribe((images) => {
+    //   this.images.set(images);
+    // });
   }
 
   get user(): UserData | null {
     return this.#authService.currentUser();
+  }
+
+  setupConditionalValidation(): void {
+    this.createComment.get('images')?.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(images => {
+      this.images.set(images);
+
+      const textControl = this.createComment.get('text')!;
+
+      if (images && images.length > 0) {
+        textControl.clearValidators();
+      } else {
+        textControl.setValidators([Validators.required]);
+      }
+      textControl.updateValueAndValidity();
+    });
   }
 
   createCommentSubmit(): void {

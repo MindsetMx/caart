@@ -47,8 +47,6 @@ export class ActivityAuctionRequestsProgressComponent {
   getMyRequests(): void {
     this.#activityRequestsService.getMyRequests$(this.page(), this.size()).subscribe((requests) => {
       this.requests.set(requests);
-      console.log(requests);
-
 
       if (this.pageSizeOptions().length === 0)
         this.pageSizeOptions.set(this.calculatePageSizeOptions(requests.meta.totalCount));

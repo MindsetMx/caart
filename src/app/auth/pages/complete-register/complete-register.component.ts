@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, WritableSignal, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, OnDestroy, OnInit, Output, WritableSignal, inject, input, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 
 import { AppService } from '@app/app.service';
 import { AuthService } from '@auth/services/auth.service';
@@ -12,6 +12,9 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { AuctionTypes } from '@auctions/enums/auction-types';
+import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'complete-register',
@@ -21,7 +24,8 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
     PrimaryButtonDirective,
     ReactiveFormsModule,
     InputErrorComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    JsonPipe,
   ],
   templateUrl: './complete-register.component.html',
   styleUrl: './complete-register.component.css',
@@ -37,12 +41,17 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
   #appService = inject(AppService);
   #authService = inject(AuthService);
   #fb = inject(FormBuilder);
-  // #router = inject(Router);
+  #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
+  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
+  #destroyRef: DestroyRef = inject(DestroyRef);
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
-  previewImages: WritableSignal<string[]> = signal(['', '']);
+  // previewImages: WritableSignal<string[]> = signal(['', '']);
   completeRegisterForm: FormGroup;
+  isLoading1 = signal<boolean>(false);
+  isLoading2 = signal<boolean>(false);
+  validationImg = signal<string[]>([]);
 
   validationTypeSubscription?: Subscription;
 
@@ -57,6 +66,8 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
         ['', [Validators.required]]
       ]),
     });
+
+    this.subscribeToValidationImgChanges();
   }
 
   get idTypes(): typeof idTypes {
@@ -97,6 +108,15 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
         this.toastSuccess('Registro completado con éxito');
 
         // this.completeRegisterForm.reset();
+        const url = localStorage.getItem('url');
+
+        if (url) {
+          if (url) this.#router.navigate([url]);
+
+          localStorage.removeItem('url');
+
+          return;
+        }
 
         window.history.back();
 
@@ -132,43 +152,92 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
     switch (type) {
       case idTypes.ine:
         this.completeRegisterForm?.setControl('validationImg', new FormArray([
-          new FormControl(null, Validators.required),
-          new FormControl(null, Validators.required),
+          new FormControl('', Validators.required),
+          new FormControl('', Validators.required),
         ]));
 
         break;
       case idTypes.passport:
         this.completeRegisterForm?.setControl('validationImg', new FormArray([
-          new FormControl(null, Validators.required),
+          new FormControl('', Validators.required),
         ]));
 
         break;
     }
+
+    this.subscribeToValidationImgChanges();
   }
 
-  selectFile(event: Event, indice: number): void {
-    const inputElement = event.target as HTMLInputElement;
-
-    if (!inputElement.files?.length) return;
-
-    const file = inputElement.files[0];
-    this.validationImgFormArray.at(indice).setValue(file);
-
-    this.showPreview(file, indice);
+  private subscribeToValidationImgChanges(): void {
+    const validationImgArray = this.completeRegisterForm.get('validationImg') as FormArray;
+    validationImgArray.valueChanges.pipe(
+      takeUntilDestroyed(this.#destroyRef)
+    ).subscribe(value => {
+      this.validationImg.set(value);
+    });
   }
 
-  showPreview(archivo: File, indice: number): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.previewImages.set(
-        this.previewImages().map((image, index) => {
-          if (index === indice) return reader.result as string;
-          return image;
-        })
-      );
+  // selectFile(event: Event, indice: number): void {
+  //   const inputElement = event.target as HTMLInputElement;
+
+  //   if (!inputElement.files?.length) return;
+
+  //   const file = inputElement.files[0];
+  //   this.validationImgFormArray.at(indice).setValue(file);
+
+  //   this.showPreview(file, indice);
+  // }
+
+  onFileChange(event: Event, indice: number): void {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.item(0);
+
+    if (!file) return;
+
+    switch (indice) {
+      case 0:
+        this.isLoading1.set(true);
+        break;
+      case 1:
+        this.isLoading2.set(true);
+        break;
     }
-    reader.readAsDataURL(archivo);
+
+    this.#cloudinaryCroppedImageService.uploadImageDirect$().pipe(
+      switchMap((response) =>
+        this.#cloudinaryCroppedImageService.uploadImage$(file, response.result.uploadURL)
+      )
+    ).subscribe({
+      next: (response) => {
+        this.validationImgFormArray.at(indice).setValue(response.result.variants[0]);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    }).add(() => {
+      switch (indice) {
+        case 0:
+          this.isLoading1.set(false);
+          break;
+        case 1:
+          this.isLoading2.set(false);
+          break;
+      }
+    });
   }
+
+  // showPreview(archivo: File, indice: number): void {
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     this.previewImages.set(
+  //       this.previewImages().map((image, index) => {
+  //         if (index === indice) return reader.result as string;
+  //         return image;
+  //       })
+  //     );
+  //   }
+  //   reader.readAsDataURL(archivo);
+  // }
 
   hasError(field: string): boolean {
     return this.#validatorsService.hasError(this.completeRegisterForm, field);

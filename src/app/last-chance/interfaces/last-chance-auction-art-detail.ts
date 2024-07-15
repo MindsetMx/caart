@@ -64,6 +64,7 @@ export interface LastChanceAuctionArtDetailAuctionArtForm {
   category: string;
   otherCategory: string;
   rarity: string;
+  edition: string;
   height: string;
   width: string;
   depth: string;

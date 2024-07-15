@@ -181,6 +181,23 @@
           <p><b>Número de lote:</b> {{ wizardData().data.registerCarDetails.lotNumber }}</p>
         </div>
       </mat-tab>
+      <!-- Usuario -->
+      <mat-tab label="Usuario">
+        <p class="mt-4"><b>ID:</b> {{userDetails().data._id}}</p>
+        <p><b>Foto identificación:</b> {{userDetails().data.validationImg}}</p>
+        <p><b>Nombre:</b> {{userDetails().data.firstName}} {{userDetails().data.lastName}}</p>
+        <p><b>Nombre de usuario:</b> {{userDetails().data.username}}</p>
+        <p><b>Tipo de vendedor:</b> {{userDetails().data.sellerType}}</p>
+        <p><b>País:</b> {{userDetails().data.country}}</p>
+        <p><b>Ciudad:</b> {{userDetails().data.city}}</p>
+        <p><b>Estado:</b> {{userDetails().data.state}}</p>
+        <p><b>Teléfono:</b> {{userDetails().data.phoneNumber}}</p>
+        <p><b>Correo electrónico:</b> {{userDetails().data.email}}</p>
+        <p><b>Código postal:</b> {{userDetails().data.postalCode}}</p>
+        <p><b>Calle y número:</b> {{userDetails().data.streetAndNumber}}</p>
+        <p><b>Acepta términos y condiciones:</b> {{userDetails().data.acceptTermsAndConditions ? 'Sí' : 'No'}}</p>
+        <p><b>Verificación de cuenta:</b> {{userDetails().data.accountVerified ? 'Sí' : 'No'}}</p>
+      </mat-tab>
     </mat-tab-group>
 
     }

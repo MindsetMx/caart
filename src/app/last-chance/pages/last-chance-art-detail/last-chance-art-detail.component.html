@@ -9,93 +9,10 @@
       <!-- <pre class="text-xs">
         {{specificAuction() | json}}
       </pre> -->
-      <div
-        class="md:hidden grid mb-2 items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-8 md:gap-y-0 w-fit">
-        @if(specificAuction().data) {
-        @if (specificAuction().data.status === 'completed') {
-        @defer (when specificAuction().data) {
-        <h3>
-          {{specificAuction().data.winnerInfo.amount| currency:'USD':'symbol':'1.0-2'}} MXN
-        </h3>
-        }
-        }
-        @else {
-        @if (specificAuction().data.bids.length > 0) {
-        <div class="py-1">
-          @defer (when specificAuction().data) {
-          <p>
-            {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-          </p>
-          <p class="md:text-sm">
-            Puja más alta
-          </p>
-          }
-        </div>
-        }@else {
-        <div class="py-1">
-          <p>
-            {{auction().data.attributes.lastBid| currency:'USD':'symbol':'1.0-2'}} MXN
-          </p>
-          <p class="md:text-sm">
-            Última puja
-          </p>
-        </div>
-        }
 
-        <div>
-          @defer (when auction().data) {
-          <h3 class="ml-4">
-            {{auction().data.attributes.reserveAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-            <p class="md:text-sm">
-              Precio de venta
-            </p>
-          </h3>
-          }
-        </div>
-        }
-        }
-        @defer (when specificAuction().data) {
-        @switch (specificAuction().data.status) {
-        @case ('cancelled') {
-        <div class="py-1">
-          <p class="font-bold ml-4 border border-red-700 bg-[#f0aeae] text-red-700 px-6 py-1 rounded-xl">
-            Reserva no alcanzada
-          </p>
-        </div>
-        }
-        @case ('completed') {
-        <div class="py-1">
-          <p class="font-bold ml-4 border border-green-700 bg-[#b6f0ae] text-green-700 px-6 py-1 rounded-2xl w-fit">
-            Vendido
-          </p>
-        </div>
-        }
-        }
-        }
-
-        <div>
-          <div class="hidden md:block py-1">
-            <!-- <p class="font-bold text-lg">18</p> -->
-            <p class="inline lg:block font-bold">
-              {{specificAuction().data ? specificAuction().data.bids.length : 0}}
-            </p>
-            <span class="text-gray4 text-sm"> Ofertas</span>
-          </div>
-          <!-- @defer (when specificAuction().data) {
-          @if (specificAuction().data.status === 'active') {
-          <div class="md:hidden">
-            <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-              py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button>
-          </div>
-          }
-          } -->
-        </div>
-      </div>
-      <div class="grid gap-y-4 md:flex w-full md:justify-between">
+      <div class="gap-y-4 flex w-full justify-between">
         <div
-          class="hidden md:grid items-center text-sm md:text-base gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
+          class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
           @if(specificAuction().data) {
           @if (specificAuction().data.status === 'completed') {
           @defer (when specificAuction().data) {
@@ -112,7 +29,7 @@
               {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
             </p>
             <p class="md:text-sm">
-              Puja más alta
+              Oferta más alta
             </p>
             }
           </div>
@@ -122,7 +39,7 @@
               {{auction().data.attributes.lastBid| currency:'USD':'symbol':'1.0-2'}} MXN
             </p>
             <p class="md:text-sm">
-              Última puja
+              Última oferta
             </p>
           </div>
           }
@@ -166,24 +83,15 @@
                 Ofertas
               </p>
             </div> -->
-            @defer (when specificAuction().data) {
-            @if (specificAuction().data.status === 'active') {
-            <div class="md:hidden">
-              <button (click)="openMakeAnOfferModal()" rounded="rounded-lg md:rounded-xl" px="px-2 md:px-6"
-                py="py-1.5 md:py-3.5" width="w-fit" classes="font-optima font-semibold text-xxs" sharedPrimaryButton>
-                HACER UNA OFERTA
-              </button>
-            </div>
-            }
-            }
           </div>
         </div>
-        <div class="flex lg:grid lg:grid-flow-col gap-x-4 gap-y-4 items-center md:text-center">
-          <div class="ml-auto">
-            <img class="inline-block w-7 h-7" src="assets/img/icons/share.svg" alt="">
-          </div>
+        <div class="flex lg:grid lg:grid-flow-col gap-x-2 md:gap-x-4 items-center md:text-center">
+          <button class="hidden md:block ml-auto" (click)="copyUrl()">
+            <img class="inline-block w-5 h-5 md:w-7 md:h-7" src="assets/img/icons/share.svg" alt="">
+          </button>
           <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionArtId)">
-            <shared-star [shouldFill]="isFollowing() ? true : false" classes="inline-block w-7 h-7"></shared-star>
+            <shared-star [shouldFill]="isFollowing() ? true : false"
+              classes="inline-block w-5 h-5 md:w-7 md:h-7"></shared-star>
           </button>
           @if (auction().data && auction().data.attributes.status === 'active') {
           <div class="col-span-2 md:col-span-1">
@@ -247,19 +155,9 @@
             }
           </div>
           } -->
-      </ng-container>
-      <ng-container right>
-        <!-- information auction -->
-        @if (auction().data) {
-        <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
-        }
-      </ng-container>
-    </two-column-auction-grid>
 
-    <two-column-auction-grid>
-      <ng-container left>
-        <section class="flex justify-between mt-8">
-          <div class="underline">{{comments().data ? comments().data.length : 0}} comentarios</div>
+        <section class="flex justify-between mt-4">
+          <div class="underline text-xs md:text-base">{{comments().data ? comments().data.length : 0}} comentarios</div>
 
           @defer (when metrics().data) {
           <div class="text-gray4 text-sm flex space-x-4">
@@ -271,12 +169,65 @@
               <shared-star class="mr-2" classes="text-gray4 w-5 h-5"></shared-star>
               {{metrics().data.attributes.followedCount | number}}
             </div>
+
+            <button class="md:hidden" (click)="copyUrl()">
+              <img class="inline-block w-5 h-5" src="assets/img/icons/share.svg" alt="">
+            </button>
           </div>
           }
         </section>
 
         <hr class="my-4">
+      </ng-container>
+      <ng-container right>
+        <!-- information auction -->
+        @if (auction().data) {
+        <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
+        }
 
+        <section class="md:hidden shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+          <h3 class="font-semibold mb-2">Información adicional</h3>
+
+          @if (auction().data) {
+          <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
+            @for (item of auction().data.attributes.carHistory.extraInfo; track $index) {
+            <li>{{item}}</li>
+            }
+          </ul>
+
+          <div class="my-4">
+            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+            <span class="align-middle">
+              {{auction().data.attributes.dataUser.username}}
+            </span>
+          </div>
+
+          <div>
+            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+          </div>
+          }
+
+          <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
+
+          @if (auction().data) {
+          <ol class="list-inside list-disc mb-8">
+            @for (item of auction().data.attributes.artDetail.additionalCharges; track $index) {
+            <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+            }
+          </ol>
+          }
+
+          <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
+              HACER UNA OFERTA
+            </button> -->
+        </section>
+
+        <hr class="my-6">
+      </ng-container>
+    </two-column-auction-grid>
+
+    <two-column-auction-grid>
+      <ng-container left>
         @defer (when auction().data) {
         <section class="space-y-4">
           @for (item of auction().data.attributes.carHistory.blocks; track $index) {
@@ -301,9 +252,9 @@
           </auction-summary> -->
 
         <section class="mt-12">
-          @defer (when comments().data) {
-          <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
-          }
+          <h3 class="text-xl font-bold mb-6">
+            {{(comments().data && comments().data.length > 0) ? comments().data.length : 0}} Comentarios
+          </h3>
 
           @defer (when auction().data) {
           <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionArtForm.userId"
@@ -329,7 +280,7 @@
       </ng-container>
 
       <ng-container right>
-        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <section class="hidden md:block shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           @if (auction().data) {
@@ -353,30 +304,33 @@
 
           <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
 
+          @if (auction().data) {
           <ol class="list-inside list-disc mb-8">
             @for (item of auction().data.attributes.artDetail.additionalCharges; track $index) {
             <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
             }
           </ol>
+          }
 
           <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
               HACER UNA OFERTA
             </button> -->
         </section>
 
-        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <section class="shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-6">¿Tienes una pieza de arte y quieres venderla?</h3>
 
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
-        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        @if (specificAuction().data && specificAuction().data.bids.length > 0) {
+        <section class="hidden md:block shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <div class="xl:flex items-center justify-between">
             <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
             <!-- <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold text-sm" width="w-fit" px="px-6"
-                sharedPrimaryButton>
-                HACER UNA OFERTA
-              </button> -->
+                  sharedPrimaryButton>
+                  HACER UNA OFERTA
+                </button> -->
           </div>
 
           @defer (when specificAuction().data) {
@@ -412,6 +366,7 @@
           </div>
           }
         </section>
+        }
 
         <!-- <current-memorabilia-auctions [auctionId]="auctionId()"></current-memorabilia-auctions> -->
       </ng-container>
@@ -429,7 +384,7 @@
 }@else {
 <last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auction().data.id"
   [newOfferMade]="newOfferMade()" [auctionType]="auctionType.art" (offerMade)="getAuctionDetails();getComments()"
-  [(isOpen)]="makeAnOfferModalIsOpen"></last-chance-bid-modal-component>
+  (openLastChanceBuyNowModal)="openBuyNowModal()" [(isOpen)]="makeAnOfferModalIsOpen"></last-chance-bid-modal-component>
 }
 }
 

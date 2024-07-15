@@ -45,6 +45,7 @@ import { AuctionTypesAll } from '@auctions/enums';
 export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('carousel') carousel!: ElementRef;
   carousel2 = viewChild.required<ElementRef>('carousel2');
+  auctionsPagination = viewChild.required<ElementRef>('auctionsPagination');
 
   isMobile = window.innerWidth < 768;
 
@@ -87,6 +88,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         .swiper-wrapper {
           display: flex;
           align-items: end;
+          padding-bottom: 2.5rem;
         }
         `,
       ],
@@ -106,7 +108,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       // autoplay: {
       //   delay: 5000
       // },
-      // loop: true,
     };
 
     // now we need to assign all parameters to Swiper element
@@ -140,10 +141,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         `,
       ],
       pagination: true,
-      // autoplay: {
-      //   delay: 5000
-      // },
-      // loop: true,
+      autoplay: {
+        delay: 5000
+      },
+      loop: true,
     };
 
     // now we need to assign all parameters to Swiper element

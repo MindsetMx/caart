@@ -87,9 +87,7 @@ export class AllFavoritesComponent {
 
         if (replace) {
           this.favorites.set(response);
-          console.log({ currentPage1: this.currentPage() });
           this.currentPage.update((page) => page + 1);
-          console.log({ currentPage2: this.currentPage() });
 
           this.getFavorites(false);
           return;

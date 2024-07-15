@@ -218,17 +218,7 @@
             }
           </div>
           } -->
-      </ng-container>
-      <ng-container right>
-        <!-- information auction -->
-        @if (auction().data) {
-        <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
-        }
-      </ng-container>
-    </two-column-auction-grid>
 
-    <two-column-auction-grid>
-      <ng-container left>
         <section class="flex justify-between mt-8">
           @if (specificAuction().data && specificAuction().data.status !== 'preview') {
           <div class="underline text-xs md:text-base">{{comments().data ? comments().data.length : 0}} comentarios</div>
@@ -251,64 +241,14 @@
         </section>
 
         <hr class="my-4">
-
-        @if (auction().data) {
-        <section class="space-y-4">
-          @for (item of auction().data.attributes.artHistory.blocks; track $index) {
-          @switch (item.type) {
-          @case ('text') {
-          <p class="text-justify text-xs md:text-base" style="word-wrap: break-word;">
-            {{item.content}}
-          </p>
-          }
-
-          @case ('image') {
-          <img class="w-full" [src]="item.content" alt="">
-          }
-          }
-          }
-        </section>
-        }
-
-        @defer (when auction().data) {
-        @if (auction().data.attributes.status !== auctionCarStatus.Preview) {
-        <auction-summary [auction]="auction()" [metrics]="metrics()" [auctionType]="auctionType.art"
-          [specificAuction]="specificAuction()" (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
-        </auction-summary>
-        }
-
-        @if (specificAuction().data && specificAuction().data.status !== 'preview') {
-        <section class="mt-12">
-          @defer (when comments().data) {
-          <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
-          }
-
-          @defer (when auction().data) {
-          <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionArtForm.userId"
-            [auctionType]="auctionType.art" [auctionTypeComment]="auctionTypesComments.active"
-            [auctionCarPublishId]="auction().data.attributes.originalAuctionArtId" placeholder="Agregar un comentario"
-            (commentCreated)="getComments()"></comments-textarea>
-          }
-
-          <div class="mt-4">
-            <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
-            <span class="underline">Mantenme en la conversación por correo</span>
-          </div>
-
-          @for (comment of comments().data; track $index) {
-          <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionArtId"
-            [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.art"
-            (commentCreated)="getComments()"></comment>
-          }
-        </section>
-        }
-        }
-
-        <!-- <recently-completed-memorabilia-auctions [auctionId]="auctionId()!"></recently-completed-memorabilia-auctions> -->
       </ng-container>
-
       <ng-container right>
-        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <!-- information auction -->
+        @if (auction().data) {
+        <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
+        }
+
+        <section class="md:hidden shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           @if (auction().data) {
@@ -353,14 +293,138 @@
 
         </section>
 
-        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <hr class="my-6">
+      </ng-container>
+    </two-column-auction-grid>
+
+    <two-column-auction-grid>
+      <ng-container left>
+        @if (auction().data) {
+        <section class="space-y-4">
+          @for (item of auction().data.attributes.artHistory.blocks; track $index) {
+          @switch (item.type) {
+          @case ('text') {
+          <p class="text-justify text-xs md:text-base" style="word-wrap: break-word;">
+            {{item.content}}
+          </p>
+          }
+
+          @case ('image') {
+          <img class="w-full" [src]="item.content" alt="">
+          }
+          }
+          }
+        </section>
+        }
+
+        @if (this.auction().data && this.auction().data.attributes.auctionArtForm.videos.length > 0) {
+        <section>
+          <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
+          <swiper-container init="false" #videoGallery>
+            @for (item of this.auction().data.attributes.auctionArtForm.videos; track $index) {
+            <swiper-slide class="pb-12">
+              <a class="relative" [href]="item" data-fancybox="gallery2" data-type="iframe">
+                <img [src]="getPhotoFromVideoUrl(item)" alt="">
+                <img src="assets/img/icons/play-circle.svg" alt=""
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
+              </a>
+            </swiper-slide>
+            }
+          </swiper-container>
+        </section>
+        }
+
+        @defer (when auction().data) {
+        @if (auction().data.attributes.status !== auctionCarStatus.Preview) {
+        <auction-summary [auction]="auction()" [metrics]="metrics()" [auctionType]="auctionType.art"
+          [specificAuction]="specificAuction()" (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
+        </auction-summary>
+        }
+
+        @if (specificAuction().data && specificAuction().data.status !== 'preview') {
+        <section class="mt-12">
+          @defer (when comments().data) {
+          <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
+          }
+
+          @defer (when auction().data) {
+          <comments-textarea [auctioneerUserId]="auction().data.attributes.auctionArtForm.userId"
+            [auctionType]="auctionType.art" [auctionTypeComment]="auctionTypesComments.active"
+            [auctionCarPublishId]="auction().data.attributes.originalAuctionArtId" placeholder="Agregar un comentario"
+            (commentCreated)="getComments()"></comments-textarea>
+          }
+
+          <div class="mt-4">
+            <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
+            <span class="underline">Mantenme en la conversación por correo</span>
+          </div>
+
+          @for (comment of comments().data; track $index) {
+          <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionArtId"
+            [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.art"
+            (commentCreated)="getComments()"></comment>
+          }
+        </section>
+        }
+        }
+
+        <!-- <recently-completed-memorabilia-auctions [auctionId]="auctionId()!"></recently-completed-memorabilia-auctions> -->
+      </ng-container>
+
+      <ng-container right>
+        <section class="hidden md:block shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+          <h3 class="font-semibold mb-2">Información adicional</h3>
+
+          @if (auction().data) {
+          <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
+            @for (item of auction().data.attributes.artHistory.extraInfo; track $index) {
+            <li>{{item}}</li>
+            }
+          </ul>
+
+          <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
+
+          <ul class="space-y-1">
+            <li>
+              <span class="text-gray4">Lote #:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionArtForm.lotNumber}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">
+                {{auction().data.attributes.auctionArtForm.state}}</span>
+            </li>
+          </ul>
+
+          <div class="my-4">
+            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+            <span class="align-middle">
+              {{auction().data.attributes.dataUser.username}}
+            </span>
+          </div>
+
+          <div>
+            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+          </div>
+
+          <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
+
+          <ol class="list-inside list-disc mb-8">
+            @for (item of auction().data.attributes.artDetail.additionalCharges; track $index) {
+            <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+            }
+          </ol>
+          }
+
+        </section>
+
+        <section class="shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-6">¿Tienes una pieza de arte y quieres venderla?</h3>
 
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {
-        <section class="shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <section class="shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <div class="xl:flex items-center justify-between">
             <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
             <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold text-sm" width="w-fit" px="px-6"

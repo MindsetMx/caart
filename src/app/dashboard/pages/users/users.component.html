@@ -1,0 +1,78 @@
+<sidebar-layout>
+  <div class="px-4 sm:px-6 lg:px-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h1 class="text-base font-semibold leading-6 text-gray-900">Usuarios</h1>
+        <!-- <p class="mt-2 text-sm text-gray-700">
+
+        </p> -->
+      </div>
+      <!-- <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <select [formControl]="requestType" class="ml-auto mt-4" width="w-36" sharedInput>
+          <option [value]="typesOfRequests.Car">Vehículos</option>
+          <option [value]="typesOfRequests.Art">Arte</option>
+        </select>
+      </div> -->
+    </div>
+    <div class="mt-8 flow-root">
+      <div class="px-4 sm:px-6 lg:px-8">
+        <div class="mt-8 flow-root">
+          <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-0 lg:px-0">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead>
+                  <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                      username
+                    </th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">firstName</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">lastName</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">country</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">city</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">email</th>
+                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                      <span class="sr-only">verDetalles</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                  @for (user of users().data; track user.id) {
+                  <tr>
+                    <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                      {{ user.attributes.username }}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-5 text-sm">
+                      {{ user.attributes.firstName }}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-5 text-sm">
+                      {{ user.attributes.lastName }}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                      {{ user.attributes.country }}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-5 text-sm">
+                      {{ user.attributes.city }}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-5 text-sm">
+                      {{ user.attributes.email }}
+                    </td>
+                    <td class="whitespace-nowrap py-5 pl-3 pr-4 sm:pr-0 text-right text-sm font-medium">
+                      <button (click)="openUserDetailsModal(user)"
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-indigo-800 underline">
+                        Ver detalles
+                      </button>
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</sidebar-layout>
+
+<user-details-modal [(isOpen)]="isUserDetailsModalOpen" [user]="selectedUser()"></user-details-modal>

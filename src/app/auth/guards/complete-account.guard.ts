@@ -14,6 +14,8 @@ export const CompleteAccountGuard: CanActivateFn = (route, state) => {
         return true;
       }
 
+      saveCurrentUrlInLocalStorage(state);
+
       router.navigate(['/completar-registro']);
 
       return false;

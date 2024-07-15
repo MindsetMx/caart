@@ -1,8 +1,7 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, untracked } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, untracked } from '@angular/core';
 import { CommonModule, CurrencyPipe, DecimalPipe, SlicePipe } from '@angular/common';
-import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
@@ -12,7 +11,6 @@ register();
 import { AppComponent } from '@app/app.component';
 import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
 import { AuctionDetailsService } from '@auctions/services/auction-details.service';
-import { AuctionFollowService } from '@auctions/services/auction-follow.service';
 import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
@@ -211,6 +209,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
 
       this.eventSource.onmessage = (event) => {
+        console.log({ event: event });
         this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {

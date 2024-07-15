@@ -41,6 +41,7 @@ import { PrimaryButtonDirective } from '@shared/directives/primary-button.direct
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
+import { AppService } from '@app/app.service';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
@@ -111,6 +112,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
   #lastChancePurchaseService = inject(LastChancePurchaseService);
   #decimalPipe = inject(DecimalPipe);
+  #appService = inject(AppService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -257,6 +259,12 @@ export class LastChanceDetailComponent implements AfterViewInit {
     const videoId = videoUrl.split('/').slice(-2, -1)[0];
 
     return `https://videodelivery.net/${videoId}/thumbnails/thumbnail.jpg`;
+  }
+
+  copyUrl(): void {
+    navigator.clipboard.writeText(window.location.href);
+
+    this.toastSuccess('URL copiada');
   }
 
   getComments(): void {
@@ -418,5 +426,9 @@ export class LastChanceDetailComponent implements AfterViewInit {
 
     // and now initialize it
     swiperEl.nativeElement.initialize();
+  }
+
+  toastSuccess(message: string): void {
+    this.#appService.toastSuccess(message);
   }
 }

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { GetCarBiddingConditions } from '@auctions/interfaces';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
 
@@ -17,10 +18,10 @@ export class LastChanceBidService {
     return this.#http.post<any>(url, { bidAmount, paymentIntentId: paymentMethodId });
   }
 
-  getBiddingConditions$(auctionId: string): Observable<any> {
+  getBiddingConditions$(auctionId: string): Observable<GetCarBiddingConditions> {
     const url = `${this.#baseUrl}/last-chance-auctions/${auctionId}/bidding-conditions`;
 
-    return this.#http.get<any>(url);
+    return this.#http.get<GetCarBiddingConditions>(url);
   }
 
   getBidConditions$(auctionId: string, userBidAmount: number): Observable<any> {

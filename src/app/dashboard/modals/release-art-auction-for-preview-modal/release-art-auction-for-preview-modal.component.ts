@@ -40,6 +40,7 @@ export class ReleaseArtAuctionForPreviewModalComponent {
   copyAuctionPreviewLinkModalIsOpen = signal<boolean>(false);
   isWithReserve = signal<boolean>(false);
   reserveAmount = signal<number>(0);
+  otherCategory = signal<string | undefined>(undefined);
 
   fullAuctionPreviewLink = computed(() => {
     const baseUrl = window.location.origin;
@@ -201,6 +202,12 @@ export class ReleaseArtAuctionForPreviewModalComponent {
       next: (tentativeTitle) => {
         this.releaseArtForLiveAuctionForm.patchValue({ title: tentativeTitle.data.attributes.title });
         this.releaseArtForLiveAuctionForm.patchValue({ reserveAmount: tentativeTitle.data.attributes.reserveAmount });
+        if (tentativeTitle.data.attributes.category !== 'Otro') {
+          this.releaseArtForLiveAuctionForm.patchValue({ categories: [tentativeTitle.data.attributes.category] });
+        }
+        if (tentativeTitle.data.attributes.otherCategory !== '') {
+          this.otherCategory.set(tentativeTitle.data.attributes.otherCategory);
+        }
         this.reserveAmount.set(tentativeTitle.data.attributes.reserveAmount);
         this.releaseArtForLiveAuctionForm.patchValue({ isWithReserve: tentativeTitle.data.attributes.reserve });
       },

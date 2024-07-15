@@ -4,14 +4,17 @@
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-lato font-semibold text-xl">{{title()}}
-    </p>
-    @if (isPremium()) {
-    <span
-      class="inline-block font-bold text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2 ng-star-inserted">
-      Premium </span>
-    }
-    <p class="text-gray4 line-clamp-3" style="word-wrap: break-word;">
+    <div class="h-[60px]">
+      <p class="font-lato font-semibold text-xl">{{title()}}
+      </p>
+      @if (isPremium()) {
+      <span
+        class="inline-block font-bold text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2 ng-star-inserted">
+        Premium </span>
+      }
+    </div>
+
+    <p class="text-gray4 line-clamp-3 min-h-[72px]" style="word-wrap: break-word;">
       {{extract()}}
     </p>
 
@@ -21,8 +24,15 @@
   </div>
 </div>
 
+<!-- TODO: refactorizar cuando me manden el precio de la reserva -->
 <last-chance-bid-modal-component [paymentMethodId]="paymentMethodId()" [auctionId]="auctionId()"
   [newOfferMade]="newOfferMade()" [auctionType]="auctionType.car"
   [(isOpen)]="makeAnOfferModalIsOpen"></last-chance-bid-modal-component>
 
 <payment-method-modal [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>
+
+<!-- <last-chance-buy-now-modal [paymentMethodId]="paymentMethodId()" [auctionId]="auctionId()"
+  [name]="title()"
+  [auctionType]="auctionType.car" [comission]="comission()!" [reserveAmount]="reserveAmount()!"
+  (lastChanceItemPurchased)="getAuctionDetails(auction().data.attributes.originalAuctionCarId)"
+  [(isOpen)]="buyNowModalIsOpen"></last-chance-buy-now-modal> -->

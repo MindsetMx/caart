@@ -13,6 +13,7 @@ import { PrimaryButtonDirective } from '@shared/directives';
 import { SpecificCarAuctionDetailsLastChance } from '@auctions/interfaces';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
+import { AppService } from '@app/app.service';
 
 @Component({
   selector: 'last-chance-sticky-info-bar',
@@ -40,6 +41,7 @@ export class LastChanceStickyInfoBarComponent {
   #authService = inject(AuthService);
   #auctionFollowService = inject(AuctionFollowService);
   #appComponent = inject(AppComponent);
+  #appService = inject(AppService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -114,5 +116,15 @@ export class LastChanceStickyInfoBarComponent {
 
   openBuyNowModal(): void {
     this.openBuyNowModalChange.emit();
+  }
+
+  copyUrl(): void {
+    navigator.clipboard.writeText(window.location.href);
+
+    this.toastSuccess('URL copiada');
+  }
+
+  toastSuccess(message: string): void {
+    this.#appService.toastSuccess(message);
   }
 }

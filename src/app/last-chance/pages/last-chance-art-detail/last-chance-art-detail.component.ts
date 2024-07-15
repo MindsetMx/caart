@@ -36,6 +36,7 @@ import { AuctionDetailsTableComponentComponent } from '@auctions/components/auct
 import { LastChanceBidModalComponent } from '@auctions/modals/last-chance-bid-modal/last-chance-bid-modal.component';
 import { LastChanceBuyNowModalComponent } from '@auctions/modals/last-chance-buy-now-modal/last-chance-buy-now-modal.component';
 import { LastChanceArtPurchaseService } from '@app/last-chance/services/last-chance-art-purchase.service';
+import { AppService } from '@app/app.service';
 
 @Component({
   standalone: true,
@@ -95,6 +96,7 @@ export class LastChanceArtDetailComponent {
   #auctionFollowService = inject(AuctionFollowService);
   #commentsService = inject(CommentsService);
   #lastChanceArtPurchaseService = inject(LastChanceArtPurchaseService);
+  #appService = inject(AppService);
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
@@ -124,7 +126,7 @@ export class LastChanceArtDetailComponent {
           { label: 'Artista', value: this.auction().data.attributes.auctionArtForm.artist },
           { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
           { label: 'Materiales', value: this.auction().data.attributes.auctionArtForm.materials },
-          { label: 'Rareza', value: this.auction().data.attributes.auctionArtForm.rarity },
+          { label: 'Rareza', value: (this.auction().data.attributes.auctionArtForm.rarity === 'Edición limitada') ? this.auction().data.attributes.auctionArtForm.rarity + ', ' + this.auction().data.attributes.auctionArtForm.edition : this.auction().data.attributes.auctionArtForm.rarity },
           { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.width} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.depth} ${this.auction().data.attributes.auctionArtForm.unit}` },
           { label: 'Condición', value: this.auction().data.attributes.auctionArtForm.condition },
           { label: 'Certificado de autenticidad', value: this.auction().data.attributes.artDetail.certificadoAutenticidad ? 'Sí' + ', ' + this.auction().data.attributes.artDetail.entidadCertificado : 'No' },
@@ -274,6 +276,12 @@ export class LastChanceArtDetailComponent {
 
       this.buyNowModalIsOpen.set(true);
     });
+  }
+
+  copyUrl(): void {
+    navigator.clipboard.writeText(window.location.href);
+
+    this.toastSuccess('URL copiada');
   }
 
   refreshPaymentMethods(): void {
@@ -454,5 +462,9 @@ export class LastChanceArtDetailComponent {
 
   transformDate(dateString: string): Date {
     return new Date(dateString);
+  }
+
+  toastSuccess(message: string): void {
+    this.#appService.toastSuccess(message);
   }
 }

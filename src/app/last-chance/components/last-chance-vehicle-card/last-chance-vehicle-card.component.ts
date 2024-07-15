@@ -14,6 +14,7 @@ import { AuthService } from '@auth/services/auth.service';
 import { AppComponent } from '@app/app.component';
 import { PaymentMethodsService } from '@shared/services/payment-methods.service';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { LastChanceBuyNowModalComponent } from '@auctions/modals/last-chance-buy-now-modal/last-chance-buy-now-modal.component';
 
 @Component({
   selector: 'last-chance-vehicle-card',
@@ -25,7 +26,8 @@ import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-me
     FollowButtonComponent,
     PrimaryButtonDirective,
     LastChanceBidModalComponent,
-    PaymentMethodModalComponent
+    PaymentMethodModalComponent,
+    LastChanceBuyNowModalComponent,
   ],
   templateUrl: './last-chance-vehicle-card.component.html',
   styleUrl: './last-chance-vehicle-card.component.css',

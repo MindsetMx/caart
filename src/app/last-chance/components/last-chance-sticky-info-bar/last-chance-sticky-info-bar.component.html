@@ -34,7 +34,7 @@
             {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
           </p>
           <p class="md:text-sm">
-            Puja más alta
+            Oferta más alta
           </p>
           }
         </div>
@@ -44,7 +44,7 @@
             {{auction().data.attributes.lastBid| currency:'USD':'symbol':'1.0-2'}} MXN
           </p>
           <p class="md:text-sm">
-            Última puja
+            Última oferta
           </p>
         </div>
         }
@@ -81,9 +81,9 @@
         }
       </div>
       <div class="flex lg:grid lg:grid-flow-col gap-x-2 md:gap-x-4 gap-y-4 items-center md:text-center">
-        <!-- <div class="ml-auto">
+        <button class="hidden md:block ml-auto" (click)="copyUrl()">
           <img class="inline-block w-5 h-5 md:w-7 md:h-7" src="assets/img/icons/share.svg" alt="">
-        </div> -->
+        </button>
         <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionCarId)">
           <shared-star [shouldFill]="isFollowing() ? true : false"
             classes="inline-block w-5 h-5 md:w-7 md:h-7"></shared-star>

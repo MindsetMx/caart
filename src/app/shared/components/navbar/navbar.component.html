@@ -59,8 +59,15 @@
           }
         </button>
       </div>
+
       <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
         @if (isAuthenticated) {
+        <div class="w-min">
+          <a routerLink="/mis-favoritos" class="">
+            <img class="w-5 h-5 mr-6" src="assets/img/icons/star.svg" alt="ícono estrella">
+          </a>
+        </div>
+
         <!-- Profile dropdown -->
         <div class="relative ml-4 flex-shrink-0">
           <!-- <div>
@@ -85,6 +92,9 @@
             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
               id="user-menu-item-2">Sign out</a>
           </div> -->
+
+          <!-- boton de mis favoritos -->
+
 
           <!-- user menu -->
           <shared-dropdown [isOpen]="userDropdownIsOpen" sharedClickOutside

@@ -1,10 +1,12 @@
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, untracked, viewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { switchMap } from 'rxjs';
 import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
+import { register } from 'swiper/element/bundle';
+register();
 
 // import { Thumbs } from '@fancyapps/ui/types/Carousel/plugins/Thumbs/Thumbs';
 import { ArtAuctionDetailsService } from '@auctions/services/art-auction-details.service';
@@ -57,12 +59,14 @@ import { UserData } from '@auth/interfaces';
     ConfirmationModalComponent,
     UpdateReservePriceModalComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction-art.component.html',
   styleUrl: './auction-art.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionArtComponent {
   myCarousel = viewChild<ElementRef>('myCarousel');
+  videoGallery = viewChild<ElementRef>('videoGallery');
 
   readonly #baseUrl = environments.baseUrl;
 
@@ -119,6 +123,37 @@ export class AuctionArtComponent {
     return AuctionCarStatus;
   }
 
+  get swiperParams(): any {
+    return {
+      injectStyles: [
+        `
+    .swiper-scrollbar {
+      opacity: 1!important;
+      height: 6px!important;
+      background-color: #d9d9d9!important;
+    }
+    .swiper-scrollbar-drag {
+      background-color: black!important;
+      height: 6px!important;
+    }
+    `
+      ],
+      spaceBetween: 20,
+      loop: true,
+      scrollbar: {
+        hide: true
+      },
+      breakpoints: {
+        0: {
+          slidesPerView: 1,
+        },
+        640: {
+          slidesPerView: 2,
+        },
+      },
+    }
+  };
+
   authStatusEffect = effect(() => {
     switch (this.authStatus) {
       case AuthStatus.authenticated:
@@ -135,7 +170,7 @@ export class AuctionArtComponent {
           { label: 'Artista', value: this.auction().data.attributes.auctionArtForm.artist },
           { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
           { label: 'Materiales', value: this.auction().data.attributes.auctionArtForm.materials },
-          { label: 'Rareza', value: this.auction().data.attributes.auctionArtForm.rarity },
+          { label: 'Rareza', value: (this.auction().data.attributes.auctionArtForm.rarity === 'Edición limitada') ? this.auction().data.attributes.auctionArtForm.rarity + ', ' + this.auction().data.attributes.auctionArtForm.edition : this.auction().data.attributes.auctionArtForm.rarity },
           { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.width} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.depth} ${this.auction().data.attributes.auctionArtForm.unit}` },
           { label: 'Condición', value: this.auction().data.attributes.auctionArtForm.condition },
           { label: 'Certificado de autenticidad', value: this.auction().data.attributes.artDetail.certificadoAutenticidad ? 'Sí' + ', ' + this.auction().data.attributes.artDetail.entidadCertificado : 'No' },
@@ -156,7 +191,6 @@ export class AuctionArtComponent {
       this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
 
       this.eventSource.onmessage = (event) => {
-        console.log({ event: event });
         this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
@@ -246,6 +280,14 @@ export class AuctionArtComponent {
           },
         },
       });
+
+      Fancybox.bind("[data-fancybox='gallery2']", { Hash: false });
+    }
+  });
+
+  videoGalleryEffect = effect(() => {
+    if (this.videoGallery) {
+      this.initSwiperCarousel(this.videoGallery(), this.swiperParams);
     }
   });
 
@@ -257,6 +299,22 @@ export class AuctionArtComponent {
       this.getAuctionDetails(id);
       this.getImagesPublish(id!);
     });
+  }
+
+  getPhotoFromVideoUrl(videoUrl: string): string {
+    const videoId = videoUrl.split('/').slice(-2, -1)[0];
+
+    return `https://videodelivery.net/${videoId}/thumbnails/thumbnail.jpg`;
+  }
+
+  initSwiperCarousel(swiperEl: ElementRef | undefined, swiperParams: any): void {
+    if (!swiperEl) return;
+
+    // now we need to assign all parameters to Swiper element
+    Object.assign(swiperEl.nativeElement, swiperParams);
+
+    // and now initialize it
+    swiperEl.nativeElement.initialize();
   }
 
   openUpdateReservePriceModal(): void {

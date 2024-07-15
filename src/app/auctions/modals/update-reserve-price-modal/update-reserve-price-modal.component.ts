@@ -76,8 +76,6 @@ export class UpdateReservePriceModalComponent {
       return;
     }
 
-    console.log('this.auctionType()', this.auctionType());
-
     switch (this.auctionType()) {
       case AuctionTypes.car:
         this.updateCarAuctionReservePrice();

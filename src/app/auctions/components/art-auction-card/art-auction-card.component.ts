@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuctionStatus, AuctionTypes } from '@auctions/enums';
 import { CountdownService } from '@shared/services/countdown.service';
@@ -34,6 +34,7 @@ export class ArtAuctionCardComponent {
   status = input.required<string>();
 
   #countdownService = inject(CountdownService);
+  #router = inject(Router);
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
@@ -41,6 +42,10 @@ export class ArtAuctionCardComponent {
 
   get statusTypes(): typeof AuctionStatus {
     return AuctionStatus;
+  }
+
+  get isHomeRoute(): boolean {
+    return this.#router.url === '/home';
   }
 
   countdownConfig(): CountdownConfig {

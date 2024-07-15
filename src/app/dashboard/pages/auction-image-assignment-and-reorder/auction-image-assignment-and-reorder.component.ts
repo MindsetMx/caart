@@ -154,6 +154,8 @@ export class AuctionImageAssignmentAndReorderComponent {
     this.#auctionImageAssigmentAndReorderService.saveImagesPublish$(this.originalAuctionCarId(), this.auctionImagesForm).subscribe({
       next: () => {
         this.toastSuccess('Las imágenes se han guardado correctamente');
+
+        window.history.back();
       },
       error: (error) => {
         console.error(error);

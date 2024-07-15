@@ -108,8 +108,6 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   openAcceptLastChanceBidModal(bidId: string, lastChanceAuctionId: string): void {
-    console.log({ bidId, lastChanceAuctionId });
-
     this.lastChanceAuctionId.set(lastChanceAuctionId);
     this.bidId.set(bidId);
     this.isOpen.set(false);

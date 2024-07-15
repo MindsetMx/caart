@@ -9,6 +9,7 @@ export interface ArtWizardData {
 
 export interface ArtWizardArtDetails {
   _id: string;
+  additionalCharges: ArtWizardDetailsAdditionalCharges[];
   certificadoAutenticidad: boolean;
   entidadCertificado: string;
   entregaConMarco: boolean;
@@ -34,6 +35,7 @@ export interface ArtWizardRegisterArtDetails {
   reserve: boolean;
   reserveAmount: number;
   rarity: string;
+  edition: string;
   height: string;
   width: string;
   depth: string;
@@ -48,4 +50,10 @@ export interface ArtWizardRegisterArtDetails {
   acceptTerms: boolean;
   status: string;
   __v: number;
+}
+
+export interface ArtWizardDetailsAdditionalCharges {
+  chargeType: string;
+  amount: number;
+  _id: string;
 }

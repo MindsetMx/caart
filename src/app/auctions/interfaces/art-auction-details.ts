@@ -64,6 +64,7 @@ export interface ArtAuctionDetailsAuctionArtForm {
   height: string;
   width: string;
   depth: string;
+  edition: string;
   unit: string;
   condition: string;
   userId: string;

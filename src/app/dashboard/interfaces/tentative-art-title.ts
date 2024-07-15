@@ -11,8 +11,12 @@ export interface TentativeArtTitleData {
 
 export interface TentativeArtTitleAttributes {
   title: string;
-  reserveAmount: number;
+  artist: string;
+  year: number;
   reserve: boolean;
+  reserveAmount: number;
+  category: string;
+  otherCategory: string;
 }
 
 export interface TentativeArtTitleMeta {

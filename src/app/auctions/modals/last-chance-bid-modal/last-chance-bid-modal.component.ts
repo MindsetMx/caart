@@ -43,11 +43,13 @@ export class LastChanceBidModalComponent {
   paymentMethodId = input.required<string>();
 
   offerMade = output<void>();
+  openLastChanceBuyNowModal = output<void>();
 
   holdAmount = signal<number>(0);
   isButtonMakeAnOfferDisabled = signal<boolean>(false);
   minimumNextBid = signal<number>(0);
   serverError = signal<string | undefined>(undefined);
+  reserve = signal<number | undefined>(undefined);
 
   eventSource?: EventSource;
 
@@ -162,6 +164,18 @@ export class LastChanceBidModalComponent {
       return;
     }
 
+    // switch (this.auctionType()) {
+    //   case AuctionTypes.car:
+
+    if (this.bidAmountControl.value >= this.reserve()!) {
+      this.isButtonMakeAnOfferDisabled.set(false);
+      this.isOpen.set(false);
+      this.openLastChanceBuyNowModal.emit();
+      return;
+    }
+    //     break;
+    // }
+
     switch (this.auctionType()) {
       case AuctionTypes.car:
         this.#lastChanceBidService.addBid$(this.auctionId(), this.bidAmountControl.value, this.paymentMethodControl.value).subscribe({
@@ -209,6 +223,8 @@ export class LastChanceBidModalComponent {
   getBiddingConditions(): void {
     this.#lastChanceBidService.getBiddingConditions$(this.auctionId()).subscribe({
       next: (biddingConditions) => {
+        this.reserve.set(biddingConditions.data.reserve);
+
         this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
 
         this.bidAmount()
@@ -226,6 +242,8 @@ export class LastChanceBidModalComponent {
   getBiddingArtConditions(): void {
     this.#lastChanceArtBidService.getBiddingConditions$(this.auctionId()).subscribe({
       next: (biddingConditions) => {
+        this.reserve.set(biddingConditions.data.reserve);
+
         this.minimumNextBid.set(biddingConditions.data.minimumNextBid);
 
         this.bidAmountControl.setValue(this.minimumNextBid());

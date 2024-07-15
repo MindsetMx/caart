@@ -57,7 +57,15 @@
         @if (hasError('categories')) {
         <shared-input-error [message]="getError('categories')"></shared-input-error>
         }
+
+        <!-- El usuario además seleccionó: Categoría X -->
+        @if (otherCategory()) {
+        <div class="text-sm text-gray-500">
+          El usuario además seleccionó: {{ otherCategory() }}
+        </div>
+        }
       </div>
+
 
       <!-- isWithReserve -->
       <div>

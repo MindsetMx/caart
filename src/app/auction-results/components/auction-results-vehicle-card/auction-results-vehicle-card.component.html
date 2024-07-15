@@ -1,24 +1,26 @@
 <div [routerLink]="[auctionLink(), originalAuctionId()]" class="relative cursor-pointer">
-  <img class="w-full object-contain" [src]="cover()" alt="">
+  <img class="w-full object-contain rounded-md" [src]="cover()" alt="">
   <follow-button [auctionId]="originalAuctionId()" [auctionType]="auctionType.car" class="absolute top-3 right-5">
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-optima font-semibold text-xl">{{title()}}</p>
-    @if (hasReserve() === false || isPremium()) {
-    <div class="space-x-2">
-      @if (hasReserve() === false) {
-      <no-reserve-tag-component></no-reserve-tag-component>
-      }
-      @if (isPremium()) {
-      <span
-        class="inline-block font-bold text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
-        Premium
-      </span>
+    <div class="min-h-[60px]">
+      <p class="font-optima font-semibold text-xl">{{title()}}</p>
+      @if (hasReserve() === false || isPremium()) {
+      <div class="space-x-2">
+        @if (hasReserve() === false) {
+        <no-reserve-tag-component></no-reserve-tag-component>
+        }
+        @if (isPremium()) {
+        <span
+          class="inline-block font-bold text-xs md:text-sm w-fit bg-[gainsboro] text-black px-4 py-1 rounded-2xl border-black border-2">
+          Premium
+        </span>
+        }
+      </div>
       }
     </div>
-    }
-    <p class="text-gray4 line-clamp-3" [ngClass]="{'mt-9': !hasReserve() === false && !isPremium()}"
+    <p class="text-gray4 line-clamp-3 min-h-[72px]" [ngClass]="{'mt-9': !hasReserve() === false && !isPremium()}"
       style="word-wrap: break-word;">
       {{extract()}}
     </p>

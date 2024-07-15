@@ -112,6 +112,9 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
     this.#auctionImageAssigmentAndReorderService.saveImagesPublish$(this.originalAuctionArtId(), this.auctionImagesForm).subscribe({
       next: () => {
         this.toastSuccess('Las imágenes se han guardado correctamente');
+
+        // redireccionar a página anterior
+        window.history.back();
       },
       error: (error) => {
         console.error(error);

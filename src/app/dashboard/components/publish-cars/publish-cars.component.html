@@ -117,21 +117,23 @@
                 <!-- <mat-icon>dialpad</mat-icon> -->
                 <span>Agregar historia del auto</span>
               </button>
+              <!-- asignar-y-reordenar-imagenes-subasta/:id -->
+              <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta', auction.auctionCarId]"
+                mat-menu-item>
+                <span>Asignar y reordenar imágenes</span>
+              </button>
+              @if (auction.status !== status.Preview) {
               <button (click)="openModalToReleaseAuctionForPreview(auction.auctionCarId)" mat-menu-item>
                 <!-- <mat-icon>notifications_off</mat-icon> -->
                 <span>Liberar auto para vista previa</span>
               </button>
+              }
               @if (auction.status === status.Preview) {
               <button (click)="openEditAuctionPreviewModal(auction.auctionCarId)" mat-menu-item>
                 <!-- <mat-icon>notifications_off</mat-icon> -->
                 <span>Editar vista previa</span>
               </button>
               }
-              <!-- asignar-y-reordenar-imagenes-subasta/:id -->
-              <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta', auction.auctionCarId]"
-                mat-menu-item>
-                <span>Asignar y reordenar imágenes</span>
-              </button>
               <!-- liberar-auto-para-subasta-en-vivo -->
               @if (auction.status === status.Preview && auction.aceeptedByUser === true) {
               <button (click)="openConfirmReleaseAuctionModal(auction.auctionCarId)" mat-menu-item>

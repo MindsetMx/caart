@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { AuctionArtDetails, AuctionDetails } from '@dashboard/interfaces';
+import { AuctionArtDetails, AuctionDetails, UserDetails } from '@dashboard/interfaces';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,5 +17,9 @@ export class RequestsDetailsService {
 
   getAuctionArtById$(id: string): Observable<AuctionArtDetails> {
     return this.#http.get<AuctionArtDetails>(`${this.#baseUrl}/auction-items/auction-art/${id}`);
+  }
+
+  getUserDetails$(auctionCarId: string): Observable<UserDetails> {
+    return this.#http.get<UserDetails>(`${this.#baseUrl}/auctions-cars/${auctionCarId}/user-details`);
   }
 }

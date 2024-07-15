@@ -20,7 +20,9 @@
           <p><b>Otra categoría:</b> {{ wizardData().data.registerArtDetails.otherCategory }}</p>
           <p><b>Reserva:</b> {{ wizardData().data.registerArtDetails.reserve ? 'Sí' : 'No' }}</p>
           <p><b>Monto de reserva:</b> {{ wizardData().data.registerArtDetails.reserveAmount }}</p>
-          <p><b>Rareza:</b> {{ wizardData().data.registerArtDetails.rarity }}</p>
+          <p><b>Rareza:</b> {{ (wizardData().data.registerArtDetails.rarity === 'Edición limitada') ?
+            wizardData().data.registerArtDetails.rarity + ' - ' + wizardData().data.registerArtDetails.edition :
+            wizardData().data.registerArtDetails.rarity }}</p>
           <p><b>Altura:</b> {{ wizardData().data.registerArtDetails.height }}</p>
           <p><b>Ancho:</b> {{ wizardData().data.registerArtDetails.width }}</p>
           <p><b>Profundidad:</b> {{ wizardData().data.registerArtDetails.depth }}</p>
@@ -52,6 +54,20 @@
       <mat-tab label="Detalles">
         <div class="mt-4">
           <p><b>ID:</b> {{ wizardData().data.artDetails._id }}</p>
+          <!-- export interface ArtWizardDetailsAdditionalCharges {
+            chargeType: string;
+            amount: number;
+            _id: string;
+          } -->
+          <!-- additionalCharges: ArtWizardDetailsAdditionalCharges[]; -->
+          <p><b>Cargos adicionales:</b></p>
+          <ul>
+            @for (charge of wizardData().data.artDetails.additionalCharges; track $index) {
+            <li>{{ charge.chargeType }}: {{ charge.amount }}</li>
+            } @empty {
+            <li>No hay cargos adicionales</li>
+            }
+          </ul>
           <p><b>Certificado de autenticidad:</b> {{ wizardData().data.artDetails.certificadoAutenticidad }}</p>
           <p><b>Entidad del certificado:</b> {{ wizardData().data.artDetails.entidadCertificado }}</p>
           <p><b>Entrega con marco:</b> {{ wizardData().data.artDetails.entregaConMarco }}</p>
@@ -79,6 +95,23 @@
           <p><b>Actualizado en:</b> {{ wizardData().data.artDetails.updatedAt }}</p>
         </div>
 
+      </mat-tab>
+
+      <mat-tab label="Usuario">
+        <p class="mt-4"><b>ID:</b> {{userDetails().data._id}}</p>
+        <p><b>Foto identificación:</b> {{userDetails().data.validationImg}}</p>
+        <p><b>Nombre:</b> {{userDetails().data.firstName}} {{userDetails().data.lastName}}</p>
+        <p><b>Nombre de usuario:</b> {{userDetails().data.username}}</p>
+        <p><b>Tipo de vendedor:</b> {{userDetails().data.sellerType}}</p>
+        <p><b>País:</b> {{userDetails().data.country}}</p>
+        <p><b>Ciudad:</b> {{userDetails().data.city}}</p>
+        <p><b>Estado:</b> {{userDetails().data.state}}</p>
+        <p><b>Teléfono:</b> {{userDetails().data.phoneNumber}}</p>
+        <p><b>Correo electrónico:</b> {{userDetails().data.email}}</p>
+        <p><b>Código postal:</b> {{userDetails().data.postalCode}}</p>
+        <p><b>Calle y número:</b> {{userDetails().data.streetAndNumber}}</p>
+        <p><b>Acepta términos y condiciones:</b> {{userDetails().data.acceptTermsAndConditions ? 'Sí' : 'No'}}</p>
+        <p><b>Verificación de cuenta:</b> {{userDetails().data.accountVerified ? 'Sí' : 'No'}}</p>
       </mat-tab>
     </mat-tab-group>
     }

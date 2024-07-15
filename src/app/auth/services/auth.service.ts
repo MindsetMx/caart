@@ -106,17 +106,8 @@ export class AuthService {
 
   completeRegister$(completeRegisterForm: FormGroup): Observable<any> {
     const trimmedCompleteRegisterForm = this.#appService.trimObjectValues(completeRegisterForm.value);
-    const formData = this.#appService.transformObjectToFormData(trimmedCompleteRegisterForm);
 
-    const token = localStorage.getItem('token');
-
-    if (!token) throw new Error('No token found');
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.#http.post<any>(`${this.#baseUrl}/users/complete-registration`, formData, { headers });
+    return this.#http.post<any>(`${this.#baseUrl}/users/complete-registration`, trimmedCompleteRegisterForm);
   }
 
   checkUsernameAvailability$(username: string): Observable<{ available: boolean }> {

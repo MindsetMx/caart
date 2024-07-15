@@ -7,42 +7,63 @@
 
   <section class="container">
     @defer (when auction().data) {
-    <h4>{{auction().data.attributes.title}}</h4>
-    <p><b>Artista:</b> {{auction().data.attributes.artist}}</p>
-    <p><b>Año:</b> {{auction().data.attributes.year}}</p>
-    <p><b>Materiales:</b> {{auction().data.attributes.materials}}</p>
-    <p><b>Categoría:</b> {{auction().data.attributes.category}}</p>
-    <p><b>Otra categoría:</b> {{auction().data.attributes.otherCategory}}</p>
-    <p><b>Reserva:</b> {{auction().data.attributes.reserve ? 'Sí' : 'No'}}</p>
-    <p><b>Monto de la reserva:</b> {{auction().data.attributes.reserveAmount}}</p>
-    <p><b>Rareza:</b> {{auction().data.attributes.rarity}}</p>
-    <p><b>Alto:</b> {{auction().data.attributes.height}} {{auction().data.attributes.unit}}</p>
-    <p><b>Ancho:</b> {{auction().data.attributes.width}} {{auction().data.attributes.unit}}</p>
-    <p><b>Profundidad:</b> {{auction().data.attributes.depth}} {{auction().data.attributes.unit}}</p>
-    <p><b>Condición:</b> {{auction().data.attributes.condition}}</p>
-    <p><b>Código postal:</b> {{auction().data.attributes.postalCode}}</p>
-    <p><b>Estado:</b> {{auction().data.attributes.state}}</p>
-    <p><b>Usuario:</b> {{auction().data.attributes.userId}}</p>
-    <p><b>Interés:</b> {{auction().data.attributes.interest}}</p>
-    <p><b>Estado:</b> {{auction().data.attributes.status}}</p>
+    <mat-tab-group>
+      <mat-tab label="Detalles">
+        <h4>{{auction().data.attributes.title}}</h4>
+        <p><b>Artista:</b> {{auction().data.attributes.artist}}</p>
+        <p><b>Año:</b> {{auction().data.attributes.year}}</p>
+        <p><b>Materiales:</b> {{auction().data.attributes.materials}}</p>
+        <p><b>Categoría:</b> {{auction().data.attributes.category}}</p>
+        <p><b>Otra categoría:</b> {{auction().data.attributes.otherCategory}}</p>
+        <p><b>Reserva:</b> {{auction().data.attributes.reserve ? 'Sí' : 'No'}}</p>
+        <p><b>Monto de la reserva:</b> {{auction().data.attributes.reserveAmount}}</p>
+        <p><b>Rareza:</b> {{auction().data.attributes.rarity}}</p>
+        <p><b>Alto:</b> {{auction().data.attributes.height}} {{auction().data.attributes.unit}}</p>
+        <p><b>Ancho:</b> {{auction().data.attributes.width}} {{auction().data.attributes.unit}}</p>
+        <p><b>Profundidad:</b> {{auction().data.attributes.depth}} {{auction().data.attributes.unit}}</p>
+        <p><b>Condición:</b> {{auction().data.attributes.condition}}</p>
+        <p><b>Código postal:</b> {{auction().data.attributes.postalCode}}</p>
+        <p><b>Estado:</b> {{auction().data.attributes.state}}</p>
+        <p><b>Usuario:</b> {{auction().data.attributes.userId}}</p>
+        <p><b>Interés:</b> {{auction().data.attributes.interest}}</p>
+        <p><b>Estado:</b> {{auction().data.attributes.status}}</p>
 
-    <p><b>Fotos:</b></p>
-    <div class="grid grid-cols-3 gap-4">
-      @for (photo of auction().data.attributes.photos; track $index) {
-      <img [src]="photo" alt="Foto {{ $index + 1}">
-      } @empty {
-      <p>No hay fotos</p>
-      }
-    </div>
+        <p><b>Fotos:</b></p>
+        <div class="grid grid-cols-3 gap-4">
+          @for (photo of auction().data.attributes.photos; track $index) {
+          <img [src]="photo" alt="Foto {{ $index + 1}">
+          } @empty {
+          <p>No hay fotos</p>
+          }
+        </div>
 
-    <p><b>Videos:</b></p>
-    <div class="grid grid-cols-3 gap-4">
-      @for (video of auction().data.attributes.videos; track $index) {
-      <video [src]="video" controls></video>
-      } @empty {
-      <p>No hay videos</p>
-      }
-    </div>
+        <p><b>Videos:</b></p>
+        <div class="grid grid-cols-3 gap-4">
+          @for (video of auction().data.attributes.videos; track $index) {
+          <video [src]="video" controls></video>
+          } @empty {
+          <p>No hay videos</p>
+          }
+        </div>
+      </mat-tab>
+      <mat-tab label="Usuario">
+        <p class="mt-4"><b>ID:</b> {{userDetails().data._id}}</p>
+        <p><b>Foto identificación:</b> {{userDetails().data.validationImg}}</p>
+        <p><b>Nombre:</b> {{userDetails().data.firstName}} {{userDetails().data.lastName}}</p>
+        <p><b>Nombre de usuario:</b> {{userDetails().data.username}}</p>
+        <p><b>Tipo de vendedor:</b> {{userDetails().data.sellerType}}</p>
+        <p><b>País:</b> {{userDetails().data.country}}</p>
+        <p><b>Ciudad:</b> {{userDetails().data.city}}</p>
+        <p><b>Estado:</b> {{userDetails().data.state}}</p>
+        <p><b>Teléfono:</b> {{userDetails().data.phoneNumber}}</p>
+        <p><b>Correo electrónico:</b> {{userDetails().data.email}}</p>
+        <p><b>Código postal:</b> {{userDetails().data.postalCode}}</p>
+        <p><b>Calle y número:</b> {{userDetails().data.streetAndNumber}}</p>
+        <p><b>Acepta términos y condiciones:</b> {{userDetails().data.acceptTermsAndConditions ? 'Sí' : 'No'}}</p>
+        <p><b>Verificación de cuenta:</b> {{userDetails().data.accountVerified ? 'Sí' : 'No'}}</p>
+      </mat-tab>
+    </mat-tab-group>
+
     }
   </section>
 

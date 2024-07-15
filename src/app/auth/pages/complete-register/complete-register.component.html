@@ -5,9 +5,13 @@
     <h1 class="font-optima font-bold text-4xl mb-6">COMPLETA TUS DATOS</h1>
 
     <p class="mb-8">
-      Completa los siguientes datos para que puedas hacer ofertas en las subastas o para registrar un auto u obre de
+      Completa los siguientes datos para que puedas hacer ofertas en las subastas o para registrar un auto u obra de
       arte para subastar.
     </p>
+
+    <!-- <pre>
+      {{completeRegisterForm.value | json}}
+    </pre> -->
 
     <form [formGroup]="completeRegisterForm" (ngSubmit)="completeRegister()" class="mt-2">
       <div class="grid grid-cols-2 gap-4 mt-4">
@@ -62,10 +66,13 @@
             <div>
               <label for="frontal" class="text-sm cursor-pointer">
                 INE frontal
-                @if(validationImgFormArray.at(0).value) {
-                <img src="{{previewImages()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+                @if(isLoading1()) {
+                <shared-spinner></shared-spinner>
+                } @else {
+                @if(validationImg()[0]) {
+                <img [src]="validationImg()[0]" class="w-full h-40 rounded-lg object-cover mt-2"
                   alt="foto frontal de la INE">
-                <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
+                <input (change)="onFileChange($event, 0)" id="frontal" type="file" class="sr-only">
                 }@else {
                 <div
                   class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
@@ -73,8 +80,9 @@
                     <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
                     <p class="text-center text-gray4 text-sm">Subir imagen</p>
                   </div>
-                  <input (change)="selectFile($event, 0)" id="frontal" type="file" class="sr-only">
+                  <input (change)="onFileChange($event, 0)" id="frontal" type="file" class="sr-only">
                 </div>
+                }
                 }
               </label>
 
@@ -85,10 +93,13 @@
             <div>
               <label for="posterior" class="text-sm cursor-pointer">
                 INE posterior
+                @if (isLoading2()) {
+                <shared-spinner></shared-spinner>
+                }@else {
                 @if (validationImgFormArray.at(1).value) {
-                <img src="{{previewImages()[1]}}" class="w-full h-40 rounded-lg object-cover mt-2"
+                <img [src]="validationImg()[1]" class="w-full h-40 rounded-lg object-cover mt-2"
                   alt="foto posterior de la INE">
-                <input (change)="selectFile($event, 1)" id="posterior" type="file" class="sr-only">
+                <input (change)="onFileChange($event, 1)" id="posterior" type="file" class="sr-only">
                 } @else {
                 <div
                   class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
@@ -96,8 +107,9 @@
                     <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
                     <p class="text-center text-gray4 text-sm">Subir imagen</p>
                   </div>
-                  <input (change)="selectFile($event, 1)" id="posterior" type="file" class="sr-only">
+                  <input (change)="onFileChange($event, 1)" id="posterior" type="file" class="sr-only">
                 </div>
+                }
                 }
               </label>
 
@@ -112,9 +124,12 @@
         <div>
           <label for="passportImg" class="text-sm cursor-pointer">
             Foto Pasaporte
-            @if (validationImgFormArray.at(0).value) {
-            <img src="{{previewImages()[0]}}" class="w-full h-40 rounded-lg object-cover mt-2" alt="foto del pasaporte">
-            <input (change)="selectFile($event, 0)" id="passportImg" type="file" class="sr-only">
+            @if (isLoading1()) {
+            <shared-spinner></shared-spinner>
+            } @else {
+            @if (validationImg()[0]) {
+            <img [src]="validationImg()[0]" class="w-full h-40 rounded-lg object-cover mt-2" alt="foto del pasaporte">
+            <input (change)="onFileChange($event, 0)" id="passportImg" type="file" class="sr-only">
             } @else {
             <div
               class="bg-gray1 border border-dashed rounded-md border-gray4 w-full h-40 mt-2 flex items-center justify-center">
@@ -122,8 +137,9 @@
                 <div class="flex justify-center"><img src="assets/img/register/cloud.svg" alt=""></div>
                 <p class="text-center text-gray4 text-sm">Subir imagen</p>
               </div>
-              <input (change)="selectFile($event, 0)" id="passportImg" type="file" class="sr-only">
+              <input (change)="onFileChange($event, 0)" id="passportImg" type="file" class="sr-only">
             </div>
+            }
             }
           </label>
 

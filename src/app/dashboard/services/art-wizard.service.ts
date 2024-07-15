@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ArtWizard } from '@dashboard/interfaces';
+import { ArtWizard, UserDetails } from '@dashboard/interfaces';
 import { environments } from '@env/environments';
 
 @Injectable({
@@ -15,5 +15,9 @@ export class ArtWizardService {
 
   getArtWizardData$(auctionCarId: string): Observable<ArtWizard> {
     return this.#http.get<ArtWizard>(`${this.#baseUrl}/auctions-cars/get-wizard-data-art/${auctionCarId}`);
+  }
+
+  getUserDetails$(auctionCarId: string): Observable<UserDetails> {
+    return this.#http.get<UserDetails>(`${this.#baseUrl}/auctions-cars/${auctionCarId}/user-details`);
   }
 }

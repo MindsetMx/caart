@@ -73,18 +73,20 @@
               <button [routerLink]="['/dashboard/agregar-historia-arte', auction.auctionArtId]" mat-menu-item>
                 <span>Agregar historia del arte</span>
               </button>
+              <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta-arte', auction.auctionArtId]"
+                mat-menu-item>
+                <span>Asignar y reordenar imágenes</span>
+              </button>
+              @if (auction.status !== status.Preview) {
               <button (click)="openModalToReleaseAuctionForPreview(auction.auctionArtId)" mat-menu-item>
                 <span>Liberar arte para vista previa</span>
               </button>
+              }
               @if (auction.status === status.Preview) {
               <button (click)="openEditAuctionPreviewModal(auction.auctionArtId)" mat-menu-item>
                 <span>Editar vista previa</span>
               </button>
               }
-              <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta-arte', auction.auctionArtId]"
-                mat-menu-item>
-                <span>Asignar y reordenar imágenes</span>
-              </button>
               @if (auction.status === status.Preview) {
               <button (click)="openConfirmReleaseAuctionModal(auction.auctionArtId)" mat-menu-item>
                 <span>Liberar arte para subasta en vivo</span>

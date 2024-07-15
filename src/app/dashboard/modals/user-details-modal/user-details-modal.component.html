@@ -1,0 +1,61 @@
+<shared-modal [isOpen]="isOpen()" (isOpenChange)="closeModal()" [verticalCenter]="true">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Detalles del usuario</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <section class="container">
+    @defer (when user().id) {
+    <!-- export interface UsersData {
+        type: UsersType;
+        id: string;
+        attributes: UsersAttributes;
+      }
+
+      export interface UsersAttributes {
+        firstName: string;
+        lastName: string;
+        username: string;
+        sellerType: UsersSellerType;
+        country: UsersCountry;
+        city: string;
+        state: string;
+        phoneNumber: string;
+        email: string;
+        taxId?: string;
+        clientId?: string;
+        streetAndNumber?: string;
+        postalCode?: string;
+        validationType?: string;
+        validationImg: string[];
+        acceptTermsAndConditions: boolean;
+        accountVerified: boolean;
+        defaultPaymentMethodId?: string;
+      } -->
+    <p><b>Nombre:</b> {{user().attributes.firstName}} {{user().attributes.lastName}}</p>
+    <p><b>Nombre de usuario:</b> {{user().attributes.username}}</p>
+    <p><b>Tipo de vendedor:</b> {{user().attributes.sellerType}}</p>
+    <p><b>País:</b> {{user().attributes.country}}</p>
+    <p><b>Ciudad:</b> {{user().attributes.city}}</p>
+    <p><b>Estado:</b> {{user().attributes.state}}</p>
+    <p><b>Teléfono:</b> {{user().attributes.phoneNumber}}</p>
+    <p><b>Correo electrónico:</b> {{user().attributes.email}}</p>
+    <p><b>Identificación fiscal:</b> {{user().attributes.taxId}}</p>
+    <p><b>Identificación de cliente:</b> {{user().attributes.clientId}}</p>
+    <p><b>Calle y número:</b> {{user().attributes.streetAndNumber}}</p>
+    <p><b>Código postal:</b> {{user().attributes.postalCode}}</p>
+    <p><b>Tipo de validación:</b> {{user().attributes.validationType}}</p>
+    <p><b>Imágenes de validación:</b></p>
+    <div class="grid grid-cols-3 gap-4">
+      @for (img of user().attributes.validationImg; track $index) {
+      <img [src]="img" alt="Imagen de validación {{ $index + 1}">
+      }
+    </div>
+    <p><b>Acepta términos y condiciones:</b> {{user().attributes.acceptTermsAndConditions ? 'Sí' : 'No'}}</p>
+    <p><b>Cuenta verificada:</b> {{user().attributes.accountVerified ? 'Sí' : 'No'}}</p>
+    <p><b>Id del método de pago predeterminado:</b> {{user().attributes.defaultPaymentMethodId}}</p>
+    }
+  </section>
+
+</shared-modal>
