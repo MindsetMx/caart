@@ -1,0 +1,356 @@
+<!-- <div class="mt-4">
+  <p><b>ID:</b> {{ wizardData().data.registerArtDetails._id }}</p>
+  <p><b>Artista:</b> {{ wizardData().data.registerArtDetails.artist }}</p>
+  <p><b>Título:</b> {{ wizardData().data.registerArtDetails.title }}</p>
+  <p><b>Año:</b> {{ wizardData().data.registerArtDetails.year }}</p>
+  <p><b>Materiales:</b> {{ wizardData().data.registerArtDetails.materials }}</p>
+  <p><b>Categoría:</b> {{ wizardData().data.registerArtDetails.category }}</p>
+  <p><b>Otra categoría:</b> {{ wizardData().data.registerArtDetails.otherCategory }}</p>
+  <p><b>Reserva:</b> {{ wizardData().data.registerArtDetails.reserve ? 'Sí' : 'No' }}</p>
+  <p><b>Monto de reserva:</b> {{ wizardData().data.registerArtDetails.reserveAmount |
+    currency:'USD':'symbol':'1.0-2' }}</p>
+  <p><b>Rareza:</b> {{ (wizardData().data.registerArtDetails.rarity === 'Edición limitada') ?
+    wizardData().data.registerArtDetails.rarity + ' - ' + wizardData().data.registerArtDetails.edition :
+    wizardData().data.registerArtDetails.rarity }}</p>
+  <p><b>Altura:</b> {{ wizardData().data.registerArtDetails.height | number }}</p>
+  <p><b>Ancho:</b> {{ wizardData().data.registerArtDetails.width | number }}</p>
+  <p><b>Profundidad:</b> {{ wizardData().data.registerArtDetails.depth | number }}</p>
+  <p><b>Unidad:</b> {{ wizardData().data.registerArtDetails.unit }}</p>
+  <p><b>Condición:</b> {{ wizardData().data.registerArtDetails.condition }}</p>
+  <p><b>Código postal:</b> {{ wizardData().data.registerArtDetails.postalCode }}</p>
+  <p><b>Estado:</b> {{ wizardData().data.registerArtDetails.state }}</p>
+  <p><b>ID de usuario:</b> {{ wizardData().data.registerArtDetails.userId }}</p>
+  <p><b>Fotos:</b></p>
+  <div class="grid grid-cols-3 gap-4">
+    @for (photo of wizardData().data.registerArtDetails.photos; track $index) {
+    <img [src]="photo" alt="Foto {{ $index + 1}">
+    } @empty {
+    <p>No hay fotos</p>
+    }
+  </div>
+  <p><b>Videos:</b></p>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    @for (video of wizardData().data.registerArtDetails.videos; track $index) {
+    <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+    } @empty {
+    <p>No hay videos</p>
+    }
+  </div>
+  <p><b>Interés:</b> {{ wizardData().data.registerArtDetails.interest }}</p>
+  <p><b>Estado:</b> {{ wizardData().data.registerArtDetails.status }}</p>
+</div> -->
+
+<form [formGroup]="registerArtForm" (ngSubmit)="updateRegisterArtDetails()">
+  <div class="grid grid-cols-2 gap-4">
+    <!-- artist: string; -->
+    <div>
+      <label for="artist" class="block mb-1 text-sm">Artista <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="artist" id="artist" type="text" sharedInput>
+      @if (hasError('artist')) {
+      <shared-input-error [message]="getError('artist')"></shared-input-error>
+      }
+    </div>
+    <!-- title: string; -->
+    <div>
+      <label for="title" class="block mb-1 text-sm">Título <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="title" id="title" type="text" sharedInput>
+      @if (hasError('title')) {
+      <shared-input-error [message]="getError('title')"></shared-input-error>
+      }
+    </div>
+    <!-- year: number; -->
+    <div>
+      <label for="year" class="block mb-1 text-sm">Año <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="year" id="year" type="number" sharedInput>
+      @if (hasError('year')) {
+      <shared-input-error [message]="getError('year')"></shared-input-error>
+      }
+    </div>
+
+    <!-- materials: string; -->
+    <div>
+      <label for="materials" class="block mb-1 text-sm">Materiales <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="materials" id="materials" type="text" sharedInput>
+      @if (hasError('materials')) {
+      <shared-input-error [message]="getError('materials')"></shared-input-error>
+      }
+    </div>
+    <!-- category: string; -->
+    <div>
+      <label for="category" class="block mb-1 text-sm">Categoría <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="category" id="category" sharedInput>
+        <option value="Pintura">Pintura</option>
+        <option value="Escultura">Escultura</option>
+        <option value="Fotografía">Fotografía</option>
+        <option value="Impresión">Impresión</option>
+        <option value="Dibujo o Collage en papel">Dibujo o Collage en papel</option>
+        <option value="Técnica mixta">Técnica mixta</option>
+        <option value="Cerámica">Cerámica</option>
+        <option value="Joyería">Joyería</option>
+        <option value="Moda y Arte utilizable">Moda y Arte utilizable</option>
+        <option value="Arte decorativo">Arte decorativo</option>
+        <option value="Otro">Otro</option>
+      </select>
+      @if (hasError('category')) {
+      <shared-input-error [message]="getError('category')"></shared-input-error>
+      }
+    </div>
+    <!-- otherCategory?: string; -->
+
+    @if (categoryControl.value === 'Otro') {
+    <div>
+      <label for="otherCategory" class="block mb-1 text-sm">Otra categoría</label>
+      <input formControlName="otherCategory" id="otherCategory" type="text" sharedInput>
+      @if (hasError('otherCategory')) {
+      <shared-input-error [message]="getError('otherCategory')"></shared-input-error>
+      }
+    </div>
+    }
+    <!-- rarity: string; -->
+    <div>
+      <label for="rarity" class="block mb-1 text-sm">Rareza <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="rarity" id="rarity" sharedInput>
+        @for (rarity of rarities(); track $index) {
+        <option value="{{rarity}}">{{rarity}}</option>
+        }
+      </select>
+      @if (hasError('rarity')) {
+      <shared-input-error [message]="getError('rarity')"></shared-input-error>
+      }
+    </div>
+
+    <!-- edition -->
+    @if (rarityControl.value === rarity.LimitedEdition) {
+    <div>
+      <label for="edition" class="block mb-1 text-sm">Detalles de la edición</label>
+      <input formControlName="edition" id="edition" type="text" sharedInput>
+      @if (hasError('edition')) {
+      <shared-input-error [message]="getError('edition')"></shared-input-error>
+      }
+    </div>
+    }
+
+    <!-- height: string; -->
+    <div>
+      <label for="height" class="block mb-1 text-sm">Altura <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="height" id="height" type="number" sharedInput>
+      @if (hasError('height')) {
+      <shared-input-error [message]="getError('height')"></shared-input-error>
+      }
+    </div>
+    <!-- width: string; -->
+    <div>
+      <label for="width" class="block mb-1 text-sm">Ancho <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="width" id="width" type="number" sharedInput>
+      @if (hasError('width')) {
+      <shared-input-error [message]="getError('width')"></shared-input-error>
+      }
+    </div>
+    <!-- depth?: string; -->
+    <div>
+      <label for="depth" class="block mb-1 text-sm">Profundidad</label>
+      <input formControlName="depth" id="depth" type="number" sharedInput>
+      @if (hasError('depth')) {
+      <shared-input-error [message]="getError('depth')"></shared-input-error>
+      }
+    </div>
+    <!-- unit -->
+    <!-- <div>
+      <label for="unit" class="block mb-1 text-sm">Unidad <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="unit" id="unit" sharedInput>
+        <option value="cm">cm</option>
+        <option value="in">in</option>
+      </select>
+      @if (hasError('unit')) {
+      <shared-input-error [message]="getError('unit')"></shared-input-error>
+      }
+    </div> -->
+
+    <fieldset>
+      <legend class="block mb-1 text-sm">Unidad <span class="font-bold text-red-500 inline-block">*</span></legend>
+      <div class="mt-2 space-y-6 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+        <div class="flex items-center">
+          <input formControlName="unit" id="cm" type="radio" value="cm"
+            class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+          <label for="cm" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Cm</label>
+        </div>
+        <div class="flex items-center">
+          <input formControlName="unit" id="sms" type="radio" value="in"
+            class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+          <label for="in" class="ml-3 block text-sm font-medium leading-6 text-gray-900">In</label>
+        </div>
+      </div>
+    </fieldset>
+    <!-- condition: string; -->
+    <div>
+      <label for="condition" class="block mb-1 text-sm">Condición <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="condition" id="condition" sharedInput>
+        <option value="Excelente">Excelente</option>
+        <option value="Buena">Buena</option>
+        <option value="Regular">Regular</option>
+        <option value="Mala">Mala</option>
+      </select>
+      @if (hasError('condition')) {
+      <shared-input-error [message]="getError('condition')"></shared-input-error>
+      }
+    </div>
+
+    <!-- reserve select -->
+    <div>
+      <label for="reserve" class="block mb-1 text-sm">Reserva <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="reserve" id="reserve" sharedInput>
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+      </select>
+      @if (hasError('reserve')) {
+      <shared-input-error [message]="getError('reserve')"></shared-input-error>
+      }
+    </div>
+
+    <!-- reserveAmount input -->
+    @if (registerArtForm.get('reserve')?.value === "true" || registerArtForm.get('reserve')?.value === true) {
+    <div>
+      <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <div class="relative rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input formControlName="reserveAmount" type="text" class="pl-7 pr-12" name="price" id="reserveAmount"
+          mask="separator.0" thousandSeparator="," autocomplete="off" placeholder="0.00"
+          aria-describedby="price-currency" sharedInput>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
+        </div>
+      </div>
+      @if (hasError('reserveAmount')) {
+      <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
+      }
+    </div>
+    }
+
+    <div>
+      <label for="city" class="block mb-1 text-sm">Ciudad <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="city" id="city" type="text" sharedInput>
+      @if (hasError('city')) {
+      <shared-input-error [message]="getError('city')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="state" class="block mb-1 text-sm">Estado <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input id="state" type="text" formControlName="state" [matAutocomplete]="states" autocomplete="abc" sharedInput>
+      <mat-autocomplete #states="matAutocomplete">
+        @for (state of filteredStates | async; track $index) {
+        <mat-option [value]="state">{{state}}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (hasError('state')) {
+      <shared-input-error [message]="getError('state')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="postalCode" class="block mb-1 text-sm">Código Postal <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
+      @if (hasError('postalCode')) {
+      <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <p><b>Fotos:</b></p>
+      <div class="grid grid-cols-3 gap-4">
+        @for (photo of wizardData().data.registerArtDetails.photos; track $index) {
+        <img [src]="photo" alt="Foto {{ $index + 1}">
+        } @empty {
+        <p>No hay fotos</p>
+        }
+      </div>
+    </div>
+
+    <div class="col-span-2">
+      <p><b>Videos:</b></p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for (video of wizardData().data.registerArtDetails.videos; track $index) {
+        <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+        } @empty {
+        <p>No hay videos</p>
+        }
+      </div>
+    </div>
+
+    <!-- <div class="col-span-2 mt-4">
+      <p class="text-xl font-bold">Elige tu paquete <span class="font-bold text-red-500 inline-block">*</span>
+      </p>
+      <p class="text-red-500 text-sm mb-4">La sesión de fotos y videos a domicilio es una herramienta indispensable
+        para potenciar las ofertas de tu pieza.
+      </p>
+      <fieldset>
+        <legend class="sr-only">Elige tu paquete</legend>
+        <div class="space-y-2">
+          <div>
+            <input formControlName="interest" value="ListInMarketplacePlusPhotoshoot"
+              id="ListInMarketplacePlusPhotoshoot" type="radio" checked class="h-4 w-4">
+            <label for="ListInMarketplacePlusPhotoshoot" class="ml-3 leading-6 inline mr-4">Publicar mi pieza + Sesión
+              fotográfica
+              profesional</label>
+            <span class="bg-red-500 text-white text-sm px-2 py-1 rounded-md ml-auto inline-block">
+              Recomendado por CAART
+            </span>
+          </div>
+          <div class="flex items-center">
+            <input formControlName="interest" value="ListInMarketplace" id="ListInMarketplace" type="radio"
+              class="h-4 w-4">
+            <label for="ListInMarketplace" class="ml-3 block leading-6">
+              Publicar mi pieza</label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-span-2">
+      <p class="text-xs text-gray-400">*Si la pieza no alcanza el precio de reserva, se publicará durante un mes en la
+        sección de última oportunidad sin costo adicional.</p>
+    </div>
+
+    <div class="col-span-2">
+      <div class="flex items-center text-xs">
+        <input formControlName="acceptTerms" id="acceptTerms" type="checkbox" class="h-4 w-4">
+        <label for="acceptTerms" class="ml-3 block leading-6">
+          Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
+          <a class="underline">Acuerdos de usuarios.</a>
+          <span class="font-bold text-red-500 inline-block">*</span></label>
+      </div>
+
+      @if (hasError('acceptTerms')) {
+      <shared-input-error [message]="getError('acceptTerms')"></shared-input-error>
+      }
+    </div> -->
+
+    <div class="col-span-2">
+      <button type="submit" class="inline-flex justify-center items-center" [disabled]="isButtonSubmitDisabled()"
+        [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+        @if (isButtonSubmitDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Guardar
+        }
+      </button>
+    </div>
+  </div>
+</form>

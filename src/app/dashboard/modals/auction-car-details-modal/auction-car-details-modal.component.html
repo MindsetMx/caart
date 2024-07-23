@@ -9,23 +9,23 @@
     @defer (when wizardData().data) {
     <mat-tab-group>
       <mat-tab label="Exterior">
-        <auction-car-exterior-details [(isOpen)]="isOpen" [auctionCarId]="auctionCarId()"
+        <auction-car-exterior-details class="mt-4" [auctionCarId]="auctionCarId()"
           [wizardData]="wizardData()"></auction-car-exterior-details>
       </mat-tab>
       <mat-tab label="Extra">
-        <auction-car-extra-details [(isOpen)]="isOpen" [auctionCarId]="auctionCarId()"
+        <auction-car-extra-details class="mt-4" [auctionCarId]="auctionCarId()"
           [wizardData]="wizardData()"></auction-car-extra-details>
       </mat-tab>
       <mat-tab label="Interior">
-        <auction-car-interior-details [(isOpen)]="isOpen" [auctionCarId]="auctionCarId()"
+        <auction-car-interior-details class="mt-4" [auctionCarId]="auctionCarId()"
           [wizardData]="wizardData()"></auction-car-interior-details>
       </mat-tab>
       <mat-tab label="Mecánica">
-        <auction-car-mechanical-details [(isOpen)]="isOpen" [auctionCarId]="auctionCarId()"
+        <auction-car-mechanical-details class="mt-4" [auctionCarId]="auctionCarId()"
           [wizardData]="wizardData()"></auction-car-mechanical-details>
       </mat-tab>
       <mat-tab label="Registro">
-        <auction-car-register-details [(isOpen)]="isOpen" [auctionCarId]="auctionCarId()"
+        <auction-car-register-details class="mt-4" [auctionCarId]="auctionCarId()"
           [wizardData]="wizardData()"></auction-car-register-details>
       </mat-tab>
       <!-- Usuario -->

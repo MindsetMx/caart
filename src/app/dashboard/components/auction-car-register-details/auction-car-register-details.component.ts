@@ -37,7 +37,6 @@ import { AsyncPipe } from '@angular/common';
 })
 export class AuctionCarRegisterDetailsComponent {
   wizardData = input.required<WizardData>();
-  isOpen = model.required<boolean>();
   auctionCarId = input.required<string>();
 
   brands = signal<string[]>([]);
@@ -119,8 +118,8 @@ export class AuctionCarRegisterDetailsComponent {
       howDidYouHearAboutUs: ['', Validators.required],
       photos: [[], Validators.required],
       videos: [[]],
-      interest: ['', Validators.required],
-      acceptTerms: ['', Validators.required],
+      // interest: ['', Validators.required],
+      // acceptTerms: ['', Validators.required],
     });
 
     this.getBrands();
@@ -187,8 +186,8 @@ export class AuctionCarRegisterDetailsComponent {
         howDidYouHearAboutUs: registerCarDetails.howDidYouHearAboutUs,
         photos: registerCarDetails.photos,
         videos: registerCarDetails.videos,
-        interest: registerCarDetails.interest,
-        acceptTerms: registerCarDetails.acceptTerms,
+        // interest: registerCarDetails.interest,
+        // acceptTerms: registerCarDetails.acceptTerms,
       });
     }
   });

@@ -29,7 +29,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class AuctionCarExteriorDetailsComponent {
   wizardData = input.required<WizardData>();
-  isOpen = model.required<boolean>();
   auctionCarId = input.required<string>();
 
   #sanitizer = inject(DomSanitizer);

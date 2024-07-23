@@ -28,7 +28,6 @@ import { ValidatorsService } from '@shared/services/validators.service';
 })
 export class AuctionCarInteriorDetailsComponent {
   wizardData = input.required<WizardData>();
-  isOpen = model.required<boolean>();
   auctionCarId = input.required<string>();
 
   #sanitizer = inject(DomSanitizer);
@@ -43,7 +42,7 @@ export class AuctionCarInteriorDetailsComponent {
 
   constructor() {
     this.interiorOfTheCarForm = this.#formBuilder.group({
-      interiorColor: [{ value: '', disabled: true }, [Validators.required]],
+      interiorColor: [{ value: '' }, [Validators.required]],
       material: ['', [Validators.required]],
       interiorCondition: ['', [Validators.required]],
       interiorModifications: ['', [Validators.required]],

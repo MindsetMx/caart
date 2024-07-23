@@ -31,7 +31,6 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class AuctionCarExtraDetailsComponent {
   wizardData = input.required<WizardData>();
-  isOpen = model.required<boolean>();
   auctionCarId = input.required<string>();
 
   #sanitizer = inject(DomSanitizer);

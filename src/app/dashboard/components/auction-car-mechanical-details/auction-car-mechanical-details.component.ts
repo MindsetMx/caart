@@ -28,7 +28,6 @@ import { ValidatorsService } from '@shared/services/validators.service';
 })
 export class AuctionCarMechanicalDetailsComponent {
   wizardData = input.required<WizardData>();
-  isOpen = model.required<boolean>();
   auctionCarId = input.required<string>();
 
   #sanitizer = inject(DomSanitizer);
@@ -51,7 +50,7 @@ export class AuctionCarMechanicalDetailsComponent {
         // rimsDetail: mechanicsDetails.rimsDetail,
         tireBrand: mechanicsDetails.tireBrand,
         tireSize: mechanicsDetails.tireSize,
-        tireDate: mechanicsDetails.tireDate,
+        tireDate: mechanicsDetails.tireDate.split('T')[0],
         tireCondition: mechanicsDetails.tireCondition,
         extraTiresOrRims: mechanicsDetails.extraTiresOrRims,
         // extraBrand: mechanicsDetails.extraBrand,

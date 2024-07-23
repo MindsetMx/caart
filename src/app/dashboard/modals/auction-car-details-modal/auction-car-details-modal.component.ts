@@ -39,7 +39,6 @@ export class AuctionCarDetailsModalComponent {
   userDetails = signal<UserDetails>({} as UserDetails);
 
   #wizardDataService = inject(WizardDataService);
-  #sanitizer = inject(DomSanitizer);
 
   auctionCarIdAndIsOpenEffect = effect(() => {
     if (this.auctionCarId() && this.isOpen()) {
@@ -55,10 +54,6 @@ export class AuctionCarDetailsModalComponent {
       });
     }
   });
-
-  getSafeUrl(video: string): SafeResourceUrl {
-    return this.#sanitizer.bypassSecurityTrustResourceUrl(video);
-  }
 
   getUserDetails(): void {
     this.#wizardDataService.getUserDetails$(this.auctionCarId()).subscribe({

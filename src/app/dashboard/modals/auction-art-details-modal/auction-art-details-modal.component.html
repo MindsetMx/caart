@@ -1,5 +1,4 @@
-<shared-modal [isOpen]="isOpen()" (isOpenChange)="emitIsOpenChange($event)" [verticalCenter]="true"
-  modalMaxWidth="sm:max-w-2xl">
+<shared-modal [(isOpen)]="isOpen" [verticalCenter]="true" modalMaxWidth="sm:max-w-2xl">
   <div class="relative">
     <h3 class="text-center font-bold text-lg mb-12">Detalles del arte en subasta</h3>
 
@@ -10,92 +9,12 @@
     @defer (when wizardData().data) {
     <mat-tab-group>
       <mat-tab label="Registro">
-        <div class="mt-4">
-          <p><b>ID:</b> {{ wizardData().data.registerArtDetails._id }}</p>
-          <p><b>Artista:</b> {{ wizardData().data.registerArtDetails.artist }}</p>
-          <p><b>Título:</b> {{ wizardData().data.registerArtDetails.title }}</p>
-          <p><b>Año:</b> {{ wizardData().data.registerArtDetails.year }}</p>
-          <p><b>Materiales:</b> {{ wizardData().data.registerArtDetails.materials }}</p>
-          <p><b>Categoría:</b> {{ wizardData().data.registerArtDetails.category }}</p>
-          <p><b>Otra categoría:</b> {{ wizardData().data.registerArtDetails.otherCategory }}</p>
-          <p><b>Reserva:</b> {{ wizardData().data.registerArtDetails.reserve ? 'Sí' : 'No' }}</p>
-          <p><b>Monto de reserva:</b> {{ wizardData().data.registerArtDetails.reserveAmount |
-            currency:'USD':'symbol':'1.0-2' }}</p>
-          <p><b>Rareza:</b> {{ (wizardData().data.registerArtDetails.rarity === 'Edición limitada') ?
-            wizardData().data.registerArtDetails.rarity + ' - ' + wizardData().data.registerArtDetails.edition :
-            wizardData().data.registerArtDetails.rarity }}</p>
-          <p><b>Altura:</b> {{ wizardData().data.registerArtDetails.height | number }}</p>
-          <p><b>Ancho:</b> {{ wizardData().data.registerArtDetails.width | number }}</p>
-          <p><b>Profundidad:</b> {{ wizardData().data.registerArtDetails.depth | number }}</p>
-          <p><b>Unidad:</b> {{ wizardData().data.registerArtDetails.unit }}</p>
-          <p><b>Condición:</b> {{ wizardData().data.registerArtDetails.condition }}</p>
-          <p><b>Código postal:</b> {{ wizardData().data.registerArtDetails.postalCode }}</p>
-          <p><b>Estado:</b> {{ wizardData().data.registerArtDetails.state }}</p>
-          <p><b>ID de usuario:</b> {{ wizardData().data.registerArtDetails.userId }}</p>
-          <p><b>Fotos:</b></p>
-          <div class="grid grid-cols-3 gap-4">
-            @for (photo of wizardData().data.registerArtDetails.photos; track $index) {
-            <img [src]="photo" alt="Foto {{ $index + 1}">
-            } @empty {
-            <p>No hay fotos</p>
-            }
-          </div>
-          <p><b>Videos:</b></p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            @for (video of wizardData().data.registerArtDetails.videos; track $index) {
-            <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-            } @empty {
-            <p>No hay videos</p>
-            }
-          </div>
-          <p><b>Interés:</b> {{ wizardData().data.registerArtDetails.interest }}</p>
-          <p><b>Estado:</b> {{ wizardData().data.registerArtDetails.status }}</p>
-        </div>
+        <auction-art-register-details class="mt-4" [auctionArtId]="auctionArtId()"
+          [wizardData]="wizardData()"></auction-art-register-details>
       </mat-tab>
       <mat-tab label="Detalles">
-        <div class="mt-4">
-          <p><b>ID:</b> {{ wizardData().data.artDetails._id }}</p>
-          <!-- export interface ArtWizardDetailsAdditionalCharges {
-            chargeType: string;
-            amount: number;
-            _id: string;
-          } -->
-          <!-- additionalCharges: ArtWizardDetailsAdditionalCharges[]; -->
-          <p><b>Cargos adicionales:</b></p>
-          <ul>
-            @for (charge of wizardData().data.artDetails.additionalCharges; track $index) {
-            <li>{{ charge.chargeType }}: {{ charge.amount }}</li>
-            } @empty {
-            <li>No hay cargos adicionales</li>
-            }
-          </ul>
-          <p><b>Certificado de autenticidad:</b> {{ wizardData().data.artDetails.certificadoAutenticidad }}</p>
-          <p><b>Entidad del certificado:</b> {{ wizardData().data.artDetails.entidadCertificado }}</p>
-          <p><b>Entrega con marco:</b> {{ wizardData().data.artDetails.entregaConMarco }}</p>
-          <p><b>Firma del artista:</b> {{ wizardData().data.artDetails.firmaArtista }}</p>
-          <p><b>Procedencia de la obra:</b> {{ wizardData().data.artDetails.procedenciaObra }}</p>
-          <p><b>Historia del artista:</b> {{ wizardData().data.artDetails.historiaArtista }}</p>
-          <p><b>ID de subasta original:</b> {{ wizardData().data.artDetails.originalAuctionArtId }}</p>
-          <p><b>Fotos:</b></p>
-          <div class="grid grid-cols-3 gap-4">
-            @for (photo of wizardData().data.artDetails.photos; track $index) {
-            <img [src]="photo" alt="Foto {{ $index + 1 }}">
-            } @empty {
-            <p>No hay fotos</p>
-            }
-          </div>
-          <p><b>Videos:</b></p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            @for (video of wizardData().data.artDetails.videos; track $index) {
-            <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-            } @empty {
-            <p>No hay videos</p>
-            }
-          </div>
-          <p><b>Creado en:</b> {{ wizardData().data.artDetails.createdAt }}</p>
-          <p><b>Actualizado en:</b> {{ wizardData().data.artDetails.updatedAt }}</p>
-        </div>
-
+        <auction-art-details class="mt-4" [auctionArtId]="auctionArtId()"
+          [wizardData]="wizardData()"></auction-art-details>
       </mat-tab>
 
       <mat-tab label="Usuario">

@@ -1,12 +1,14 @@
+import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ArtWizard, UserDetails } from '@dashboard/interfaces';
-
-import { ArtWizardService } from '@dashboard/services/art-wizard.service';
-import { ModalComponent } from '@shared/components/modal/modal.component';
+import { MatTabsModule } from '@angular/material/tabs';
 import { tap } from 'rxjs';
+
+import { ArtWizard, UserDetails } from '@dashboard/interfaces';
+import { ArtWizardService } from '@dashboard/services/art-wizard.service';
+import { AuctionArtDetailsComponent } from '@app/dashboard/components/auction-art-details/auction-art-details.component';
+import { AuctionArtRegisterDetailsComponent } from '@dashboard/components/auction-art-register-details/auction-art-register-details.component';
+import { ModalComponent } from '@shared/components/modal/modal.component';
 
 @Component({
   selector: 'auction-art-details-modal',
@@ -16,15 +18,16 @@ import { tap } from 'rxjs';
     MatTabsModule,
     CommonModule,
     CurrencyPipe,
+    AuctionArtRegisterDetailsComponent,
+    AuctionArtDetailsComponent,
   ],
   templateUrl: './auction-art-details-modal.component.html',
   styleUrl: './auction-art-details-modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionArtDetailsModalComponent {
-  isOpen = input.required<boolean>();
+  isOpen = model.required<boolean>();
   auctionArtId = input.required<string>();
-  isOpenChange = output<boolean>();
 
   wizardData = signal<ArtWizard>({} as ArtWizard);
   userDetails = signal<UserDetails>({} as UserDetails);
@@ -60,9 +63,5 @@ export class AuctionArtDetailsModalComponent {
         console.error(error);
       }
     });
-  }
-
-  emitIsOpenChange(isOpen: boolean): void {
-    this.isOpenChange.emit(isOpen);
   }
 }

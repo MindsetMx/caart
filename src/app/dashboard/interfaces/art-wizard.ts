@@ -41,6 +41,7 @@ export interface ArtWizardRegisterArtDetails {
   depth: string;
   unit: string;
   condition: string;
+  city: string;
   postalCode: string;
   state: string;
   userId: string;
