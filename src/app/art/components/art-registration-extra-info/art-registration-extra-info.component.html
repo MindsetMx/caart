@@ -117,12 +117,11 @@
   </div>
 
   <!-- Cargos adicionales input -->
-  <div class="col-span-2 grid gap-5" formArrayName="additionalCharges">
+  <div class="col-span-2 grid gap-x-5" formArrayName="additionalCharges">
     @for (charge of additionalChargesFormArrayControls; track charge; let i = $index) {
     <div class="flex gap-5" [formGroupName]="i">
       <div>
-        <label for="chargeType" class="block text-sm mb-2">Cargos adicionales <span
-            class="font-bold text-red-500 inline-block">*</span></label>
+        <label for="chargeType" class="block text-sm mb-2">Cargos adicionales</label>
         <input formControlName="chargeType" id="chargeType" type="text" sharedInput>
         @if (hasError('chargeType', charge)) {
         <shared-input-error [message]="getError('chargeType', charge)"></shared-input-error>
@@ -130,8 +129,7 @@
       </div>
       <!-- Monto del cargo $ -->
       <div>
-        <label for="amount" class="block text-sm mb-2">Monto del cargo <span
-            class="font-bold text-red-500 inline-block">*</span></label>
+        <label for="amount" class="block text-sm mb-2">Monto del cargo</label>
         <div class="relative rounded-md shadow-sm">
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <span class="text-gray-500 sm:text-sm">$</span>
@@ -153,8 +151,12 @@
         </button>
       </div>
     </div>
+    @if (formArrayHasError(additionalChargesFormArray, i)) {
+    <shared-input-error message="Por favor, llena todos los campos de los cargos adicionales."></shared-input-error>
+    }
     }
   </div>
+
 
   <div class="col-span-2">
     <button (click)="addAdditionalCharge()" type="button" class="underline">Añadir cargo</button>

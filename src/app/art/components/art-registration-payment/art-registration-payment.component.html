@@ -102,6 +102,10 @@
   </div>
 </form>
 
+@if (error()) {
+<span class="text-red-500 text-sm">{{error()}}</span>
+}
+
 <button form="generalInformationForm" class="flex justify-center mt-8" type="submit"
   [disabled]="isButtonSubmitDisabled()" [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
   @if (isButtonSubmitDisabled()) {

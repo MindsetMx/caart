@@ -1,11 +1,18 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, viewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, viewChild, viewChildren } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Uppy } from '@uppy/core';
+import { UppyAngularDashboardModule } from '@uppy/angular';
+import Dashboard from '@uppy/dashboard';
+import Spanish from '@uppy/locales/lib/es_ES';
+import XHRUpload from '@uppy/xhr-upload';
+
 import { AppService } from '@app/app.service';
 import { ArtPhotoGalleryService } from '@dashboard/services/art-photo-gallery.service';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CropImageModalComponent } from '@shared/components/crop-image-modal/crop-image-modal.component';
 import { ArtMedia } from '@dashboard/interfaces';
+import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'art-photo-gallery',
@@ -14,7 +21,8 @@ import { ArtMedia } from '@dashboard/interfaces';
     ModalComponent,
     ReactiveFormsModule,
     CropImageModalComponent,
-    NgClass
+    NgClass,
+    UppyAngularDashboardModule,
   ],
   templateUrl: './art-photo-gallery.component.html',
   styleUrl: './art-photo-gallery.component.css',
@@ -22,6 +30,9 @@ import { ArtMedia } from '@dashboard/interfaces';
 })
 export class ArtPhotoGalleryComponent {
   registerImageSelectionInputs = viewChildren<ElementRef>('registerImageSelectionInputs');
+
+  uppyDashboardImages = viewChild<ElementRef>('uppyDashboardImages');
+  uppyImages?: Uppy;
 
   isOpen = input.required<boolean>();
   auctionArtId = input.required<string>();
@@ -35,11 +46,14 @@ export class ArtPhotoGalleryComponent {
   #artPhotoGalleryService = inject(ArtPhotoGalleryService);
   #appService = inject(AppService);
   #formBuilder = inject(FormBuilder);
+  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
 
   artPhotoGallery = signal<ArtMedia>({} as ArtMedia);
   cropArtHistoryImageModalIsOpen = signal<boolean>(false);
   selectedImage: FormControl = this.#formBuilder.control('');
   selectedImages: FormArray = this.#formBuilder.array([]);
+
+  token = signal<string>('');
 
   auctionArtIdEffect = effect(() => {
     if (this.auctionArtId()) {
@@ -54,6 +68,67 @@ export class ArtPhotoGalleryComponent {
     }
   });
 
+  uploadImageUrlEffect = effect(() => {
+    if (this.uppyDashboardImages() && !this.uppyImages && this.token()) {
+      this.uppyImages = new Uppy({
+        debug: true,
+        autoProceed: true,
+        locale: Spanish,
+        restrictions: {
+          maxFileSize: 20000000,
+          // maxNumberOfFiles: 20,
+          minNumberOfFiles: 1,
+          allowedFileTypes: ['image/*'],
+        },
+      }).use(Dashboard,
+        {
+          height: 300,
+          hideUploadButton: true,
+          hideCancelButton: true,
+          showRemoveButtonAfterComplete: true,
+          showProgressDetails: true,
+          inline: true,
+          hideProgressAfterFinish: true,
+          target: this.uppyDashboardImages()?.nativeElement,
+          proudlyDisplayPoweredByUppy: false,
+          locale: {
+            strings: {
+              dropPasteFiles: 'Arrastra y suelta tus fotos aquí o %{browse}',
+            }
+          }
+        })
+        .use(XHRUpload, {
+          endpoint: 'https://batch.imagedelivery.net/images/v1',
+          formData: true,
+          fieldName: 'file',
+          allowedMetaFields: [],
+          limit: 1,
+          headers: {
+            'Authorization': 'Bearer ' + this.token(),
+          }
+        })
+        .on('complete', (result) => {
+
+          result.successful.forEach((file: any) => {
+            const url = file.response.body.result.variants[0];
+
+            this.addExtraPhoto([url]);
+          });
+
+          this.toastSuccess('Imagenes agregadas');
+
+          // limpiar imagenes de uppy
+          this.uppyImages?.getFiles().forEach((file) => {
+            this.uppyImages?.removeFile(file.id);
+          });
+        });
+    }
+  });
+
+  constructor() {
+    this.batchTokenDirect();
+  }
+
   getAllArtMedia(): void {
     this.#artPhotoGalleryService.getAllArtMedia$(this.auctionArtId()).subscribe({
       next: (response) => {
@@ -63,6 +138,31 @@ export class ArtPhotoGalleryComponent {
         console.error(error);
       }
     });
+  }
+
+  addExtraPhoto(photoUrls: string[]): void {
+    this.#artPhotoGalleryService.addExtraPhoto$(this.auctionArtId(), photoUrls).subscribe({
+      next: () => {
+        this.getAllArtMedia();
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  batchTokenDirect(): void {
+    this.#cloudinaryCroppedImageService.batchTokenDirect$().
+      subscribe({
+        next: (response) => {
+          this.token.set(response.result.token);
+          console.log({ token: response.result.token });
+          console.log({ token: this.token() });
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
   }
 
   onImageSelect(event: Event, url: string): void {

@@ -22,14 +22,26 @@
         <p><b>Código postal:</b> {{auction().data.attributes.postalCode}}</p>
         <p><b>Estado:</b> {{auction().data.attributes.state}}</p>
         <p><b>Reserva:</b> {{auction().data.attributes.reserve ? 'Sí' : 'No'}}</p>
-        <p><b>Monto de la reserva:</b> {{auction().data.attributes.reserveAmount}}</p>
-        <p><b>Kilometraje:</b> {{auction().data.attributes.kmInput}} {{auction().data.attributes.kmType}}</p>
+        <p><b>Monto de la reserva:</b> {{auction().data.attributes.reserveAmount | currency:'USD':'symbol':'1.2-2'}}</p>
+        <p><b>Kilometraje:</b> {{auction().data.attributes.kmInput | number}} {{auction().data.attributes.kmType}}</p>
         <p><b>¿Cómo supiste de nosotros?:</b> {{auction().data.attributes.howDidYouHearAboutUs}}</p>
         <p><b>Número de lote:</b> {{auction().data.attributes.lotNumber}}</p>
 
-        <div class="grid grid-cols-2 gap-4 mt-8">
+        <p><b>Fotos:</b></p>
+        <div class="grid grid-cols-3 gap-4">
           @for (photo of auction().data.attributes.photos; track $index) {
-          <img [src]="photo" alt="Foto del auto">
+          <img [src]="photo" alt="Foto {{ $index + 1}">
+          } @empty {
+          <p>No hay fotos</p>
+          }
+        </div>
+
+        <p><b>Videos:</b></p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (video of auction().data.attributes.videos; track $index) {
+          <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+          } @empty {
+          <p>No hay videos</p>
           }
         </div>
       </mat-tab>

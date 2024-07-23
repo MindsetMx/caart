@@ -82,7 +82,7 @@
           <div class="flex gap-5">
             <div class="w-full">
               <label [for]="'additionalCharge' + i" class="block text-sm mb-2">Información adicional {{i+1}}</label>
-              <textarea [formControlName]="i" [id]="'additionalCharge' + i" cols="30" rows="10" sharedInput></textarea>
+              <textarea [formControlName]="i" [id]="'additionalCharge' + i" cols="30" rows="1" sharedInput></textarea>
               @if (controlHasError(charge)) {
               <shared-input-error [message]="getErrorFromControl(charge)"></shared-input-error>
               }
@@ -120,5 +120,5 @@
   [aspectRatios]="aspectRatios()" (selectedImageChange)="setImage($event)" [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
 
-<auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"
+<auction-car-details-modal [(isOpen)]="auctionCarDetailsModalIsOpen" (isOpenChange)="closeAuctionCarDetailsModal()"
   [auctionCarId]="originalAuctionCarId()"></auction-car-details-modal>

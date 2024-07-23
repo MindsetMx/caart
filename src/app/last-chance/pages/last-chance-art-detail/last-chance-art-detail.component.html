@@ -132,14 +132,13 @@
           <div id="productCarousel" #myCarousel class="f-carousel">
             <div class="f-carousel__slide" [attr.data-thumb-src]="imagesPublish().data.fotoPrincipal"
               data-fancybox="gallery" [attr.data-src]="imagesPublish().data.fotoPrincipal">
-              <img class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
+              <img #leftColumn class="object-contain mx-auto"
                 [attr.data-lazy-src]="imagesPublish().data.fotoPrincipal" />
             </div>
             @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
             <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
               [attr.data-src]="auction">
-              <img class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
-                [attr.data-lazy-src]="auction" />
+              <img class="object-contain mx-auto" [attr.data-lazy-src]="auction" />
             </div>
             }
           </div>
@@ -182,10 +181,12 @@
       <ng-container right>
         <!-- information auction -->
         @if (auction().data) {
-        <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
+        <div #rightColumn>
+          <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
+        </div>
         }
 
-        <section class="md:hidden shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <section class="md:hidden shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           @if (auction().data) {
@@ -193,6 +194,19 @@
             @for (item of auction().data.attributes.carHistory.extraInfo; track $index) {
             <li>{{item}}</li>
             }
+          </ul>
+
+          <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
+
+          <ul class="space-y-1">
+            <li>
+              <span class="text-gray4">Lote #:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionArtForm.lotNumber}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">
+                {{auction().data.attributes.auctionArtForm.state}}</span>
+            </li>
           </ul>
 
           <div class="my-4">
@@ -280,7 +294,7 @@
       </ng-container>
 
       <ng-container right>
-        <section class="hidden md:block shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <section class="hidden md:block shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           @if (auction().data) {
@@ -288,6 +302,19 @@
             @for (item of auction().data.attributes.carHistory.extraInfo; track $index) {
             <li>{{item}}</li>
             }
+          </ul>
+
+          <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
+
+          <ul class="space-y-1">
+            <li>
+              <span class="text-gray4">Lote #:</span>&nbsp;<span
+                class="font-semibold">{{auction().data.attributes.auctionArtForm.lotNumber}}</span>
+            </li>
+            <li>
+              <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">
+                {{auction().data.attributes.auctionArtForm.state}}</span>
+            </li>
           </ul>
 
           <div class="my-4">
@@ -317,14 +344,14 @@
             </button> -->
         </section>
 
-        <section class="shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <section class="shadow mt-8 rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-6">¿Tienes una pieza de arte y quieres venderla?</h3>
 
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
         @if (specificAuction().data && specificAuction().data.bids.length > 0) {
-        <section class="hidden md:block shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <section class="hidden md:block shadow mt-8 rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <div class="xl:flex items-center justify-between">
             <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
             <!-- <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold text-sm" width="w-fit" px="px-6"

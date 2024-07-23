@@ -16,7 +16,7 @@
         <p><b>Categoría:</b> {{auction().data.attributes.category}}</p>
         <p><b>Otra categoría:</b> {{auction().data.attributes.otherCategory}}</p>
         <p><b>Reserva:</b> {{auction().data.attributes.reserve ? 'Sí' : 'No'}}</p>
-        <p><b>Monto de la reserva:</b> {{auction().data.attributes.reserveAmount}}</p>
+        <p><b>Monto de la reserva:</b> {{auction().data.attributes.reserveAmount | currency:'USD':'symbol':'1.2-2'}}</p>
         <p><b>Rareza:</b> {{auction().data.attributes.rarity}}</p>
         <p><b>Alto:</b> {{auction().data.attributes.height}} {{auction().data.attributes.unit}}</p>
         <p><b>Ancho:</b> {{auction().data.attributes.width}} {{auction().data.attributes.unit}}</p>
@@ -38,9 +38,9 @@
         </div>
 
         <p><b>Videos:</b></p>
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           @for (video of auction().data.attributes.videos; track $index) {
-          <video [src]="video" controls></video>
+          <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
           } @empty {
           <p>No hay videos</p>
           }

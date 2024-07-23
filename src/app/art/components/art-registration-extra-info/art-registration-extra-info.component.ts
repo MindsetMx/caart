@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Uppy } from '@uppy/core';
 import Spanish from '@uppy/locales/lib/es_ES';
@@ -17,6 +17,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 import { MatIcon } from '@angular/material/icon';
 import { NgxMaskDirective } from 'ngx-mask';
+import { bothOrNoneValidator } from '@shared/validations';
 
 @Component({
   selector: 'art-registration-extra-info',
@@ -151,18 +152,10 @@ export class ArtRegistrationExtraInfoComponent {
       additionalCharges: this.#fb.array(
         [
           this.#fb.group({
-            chargeType: ['', Validators.required],
-            amount: ['', Validators.required],
-          },
-            {
-              validators: Validators.required,
-            }
-          )
+            chargeType: [''],
+            amount: [''],
+          }, { validators: bothOrNoneValidator() })
         ]
-        ,
-        {
-          validators: Validators.required,
-        }
       ),
       originalAuctionArtId: [this.originalAuctionArtId, Validators.required],
     });
@@ -190,9 +183,9 @@ export class ArtRegistrationExtraInfoComponent {
 
   addAdditionalCharge(): void {
     const nuevoCredito = this.#fb.group({
-      chargeType: ['', Validators.required],
-      amount: ['', Validators.required],
-    });
+      chargeType: [''],
+      amount: [''],
+    }, { validators: bothOrNoneValidator() });
 
     this.additionalChargesFormArray.push(nuevoCredito);
   }
@@ -262,5 +255,13 @@ export class ArtRegistrationExtraInfoComponent {
 
   getError(field: string, formGroup: FormGroup = this.extraInfoForm): string | undefined {
     return this.#validatorsService.getError(formGroup, field);
+  }
+
+  formArrayHasError(formArray: FormArray = this.additionalChargesFormArray, index: number): boolean {
+    return this.#validatorsService.formArrayHasError(formArray, index);
+  }
+
+  getErrorFromFormArray(index: number): string | undefined {
+    return this.#validatorsService.getErrorFromFormArray(this.additionalChargesFormArray, index);
   }
 }

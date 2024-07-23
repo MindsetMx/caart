@@ -17,6 +17,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { DecimalPipe } from '@angular/common';
 import { environments } from '@env/environments';
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'general-details-and-exterior-of-the-car',
@@ -30,6 +31,7 @@ import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cr
     SpinnerComponent,
     UppyAngularDashboardModule,
     DecimalPipe,
+    NgxMaskDirective,
   ],
   templateUrl: './general-details-and-exterior-of-the-car.component.html',
   styleUrl: './general-details-and-exterior-of-the-car.component.css',

@@ -1,10 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, OnDestroy, Output, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { Observable, Subscription, map, of, startWith } from 'rxjs';
+import { Observable, Subscription, map, of, startWith, switchMap } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -21,6 +21,7 @@ import { states } from '@shared/states';
 import { TelephonePrefixes } from '@app/register-car/interfaces';
 import { telephonePrefixes } from '@shared/telephone-prefixes';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 
 @Component({
   selector: 'register',
@@ -51,6 +52,8 @@ export class RegisterComponent implements OnDestroy {
   #fb = inject(FormBuilder);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
+  #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
+  #destroyRef: DestroyRef = inject(DestroyRef);
 
   countries: string[] = countries;
   states: string[] = states;
@@ -65,6 +68,10 @@ export class RegisterComponent implements OnDestroy {
   userNameIsAvailable: WritableSignal<boolean> = signal(true);
   emailIsAvailable: WritableSignal<boolean> = signal(true);
   phoneNumberIsAvailable: WritableSignal<boolean> = signal(true);
+
+  isLoading1 = signal<boolean>(false);
+  isLoading2 = signal<boolean>(false);
+  validationImg = signal<string[]>([]);
 
   validationTypeSubscription?: Subscription;
 
@@ -195,6 +202,44 @@ export class RegisterComponent implements OnDestroy {
     });
   }
 
+  onFileChange(event: Event, indice: number): void {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.item(0);
+
+    if (!file) return;
+
+    switch (indice) {
+      case 0:
+        this.isLoading1.set(true);
+        break;
+      case 1:
+        this.isLoading2.set(true);
+        break;
+    }
+
+    this.#cloudinaryCroppedImageService.uploadImageDirect$().pipe(
+      switchMap((response) =>
+        this.#cloudinaryCroppedImageService.uploadImage$(file, response.result.uploadURL)
+      )
+    ).subscribe({
+      next: (response) => {
+        this.validationImgFormArray.at(indice).setValue(response.result.variants[0]);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    }).add(() => {
+      switch (indice) {
+        case 0:
+          this.isLoading1.set(false);
+          break;
+        case 1:
+          this.isLoading2.set(false);
+          break;
+      }
+    });
+  }
+
   checkUsernameAvailability(): void {
     this.#authService.checkUsernameAvailability$(this.usernameControl.value).subscribe({
       next: (response) => {
@@ -249,37 +294,55 @@ export class RegisterComponent implements OnDestroy {
   }
 
   setValidationType(type: idTypes): void {
+    console.log('setValidationType', type);
+
     switch (type) {
       case idTypes.ine:
         this.registerForm?.setControl('validationImg', new FormArray([
-          new FormControl(null, Validators.required),
-          new FormControl(null, Validators.required),
+          new FormControl('', Validators.required),
+          new FormControl('', Validators.required),
         ]));
 
         break;
-      case idTypes.pasaporte:
+      case idTypes.passport:
         this.registerForm?.setControl('validationImg', new FormArray([
-          new FormControl(null, Validators.required),
+          new FormControl('', Validators.required),
         ]));
 
         break;
     }
+
+    this.subscribeToValidationImgChanges();
+  }
+
+  private subscribeToValidationImgChanges(): void {
+    console.log('subscribeToValidationImgChanges');
+
+    const validationImgArray = this.registerForm.get('validationImg') as FormArray;
+    validationImgArray.valueChanges.pipe(
+      takeUntilDestroyed(this.#destroyRef)
+    ).subscribe(value => {
+      this.validationImg.set(value);
+    });
   }
 
   addOptionalFieldsToRegisterForm(): void {
+    console.log('addOptionalFieldsToRegisterForm');
+
     this.registerForm?.addControl('postalCode', new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]));
     this.registerForm?.addControl('streetAndNumber', new FormControl('', Validators.required));
     this.registerForm?.addControl('taxId', new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(13)]));
     this.registerForm?.addControl('validationImg', new FormArray([
-      new FormControl(null, Validators.required),
-      new FormControl(null, Validators.required),
+      new FormControl('', Validators.required),
+      new FormControl('', Validators.required),
     ]));
     this.registerForm?.addControl('validationType', new FormControl(idTypes.ine, Validators.required));
-
 
     this.validationTypeSubscription = this.validationType.valueChanges.subscribe((value) => {
       this.setValidationType(value);
     });
+
+    this.setValidationType(idTypes.ine);
   }
 
   removeOptionalFieldsFromRegisterForm(): void {

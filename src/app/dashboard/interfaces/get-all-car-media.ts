@@ -7,6 +7,7 @@ export interface GetAllCarMediaData {
   mecanicas: GetAllCarMediaUrls;
   interior: GetAllCarMediaUrls;
   exterior: GetAllCarMediaUrls;
+  extra: GetAllCarMediaUrls;
 }
 
 export interface GetAllCarMediaUrls {

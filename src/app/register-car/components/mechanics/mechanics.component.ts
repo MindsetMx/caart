@@ -173,9 +173,9 @@ export class MechanicsComponent {
     this.mechanicsForm = this.#fb.group({
       originalRims: ['', [Validators.required]],
       // rimsDetail: ['', [Validators.required]],
-      tireBrand: ['', [Validators.required]],
-      tireSize: ['', [Validators.required]],
-      tireDate: ['', [Validators.required]],
+      tireBrand: [''],
+      tireSize: [''],
+      tireDate: [''],
       tireCondition: ['', [Validators.required]],
       extraTiresOrRims: ['', [Validators.required]],
       // extraBrand: ['', [Validators.required]],

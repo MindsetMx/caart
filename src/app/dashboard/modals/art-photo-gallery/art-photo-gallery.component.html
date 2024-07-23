@@ -5,9 +5,12 @@
       <h3 class="text-center font-bold text-lg mb-12">Galería de fotos</h3>
       <hr class="absolute w-full -bottom-4">
     </div>
+
+    <div class="container mb-8" #uppyDashboardImages></div>
+
     @defer (when artPhotoGallery() && artPhotoGallery().data && artPhotoGallery().data.registro &&
     artPhotoGallery().data.registro.photos.length > 0) {
-    <!-- <h3 class="text-center font-bold text-lg mb-12">Registro</h3> -->
+    <h3 class="text-center font-bold text-lg mb-12">Registro</h3>
     <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
       @for (url of artPhotoGallery().data.registro.photos; track $index) {
       <label>
@@ -16,6 +19,29 @@
           <div class="absolute bottom-3 right-3">
             @if (allowMultipleSelection()) {
             <input #registerImageSelectionInputs type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
+              (change)="onImageSelect($event, url)">
+            } @else {
+            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+            }
+          </div>
+        </div>
+      </label>
+      }
+    </div>
+    }
+
+    <!-- extra -->
+    @defer (when artPhotoGallery() && artPhotoGallery().data && artPhotoGallery().data.extra &&
+    artPhotoGallery().data.extra.photos.length > 0) {
+    <h3 class="text-center font-bold text-lg mb-12">Extra</h3>
+    <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
+      @for (url of artPhotoGallery().data.extra.photos; track $index) {
+      <label>
+        <div class="relative h-fit">
+          <img [src]="url" class="w-full h-auto object-cover cursor-pointer rounded-lg">
+          <div class="absolute bottom-3 right-3">
+            @if (allowMultipleSelection()) {
+            <input #extraImageSelectionInput type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
               (change)="onImageSelect($event, url)">
             } @else {
             <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">

@@ -6,6 +6,8 @@
     <hr class="absolute w-full -bottom-4">
   </div>
 
+  <div class="container mb-8" #uppyDashboardImages></div>
+
   <form (submit)="selectImage(); $event.preventDefault()" id="carPhotoGalleryForm">
     @defer (when carPhotoGallery() && carPhotoGallery().data && carPhotoGallery().data.registro &&
     carPhotoGallery().data.registro.photos.length > 0) {
@@ -100,6 +102,29 @@
     </div>
     }
   </form>
+
+  <!-- extra -->
+  @defer (when carPhotoGallery() && carPhotoGallery().data && carPhotoGallery().data.extra &&
+  carPhotoGallery().data.extra.photos.length > 0) {
+  <h3 class="text-center font-bold text-lg mb-12">Extra</h3>
+  <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
+    @for (url of carPhotoGallery().data.extra.photos; track $index) {
+    <label>
+      <div class="relative h-fit">
+        <img [src]="url" class="w-full h-auto object-cover cursor-pointer rounded-lg">
+        <div class="absolute bottom-3 right-3">
+          @if (allowMultipleSelection()) {
+          <input type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
+            (change)="onImageSelect($event, url)">
+          } @else {
+          <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+          }
+        </div>
+      </div>
+    </label>
+    }
+  </div>
+  }
 
   <div class="w-full bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" footer>
     <button type="submit" form="carPhotoGalleryForm"

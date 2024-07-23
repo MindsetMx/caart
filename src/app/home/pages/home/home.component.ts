@@ -86,8 +86,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
           background-color: black;
         }
         .swiper-wrapper {
-          display: flex;
-          align-items: end;
+          // display: flex;
+          // align-items: end;
           padding-bottom: 2.5rem;
         }
         `,
@@ -142,7 +142,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       ],
       pagination: true,
       autoplay: {
-        delay: 5000
+        delay: 8000
       },
       loop: true,
     };

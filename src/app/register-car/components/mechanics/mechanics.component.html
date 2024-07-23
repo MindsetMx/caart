@@ -19,8 +19,7 @@
 
   <!-- Marca de llantas -->
   <div>
-    <label for="tireBrand" class="block mb-1 text-sm">Marca de llantas <span
-        class="font-bold text-red-500 inline-block">*</span></label>
+    <label for="tireBrand" class="block mb-1 text-sm">Marca de llantas</label>
     <input id="tireBrand" formControlName="tireBrand" type="text" sharedInput>
     @if (hasError('tireBrand')) {
     <shared-input-error [message]="getError('tireBrand')"></shared-input-error>
@@ -29,8 +28,7 @@
 
   <!-- tireSize input -->
   <div>
-    <label for="tireSize" class="block mb-1 text-sm">Medida de llantas <span
-        class="font-bold text-red-500 inline-block">*</span></label>
+    <label for="tireSize" class="block mb-1 text-sm">Medida de llantas</label>
     <input id="tireSize" formControlName="tireSize" type="text" sharedInput>
     @if (hasError('tireSize')) {
     <shared-input-error [message]="getError('tireSize')"></shared-input-error>
@@ -39,8 +37,7 @@
 
   <!-- tireDate input -->
   <div>
-    <label for="tireDate" class="block mb-1 text-sm">Fecha de llantas <span
-        class="font-bold text-red-500 inline-block">*</span></label>
+    <label for="tireDate" class="block mb-1 text-sm">Fecha de llantas</label>
     <input id="tireDate" formControlName="tireDate" type="date" sharedInput>
     @if (hasError('tireDate')) {
     <shared-input-error [message]="getError('tireDate')"></shared-input-error>

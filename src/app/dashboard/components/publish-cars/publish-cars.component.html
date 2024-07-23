@@ -150,7 +150,7 @@
   </div>
 </div>
 
-<auction-car-details-modal [isOpen]="auctionCarDetailsModalIsOpen()" (isOpenChange)="closeAuctionCarDetailsModal()"
+<auction-car-details-modal [(isOpen)]="auctionCarDetailsModalIsOpen" (isOpenChange)="closeAuctionCarDetailsModal()"
   [auctionCarId]="auctionCarId()"></auction-car-details-modal>
 
 <release-car-auction-for-preview-modal [isOpen]="releaseAuctionForPreviewModalIsOpen()"

@@ -129,7 +129,7 @@
         </section>
         }
 
-        <section class="md:hidden mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <section class="md:hidden mt-8 rounded-xl border border-gray3 px-6 py-6">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           <!-- <ul class="list-inside list-disc text-gray4">
@@ -340,8 +340,7 @@
       </ng-container>
 
       <ng-container right>
-        <section
-          class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <section class="hidden md:block shadow mt-8 rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           <!-- <ul class="list-inside list-disc text-gray4">
@@ -406,16 +405,14 @@
           }
         </section>
 
-        <section
-          class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <section class="hidden md:block shadow mt-8 rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <h3 class="font-semibold mb-6">¿Tienes un auto y quieres venderlo?</h3>
 
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
         @if (specificAuction().data && specificAuction().data.bids.length > 0) {
-        <section
-          class="hidden md:block shadow mt-8 max-w-[22rem] xl:max-w-md rounded-xl border border-gray3 px-6 py-6 ml-auto">
+        <section class="hidden md:block shadow mt-8 rounded-xl border border-gray3 px-6 py-6 ml-auto">
           <div class="xl:flex items-center justify-between">
             <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
             @defer (when specificAuction().data) {

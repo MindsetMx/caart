@@ -37,10 +37,14 @@
                   {{ offer.attributes.bidAmount| currency:'MXN':'symbol':'1.0-0' }}
                 </td>
                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                  @if (offer.attributes.rejected) {
+                  <span class="text-red-500">Rechazada</span>
+                  }@else {
                   <button (click)="openAcceptLastChanceBidModal(offer.id, offer.attributes.lastChanceAuctionId)"
                     type="button" class="underline font-bold">Aprobar</button>
                   <button (click)="openRejectBidModal(offer.id, offer.attributes.lastChanceAuctionId)" type="button"
                     class="underline font-bold ml-2">Rechazar</button>
+                  }
                 </td>
               </tr>
               } @empty {
@@ -65,10 +69,14 @@
                   {{ offer.attributes.bidAmount| currency:'MXN':'symbol':'1.0-0' }}
                 </td>
                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                  @if (offer.attributes.rejected) {
+                  <span class="text-red-500">Rechazada</span>
+                  }@else {
                   <button (click)="openAcceptLastChanceBidModal(offer.id, offer.attributes.lastChanceAuctionId)"
                     type="button" class="underline font-bold">Aprobar</button>
                   <button (click)="openRejectBidModal(offer.id, offer.attributes.lastChanceAuctionId)" type="button"
                     class="underline font-bold ml-2">Rechazar</button>
+                  }
                 </td>
               </tr>
               } @empty {

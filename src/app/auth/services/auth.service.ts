@@ -96,12 +96,7 @@ export class AuthService {
     delete registerFormValue.password2;
     registerFormValue = this.#appService.trimObjectValues(registerForm.value, ['password']);
 
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
-
-    const formData = this.#appService.transformObjectToFormData(registerFormValue);
-
-    return this.#http.post<RegisterResponse>(`${this.#baseUrl}/users/register`, formData, { headers });
+    return this.#http.post<RegisterResponse>(`${this.#baseUrl}/users/register`, registerFormValue);
   }
 
   completeRegister$(completeRegisterForm: FormGroup): Observable<any> {

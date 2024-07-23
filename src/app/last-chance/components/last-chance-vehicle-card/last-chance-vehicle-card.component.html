@@ -1,5 +1,5 @@
 <div [routerLink]="['/ultima-oportunidad', originalAuctionId()]" class="relative cursor-pointer">
-  <img class="w-full object-cover rounded-md" [src]="cover()" alt="">
+  <img class="w-full max-h-96 object-contain rounded-md" [src]="cover()" alt="">
   <follow-button [auctionId]="originalAuctionId()" [auctionType]="auctionType.car" class="absolute top-3 right-5">
   </follow-button>
 

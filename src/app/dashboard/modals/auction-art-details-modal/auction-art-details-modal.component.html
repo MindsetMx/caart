@@ -19,13 +19,14 @@
           <p><b>Categoría:</b> {{ wizardData().data.registerArtDetails.category }}</p>
           <p><b>Otra categoría:</b> {{ wizardData().data.registerArtDetails.otherCategory }}</p>
           <p><b>Reserva:</b> {{ wizardData().data.registerArtDetails.reserve ? 'Sí' : 'No' }}</p>
-          <p><b>Monto de reserva:</b> {{ wizardData().data.registerArtDetails.reserveAmount }}</p>
+          <p><b>Monto de reserva:</b> {{ wizardData().data.registerArtDetails.reserveAmount |
+            currency:'USD':'symbol':'1.0-2' }}</p>
           <p><b>Rareza:</b> {{ (wizardData().data.registerArtDetails.rarity === 'Edición limitada') ?
             wizardData().data.registerArtDetails.rarity + ' - ' + wizardData().data.registerArtDetails.edition :
             wizardData().data.registerArtDetails.rarity }}</p>
-          <p><b>Altura:</b> {{ wizardData().data.registerArtDetails.height }}</p>
-          <p><b>Ancho:</b> {{ wizardData().data.registerArtDetails.width }}</p>
-          <p><b>Profundidad:</b> {{ wizardData().data.registerArtDetails.depth }}</p>
+          <p><b>Altura:</b> {{ wizardData().data.registerArtDetails.height | number }}</p>
+          <p><b>Ancho:</b> {{ wizardData().data.registerArtDetails.width | number }}</p>
+          <p><b>Profundidad:</b> {{ wizardData().data.registerArtDetails.depth | number }}</p>
           <p><b>Unidad:</b> {{ wizardData().data.registerArtDetails.unit }}</p>
           <p><b>Condición:</b> {{ wizardData().data.registerArtDetails.condition }}</p>
           <p><b>Código postal:</b> {{ wizardData().data.registerArtDetails.postalCode }}</p>
@@ -40,9 +41,9 @@
             }
           </div>
           <p><b>Videos:</b></p>
-          <div class="grid grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             @for (video of wizardData().data.registerArtDetails.videos; track $index) {
-            <video [src]="video" controls></video>
+            <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
             } @empty {
             <p>No hay videos</p>
             }
@@ -84,9 +85,9 @@
             }
           </div>
           <p><b>Videos:</b></p>
-          <div class="grid grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             @for (video of wizardData().data.artDetails.videos; track $index) {
-            <video [src]="video" controls></video>
+            <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
             } @empty {
             <p>No hay videos</p>
             }

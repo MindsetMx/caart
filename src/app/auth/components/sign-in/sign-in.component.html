@@ -1,10 +1,10 @@
 <section class="container {{mt}}">
-  <h1 class="text-center font-optima font-bold text-4xl mb-6">CAART</h1>
-
-  <p class="text-center font-optima font-bold text-3xl">Bienvenido/a de vuelta</p>
-
+  <!-- <h1 class="text-center font-optima font-bold text-4xl mb-6">CAART</h1> -->
+  <img class="mx-auto w-48" src="assets/img/icons/logo.svg" alt="logo caart">
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md {{mb}}">
+    <h2 class="font-optima font-bold text-xl mb-4">Inicia sesión</h2>
+
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
       <div>
         <label for="email" class="block mb-1 text-sm">Correo electrónico</label>
@@ -47,7 +47,8 @@
       </button>
 
       <div class="text-center">
-        <span>¿No tienes cuenta en CAART?</span>&nbsp;&nbsp;&nbsp;<button type="button" (click)="openRegisterModal()"
+        <span>¿No tienes cuenta en <img src="assets/img/icons/logo2.png" class="inline w-10"
+            alt="logo caart">?</span>&nbsp;&nbsp;&nbsp;<button type="button" (click)="openRegisterModal()"
           class="font-bold underline">Regístrate</button>
       </div>
     </form>

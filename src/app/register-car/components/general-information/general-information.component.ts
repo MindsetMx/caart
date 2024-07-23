@@ -16,6 +16,10 @@ import { TertiaryButtonDirective } from '@shared/directives/tertiary-button.dire
 import { ValidatorsService } from '@shared/services/validators.service';
 import { ApplyDiscountCode } from '@app/register-car/interfaces';
 import { AuctionTypes as AuctionTypes2 } from '@app/auctions/enums/auction-types';
+import { PaymentMethodDeletionConfirmationModalComponent } from '@account/modals/payment-method-deletion-confirmation-modal/payment-method-deletion-confirmation-modal.component';
+import { MatIcon } from '@angular/material/icon';
+import { PaymentMethodsService } from '@shared/services/payment-methods.service';
+import { AppService } from '@app/app.service';
 
 @Component({
   selector: 'register-car-general-information',
@@ -30,7 +34,9 @@ import { AuctionTypes as AuctionTypes2 } from '@app/auctions/enums/auction-types
     SpinnerComponent,
     PaymentMethodModalComponent,
     TitleCasePipe,
-    TertiaryButtonDirective
+    TertiaryButtonDirective,
+    PaymentMethodDeletionConfirmationModalComponent,
+    MatIcon,
   ],
   templateUrl: './general-information.component.html',
   styleUrl: './general-information.component.css',
@@ -42,6 +48,8 @@ export class GeneralInformationComponent implements OnInit {
   #fb = inject(FormBuilder);
   #generalInfoService = inject(GeneralInfoService);
   #route = inject(ActivatedRoute);
+  #paymentMethodsService = inject(PaymentMethodsService);
+  #appService = inject(AppService);
 
   generalInformationForm: FormGroup;
 
@@ -50,6 +58,12 @@ export class GeneralInformationComponent implements OnInit {
   paymentMethodModalIsOpen: WritableSignal<boolean> = signal(false);
   paymentMethods: WritableSignal<PaymentMethod[]> = signal([] as PaymentMethod[]);
   applyDiscountCodeResponse: WritableSignal<ApplyDiscountCode> = signal({} as ApplyDiscountCode);
+
+  deletePaymentMethodButtonIsDisabled = signal<boolean[]>([]);
+  paymentMethodIdToDelete = signal<string>('');
+  deletePaymentMethodIsOpen = signal<boolean>(false);
+  deletePaymentMethodSubmitButtonIsDisabled = signal<boolean>(false);
+  error = signal<string | undefined>(undefined);
 
   isValidDiscountCode: Signal<boolean | undefined> = computed(() => {
     if (!this.applyDiscountCodeResponse().discountInfo) return undefined;
@@ -77,6 +91,13 @@ export class GeneralInformationComponent implements OnInit {
     this.getGeneralInfo();
   }
 
+  openDeletePaymentMethodModal(paymentMethodId: string, index: number): void {
+    this.deletePaymentMethodButtonIsDisabled.set(this.deletePaymentMethodButtonIsDisabled().map((_, i) => i === index));
+
+    this.paymentMethodIdToDelete.set(paymentMethodId);
+    this.deletePaymentMethodIsOpen.set(true);
+  }
+
   generalInformationFormSubmit() {
     this.isButtonSubmitDisabled.set(true);
 
@@ -97,6 +118,7 @@ export class GeneralInformationComponent implements OnInit {
         },
         error: (error) => {
           console.error(error);
+          this.error.set(error.error.message);
         },
       }).add(() => {
         this.isButtonSubmitDisabled.set(false);
@@ -131,6 +153,30 @@ export class GeneralInformationComponent implements OnInit {
     });
   }
 
+  deletePaymentMethod(paymentMethodId: string): void {
+    this.#paymentMethodsService.deletePaymentMethod$(paymentMethodId).subscribe({
+      next: () => {
+        // this.paymentMethods.update((paymentMethods) => {
+        //   paymentMethods.data = paymentMethods.data.filter((paymentMethod) => paymentMethod.id !== paymentMethodId);
+
+        //   return { ...paymentMethods };
+        // });
+
+        this.getGeneralInfo();
+
+        this.toastSuccess('Método de pago eliminado correctamente.');
+      },
+      error: (error) => {
+        console.error(error);
+
+        this.toastError(error.error.message);
+      }
+    }).add(() => {
+      this.deletePaymentMethodSubmitButtonIsDisabled.set(false);
+      this.deletePaymentMethodIsOpen.set(false);
+    });
+  }
+
   hasError(form: FormGroup, field: string): boolean {
     return this.#validatorsService.hasError(form, field);
   }
@@ -139,5 +185,12 @@ export class GeneralInformationComponent implements OnInit {
     if (!form) return undefined;
 
     return this.#validatorsService.getError(form, field);
+  }
+  toastSuccess(message: string): void {
+    this.#appService.toastSuccess(message);
+  }
+
+  toastError(message: string): void {
+    this.#appService.toastError(message);
   }
 }

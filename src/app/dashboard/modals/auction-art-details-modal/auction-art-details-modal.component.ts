@@ -1,5 +1,7 @@
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ArtWizard, UserDetails } from '@dashboard/interfaces';
 
 import { ArtWizardService } from '@dashboard/services/art-wizard.service';
@@ -11,7 +13,9 @@ import { tap } from 'rxjs';
   standalone: true,
   imports: [
     ModalComponent,
-    MatTabsModule
+    MatTabsModule,
+    CommonModule,
+    CurrencyPipe,
   ],
   templateUrl: './auction-art-details-modal.component.html',
   styleUrl: './auction-art-details-modal.component.css',
@@ -26,6 +30,7 @@ export class AuctionArtDetailsModalComponent {
   userDetails = signal<UserDetails>({} as UserDetails);
 
   #artWizardService = inject(ArtWizardService);
+  #sanitizer = inject(DomSanitizer);
 
   auctionCarIdEffect = effect(() => {
     if (this.auctionArtId() && this.isOpen()) {
@@ -41,6 +46,10 @@ export class AuctionArtDetailsModalComponent {
       });
     }
   });
+
+  getSafeUrl(video: string): SafeResourceUrl {
+    return this.#sanitizer.bypassSecurityTrustResourceUrl(video);
+  }
 
   getUserDetails(): void {
     this.#artWizardService.getUserDetails$(this.auctionArtId()).subscribe({

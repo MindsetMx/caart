@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NgxMaskDirective } from 'ngx-mask';
+import { bothOrNoneValidator } from '@shared/validations';
 
 @Component({
   selector: 'car-extras',
@@ -63,18 +64,10 @@ export class CarExtrasComponent {
       additionalCharges: this.#fb.array(
         [
           this.#fb.group({
-            chargeType: ['', Validators.required],
-            amount: ['', Validators.required],
-          },
-            {
-              validators: Validators.required,
-            }
-          )
+            chargeType: [''],
+            amount: [''],
+          }, { validators: bothOrNoneValidator() })
         ]
-        ,
-        {
-          validators: Validators.required,
-        }
       ),
       comments: ['', Validators.required],
       termsConditionsAccepted: ['', Validators.required],
@@ -160,9 +153,9 @@ export class CarExtrasComponent {
         if (Array.isArray(additionalCharges)) {
           const aditionalChargesFormGroups = additionalCharges.map((additionalCharge: any) => {
             return this.#fb.group({
-              chargeType: [additionalCharge.chargeType, Validators.required],
-              amount: [additionalCharge.amount, Validators.required],
-            });
+              chargeType: [additionalCharge.chargeType],
+              amount: [additionalCharge.amount],
+            }, { validators: bothOrNoneValidator() });
           });
 
           this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
@@ -174,13 +167,13 @@ export class CarExtrasComponent {
           //Sobreescribir con valores de prueba
           const aditionalChargesFormGroups = [
             this.#fb.group({
-              chargeType: ['Cargo adicional 1', Validators.required],
-              amount: [100, Validators.required],
-            }),
+              chargeType: ['Cargo adicional 1'],
+              amount: [100],
+            }, { validators: bothOrNoneValidator() }),
             this.#fb.group({
-              chargeType: ['Cargo adicional 2', Validators.required],
-              amount: [200, Validators.required],
-            }),
+              chargeType: ['Cargo adicional 2'],
+              amount: [200],
+            }, { validators: bothOrNoneValidator() }),
           ];
 
           this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
@@ -197,9 +190,9 @@ export class CarExtrasComponent {
 
   addAdditionalCharge(): void {
     const nuevoCredito = this.#fb.group({
-      chargeType: ['', Validators.required],
-      amount: ['', Validators.required],
-    });
+      chargeType: [''],
+      amount: [''],
+    }, { validators: bothOrNoneValidator() });
 
     this.additionalChargesFormArray.push(nuevoCredito);
   }
@@ -210,5 +203,14 @@ export class CarExtrasComponent {
 
   getError(field: string, formGroup: FormGroup = this.carExtrasForm): string | undefined {
     return this.#validatorsService.getError(formGroup, field);
+  }
+
+
+  formArrayHasError(formArray: FormArray = this.additionalChargesFormArray, index: number): boolean {
+    return this.#validatorsService.formArrayHasError(formArray, index);
+  }
+
+  getErrorFromFormArray(index: number): string | undefined {
+    return this.#validatorsService.getErrorFromFormArray(this.additionalChargesFormArray, index);
   }
 }

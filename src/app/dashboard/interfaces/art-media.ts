@@ -4,6 +4,7 @@ export interface ArtMedia {
 
 export interface ArtMediaData {
   registro: ArtMediaRegistro;
+  extra: ArtMediaRegistro;
 }
 
 export interface ArtMediaRegistro {

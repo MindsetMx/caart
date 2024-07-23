@@ -62,7 +62,7 @@
     <fieldset class="mb-8">
       <legend class="sr-only">Método de pago</legend>
       <div class="space-y-6">
-        @for (paymentMethod of paymentMethods(); track $index) {
+        @for (paymentMethod of paymentMethods(); track paymentMethod.id; let index = $index) {
         <div class="flex items-center">
           <input formControlName="paymentMethodId" [id]="$index" [value]="paymentMethod.id" type="radio"
             class="h-6 w-6">
@@ -76,6 +76,11 @@
               <span>{{paymentMethod.card.brand | titlecase}}</span> que termina en {{paymentMethod.card.last4}}
             </p>
             <p>Expira el {{paymentMethod.card.expMonth}}/{{paymentMethod.card.expYear}}</p>
+            <button (click)="openDeletePaymentMethodModal(paymentMethod.id, index)" type="button"
+              [disabled]="deletePaymentMethodButtonIsDisabled()[index]"
+              [class.opacity-50]="deletePaymentMethodButtonIsDisabled()[index]">
+              <mat-icon>delete</mat-icon>
+            </button>
           </label>
         </div>
         }
@@ -102,6 +107,10 @@
   </div>
 </form>
 
+@if (error()) {
+<span class="text-red-500 text-sm">{{error()}}</span>
+}
+
 <button form="generalInformationForm" class="flex justify-center mt-8" type="submit"
   [disabled]="isButtonSubmitDisabled()" [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
   @if (isButtonSubmitDisabled()) {
@@ -113,3 +122,7 @@
 
 <payment-method-modal (paymentMethodAdded)="refreshPaymentMethods()"
   [isOpen]="paymentMethodModalIsOpen"></payment-method-modal>
+
+<payment-method-deletion-confirmation-modal [(isOpen)]="deletePaymentMethodIsOpen"
+  [paymentMethodId]="paymentMethodIdToDelete()" (deletePaymentMethodChange)="deletePaymentMethod($event)"
+  [(isButtonSubmitDisabled)]="deletePaymentMethodSubmitButtonIsDisabled"></payment-method-deletion-confirmation-modal>

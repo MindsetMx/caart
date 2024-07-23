@@ -5,13 +5,16 @@ import { RequestsDetailsService } from '@app/dashboard/services/requests-details
 import { AuctionArtDetails, UserDetails } from '@app/dashboard/interfaces';
 import { MatTabsModule } from '@angular/material/tabs';
 import { tap } from 'rxjs';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'art-requests-details-modal',
   standalone: true,
   imports: [
     ModalComponent,
-    MatTabsModule
+    MatTabsModule,
+    CurrencyPipe
   ],
   templateUrl: './art-requests-details-modal.component.html',
   styleUrl: './art-requests-details-modal.component.css',
@@ -25,6 +28,7 @@ export class ArtRequestsDetailsModalComponent {
   userDetails = signal<UserDetails>({} as UserDetails);
 
   #requestsDetailsService = inject(RequestsDetailsService);
+  #sanitizer = inject(DomSanitizer);
 
   publicationIdEffect = effect(() => {
     if (this.publicationId()) {
@@ -35,6 +39,10 @@ export class ArtRequestsDetailsModalComponent {
       });
     }
   });
+
+  getSafeUrl(video: string): SafeResourceUrl {
+    return this.#sanitizer.bypassSecurityTrustResourceUrl(video);
+  }
 
   getUserDetails(): void {
     this.#requestsDetailsService.getUserDetails$(this.publicationId()).subscribe({

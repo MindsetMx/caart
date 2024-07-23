@@ -1,5 +1,5 @@
 <div [routerLink]="[auctionLink(), originalAuctionId()]" class="relative cursor-pointer">
-  <img class="w-full object-contain rounded-md" [src]="cover()" alt="">
+  <img class="w-full max-h-96 object-contain rounded-md" [src]="cover()" alt="">
   <follow-button [auctionId]="originalAuctionId()" [auctionType]="auctionType.car" class="absolute top-3 right-5">
   </follow-button>
 
@@ -20,12 +20,14 @@
       </div>
       }
     </div>
-    <p class="text-gray4 line-clamp-3 min-h-[72px]" [ngClass]="{'mt-9': !hasReserve() === false && !isPremium()}"
-      style="word-wrap: break-word;">
+    <p class="text-gray4 line-clamp-3 min-h-[72px]" style="word-wrap: break-word;">
       {{extract()}}
     </p>
 
-    <p class="mt-2">Vendido por <b>${{lastBid() | number}}</b></p>
-    <span class="text-gray4">{{endDate() | date:'dd/MM/yyyy'}}</span>
+    <div class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">
+      <span>Vendido por <b>${{lastBid() | number}}</b></span>
+      &nbsp; · &nbsp;
+      <span>{{endDate() | date:'dd/MM/yyyy'}}</span>
+    </div>
   </div>
 </div>

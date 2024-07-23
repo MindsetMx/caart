@@ -31,8 +31,9 @@ export class AuctionService {
   }
 
   // auction-items/all-auction-cars
+  // http://localhost:3000/auction-items/all-auction-cars?page=1&size=10&orderBy=createdAt&order=-1
   getAllAuctionCars$(): Observable<any> {
-    const url = `${this.#baseUrl}/auction-items/all-auction-cars`;
+    const url = `${this.#baseUrl}/auction-items/all-auction-cars?page=1&size=10&orderBy=createdAt&order=-1`;
 
     return this.#http.get<any>(url);
   }

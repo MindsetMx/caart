@@ -1,10 +1,15 @@
-<h1 class="font-optima text-4xl font-bold mb-8">Generales y exterior del auto</h1>
-
-<h2 class="text-xl font-bold mb-5">Información general del automóvil</h2>
-
-<form [formGroup]="exteriorOfTheCarForm" (ngSubmit)="exteriorOfTheCarFormSubmit()"
-  class="grid grid-cols-2 gap-5 items-end">
-
+<form [formGroup]="exteriorForm" class="grid grid-cols-2 gap-5 items-end" (submit)="updateExteriorDetails()">
+  <p class="mt-4"><b>ID:</b> {{wizardData().data.exteriorDetails._id}}</p>
+  <p><b>originalAuctionCarId:</b> {{wizardData().data.exteriorDetails.originalAuctionCarId}}</p>
+  <!-- <p><b>VIN:</b> {{wizardData().data.exteriorDetails.VIN}}</p> -->
+  <!-- <p><b>Accidente:</b> {{wizardData().data.exteriorDetails.accident ? 'Sí' : 'No'}}</p> -->
+  <!-- <p><b>Marca:</b> {{wizardData().data.exteriorDetails.brand}}</p> -->
+  <!-- <p><b>Historial del auto:</b> {{wizardData().data.exteriorDetails.carHistory}}</p> -->
+  <!-- <p><b>Modelo:</b> {{wizardData().data.exteriorDetails.carModel}}</p> -->
+  <!-- <p><b>Comentarios:</b> {{wizardData().data.exteriorDetails.detailComments}}</p> -->
+  <!-- <p><b>Color exterior:</b> {{wizardData().data.exteriorDetails.exteriorColor}}</p> -->
+  <!-- <p><b>Condición exterior:</b> {{wizardData().data.exteriorDetails.exteriorCondition}}</p> -->
+  <!-- <p><b>Modificaciones exteriores:</b> {{wizardData().data.exteriorDetails.exteriorModified ? 'Sí' : 'No'}}</p> -->
   <div>
     <label for="brand" class="block mb-1 text-sm">Marca <span
         class="font-bold text-red-500 inline-block">*</span></label>
@@ -65,7 +70,7 @@
 
   <!-- other transmission type -->
 
-  @if (transmissionTypeControl.value === 'Otro') {
+  <!-- @if (transmissionTypeControl.value === 'Otro') {
   <div>
     <label for="otherTransmission" class="block mb-1 text-sm">Otro tipo de transmisión <span
         class="font-bold text-red-500 inline-block">*</span></label>
@@ -74,7 +79,7 @@
     <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
     }
   </div>
-  }
+  } -->
 
   <!-- VIN -->
   <div>
@@ -99,7 +104,7 @@
   </div>
 
   <!-- wichWarranties -->
-  @if (warrantiesControl.value === 'true') {
+  <!-- @if (warrantiesControl.value === 'true') {
   <div class="col-span-2">
     <label for="wichWarranties" class="block mb-1 text-sm">¿Cuáles? <span
         class="font-bold text-red-500 inline-block">*</span></label>
@@ -109,7 +114,7 @@
     <shared-input-error [message]="getError('wichWarranties')"></shared-input-error>
     }
   </div>
-  }
+  } -->
 
   <!-- Factura / Pedimento select -->
   <div class="col-span-2">
@@ -264,31 +269,25 @@
     }
   </div>
 
-  <!-- Fotos del exterior del auto -->
   <div class="col-span-2">
-    <label for="exteriorImagesOrVideos" class="text-sm cursor-pointer">
-      Fotos del exterior del auto
-      <span class="font-bold text-red-500 inline-block">*</span></label>
-
-    <div id="uppyDashboard" #uppyDashboardImages></div>
-
-    @if (hasError('exteriorPhotos')) {
-    <shared-input-error [message]="getError('exteriorPhotos')"></shared-input-error>
-    }
-
+    <p><b>Fotos:</b></p>
+    <div class="grid grid-cols-3 gap-4">
+      @for (photo of wizardData().data.exteriorDetails.exteriorPhotos; track $index) {
+      <img [src]="photo" alt="Foto exterior">
+      } @empty {
+      <p>No hay fotos</p>
+      }
+    </div>
   </div>
-
-  <!-- Videos del exterior del auto -->
   <div class="col-span-2">
-    <label for="exteriorImagesOrVideos" class="text-sm cursor-pointer">
-      Videos del exterior del auto
-    </label>
-
-    <div id="uppyDashboard" #uppyDashboardVideos></div>
-
-    @if (hasError('exteriorVideos')) {
-    <shared-input-error [message]="getError('exteriorVideos')"></shared-input-error>
-    }
+    <p><b>Videos:</b></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for (video of wizardData().data.exteriorDetails.exteriorVideos; track $index) {
+      <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+      } @empty {
+      <p>No hay videos</p>
+      }
+    </div>
   </div>
 
   <div class="col-span-2">
@@ -297,8 +296,21 @@
       @if (isButtonSubmitDisabled()) {
       <shared-spinner></shared-spinner>
       } @else {
-      Siguiente
+      Guardar
       }
     </button>
   </div>
+  <!-- <p><b>Detalles de la factura:</b> {{wizardData().data.exteriorDetails.invoiceDetails}}</p> -->
+  <!-- <p><b>Tipo de factura:</b> {{wizardData().data.exteriorDetails.invoiceType}}</p> -->
+  <!-- <p><b>KM:</b> {{wizardData().data.exteriorDetails.kmInput | number}}</p> -->
+  <!-- <p><b>Odómetro verificado:</b> {{wizardData().data.exteriorDetails.odometerVerified ? 'Sí' : 'No'}}</p> -->
+  <!-- <p><b>Pintura original:</b> {{wizardData().data.exteriorDetails.originalPaint ? 'Sí' : 'No'}}</p> -->
+  <!-- <p><b>Otra transmisión:</b> {{wizardData().data.exteriorDetails.otherTransmission}}</p> -->
+  <!-- <p><b>Medidor de pintura:</b> {{wizardData().data.exteriorDetails.paintMeter ? 'Sí' : 'No'}}</p> -->
+  <!-- <p><b>Carrera:</b> {{wizardData().data.exteriorDetails.raced ? 'Sí' : 'No'}}</p> -->
+  <!-- <p><b>Color específico:</b> {{wizardData().data.exteriorDetails.specificColor}}</p> -->
+  <!-- <p><b>Tipo de transmisión:</b> {{wizardData().data.exteriorDetails.transmissionType}}</p> -->
+  <!-- <p><b>Garantías:</b> {{wizardData().data.exteriorDetails.warranties ? 'Sí' : 'No'}}</p> -->
+  <!-- <p><b>¿Qué garantías?:</b> {{wizardData().data.exteriorDetails.wichWarranties}}</p> -->
+  <!-- <p><b>Año:</b> {{wizardData().data.exteriorDetails.year}}</p> -->
 </form>

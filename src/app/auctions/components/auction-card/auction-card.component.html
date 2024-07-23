@@ -1,5 +1,5 @@
 <div [routerLink]="['/subasta', originalAuctionCarId()]" class="relative cursor-pointer">
-  <img class="w-full object-cover rounded-md" [src]="cover()" alt="">
+  <img class="w-full max-h-96 object-contain rounded-md" [src]="cover()" alt="">
   <!-- <button class="absolute top-3 right-5 bg-white/50 rounded-full p-2">
     <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
   </button> -->
@@ -40,7 +40,7 @@
     }
     @if (!isHomeRoute) {
     <p class="text-gray4 line-clamp-3 min-h-[72px]" style="word-wrap: break-word;"
-      [ngClass]="{'mt-9': !reserve() === false && !premium()}">
+      [ngClass]="{'mt-8': !reserve() === false && !premium()}">
       {{extract()}}
     </p>
     }

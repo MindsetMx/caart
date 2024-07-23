@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Carousel, Fancybox } from '@fancyapps/ui';
-import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, untracked, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { forkJoin, switchMap } from 'rxjs';
@@ -62,6 +62,8 @@ import { AppService } from '@app/app.service';
 })
 export class LastChanceArtDetailComponent {
   myCarousel = viewChild<ElementRef>('myCarousel');
+  leftColumn = viewChild<ElementRef>('leftColumn');
+  rightColumn = viewChild<ElementRef>('rightColumn');
 
   readonly #baseUrl = environments.baseUrl;
 
@@ -97,6 +99,8 @@ export class LastChanceArtDetailComponent {
   #commentsService = inject(CommentsService);
   #lastChanceArtPurchaseService = inject(LastChanceArtPurchaseService);
   #appService = inject(AppService);
+
+  #renderer = inject(Renderer2);
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
@@ -235,6 +239,15 @@ export class LastChanceArtDetailComponent {
           },
         },
       });
+    }
+  });
+
+  columnsEffect = effect(() => {
+    if (this.leftColumn()?.nativeElement && this.rightColumn()?.nativeElement) {
+      console.log('columnsEffect');
+
+      const rightColumnHeight = this.rightColumn()?.nativeElement.offsetHeight;
+      this.#renderer.setStyle(this.leftColumn()?.nativeElement, 'maxHeight', `${rightColumnHeight}px`);
     }
   });
 

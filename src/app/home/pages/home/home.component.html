@@ -1,8 +1,25 @@
+<div class="grid lg:hidden grid-flow-col gap-2 text-sm">
+  <!-- En vivo  -->
+  <a class="text-center py-4 text-gray-500" routerLink="/subastas-en-vivo">
+    En vivo
+  </a>
+  <!-- Ultima oportunidad -->
+  <a class="text-center py-4 text-gray-500" routerLink="/ultima-oportunidad">
+    Ultima oportunidad
+  </a>
+  <!-- Resultados -->
+  <a class="text-center py-4 text-gray-500" routerLink="/resultados">
+    Resultados
+  </a>
+</div>
 <swiper-container init="false" #carousel>
   <swiper-slide>
     <div class="bg-gray-900/65">
       <div class="relative overflow-hidden">
-        <img src="assets/img/home/auto.jpg" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
+        <img src="assets/img/home/alfa_romeo.jpeg" alt=""
+          class="hidden md:block absolute inset-0 -z-10 h-full w-full object-cover">
+        <img src="assets/img/home/caar_vertical.jpeg" alt=""
+          class="md:hidden absolute inset-0 -z-10 h-full w-full object-cover">
         <!-- <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
           aria-hidden="true">
           <div
@@ -10,16 +27,16 @@
             style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
           </div>
         </div> -->
-        <div class="mx-auto max-w-2xl py-32 sm:py-48">
+        <div class="mx-auto max-w-2xl py-32 xxs:py-52 sm:py-48">
           <div class="text-center">
             <!-- <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
               CAART
             </h1> -->
             <img src="assets/img/home/logo_caart_auctions_blanco.png" alt="logo caart" class="w-48 mx-auto">
-            <p class="mt-6 text-3xl leading-8 text-gray-300">
+            <p class="my-6 text-xl mx-4 md:mx-auto md:text-3xl leading-8 text-gray-300">
               Reinventamos la experiencia de las subastas online
             </p>
-            <div class="mt-10 flex items-center justify-center gap-x-6">
+            <div class="mt-14 flex items-center justify-center gap-x-6">
               <!-- subastas-en-vivo?tab=2 -->
               <button routerLink="/subastas-en-vivo" [queryParams]="{ tab: 2 }"
                 class="min-w-32 rounded-md bg-transparent border border-white text-white px-3.5 py-2.5 font-semibold shadow-sm hover:bg-gray-400/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
@@ -46,7 +63,7 @@
       </div>
     </div>
   </swiper-slide>
-  <swiper-slide>
+  <swiper-slide class="hidden md:block">
     <div class="bg-gray-900/65">
       <div class="relative overflow-hidden">
         <img src="assets/img/home/banner2.jpeg" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
@@ -63,10 +80,10 @@
               CAART
             </h1> -->
             <img src="assets/img/home/logo_caart_auctions_blanco.png" alt="logo caart" class="w-48 mx-auto">
-            <p class="mt-6 text-3xl leading-8 text-gray-300">
+            <p class="my-6 text-3xl leading-8 text-gray-300">
               Reinventamos la experiencia de las subastas online
             </p>
-            <div class="mt-10 flex items-center justify-center gap-x-6">
+            <div class="mt-14 flex items-center justify-center gap-x-6">
               <!-- subastas-en-vivo?tab=2 -->
               <button routerLink="/subastas-en-vivo" [queryParams]="{ tab: 2 }"
                 class="min-w-32 rounded-md bg-transparent border border-white text-white px-3.5 py-2.5 font-semibold shadow-sm hover:bg-gray-400/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
@@ -166,10 +183,11 @@
 </section> -->
 
 <section class="container mt-8 md:mt-16">
-  <h2 class="font-optima font-bold text-xl md:text-4xl">SUBASTAS DEL MOMENTO</h2>
-
-  <div class="flex mb-8">
-    <a routerLink="/subastas-en-vivo" class="ml-auto underline font-optima font-semibold">Ver todo</a>
+  <div class="flex justify-between gap-x-2">
+    <h2 class="font-optima font-bold text-xl md:text-4xl">SUBASTAS DEL MOMENTO</h2>
+    <div class="flex mb-8">
+      <a routerLink="/subastas-en-vivo" class="ml-auto underline font-optima font-semibold">Ver todo</a>
+    </div>
   </div>
 
   <swiper-container init="false" #carousel2>

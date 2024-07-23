@@ -69,7 +69,7 @@
 
       <a href="mailto:hola@caart.com.mx?subject=Comentarios sobre vista previa Lote:{{auction().data.attributes.auctionCarForm.lotNumber}}, {{auction().data.attributes.title}}"
         class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
-        Comentarios
+        Enviar comentarios
         <span aria-hidden="true">&rarr;</span>
       </a>
 
@@ -203,7 +203,7 @@
         </section>
         }
 
-        <section class="md:hidden mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6 text-xs">
+        <section class="md:hidden mt-8 rounded-xl border border-gray3 px-6 py-6 text-xs">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           @if (auction().data) {
@@ -434,7 +434,7 @@
       </ng-container>
 
       <ng-container right>
-        <section class="hidden md:block shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <section class="hidden md:block shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
           <h3 class="font-semibold mb-2">Información adicional</h3>
 
           <!-- <ul class="list-inside list-disc text-gray4">
@@ -503,14 +503,14 @@
           }
         </section>
 
-        <section class="hidden md:block shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <section class="hidden md:block shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
           <h3 class="font-semibold mb-6">¿Tienes un auto y quieres venderlo?</h3>
 
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {
-        <section class="shadow mt-8 xl:max-w-md rounded-xl border border-gray3 px-6 py-6">
+        <section class="shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
           <div class="xl:flex items-center justify-between">
             <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
             @defer (when specificAuction().data) {
@@ -622,9 +622,8 @@
   </ng-container>
   <ng-container body>
     <span class="text-sm text-gray-500">
-      Yo, {{user?.attributes?.firstName}} en calidad de propietario y/o dealer de la pieza descrita, acepto las
-      condiciones establecidas para la subasta
-      de la misma.
+      Yo, {{user?.attributes?.firstName}} {{user?.attributes?.lastName}} en calidad de propietario y/o dealer de la
+      pieza descrita, acepto las condiciones establecidas para la subasta de la misma.
     </span>
   </ng-container>
 </confirmation-modal>

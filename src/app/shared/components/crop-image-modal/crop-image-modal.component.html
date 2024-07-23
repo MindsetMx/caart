@@ -12,7 +12,7 @@
     @if(isOpen() && aspectRatio() !== undefined) {
     <div class="no-tailwindcss-base cropper-wrapper">
       <image-cropper [imageURL]="imageUrl()" [maintainAspectRatio]="maintainAspectRatio()"
-        [aspectRatio]="aspectRatio()!" alignImage="center" backgroundColor="red" [(transform)]="transform" format="png"
+        [aspectRatio]="aspectRatio()!" alignImage="center" [(transform)]="transform" format="png"
         (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded($event)" (cropperReady)="cropperReady()"
         (loadImageFailed)="loadImageFailed()"></image-cropper>
     </div>

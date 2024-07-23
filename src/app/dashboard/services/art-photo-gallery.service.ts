@@ -15,4 +15,12 @@ export class ArtPhotoGalleryService {
   getAllArtMedia$(auctionArtId: string): Observable<ArtMedia> {
     return this.#http.get<any>(`${this.#baseUrl}/auctions-cars/all-art-media?auctionArtId=${auctionArtId}`);
   }
+
+  addExtraPhoto$(auctionId: string, photoUrls: string[]): Observable<void> {
+    return this.#http.post<void>(`${this.#baseUrl}/extra-photo`, {
+      auctionId,
+      type: 'art',
+      photoUrls
+    });
+  }
 }

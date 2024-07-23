@@ -46,6 +46,7 @@ export class ArtRegistrationPaymentComponent {
   paymentMethodModalIsOpen = signal<boolean>(false);
   paymentMethods = signal<PaymentMethod[]>([] as PaymentMethod[]);
   applyDiscountCodeResponse = signal<ApplyDiscountCode>({} as ApplyDiscountCode);
+  error = signal<string | undefined>(undefined);
 
   isValidDiscountCode: Signal<boolean | undefined> = computed(() => {
     if (!this.applyDiscountCodeResponse().discountInfo) return undefined;
@@ -93,6 +94,7 @@ export class ArtRegistrationPaymentComponent {
         },
         error: (error) => {
           console.error(error);
+          this.error.set(error.error.message);
         },
       }).add(() => {
         this.isButtonSubmitDisabled.set(false);
