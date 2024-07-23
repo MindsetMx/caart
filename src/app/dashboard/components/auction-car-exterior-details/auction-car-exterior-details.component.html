@@ -62,7 +62,11 @@
   <div>
     <label for="transmissionType" class="block mb-1 text-sm">Transmisión <span
         class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="transmissionType" formControlName="transmissionType" type="text" sharedInput>
+    <select formControlName="transmissionType" id="transmissionType" sharedInput>
+      <option value="Automática">Automática</option>
+      <option value="Manual">Manual</option>
+      <option value="Otro">Otro</option>
+    </select>
     @if (hasError('transmissionType')) {
     <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
     }
@@ -70,7 +74,7 @@
 
   <!-- other transmission type -->
 
-  <!-- @if (transmissionTypeControl.value === 'Otro') {
+  @if (transmissionTypeControl.value === 'Otro') {
   <div>
     <label for="otherTransmission" class="block mb-1 text-sm">Otro tipo de transmisión <span
         class="font-bold text-red-500 inline-block">*</span></label>
@@ -79,7 +83,7 @@
     <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
     }
   </div>
-  } -->
+  }
 
   <!-- VIN -->
   <div>
@@ -104,7 +108,7 @@
   </div>
 
   <!-- wichWarranties -->
-  <!-- @if (warrantiesControl.value === 'true') {
+  @if (warrantiesControl.value === 'true' || warrantiesControl.value === true) {
   <div class="col-span-2">
     <label for="wichWarranties" class="block mb-1 text-sm">¿Cuáles? <span
         class="font-bold text-red-500 inline-block">*</span></label>
@@ -114,7 +118,7 @@
     <shared-input-error [message]="getError('wichWarranties')"></shared-input-error>
     }
   </div>
-  } -->
+  }
 
   <!-- Factura / Pedimento select -->
   <div class="col-span-2">

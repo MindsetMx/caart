@@ -1,0 +1,134 @@
+<!-- <p class="mt-4"><b>ID:</b> {{wizardData().data.interiorDetails._id}}</p>
+<p><b>originalAuctionCarId:</b> {{wizardData().data.interiorDetails.originalAuctionCarId}}</p>
+<p><b>Accesorios funcionando:</b> {{wizardData().data.interiorDetails.accessoriesFunctioning ? 'Sí' : 'No'}}</p>
+<p><b>Comentarios:</b> {{wizardData().data.interiorDetails.comments}}</p>
+<p><b>Color del interior:</b> {{wizardData().data.interiorDetails.interiorColor}}</p>
+<p><b>Condición del interior:</b> {{wizardData().data.interiorDetails.interiorCondition}}</p>
+<p><b>Modificaciones del interior:</b> {{wizardData().data.interiorDetails.interiorModifications ? 'Sí' : 'No'}}
+</p>
+<p><b>Imágenes: </b></p>
+<div class="grid grid-cols-3 gap-4">
+  @for (photo of wizardData().data.interiorDetails.interiorPhotos; track $index) {
+  <img [src]="photo" alt="Foto del interior">
+  } @empty {
+  <p>No hay imágenes</p>
+  }
+</div>
+<p><b>Videos:</b></p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  @for (video of wizardData().data.interiorDetails.interiorVideos; track $index) {
+  <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+  } @empty {
+  <p>No hay videos</p>
+  }
+</div>
+<p><b>Material:</b> {{wizardData().data.interiorDetails.material}}</p> -->
+
+<form [formGroup]="interiorOfTheCarForm" (ngSubmit)="updateInteriorDetails()" class="grid grid-cols-2 items-end gap-5">
+
+  <!-- interiorColor select -->
+  <div>
+    <label for="interiorColor" class="block mb-1 text-sm">Color <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="interiorColor" formControlName="interiorColor" type="text" sharedInput>
+    @if (hasError('interiorColor')) {
+    <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Material select   -->
+  <div>
+    <label for="material" class="block mb-1 text-sm">Material <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <input id="material" formControlName="material" type="text" sharedInput>
+    @if (hasError('material')) {
+    <shared-input-error [message]="getError('material')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Condiciones del interior select -->
+  <div class="col-span-2">
+    <label for="interiorCondition" class="block mb-1 text-sm">Condiciones del interior <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="interiorCondition" formControlName="interiorCondition" sharedInput>
+      <!-- <option value disabled selected>Condiciones del interior</option> -->
+      <option value="excellent">Excelente</option>
+      <option value="good">Buena</option>
+      <option value="regular">Regular</option>
+      <option value="bad">Mala</option>
+    </select>
+    @if (hasError('interiorCondition')) {
+    <shared-input-error [message]="getError('interiorCondition')"></shared-input-error>
+    }
+  </div>
+
+  <!-- ¿Ha tenido modificaciones en el interior? select -->
+  <div class="col-span-2">
+    <label for="interiorModifications" class="block mb-1 text-sm">¿Ha tenido modificaciones en el
+      interior? <span class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="interiorModifications" formControlName="interiorModifications" sharedInput>
+      <!-- <option value disabled selected>¿Ha tenido modificaciones en el interior?</option> -->
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('interiorModifications')) {
+    <shared-input-error [message]="getError('interiorModifications')"></shared-input-error>
+    }
+  </div>
+
+  <!-- ¿Los accesorios y electrónicos funcionan? input-->
+  <div class="col-span-2">
+    <label for="accessoriesFunctioning" class="block mb-1 text-sm">¿Los accesorios y electrónicos
+      funcionan? <span class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="accessoriesFunctioning" formControlName="accessoriesFunctioning" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+    @if (hasError('accessoriesFunctioning')) {
+    <shared-input-error [message]="getError('accessoriesFunctioning')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Comentarios sobre detalles textarea -->
+  <div class="col-span-2">
+    <label for="comments" class="block mb-1 text-sm">Comentarios sobre detalles <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <textarea id="comments" formControlName="comments" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('comments')) {
+    <shared-input-error [message]="getError('comments')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <p><b>Imágenes: </b></p>
+    <div class="grid grid-cols-3 gap-4">
+      @for (photo of wizardData().data.interiorDetails.interiorPhotos; track $index) {
+      <img [src]="photo" alt="Foto del interior">
+      } @empty {
+      <p>No hay imágenes</p>
+      }
+    </div>
+  </div>
+
+  <div class="col-span-2">
+    <p><b>Videos:</b></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for (video of wizardData().data.interiorDetails.interiorVideos; track $index) {
+      <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+      } @empty {
+      <p>No hay videos</p>
+      }
+    </div>
+  </div>
+
+  <div class="col-span-2">
+    <button class="flex justify-center mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
+      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      @if (isButtonSubmitDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
+      Guardar
+      }
+    </button>
+  </div>
+</form>

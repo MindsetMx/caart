@@ -51,7 +51,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
   exteriorOfTheCarForm: FormGroup;
   currentYear = new Date().getFullYear();
   brands: WritableSignal<string[]> = signal([]);
-  colors: WritableSignal<Colors[]> = signal([]);
+  // colors: WritableSignal<Colors[]> = signal([]);
   token = signal<string>('');
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
@@ -264,7 +264,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getColors();
+    // this.getColors();
 
     this.warrantiesControl.valueChanges.subscribe((value) => {
       if (value === 'true') {
@@ -437,16 +437,16 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
       });
   }
 
-  getColors(): void {
-    this.#completeCarRegistrationService.getColors$().subscribe({
-      next: (colors: Colors[]) => {
-        this.colors.set(colors);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
+  // getColors(): void {
+  //   this.#completeCarRegistrationService.getColors$().subscribe({
+  //     next: (colors: Colors[]) => {
+  //       this.colors.set(colors);
+  //     },
+  //     error: (error) => {
+  //       console.error(error);
+  //     }
+  //   });
+  // }
 
   hasError(field: string): boolean {
     return this.#validatorsService.hasError(this.exteriorOfTheCarForm, field);

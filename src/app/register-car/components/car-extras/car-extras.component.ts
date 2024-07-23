@@ -205,7 +205,6 @@ export class CarExtrasComponent {
     return this.#validatorsService.getError(formGroup, field);
   }
 
-
   formArrayHasError(formArray: FormArray = this.additionalChargesFormArray, index: number): boolean {
     return this.#validatorsService.formArrayHasError(formArray, index);
   }

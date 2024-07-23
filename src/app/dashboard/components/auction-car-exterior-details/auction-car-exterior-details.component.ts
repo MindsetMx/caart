@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -10,6 +10,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 import { WizardData } from '@dashboard/interfaces/wizard-data';
 import { NgxMaskDirective } from 'ngx-mask';
 import { AppService } from '@app/app.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'auction-car-exterior-details',
@@ -41,6 +42,22 @@ export class AuctionCarExteriorDetailsComponent {
   currentYear = new Date().getFullYear();
   isButtonSubmitDisabled = signal<boolean>(false);
 
+  get transmissionTypeControl(): FormControl {
+    return this.exteriorForm.get('transmissionType') as FormControl;
+  }
+
+  get warrantiesControl(): FormControl {
+    return this.exteriorForm.get('warranties') as FormControl;
+  }
+
+  get wichWarrantiesControl(): FormControl {
+    return this.exteriorForm.get('wichWarranties') as FormControl;
+  }
+
+  get otherTransmissionControl(): FormControl {
+    return this.exteriorForm.get('otherTransmission') as FormControl;
+  }
+
   constructor() {
     this.exteriorForm = this.#formBuilder.group({
       kmInput: [{ value: '' }],
@@ -71,10 +88,36 @@ export class AuctionCarExteriorDetailsComponent {
       exteriorVideos: [[]],
       originalAuctionCarId: ['', [Validators.required]],
     });
+
+    this.warrantiesControl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe((value) => {
+      if (value === 'true') {
+        this.wichWarrantiesControl?.setValidators([Validators.required]);
+      } else {
+        this.wichWarrantiesControl?.clearValidators();
+      }
+
+      this.wichWarrantiesControl?.updateValueAndValidity();
+    });
+
+    this.transmissionTypeControl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe((value) => {
+      if (value === 'Otro') {
+        this.otherTransmissionControl?.setValidators([Validators.required]);
+      } else {
+        this.otherTransmissionControl?.clearValidators();
+      }
+
+      this.otherTransmissionControl?.updateValueAndValidity();
+    });
   }
 
   wizardDataEffect = effect(() => {
     if (this.wizardData().data) {
+      this.exteriorForm.reset();
+
       const exteriorDetails = this.wizardData().data.exteriorDetails;
       this.exteriorForm.patchValue({
         kmInput: exteriorDetails.kmInput,
@@ -116,9 +159,8 @@ export class AuctionCarExteriorDetailsComponent {
       return;
     }
 
-    this.#updateAuctionCarDetailsDataService.updateExteriorDetails(this.auctionCarId(), this.exteriorForm).subscribe({
+    this.#updateAuctionCarDetailsDataService.updateExteriorDetails$(this.auctionCarId(), this.exteriorForm).subscribe({
       next: () => {
-        this.isOpen.set(false);
         this.toastSuccess('Detalles de exterior actualizados correctamente');
       },
       error: (error) => {

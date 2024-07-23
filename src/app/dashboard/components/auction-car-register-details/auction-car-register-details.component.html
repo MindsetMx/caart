@@ -1,0 +1,390 @@
+<!-- <div class="mt-4">
+  <p><b>ID:</b> {{ wizardData().data.registerCarDetails._id }}</p>
+  <p><b>Tipo:</b> {{ wizardData().data.registerCarDetails.type }}</p>
+  <p><b>Marca:</b> {{ wizardData().data.registerCarDetails.brand }}</p>
+  <p><b>Año:</b> {{ wizardData().data.registerCarDetails.year }}</p>
+  <p><b>Modelo:</b> {{ wizardData().data.registerCarDetails.carModel }}</p>
+  <p><b>Color exterior:</b> {{ wizardData().data.registerCarDetails.exteriorColor }}</p>
+  <p><b>Color interior:</b> {{ wizardData().data.registerCarDetails.interiorColor }}</p>
+  <p><b>Color específico:</b> {{ wizardData().data.registerCarDetails.specificColor }}</p>
+  <p><b>Condición general:</b> {{ wizardData().data.registerCarDetails.generalCondition }}</p>
+  <p><b>Tipo de transmisión:</b> {{ wizardData().data.registerCarDetails.transmissionType }}</p>
+  <p><b>Otra transmisión:</b> {{ wizardData().data.registerCarDetails.otherTransmission }}</p>
+  <p><b>Motor:</b> {{ wizardData().data.registerCarDetails.engine }}</p>
+  <p><b>Ciudad:</b> {{ wizardData().data.registerCarDetails.city }}</p>
+  <p><b>Código postal:</b> {{ wizardData().data.registerCarDetails.postalCode }}</p>
+  <p><b>Estado:</b> {{ wizardData().data.registerCarDetails.state }}</p>
+  <p><b>Reserva:</b> {{ wizardData().data.registerCarDetails.reserve }}</p>
+  <p><b>Monto de reserva:</b> {{ wizardData().data.registerCarDetails.reserveAmount |
+    currency:'USD':'symbol':'1.0-2' }}</p>
+  <p><b>Tipo de KM:</b> {{ wizardData().data.registerCarDetails.kmType }}</p>
+  <p><b>Entrada KM:</b> {{ wizardData().data.registerCarDetails.kmInput | number }}</p>
+  <p><b>¿Cómo supiste de nosotros?:</b> {{ wizardData().data.registerCarDetails.howDidYouHearAboutUs }}</p>
+  <p><b>Fotos:</b></p>
+  <div class="grid grid-cols-3 gap-4">
+    @for (photo of wizardData().data.registerCarDetails.photos; track $index) {
+    <img [src]="photo" alt="Foto {{ $index + 1 }}">
+    } @empty {
+    <p>No hay fotos</p>
+    }
+  </div>
+  <p><b>Videos:</b></p>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    @for (video of wizardData().data.registerCarDetails.videos; track $index) {
+    <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+    } @empty {
+    <p>No hay videos</p>
+    }
+  </div>
+  <p><b>Interés:</b> {{ wizardData().data.registerCarDetails.interest }}</p>
+  <p><b>Acepta términos:</b> {{ wizardData().data.registerCarDetails.acceptTerms }}</p>
+  <p><b>Estado:</b> {{ wizardData().data.registerCarDetails.status }}</p>
+  <p><b>ID de usuario:</b> {{ wizardData().data.registerCarDetails.userId }}</p>
+  <p><b>Número de lote:</b> {{ wizardData().data.registerCarDetails.lotNumber }}</p>
+</div> -->
+
+<form [formGroup]="carRegisterForm" (ngSubmit)="updateRegisterCarDetails()">
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label for="brand" class="block mb-1 text-sm">Marca <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input type="text" formControlName="brand" [matAutocomplete]="brands" sharedInput>
+      <mat-autocomplete #brands="matAutocomplete">
+        @for (brand of filteredBrands | async; track $index) {
+        <mat-option [value]="brand">{{brand}}</mat-option>
+        }
+      </mat-autocomplete>
+      <!-- <select formControlName="brand" id="brand" sharedInput>
+              @for (brand of brands(); track $index) {
+              <option [value]="brand">{{brand}}</option>
+              }
+            </select> -->
+      @if (hasError('brand')) {
+      <shared-input-error [message]="getError('brand')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="year" class="block mb-1 text-sm">Año <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="year" min="1500" [max]="currentYear" id="year" type="number" sharedInput>
+      @if (hasError('year')) {
+      <shared-input-error [message]="getError('year')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <label for="carModel" class="block mb-1 text-sm">Modelo <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="carModel" id="carModel" type="text" sharedInput>
+      @if (hasError('carModel')) {
+      <shared-input-error [message]="getError('carModel')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="exteriorColor" class="block mb-1 text-sm">Color exterior <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="exteriorColor" id="exteriorColor" sharedInput>
+        @for (color of colors(); track $index) {
+        <option [value]="color.name">{{color.name}}</option>
+        }
+      </select>
+      @if (hasError('exteriorColor')) {
+      <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
+      }
+    </div>
+
+    <!-- specificColor -->
+    <div>
+      <label for="specificColor" class="block mb-1 text-sm">Color específico <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="specificColor" id="specificColor" type="text" sharedInput>
+      @if (hasError('specificColor')) {
+      <shared-input-error [message]="getError('specificColor')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="interiorColor" class="block mb-1 text-sm">Color interior <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="interiorColor" id="interiorColor" sharedInput>
+        @for (color of colors(); track $index) {
+        <option [value]="color.name">{{color.name}}</option>
+        }
+      </select>
+      @if (hasError('interiorColor')) {
+      <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
+      }
+    </div>
+
+    <!-- generalCondition -->
+    <div>
+      <label for="generalCondition" class="block mb-1 text-sm">Condición general <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="generalCondition" id="generalCondition" sharedInput>
+        <option value="Excelente">Excelente</option>
+        <option value="Buena">Buena</option>
+        <option value="Regular">Regular</option>
+        <option value="Mala">Mala</option>
+      </select>
+      @if (hasError('generalCondition')) {
+      <shared-input-error [message]="getError('generalCondition')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="city" class="block mb-1 text-sm">Ciudad <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="city" id="city" type="text" sharedInput>
+      @if (hasError('city')) {
+      <shared-input-error [message]="getError('city')"></shared-input-error>
+      }
+    </div>
+
+    <!-- State autocomplete -->
+    <div>
+      <label for="state" class="block mb-1 text-sm">Estado <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input id="state" type="text" formControlName="state" [matAutocomplete]="states" autocomplete="abc" sharedInput>
+      <mat-autocomplete #states="matAutocomplete">
+        @for (state of filteredStates | async; track $index) {
+        <mat-option [value]="state">{{state}}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (hasError('state')) {
+      <shared-input-error [message]="getError('state')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="postalCode" class="block mb-1 text-sm">Código Postal <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
+      @if (hasError('postalCode')) {
+      <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+      }
+    </div>
+
+    <div>
+      <label for="reserve" class="block mb-1 text-sm">Reserva <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="reserve" id="reserve" sharedInput>
+        <option [value]="true">Sí</option>
+        <option [value]="false">No</option>
+      </select>
+      @if (hasError('reserve')) {
+      <shared-input-error [message]="getError('reserve')"></shared-input-error>
+      }
+
+      <div class="flex items-center mt-2">
+        <span class="text-gray4 text-xs">¿Qué significa la Reserva?</span>
+        <img class="ml-2" src="assets/img/registrar auto/help-circle-outline.svg" alt="ícono de ayuda">
+      </div>
+    </div>
+
+    @if (carRegisterForm.get('reserve')?.value === "true") {
+    <div>
+      <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <div class="relative rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input formControlName="reserveAmount" type="text" class="pl-7 pr-12" name="price" id="reserveAmount"
+          mask="separator.0" thousandSeparator="," autocomplete="off" placeholder="0.00"
+          aria-describedby="price-currency" sharedInput>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
+        </div>
+      </div>
+      @if (hasError('reserveAmount')) {
+      <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
+      }
+    </div>
+    }
+
+    <div class="col-start-1">
+      <label for="kmType" class="block mb-1 text-sm">Tipo de kilometraje <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="kmType" id="kmType" sharedInput>
+        <option value="KM">Kilómetros</option>
+        <option value="MI">Millas</option>
+      </select>
+      @if (hasError('kmType')) {
+      <shared-input-error [message]="getError('kmType')"></shared-input-error>
+      }
+    </div>
+
+    <div class="flex items-end">
+      <!-- <label for="kmInput" class="block mb-1 text-sm">Kilometraje <span
+          class="font-bold text-red-500 inline-block">*</span></label> -->
+      <div class="relative rounded-md shadow-sm w-full">
+        <!-- <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-gray-500 sm:text-sm">$</span>
+            </div> -->
+        <input formControlName="kmInput" mask="separator.0" thousandSeparator="," type="text" class="pl pr-12"
+          name="kmInput" id="kmInput" autocomplete="off" sharedInput>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          @switch (kmTypeControl.value) {
+          @case ('KM') {
+          <span class="text-gray-500 sm:text-sm" id="price-currency">KM</span>
+          }
+          @case ('MI') {
+          <span class="text-gray-500 sm:text-sm" id="price-currency">MI</span>
+          }
+          @default {
+          <span class="text-gray-500 sm:text-sm" id="price-currency">KM</span>
+          }
+          }
+        </div>
+      </div>
+
+      @if (hasError('kmInput')) {
+      <shared-input-error [message]="getError('kmInput')"></shared-input-error>
+      }
+    </div>
+
+    <!-- transmision -->
+    <div>
+      <label for="transmissionType" class="block mb-1 text-sm">Transmisión <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="transmissionType" id="transmissionType" sharedInput>
+        <option value="Automática">Automática</option>
+        <option value="Manual">Manual</option>
+        <option value="Otro">Otro</option>
+      </select>
+      @if (hasError('transmissionType')) {
+      <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
+      }
+    </div>
+
+    <!-- otherTransmission -->
+    @if (transmisionControl.value === "Otro") {
+    <div>
+      <label for="otherTransmission" class="block mb-1 text-sm">Otra transmisión <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="otherTransmission" id="otherTransmission" type="text" sharedInput>
+      @if (hasError('otherTransmission')) {
+      <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
+      }
+    </div>
+    }
+
+    <!-- engine input -->
+    <div>
+      <label for="engine" class="block mb-1 text-sm">Motor <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <input formControlName="engine" id="engine" type="text" sharedInput>
+      @if (hasError('engine')) {
+      <shared-input-error [message]="getError('engine')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <label for="howDidYouHearAboutUs" class="block mb-1 text-sm">¿Cómo te enteraste de la plataforma? <span
+          class="font-bold text-red-500 inline-block">*</span></label>
+      <select formControlName="howDidYouHearAboutUs" id="howDidYouHearAboutUs" sharedInput>
+        <option value="Búsqueda en Internet">Búsqueda en Internet</option>
+        <option value="Redes sociales">Redes sociales</option>
+        <option value="Publicidad en línea">Publicidad en línea</option>
+        <option value="Anuncios en televisión o radio">Anuncios en televisión o radio</option>
+        <option value="Artículos o reseñas en medios">Artículos o reseñas en medios</option>
+        <option value="Ferias o eventos del sector automovilístico">Ferias o eventos del sector automovilístico
+        </option>
+        <option value="Publicidad impresa (revistas, periódicos, folletos)">Publicidad impresa (revistas,
+          periódicos, folletos)</option>
+        <option value="Correo electrónico o newsletter">Correo electrónico o newsletter</option>
+        <option value="Otros">Otros</option>
+      </select>
+      @if (hasError('howDidYouHearAboutUs')) {
+      <shared-input-error [message]="getError('howDidYouHearAboutUs')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <p><b>Fotos:</b></p>
+      <div class="grid grid-cols-3 gap-4">
+        @for (photo of wizardData().data.registerCarDetails.photos; track $index) {
+        <img [src]="photo" alt="Foto {{ $index + 1 }}">
+        } @empty {
+        <p>No hay fotos</p>
+        }
+      </div>
+    </div>
+
+    <div class="col-span-2">
+      <p><b>Videos:</b></p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for (video of wizardData().data.registerCarDetails.videos; track $index) {
+        <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+        } @empty {
+        <p>No hay videos</p>
+        }
+      </div>
+    </div>
+
+    <div class="col-span-2 mt-4">
+      <p class="text-xl font-bold">Elige tu paquete <span class="font-bold text-red-500 inline-block">*</span>
+      </p>
+      <p class="text-red-500 text-sm mb-4">La sesión de fotos y videos a domicilio es una herramienta indispensable
+        para potenciar las ofertas de tu pieza.
+      </p>
+      <fieldset>
+        <legend class="sr-only">Elige tu paquete</legend>
+        <div class="space-y-2">
+          <div>
+            <input formControlName="interest" value="ListInMarketplacePlusPhotoshoot"
+              id="ListInMarketplacePlusPhotoshoot" type="radio" checked class="h-4 w-4">
+            <label for="ListInMarketplacePlusPhotoshoot" class="ml-3 leading-6 inline mr-4">Publicar mi pieza + Sesión
+              fotográfica
+              profesional</label>
+            <span class="bg-red-500 text-white text-sm px-2 py-1 rounded-md ml-auto inline-block">
+              Recomendado por CAART
+            </span>
+          </div>
+          <div class="flex items-center">
+            <input formControlName="interest" value="ListInMarketplace" id="ListInMarketplace" type="radio"
+              class="h-4 w-4">
+            <label for="ListInMarketplace" class="ml-3 block leading-6">
+              Publicar mi pieza</label>
+          </div>
+        </div>
+      </fieldset>
+
+      @if (hasError('interest')) {
+      <shared-input-error [message]="getError('interest')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <p class="text-xs text-gray-400">*Si la pieza no alcanza el precio de reserva, se publicará durante un mes en la
+        sección de última oportunidad sin costo adicional.</p>
+    </div>
+
+    <div class="col-span-2">
+      <div class="flex items-center text-xs">
+        <input formControlName="acceptTerms" id="acceptTerms" type="checkbox" class="h-4 w-4">
+        <label for="acceptTerms" class="ml-3 block leading-6">
+          Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
+          <a class="underline">Acuerdos de usuarios.</a>
+          <span class="font-bold text-red-500 inline-block">*</span></label>
+      </div>
+
+      @if (hasError('acceptTerms')) {
+      <shared-input-error [message]="getError('acceptTerms')"></shared-input-error>
+      }
+    </div>
+
+    <div class="col-span-2">
+      <button type="submit" class="inline-flex justify-center items-center" [disabled]="isButtonSubmitDisabled()"
+        [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+        @if (isButtonSubmitDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Guardar
+        }
+      </button>
+    </div>
+  </div>
+</form>

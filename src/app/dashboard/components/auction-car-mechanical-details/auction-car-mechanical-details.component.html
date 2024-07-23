@@ -1,0 +1,263 @@
+<!-- <p class="mt-4"><b>ID:</b> {{wizardData().data.mechanicsDetails._id}}</p>
+<p><b>originalAuctionCarId:</b> {{wizardData().data.mechanicsDetails.originalAuctionCarId}}</p>
+<p><b>Comentarios:</b> {{wizardData().data.mechanicsDetails.comments}}</p>
+<p><b>Equipo extra:</b> {{wizardData().data.mechanicsDetails.extraEquipment ? 'Sí' : 'No'}}</p>
+<p><b>Neumáticos o llantas extra:</b> {{wizardData().data.mechanicsDetails.extraTiresOrRims ? 'Sí' : 'No'}}</p>
+<p><b>Equipo de fábrica:</b> {{wizardData().data.mechanicsDetails.factoryEquipment ? 'Sí' : 'No'}}</p>
+<p><b>Tablero iluminado:</b> {{wizardData().data.mechanicsDetails.illuminatedDashboardSensor ? 'Sí' : 'No'}}</p>
+<p><b>Mejora/modificación original:</b> {{wizardData().data.mechanicsDetails.improvementModificationOriginal ?
+  'Sí' : 'No'}}</p>
+<p><b>Detalle del problema mecánico:</b> {{wizardData().data.mechanicsDetails.mechanicalProblemDetail ? 'Sí' :
+  'No'}}</p>
+<p><b>Fotos:</b></p>
+<div class="grid grid-cols-3 gap-4">
+  @for (photo of wizardData().data.mechanicsDetails.mechanicsPhotos; track $index) {
+  <img [src]="photo" alt="Foto mecánica">
+  } @empty {
+  <p>No hay fotos</p>
+  }
+</div>
+<p><b>Videos:</b></p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  @for (video of wizardData().data.mechanicsDetails.mechanicsVideos; track $index) {
+  <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+  } @empty {
+  <p>No hay videos</p>
+  }
+</div>
+<p><b>Llantas originales:</b> {{wizardData().data.mechanicsDetails.originalRims ? 'Sí' : 'No'}}</p>
+<p><b>Motor/transmisión original:</b> {{wizardData().data.mechanicsDetails.originalTransmissionEngine ? 'Sí' :
+  'No'}}</p>
+<p><b>Servicios realizados con fechas:</b> {{wizardData().data.mechanicsDetails.performedServicesWithDates}}</p>
+<p><b>Neumático de repuesto:</b> {{wizardData().data.mechanicsDetails.spareTire ? 'Sí' : 'No'}}</p>
+<p><b>Marca de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireBrand}}</p>
+<p><b>Condición de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireCondition}}</p>
+<p><b>Fecha de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireDate}}</p>
+<p><b>Tamaño de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireSize}}</p> -->
+
+<form [formGroup]="mechanicsForm" (ngSubmit)="updateMechanicsDetails()" class="grid grid-cols-2 items-end gap-5">
+  <!-- Rines originales select -->
+  <div>
+    <label for="originalRims" class="block mb-1 text-sm">¿Rines originales? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="originalRims" formControlName="originalRims" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('originalRims')) {
+    <shared-input-error [message]="getError('originalRims')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Marca de llantas -->
+  <div>
+    <label for="tireBrand" class="block mb-1 text-sm">Marca de llantas</label>
+    <input id="tireBrand" formControlName="tireBrand" type="text" sharedInput>
+    @if (hasError('tireBrand')) {
+    <shared-input-error [message]="getError('tireBrand')"></shared-input-error>
+    }
+  </div>
+
+  <!-- tireSize input -->
+  <div>
+    <label for="tireSize" class="block mb-1 text-sm">Medida de llantas</label>
+    <input id="tireSize" formControlName="tireSize" type="text" sharedInput>
+    @if (hasError('tireSize')) {
+    <shared-input-error [message]="getError('tireSize')"></shared-input-error>
+    }
+  </div>
+
+  <!-- tireDate input -->
+  <div>
+    <label for="tireDate" class="block mb-1 text-sm">Fecha de llantas</label>
+    <input id="tireDate" formControlName="tireDate" type="date" sharedInput>
+    @if (hasError('tireDate')) {
+    <shared-input-error [message]="getError('tireDate')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Condición de llantas -->
+  <div>
+    <label for="tireCondition" class="block mb-1 text-sm">Condición de llantas <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="tireCondition" formControlName="tireCondition" sharedInput>
+      <option value="Excelente">Excelente</option>
+      <option value="Buena">Buena</option>
+      <option value="Regular">Regular</option>
+      <option value="Mala">Mala</option>
+    </select>
+    @if (hasError('tireCondition')) {
+    <shared-input-error [message]="getError('tireCondition')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Llantas o rines extras select -->
+  <div>
+    <label for="extraTiresOrRims" class="block mb-1 text-sm">¿Llantas o rines extras? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="extraTiresOrRims" formControlName="extraTiresOrRims" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('extraTiresOrRims')) {
+    <shared-input-error [message]="getError('extraTiresOrRims')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Llanta de refacción select -->
+  <div>
+    <label for="spareTire" class="block mb-1 text-sm">¿Llanta de refacción? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="spareTire" formControlName="spareTire" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('spareTire')) {
+    <shared-input-error [message]="getError('spareTire')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2 mt-4">
+    <h2 class="text-xl font-bold">Mecánica</h2>
+  </div>
+
+  <!-- Transmisión y motor original select -->
+  <div>
+    <label for="originalTransmissionEngine" class="block mb-1 text-sm">¿Transmisión y motor original? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="originalTransmissionEngine" formControlName="originalTransmissionEngine" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('originalTransmissionEngine')) {
+    <shared-input-error [message]="getError('originalTransmissionEngine')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Mejora o modificación general select -->
+  <div>
+    <label for="improvementModificationOriginal" class="block mb-1 text-sm">¿Mejora o modificación general? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="improvementModificationOriginal" formControlName="improvementModificationOriginal" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('improvementModificationOriginal')) {
+    <shared-input-error [message]="getError('improvementModificationOriginal')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Servicios realizados con fechas textarea -->
+  <div class="col-span-2">
+    <label for="performedServicesWithDates" class="block mb-1 text-sm">Servicios realizados con fechas</label>
+    <textarea id="performedServicesWithDates" formControlName="performedServicesWithDates" rows="4" sharedInput
+      sharedAutoResizeTextarea></textarea>
+    @if (hasError('performedServicesWithDates')) {
+    <shared-input-error [message]="getError('performedServicesWithDates')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Problema o detalle mecánico select -->
+  <div>
+    <label for="mechanicalProblemDetail" class="block mb-1 text-sm">¿Problema o detalle mecánico? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="mechanicalProblemDetail" formControlName="mechanicalProblemDetail" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('mechanicalProblemDetail')) {
+    <shared-input-error [message]="getError('mechanicalProblemDetail')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Sensor iluminado en el tablero select -->
+  <div>
+    <label for="illuminatedDashboardSensor" class="block mb-1 text-sm">¿Sensor iluminado en el tablero? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="illuminatedDashboardSensor" formControlName="illuminatedDashboardSensor" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('illuminatedDashboardSensor')) {
+    <shared-input-error [message]="getError('illuminatedDashboardSensor')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Equipamiento de fabrica select -->
+  <div>
+    <label for="factoryEquipment" class="block mb-1 text-sm">¿Equipamiento de fabrica? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="factoryEquipment" formControlName="factoryEquipment" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('factoryEquipment')) {
+    <shared-input-error [message]="getError('factoryEquipment')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Equipamiento extra select -->
+  <div>
+    <label for="extraEquipment" class="block mb-1 text-sm">¿Equipamiento extra? <span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <select id="extraEquipment" formControlName="extraEquipment" sharedInput>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+
+    @if (hasError('extraEquipment')) {
+    <shared-input-error [message]="getError('extraEquipment')"></shared-input-error>
+    }
+  </div>
+
+  <!-- Comentarios sobre mecánica textarea -->
+  <div class="col-span-2">
+    <label for="comments" class="block mb-1 text-sm">Comentarios sobre mecánica<span
+        class="font-bold text-red-500 inline-block">*</span></label>
+    <textarea id="comments" formControlName="comments" rows="4" sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('comments')) {
+    <shared-input-error [message]="getError('comments')"></shared-input-error>
+    }
+  </div>
+
+  <div class="col-span-2">
+    <p><b>Fotos:</b></p>
+    <div class="grid grid-cols-3 gap-4">
+      @for (photo of wizardData().data.mechanicsDetails.mechanicsPhotos; track $index) {
+      <img [src]="photo" alt="Foto mecánica">
+      } @empty {
+      <p>No hay fotos</p>
+      }
+    </div>
+  </div>
+
+  <div class="col-span-2">
+    <p><b>Videos:</b></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for (video of wizardData().data.mechanicsDetails.mechanicsVideos; track $index) {
+      <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
+      } @empty {
+      <p>No hay videos</p>
+      }
+    </div>
+  </div>
+
+  <div class="col-span-2">
+    <button class="flex justify-center mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
+      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
+      @if (isButtonSubmitDisabled()) {
+      <shared-spinner></shared-spinner>
+      } @else {
+      Guardar
+      }
+    </button>
+  </div>
+</form>
