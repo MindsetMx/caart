@@ -67,6 +67,12 @@
                 </tbody>
               </table>
             </div>
+
+            @if (users().data) {
+            <mat-paginator [length]="users().meta.total" [pageSize]="users().meta.pageSize" [pageIndex]="page() - 1"
+              [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
+            </mat-paginator>
+            }
           </div>
         </div>
       </div>
