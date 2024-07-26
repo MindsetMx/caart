@@ -17,7 +17,7 @@
             <span class="text-blue-500">Seleccionar fotos de la galería</span>
           </button> -->
 
-          <button (click)="openAuctionCarDetailsModal()" class="block mb-1 text-sm text-blue-500">
+          <button type="button" (click)="openAuctionCarDetailsModal()" class="block mb-1 text-sm text-blue-500">
             Ver detalles del auto
           </button>
 
@@ -30,9 +30,11 @@
               <div class="md:flex">
                 <textarea formControlName="content" cols="30" rows="10" sharedInput></textarea>
 
-                <button (click)="deleteBlock(i)">
+                @if (i !== 0) {
+                <button type="button" (click)="deleteBlock(i)">
                   <mat-icon class="text-3xl size-10">delete</mat-icon>
                 </button>
+                }
               </div>
 
               @if(hasError('content', block)) {
@@ -41,7 +43,7 @@
               }
               @case ('image') {
               <img [src]="block.value.content" class="object-contain w-fit md:w-96 inline">
-              <button (click)="deleteBlock(i)">
+              <button type="button" (click)="deleteBlock(i)">
                 <mat-icon class="text-3xl size-10">delete</mat-icon>
               </button>
               }
@@ -50,14 +52,15 @@
             }
           </div>
 
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Botón para agregar contenido" type="button">
+          <button type="button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Botón para agregar contenido"
+            type="button">
             <mat-icon class="text-3xl size-10">add_circle</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button (click)="addContent('text')" mat-menu-item>
+            <button type="button" (click)="addContent('text')" mat-menu-item>
               <span>Párrafo</span>
             </button>
-            <button (click)="openCarPhotoGallery()" mat-menu-item>
+            <button type="button" (click)="openCarPhotoGallery()" mat-menu-item>
               <span>Imagen</span>
             </button>
           </mat-menu>
@@ -68,13 +71,13 @@
         </div>
 
         <!-- Extract textarea-->
-        <div>
+        <!-- <div>
           <label for="extract" class="block mb-1 text-sm">Extracto</label>
           <textarea formControlName="extract" class="w-full h-40" sharedInput></textarea>
           @if (hasError('extract')) {
           <shared-input-error [message]="getError('extract')"></shared-input-error>
           }
-        </div>
+        </div> -->
 
         <!-- extraInfo -->
         <div class="col-span-2 grid gap-5" formArrayName="extraInfo">

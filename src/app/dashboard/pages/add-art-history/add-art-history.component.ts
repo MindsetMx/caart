@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -71,11 +72,22 @@ export class AddArtHistoryComponent {
 
     this.addArtHistoryForm = this.#formBuilder.group({
       originalAuctionArtId: [this.originalAuctionArtId(), Validators.required],
-      blocks: this.#formBuilder.array([], Validators.required),
+      blocks: this.#formBuilder.array([
+        this.#formBuilder.group({
+          type: ['text', Validators.required],
+          content: ['', Validators.required]
+        })
+      ], Validators.required),
       extract: ['', Validators.required],
       extraInfo: this.#formBuilder.array([
         this.#formBuilder.control('')
       ])
+    });
+
+    this.addArtHistoryForm.get('blocks')?.get([0])?.get('content')?.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(value => {
+      this.addArtHistoryForm.get('extract')?.setValue(value);
     });
   }
 

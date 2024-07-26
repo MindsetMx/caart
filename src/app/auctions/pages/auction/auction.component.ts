@@ -377,6 +377,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
+      // save current URL in local storage
+      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

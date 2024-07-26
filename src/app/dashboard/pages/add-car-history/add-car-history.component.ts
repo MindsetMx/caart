@@ -13,6 +13,7 @@ import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -70,11 +71,23 @@ export class AddCarHistoryComponent {
 
     this.addCarHistoryForm = this.#formBuilder.group({
       originalAuctionCarId: [this.originalAuctionCarId(), Validators.required],
-      blocks: this.#formBuilder.array([], Validators.required),
+      blocks: this.#formBuilder.array([
+        this.#formBuilder.group({
+          type: ['text', Validators.required],
+          content: ['', Validators.required]
+        })
+      ], Validators.required),
       extract: ['', Validators.required],
       extraInfo: this.#formBuilder.array([
         this.#formBuilder.control('')
       ])
+    });
+
+    // Suscribirse a los cambios del campo 'content' del primer bloque
+    this.addCarHistoryForm.get('blocks')?.get([0])?.get('content')?.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(value => {
+      this.addCarHistoryForm.get('extract')?.setValue(value);
     });
   }
 

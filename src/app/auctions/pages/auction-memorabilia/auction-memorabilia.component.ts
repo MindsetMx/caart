@@ -331,6 +331,7 @@ export class AuctionMemorabiliaComponent {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
+      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

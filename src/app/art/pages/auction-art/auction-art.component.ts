@@ -171,7 +171,10 @@ export class AuctionArtComponent {
           { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
           { label: 'Materiales', value: this.auction().data.attributes.auctionArtForm.materials },
           { label: 'Rareza', value: (this.auction().data.attributes.auctionArtForm.rarity === 'Edición limitada') ? this.auction().data.attributes.auctionArtForm.rarity + ', ' + this.auction().data.attributes.auctionArtForm.edition : this.auction().data.attributes.auctionArtForm.rarity },
-          { label: 'Dimensiones', value: `${this.auction().data.attributes.auctionArtForm.height} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.width} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.depth} ${this.auction().data.attributes.auctionArtForm.unit}` },
+          {
+            label: 'Dimensiones',
+            value: `${this.auction().data.attributes.auctionArtForm.height} ${this.auction().data.attributes.auctionArtForm.unit} x ${this.auction().data.attributes.auctionArtForm.width} ${this.auction().data.attributes.auctionArtForm.unit}` + (this.auction().data.attributes.auctionArtForm.depth ? ` x ${this.auction().data.attributes.auctionArtForm.depth} ${this.auction().data.attributes.auctionArtForm.unit}` : '')
+          },
           { label: 'Condición', value: this.auction().data.attributes.auctionArtForm.condition },
           { label: 'Certificado de autenticidad', value: this.auction().data.attributes.artDetail.certificadoAutenticidad ? 'Sí' + ', ' + this.auction().data.attributes.artDetail.entidadCertificado : 'No' },
           // { label: 'Entidad del certificado', value: this.auction().data.attributes.artDetail.entidadCertificado },
@@ -492,6 +495,7 @@ export class AuctionArtComponent {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
+      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

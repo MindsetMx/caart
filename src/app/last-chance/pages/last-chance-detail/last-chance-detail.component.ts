@@ -346,6 +346,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
+      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

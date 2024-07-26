@@ -96,7 +96,8 @@ export class ConfirmationComponent {
     this.#verificationService.confirmAccount$(code).subscribe({
       next: () => {
         this.toastSuccess('Tu cuenta ha sido verificada');
-        this.#router.navigate(['/home']);
+        this.#router.navigate([localStorage.getItem('redirectUrl') || '/']);
+        localStorage.removeItem('redirectUrl');
       },
       error: (error) => {
         console.error(error);
