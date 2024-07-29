@@ -1,5 +1,5 @@
 import { AuthService } from '@auth/services/auth.service';
-import { Component, OnDestroy, WritableSignal, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, WritableSignal, effect, inject, signal } from '@angular/core';
 import { Router, RouterOutlet, } from '@angular/router';
 import { trigger, transition, query, animateChild } from '@angular/animations';
 
