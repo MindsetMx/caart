@@ -31,7 +31,16 @@
       <!-- Usuario -->
       <mat-tab label="Usuario">
         <p class="mt-4"><b>ID:</b> {{userDetails().data._id}}</p>
-        <p><b>Foto identificación:</b> {{userDetails().data.validationImg}}</p>
+        <p><b>Foto identificación:</b>
+          <!-- {{userDetails().data.validationImg}} -->
+        </p>
+        <div #idPhoto class="f-carousel">
+          <div class="f-carousel__slide" [attr.data-thumb-src]="userDetails().data.validationImg"
+            data-fancybox="gallery" [attr.data-src]="userDetails().data.validationImg">
+            <img class="max-h-24 cursor-pointer" [attr.data-lazy-src]="userDetails().data.validationImg"
+              alt="Foto de identificación">
+          </div>
+        </div>
         <p><b>Nombre:</b> {{userDetails().data.firstName}} {{userDetails().data.lastName}}</p>
         <p><b>Nombre de usuario:</b> {{userDetails().data.username}}</p>
         <p><b>Tipo de vendedor:</b> {{userDetails().data.sellerType}}</p>
