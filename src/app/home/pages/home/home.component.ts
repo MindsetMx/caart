@@ -129,14 +129,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
       injectStyles: [
         `
         .swiper-pagination-bullet{
-          background-color: #d9d9d9;
+          background-color: transparent;
+          border: 1px solid #d9d9d9;
+          width: 6px;
+          height: 6px;
           opacity: 1;
         }
         .swiper-pagination-bullet-active {
           width: 6px;
           height: 6px;
-          background-color: transparent;
-          border: 1px solid #d9d9d9;
+          background-color: white;
         }
         `,
       ],
