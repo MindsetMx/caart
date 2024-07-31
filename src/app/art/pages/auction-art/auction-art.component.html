@@ -121,7 +121,7 @@
           @switch (auction().data.attributes.status) {
           @case (auctionCarStatus.Preview) {
           @if (specificAuction().data) {
-          <span class="md:text-xl" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
+          <span class="md:text-xl h-full" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
             {{auction().data.attributes.daysActive}}
             @if (auction().data.attributes.daysActive === 1) {
             día
