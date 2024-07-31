@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AppService } from '@app/app.service';
@@ -14,6 +14,7 @@ import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-d
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -28,7 +29,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     AuctionCarDetailsModalComponent,
     MatMenuModule,
     InputDirective,
-    MatIcon
+    MatIcon, JsonPipe
   ],
   templateUrl: './add-car-history.component.html',
   styleUrl: './add-car-history.component.css',
@@ -49,6 +50,8 @@ export class AddCarHistoryComponent {
   #appService = inject(AppService);
   #activatedRoute = inject(ActivatedRoute);
   #router = inject(Router);
+  #changeDetectorRef = inject(ChangeDetectorRef);
+  #destroyRef: DestroyRef = inject(DestroyRef);
 
   get blocksFormArray(): FormArray {
     return this.addCarHistoryForm.get('blocks') as FormArray;
@@ -71,24 +74,12 @@ export class AddCarHistoryComponent {
 
     this.addCarHistoryForm = this.#formBuilder.group({
       originalAuctionCarId: [this.originalAuctionCarId(), Validators.required],
-      blocks: this.#formBuilder.array([
-        this.#formBuilder.group({
-          type: ['text', Validators.required],
-          content: ['', Validators.required]
-        })
-      ], Validators.required),
+      blocks: this.#formBuilder.array([], Validators.required),
       extract: ['', Validators.required],
-      extraInfo: this.#formBuilder.array([
-        this.#formBuilder.control('')
-      ])
+      extraInfo: this.#formBuilder.array([])
     });
 
-    // Suscribirse a los cambios del campo 'content' del primer bloque
-    this.addCarHistoryForm.get('blocks')?.get([0])?.get('content')?.valueChanges.pipe(
-      takeUntilDestroyed()
-    ).subscribe(value => {
-      this.addCarHistoryForm.get('extract')?.setValue(value);
-    });
+    this.getCarHistory();
   }
 
   addCarHistory(): void {
@@ -116,6 +107,35 @@ export class AddCarHistoryComponent {
       }
     }).add(() => {
       this.addCarHistorySubmitButtonIsDisabled.set(false);
+    });
+  }
+
+  getCarHistory(): void {
+    this.#auctionCarService.getCarHistory$(this.originalAuctionCarId()).subscribe({
+      next: (carHistory) => {
+        this.addCarHistoryForm.get('extract')?.setValue(carHistory.extract);
+
+        carHistory.blocks.forEach((block) => {
+          this.addContent(block.type);
+          const lastBlockIndex = this.blocksFormArrayControls.length - 1;
+          this.blocksFormArrayControls[lastBlockIndex].get('content')?.setValue(block.content);
+        });
+
+        carHistory.extraInfo.forEach((info: string) => {
+          this.extraInfoFormArray.push(this.#formBuilder.control(info));
+        });
+
+        this.#changeDetectorRef.detectChanges();
+      },
+      error: (error) => {
+        this.addContent('text');
+
+        this.extraInfoFormArray.push(this.#formBuilder.control(''));
+
+        this.#changeDetectorRef.detectChanges();
+
+        console.error(error);
+      }
     });
   }
 
@@ -150,6 +170,16 @@ export class AddCarHistoryComponent {
     });
 
     this.blocksFormArray.push(nuevoContenido);
+
+    //si es la primera vez que se agrega un bloque, se suscribe al cambio del campo 'content' del primer bloque
+    if (this.blocksFormArray.length === 1) {
+      // Suscribirse a los cambios del campo 'content' del primer bloque
+      this.addCarHistoryForm.get('blocks')?.get([0])?.get('content')?.valueChanges.pipe(
+        takeUntilDestroyed(this.#destroyRef)
+      ).subscribe(value => {
+        this.addCarHistoryForm.get('extract')?.setValue(value);
+      });
+    }
   }
 
   openAuctionCarDetailsModal(): void {

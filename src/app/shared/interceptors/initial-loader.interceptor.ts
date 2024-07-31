@@ -6,7 +6,7 @@ export const initialLoaderInterceptor: HttpInterceptorFn = (req, next) => {
   let completedRequests = 0;
   let initialLoadComplete = false;
   let startTime: number;
-  const MINIMUM_LOADER_TIME = 1000;
+  const MINIMUM_LOADER_TIME = 500;
   let loaderTimeout: any;
 
   if (!initialLoadComplete) {

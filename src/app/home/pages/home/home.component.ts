@@ -86,10 +86,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
           background-color: black;
         }
         .swiper-wrapper {
-          // display: flex;
-          // align-items: end;
           padding-bottom: 2.5rem;
         }
+        @media (min-width: 640px) {
+          .swiper-wrapper {
+            display: flex;
+            align-items: end;
+        }
+      }
         `,
       ],
       pagination: true,

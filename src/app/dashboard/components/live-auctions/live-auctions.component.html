@@ -1,0 +1,108 @@
+@if (auctions().data && auctions().data.length > 0) {
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="mt-8 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-0 lg:px-0">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                # de lote
+              </th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Imagen</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Pieza</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Tiempo</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Reserva</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Oferta más alta</th>
+              <!-- <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                <span class="sr-only">Ver ofertas</span>
+              </th> -->
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            @for (auction of auctions().data; track auction.id) {
+            <tr>
+              <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                {{ auction.attributes.lote }}
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <img [src]="auction.attributes.portada" [alt]="auction.attributes.title"
+                  class="w-28 h-28 object-cover rounded-lg border border-gray-200">
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <div class="font-semibold text-lg">
+                  {{ auction.attributes.title }}
+                </div>
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                <span
+                  class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                  {{ auction.attributes.status }}
+                </span>
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                @if (auction.attributes.tiempo) {
+                <countdown [config]="countdownConfig(auction.attributes.tiempo)"
+                  [ngClass]="{'text-red-500': countdownConfig(auction.attributes.tiempo).leftTime! <= 86400}">
+                </countdown>
+                } @else {
+                <span class="block text-center">-</span>
+                }
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <!-- @if (auction.attributes.status === myAuctionsStatus.liveAuction) {
+                <button class="underline"
+                  (click)="openUpdateReservePriceModal(auction._id, auction.type, auction.attributes.reserva)">
+                  {{ auction.attributes.reserva | currency:'MXN':'symbol':'1.0-0' }}
+                </button>
+                }
+                @else {
+                {{ auction.attributes.reserva | currency:'MXN':'symbol':'1.0-0' }}
+                } -->
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                @if (auction.attributes.ofertaMasAlta === 0) {
+                <span>
+                  No hay ofertas
+                </span>
+                } @else {
+                {{ auction.attributes.ofertaMasAlta| currency:'MXN':'symbol':'1.0-0' }}
+                }
+              </td>
+              <!-- <td class="whitespace-nowrap py-5 pl-3 pr-4 sm:pr-0 text-right text-sm font-medium">
+                @switch (auction.attributes.status) {
+                @case (myAuctionsStatus.lastChance) {
+                <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
+                  (click)="openAuctionOffersApprovalTableModal(auction.id, auction.type)">
+                  Ver ofertas
+                </button>
+                }
+
+                @case (myAuctionsStatus.liveAuction) {
+                <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
+                  (click)="openAuctionOffersTableModal(auction.id, auction.type)">
+                  Ver ofertas
+                </button>
+                }
+                }
+              </td> -->
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (auctions().data) {
+<mat-paginator [length]="auctions().meta.totalCount" [pageSize]="size()" [pageIndex]="page() - 1"
+  [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
+</mat-paginator>
+}
+} @else {
+<div class="flex justify-center items-center h-64">
+  <p class="text-gray4 text-lg">No tienes subastas aprobadas</p>
+</div>
+}

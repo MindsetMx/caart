@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, 
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { tap } from 'rxjs';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Carousel, Fancybox } from '@fancyapps/ui';
 import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 
@@ -44,85 +44,6 @@ export class AuctionCarDetailsModalComponent {
 
   #wizardDataService = inject(WizardDataService);
 
-  imagesPublishEffect = effect(() => {
-    if (this.userDetails().data && this.idPhoto()) {
-      new Carousel(
-        this.idPhoto()?.nativeElement,
-        {
-          infinite: false,
-          Dots: false,
-          Thumbs: {
-            type: 'classic',
-            Carousel: {
-              slidesPerPage: 1,
-              Navigation: true,
-              center: true,
-              fill: true,
-              dragFree: true,
-              Autoplay: {
-                autoStart: true,
-                timeout: 5000,
-              },
-            },
-          },
-        },
-        { Thumbs }
-      );
-
-      Fancybox.bind('[data-fancybox="gallery"]', {
-        Hash: false,
-        idle: false,
-        compact: false,
-        dragToClose: false,
-
-        animated: false,
-        showClass: 'f-fadeSlowIn',
-        hideClass: false,
-
-        Carousel: {
-          infinite: false,
-        },
-
-        Images: {
-          zoom: false,
-          Panzoom: {
-            maxScale: 1.5,
-          },
-        },
-
-        Toolbar: {
-          absolute: true,
-          display: {
-            left: [],
-            middle: [],
-            right: ['close'],
-          },
-        },
-
-        Thumbs: {
-          type: 'classic',
-          Carousel: {
-            axis: 'x',
-
-            slidesPerPage: 1,
-            Navigation: true,
-            center: true,
-            fill: true,
-            dragFree: true,
-
-            breakpoints: {
-              '(min-width: 640px)': {
-                axis: 'y',
-              },
-            },
-          },
-        },
-      });
-
-      Fancybox.bind("[data-fancybox='gallery2']", { Hash: false });
-    }
-  });
-
   auctionCarIdAndIsOpenEffect = effect(() => {
     if (this.auctionCarId() && this.isOpen()) {
       this.#wizardDataService.getWizardData$(this.auctionCarId()).pipe(
@@ -137,6 +58,12 @@ export class AuctionCarDetailsModalComponent {
       });
     }
   });
+
+  onTabChange(event: MatTabChangeEvent) {
+    if (event.index === 5) {
+      Fancybox.bind("[data-fancybox='idPhotoGallery']", { Hash: false });
+    }
+  }
 
   getUserDetails(): void {
     this.#wizardDataService.getUserDetails$(this.auctionCarId()).subscribe({

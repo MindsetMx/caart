@@ -7,7 +7,7 @@
 
   <section class="container">
     @defer (when wizardData().data) {
-    <mat-tab-group>
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
       <mat-tab label="Registro">
         <auction-art-register-details class="mt-4" [auctionArtId]="auctionArtId()"
           [wizardData]="wizardData()"></auction-art-register-details>
@@ -20,14 +20,13 @@
       <mat-tab label="Usuario">
         <p class="mt-4"><b>ID:</b> {{userDetails().data._id}}</p>
         <p><b>Foto identificación:</b>
-          <!-- {{userDetails().data.validationImg}} -->
         </p>
-        <div #idPhoto class="f-carousel">
-          <div class="f-carousel__slide" [attr.data-thumb-src]="userDetails().data.validationImg"
-            data-fancybox="gallery" [attr.data-src]="userDetails().data.validationImg">
-            <img class="max-h-24 cursor-pointer" [attr.data-lazy-src]="userDetails().data.validationImg"
-              alt="Foto de identificación">
-          </div>
+        <div class="flex flex-wrap gap-4 mt-2">
+          @for (image of userDetails().data.validationImg; track image) {
+          <a [href]="image" data-fancybox="idPhotoGallery">
+            <img [src]="image" class="object-cover w-28 h-28" alt="">
+          </a>
+          }
         </div>
         <p><b>Nombre:</b> {{userDetails().data.firstName}} {{userDetails().data.lastName}}</p>
         <p><b>Nombre de usuario:</b> {{userDetails().data.username}}</p>

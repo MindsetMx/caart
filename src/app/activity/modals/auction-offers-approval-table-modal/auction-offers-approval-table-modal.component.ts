@@ -144,6 +144,8 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   acceptCarOffer(): void {
+    this.isAcceptLastChanceBidButtonDisabled.set(true);
+
     this.#lastChanceCarAuctionsService.acceptOffer$(this.lastChanceAuctionId(), this.bidId()).subscribe({
       next: () => {
         // this.getMyAuctions();
@@ -159,6 +161,8 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   rejectCarBid(): void {
+    this.isRejectBidButtonDisabled.set(true);
+
     this.#lastChanceCarAuctionsService.rejectBid$(this.lastChanceAuctionId(), this.bidId()).subscribe({
       next: () => {
         // this.getMyAuctions();
@@ -175,6 +179,8 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   acceptArtOffer(): void {
+    this.isAcceptLastChanceBidButtonDisabled.set(true);
+
     this.#lastChanceArtAuctionsService.acceptOffer$(this.lastChanceAuctionId(), this.bidId()).subscribe({
       next: () => {
         // this.getMyAuctions();
@@ -190,6 +196,8 @@ export class AuctionOffersApprovalTableModalComponent {
   }
 
   rejectArtBid(): void {
+    this.isRejectBidButtonDisabled.set(true);
+
     this.#lastChanceArtAuctionsService.rejectBid$(this.lastChanceAuctionId(), this.bidId()).subscribe({
       next: () => {
         // this.getMyAuctions();

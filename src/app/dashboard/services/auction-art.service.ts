@@ -22,11 +22,16 @@ export class AuctionArtService {
   addArtHistory$(addArtHistoryForm: FormGroup): Observable<any> {
     const trimmedAddArtHistoryForm = this.#appService.trimObjectValues(addArtHistoryForm.value);
 
-    return this.#http.post(`${this.#baseUrl}/car-history/art`, trimmedAddArtHistoryForm);
+    return this.#http.put(`${this.#baseUrl}/car-history/art`, trimmedAddArtHistoryForm);
   }
 
   releaseArtForLiveAuction$(auctionArtId: string, startDate: string, endDate: string): Observable<any> {
     // auctions-cars/activate-art/6670cd726819beabe0985141
     return this.#http.patch(`${this.#baseUrl}/auctions-cars/activate-art/${auctionArtId}`, { startDate, endDate });
+  }
+
+  // http://localhost:3000/car-history/art/{{originalAuctionArtId}}
+  getArtHistory$(originalAuctionArtId: string): Observable<any> {
+    return this.#http.get(`${this.#baseUrl}/car-history/art/${originalAuctionArtId}`);
   }
 }

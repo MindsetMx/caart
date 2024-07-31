@@ -2,7 +2,7 @@ import { Carousel, Fancybox } from '@fancyapps/ui';
 import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { tap } from 'rxjs';
 import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 
@@ -36,85 +36,6 @@ export class RequestsDetailsModalComponent {
   #requestsDetailsService = inject(RequestsDetailsService);
   #sanitizer = inject(DomSanitizer);
 
-  imagesPublishEffect = effect(() => {
-    if (this.userDetails().data && this.idPhoto()) {
-      new Carousel(
-        this.idPhoto()?.nativeElement,
-        {
-          infinite: false,
-          Dots: false,
-          Thumbs: {
-            type: 'classic',
-            Carousel: {
-              slidesPerPage: 1,
-              Navigation: true,
-              center: true,
-              fill: true,
-              dragFree: true,
-              Autoplay: {
-                autoStart: true,
-                timeout: 5000,
-              },
-            },
-          },
-        },
-        { Thumbs }
-      );
-
-      Fancybox.bind('[data-fancybox="gallery"]', {
-        Hash: false,
-        idle: false,
-        compact: false,
-        dragToClose: false,
-
-        animated: false,
-        showClass: 'f-fadeSlowIn',
-        hideClass: false,
-
-        Carousel: {
-          infinite: false,
-        },
-
-        Images: {
-          zoom: false,
-          Panzoom: {
-            maxScale: 1.5,
-          },
-        },
-
-        Toolbar: {
-          absolute: true,
-          display: {
-            left: [],
-            middle: [],
-            right: ['close'],
-          },
-        },
-
-        Thumbs: {
-          type: 'classic',
-          Carousel: {
-            axis: 'x',
-
-            slidesPerPage: 1,
-            Navigation: true,
-            center: true,
-            fill: true,
-            dragFree: true,
-
-            breakpoints: {
-              '(min-width: 640px)': {
-                axis: 'y',
-              },
-            },
-          },
-        },
-      });
-
-      Fancybox.bind("[data-fancybox='gallery2']", { Hash: false });
-    }
-  });
-
   publicationIdEffect = effect(() => {
     if (this.publicationId()) {
       this.#requestsDetailsService.getAuctionCarById$(this.publicationId()).pipe(
@@ -124,6 +45,12 @@ export class RequestsDetailsModalComponent {
       });
     }
   });
+
+  onTabChange(event: MatTabChangeEvent) {
+    if (event.index === 1) {
+      Fancybox.bind("[data-fancybox='idPhotoGallery']", { Hash: false });
+    }
+  }
 
   getSafeUrl(video: string): SafeResourceUrl {
     return this.#sanitizer.bypassSecurityTrustResourceUrl(video);

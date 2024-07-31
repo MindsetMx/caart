@@ -7,7 +7,7 @@
 
   <section class="container">
     @defer (when auction().data) {
-    <mat-tab-group>
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
       <mat-tab label="Detalles">
         <h4 class="mt-4">
           {{auction().data.attributes.brand}} {{auction().data.attributes.carModel}}
@@ -50,13 +50,12 @@
         <p class="mt-4"><b>ID:</b> {{userDetails().data._id}}</p>
         <p><b>Foto identificación:</b>
         </p>
-        <!-- <img class="max-h-24" [src]="userDetails().data.validationImg" alt="Foto de identificación"> -->
-        <div #idPhoto class="f-carousel">
-          <div class="f-carousel__slide" [attr.data-thumb-src]="userDetails().data.validationImg"
-            data-fancybox="gallery" [attr.data-src]="userDetails().data.validationImg">
-            <img class="max-h-24 cursor-pointer" [attr.data-lazy-src]="userDetails().data.validationImg"
-              alt="Foto de identificación">
-          </div>
+        <div class="flex flex-wrap gap-4 mt-2">
+          @for (image of userDetails().data.validationImg; track image) {
+          <a [href]="image" data-fancybox="idPhotoGallery">
+            <img [src]="image" class="object-cover w-28 h-28" alt="">
+          </a>
+          }
         </div>
         <p><b>Nombre:</b> {{userDetails().data.firstName}} {{userDetails().data.lastName}}</p>
         <p><b>Nombre de usuario:</b> {{userDetails().data.username}}</p>

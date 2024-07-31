@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { AuctionCarInfo } from '@dashboard/interfaces';
+import { AuctionCarInfo, GetCarHistory } from '@dashboard/interfaces';
 import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
 
@@ -23,10 +23,15 @@ export class AuctionCarService {
   addCarHistory$(addCarHistoryForm: FormGroup): Observable<any> {
     const trimmedAddCarHistoryForm = this.#appService.trimObjectValues(addCarHistoryForm.value);
 
-    return this.#http.post(`${this.#baseUrl}/car-history`, trimmedAddCarHistoryForm);
+    return this.#http.put(`${this.#baseUrl}/car-history/car`, trimmedAddCarHistoryForm);
   }
 
   releaseCarForLiveAuction$(auctionCarId: string, startDate: string, endDate: string): Observable<any> {
     return this.#http.patch(`${this.#baseUrl}/auctions-cars/activate/${auctionCarId}`, { startDate, endDate });
+  }
+
+  // http://localhost:3000/car-history/car/{{originalAuctionCarId}}
+  getCarHistory$(originalAuctionCarId: string): Observable<GetCarHistory> {
+    return this.#http.get<GetCarHistory>(`${this.#baseUrl}/car-history/car/${originalAuctionCarId}`);
   }
 }

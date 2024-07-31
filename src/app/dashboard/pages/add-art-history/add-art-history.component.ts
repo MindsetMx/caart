@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { CommonModule, JsonPipe } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
@@ -28,7 +28,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
     AuctionArtDetailsModalComponent,
     MatMenuModule,
     InputDirective,
-    MatIcon
+    MatIcon,
+    JsonPipe
   ],
   templateUrl: './add-art-history.component.html',
   styleUrl: './add-art-history.component.css',
@@ -50,6 +51,8 @@ export class AddArtHistoryComponent {
   #appService = inject(AppService);
   #activatedRoute = inject(ActivatedRoute);
   #router = inject(Router);
+  #changeDetectorRef = inject(ChangeDetectorRef);
+  #destroyRef: DestroyRef = inject(DestroyRef);
 
   get blocksFormArray(): FormArray {
     return this.addArtHistoryForm.get('blocks') as FormArray;
@@ -73,22 +76,18 @@ export class AddArtHistoryComponent {
     this.addArtHistoryForm = this.#formBuilder.group({
       originalAuctionArtId: [this.originalAuctionArtId(), Validators.required],
       blocks: this.#formBuilder.array([
-        this.#formBuilder.group({
-          type: ['text', Validators.required],
-          content: ['', Validators.required]
-        })
+        // this.#formBuilder.group({
+        //   type: ['text', Validators.required],
+        //   content: ['', Validators.required]
+        // })
       ], Validators.required),
       extract: ['', Validators.required],
       extraInfo: this.#formBuilder.array([
-        this.#formBuilder.control('')
+        // this.#formBuilder.control('')
       ])
     });
 
-    this.addArtHistoryForm.get('blocks')?.get([0])?.get('content')?.valueChanges.pipe(
-      takeUntilDestroyed()
-    ).subscribe(value => {
-      this.addArtHistoryForm.get('extract')?.setValue(value);
-    });
+    this.getArtHistory();
   }
 
   addArtHistory(): void {
@@ -116,6 +115,34 @@ export class AddArtHistoryComponent {
       }
     }).add(() => {
       this.addArtHistorySubmitButtonIsDisabled.set(false);
+    });
+  }
+
+  getArtHistory(): void {
+    this.#auctionArtService.getArtHistory$(this.originalAuctionArtId()).subscribe({
+      next: (artHistory) => {
+        const { blocks, extraInfo } = artHistory;
+
+        blocks.forEach((block: any) => {
+          this.addContent(block.type);
+          this.blocksFormArrayControls[this.blocksFormArrayControls.length - 1].get('content')?.setValue(block.content);
+        });
+
+        extraInfo.forEach((info: string) => {
+          this.extraInfoFormArray.push(this.#formBuilder.control(info, Validators.required));
+        });
+
+        this.#changeDetectorRef.markForCheck();
+      },
+      error: (error) => {
+        this.addContent('text');
+
+        this.extraInfoFormArray.push(this.#formBuilder.control(''));
+
+        this.#changeDetectorRef.detectChanges();
+
+        console.error(error);
+      }
     });
   }
 
@@ -150,6 +177,14 @@ export class AddArtHistoryComponent {
     });
 
     this.blocksFormArray.push(nuevoContenido);
+
+    if (this.blocksFormArray.length === 1) {
+      this.addArtHistoryForm.get('blocks')?.get([0])?.get('content')?.valueChanges.pipe(
+        takeUntilDestroyed(this.#destroyRef)
+      ).subscribe(value => {
+        this.addArtHistoryForm.get('extract')?.setValue(value);
+      });
+    }
   }
 
   openAuctionArtDetailsModal(): void {

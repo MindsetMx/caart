@@ -181,6 +181,11 @@ export const routes: Routes = [
         path: 'asignar-y-reordenar-imagenes-subasta-arte/:id',
         loadComponent: () => import('./dashboard/pages/art-auction-image-assignment-and-reorder/art-auction-image-assignment-and-reorder.component').then((m) => m.ArtAuctionImageAssignmentAndReorderComponent),
       },
+      // subastas en vivo
+      {
+        path: 'subastas-en-vivo',
+        loadComponent: () => import('./dashboard/pages/live-auctions/live-auctions.component').then((m) => m.LiveAuctionsComponent),
+      },
       { path: '**', redirectTo: 'publicaciones' }
     ]
   },

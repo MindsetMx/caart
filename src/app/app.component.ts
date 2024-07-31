@@ -53,7 +53,9 @@ export class AppComponent implements OnDestroy {
         this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe/${this.user?.id}`);
 
         this.eventSource.onmessage = (event) => {
-          this.messages.update((messages) => [...messages, JSON.parse(event.data).message]);
+          if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
+            this.messages.update((messages) => [...messages, JSON.parse(event.data).message]);
+          }
         };
         break;
 

@@ -17,3 +17,5 @@ export * from './calculate-starting-bid-car-auction';
 export * from './calculate-starting-bid-art-auction';
 export * from './user-details';
 export * from './users';
+export * from './get-live-auctions';
+export * from './get-car-history';
