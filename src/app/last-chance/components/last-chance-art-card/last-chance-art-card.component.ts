@@ -28,6 +28,7 @@ export class LastChanceArtCardComponent {
   cover = input.required<string>();
   title = input.required<string>();
   extract = input.required<string>();
+  reserveAmount = input.required<number>();
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;

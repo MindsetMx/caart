@@ -116,12 +116,13 @@
   @defer () {
   @if (last) {
   <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.photos[0]"
-    [title]="auction.attributes.title" [extract]="auction.attributes.extract" intersection
-    (visible)="getArts(false)"></last-chance-art-card>
+    [reserveAmount]="auction.attributes.reserveAmount" [title]="auction.attributes.title"
+    [extract]="auction.attributes.extract" intersection (visible)="getArts(false)"></last-chance-art-card>
   }
   @else {
   <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.photos[0]"
-    [title]="auction.attributes.title" [extract]="auction.attributes.extract"></last-chance-art-card>
+    [reserveAmount]="auction.attributes.reserveAmount" [title]="auction.attributes.title"
+    [extract]="auction.attributes.extract"></last-chance-art-card>
   }
   } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>

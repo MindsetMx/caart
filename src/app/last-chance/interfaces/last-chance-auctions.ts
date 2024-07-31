@@ -18,6 +18,7 @@ export interface LastChanceAuctionsAttributes {
   extract: string;
   cover: string;
   premium: boolean;
+  reserveAmount: number;
 }
 
 export interface LastChanceAuctionsMeta {

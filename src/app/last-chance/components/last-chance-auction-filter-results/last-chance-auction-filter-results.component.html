@@ -160,14 +160,15 @@
   @switch (auction.type) {
   @case (auctionTypesAll.lastChanceAuctionCar){
   <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionId"
-    [isPremium]="auction.attributes.premium" [title]="auction.attributes.title" [extract]="auction.attributes.extract"
-    [cover]="auction.attributes.cover" intersection (visible)="getLiveAuctions(false)"></last-chance-vehicle-card>
+    [reserveAmount]="auction.attributes.reserveAmount" [isPremium]="auction.attributes.premium"
+    [title]="auction.attributes.title" [extract]="auction.attributes.extract" [cover]="auction.attributes.cover"
+    intersection (visible)="getLiveAuctions(false)"></last-chance-vehicle-card>
   }
 
   @case (auctionTypesAll.lastChanceAuctionArt) {
   <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [title]="auction.attributes.title" [extract]="auction.attributes.extract" intersection
-    (visible)="getLiveAuctions(false)"></last-chance-art-card>
+    [reserveAmount]="auction.attributes.reserveAmount" [title]="auction.attributes.title"
+    [extract]="auction.attributes.extract" intersection (visible)="getLiveAuctions(false)"></last-chance-art-card>
   }
   }
   }
@@ -175,13 +176,15 @@
   @switch (auction.type) {
   @case (auctionTypesAll.lastChanceAuctionCar) {
   <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionId"
-    [isPremium]="auction.attributes.premium" [title]="auction.attributes.title" [extract]="auction.attributes.extract"
+    [reserveAmount]="auction.attributes.reserveAmount" [isPremium]="auction.attributes.premium"
+    [title]="auction.attributes.title" [extract]="auction.attributes.extract"
     [cover]="auction.attributes.cover"></last-chance-vehicle-card>
   }
 
   @case (auctionTypesAll.lastChanceAuctionArt) {
   <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [title]="auction.attributes.title" [extract]="auction.attributes.extract"></last-chance-art-card>
+    [reserveAmount]="auction.attributes.reserveAmount" [title]="auction.attributes.title"
+    [extract]="auction.attributes.extract"></last-chance-art-card>
   }
   }
 

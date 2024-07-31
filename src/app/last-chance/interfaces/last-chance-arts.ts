@@ -19,6 +19,7 @@ export interface LastChanceArtsAttributes {
   title: string;
   year: number;
   extract: string;
+  reserveAmount: number;
 }
 
 export interface LastChanceArtsMeta {

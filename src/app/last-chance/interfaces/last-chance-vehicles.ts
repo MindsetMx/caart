@@ -23,6 +23,7 @@ export interface LastChanceVehiclesAttributes {
   state: string;
   city: string;
   premium: boolean;
+  reserveAmount: number;
 }
 
 export interface LastChanceVehiclesMeta {
