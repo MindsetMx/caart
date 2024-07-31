@@ -135,7 +135,7 @@ export const routes: Routes = [
     loadComponent: () => import('./account/pages/account-settings/account-settings.component').then((m) => m.AccountSettingsComponent),
   },
   {
-    path: 'contrato-de-prestación-de-servicios-de-subasta-para-compradores',
+    path: 'contrato-de-prestacion-de-servicios-de-subasta-para-compradores',
     canActivate: [VerifiedGuard],
     loadComponent: () => import('./infoPages/pages/auction-services-contract/auction-services-contract.component').then((m) => m.AuctionServicesContractComponent),
   },
