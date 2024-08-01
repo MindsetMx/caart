@@ -57,12 +57,12 @@ export class RegisterAuctionComponent {
               img: 'assets/img/registrar auto/milo-venus.svg',
               current: this.currentTabAuctionType() === AuctionTypes.art
             },
-            {
-              id: 3,
-              name: 'Memorabilia',
-              img: 'assets/img/registrar auto/milo-venus.svg',
-              current: this.currentTabAuctionType() === AuctionTypes.memorabilia
-            }
+            // {
+            //   id: 3,
+            //   name: 'Memorabilia',
+            //   img: 'assets/img/registrar auto/milo-venus.svg',
+            //   current: this.currentTabAuctionType() === AuctionTypes.memorabilia
+            // }
           ];
 
         this.currentTabId.set(this.tabs.find(tab => tab.current)?.id || 1);

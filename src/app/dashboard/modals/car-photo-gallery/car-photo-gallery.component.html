@@ -6,7 +6,12 @@
     <hr class="absolute w-full -bottom-4">
   </div>
 
-  <div class="container mb-8" #uppyDashboardImages></div>
+  <div class="container">
+    <p class="mb-2 text-sm">Se recomienda subir fotos con orientación horizontal</p>
+
+    <div class="mb-8" #uppyDashboardImages></div>
+  </div>
+
 
   <form (submit)="selectImage(); $event.preventDefault()" id="carPhotoGalleryForm">
     @defer (when carPhotoGallery() && carPhotoGallery().data && carPhotoGallery().data.registro &&

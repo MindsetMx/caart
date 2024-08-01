@@ -6,7 +6,11 @@
       <hr class="absolute w-full -bottom-4">
     </div>
 
-    <div class="container mb-8" #uppyDashboardImages></div>
+    <div class="container">
+      <p class="mb-2 text-sm">Se recomienda subir fotos con orientación horizontal</p>
+
+      <div class="mb-8" #uppyDashboardImages></div>
+    </div>
 
     @defer (when artPhotoGallery() && artPhotoGallery().data && artPhotoGallery().data.registro &&
     artPhotoGallery().data.registro.photos.length > 0) {
