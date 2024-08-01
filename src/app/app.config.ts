@@ -10,7 +10,7 @@ import { routes } from '@app/app.routes';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getSpanishPaginatorIntl } from '@shared/common/spanish-paginator-intl';
-import { initialLoaderInterceptor, tokenInterceptor } from '@shared/interceptors';
+import { tokenInterceptor } from '@shared/interceptors';
 
 const scrollConfig: InMemoryScrollingOptions = {
   scrollPositionRestoration: 'top',
@@ -32,7 +32,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         tokenInterceptor,
-        initialLoaderInterceptor
       ])
     ),
     provideExperimentalZonelessChangeDetection(),

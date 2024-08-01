@@ -195,7 +195,7 @@
           <div id="productCarousel" #myCarousel class="f-carousel">
             <div class="f-carousel__slide" [attr.data-thumb-src]="imagesPublish().data.fotoPrincipal"
               data-fancybox="gallery" [attr.data-src]="imagesPublish().data.fotoPrincipal">
-              <img class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
+              <img #leftColumn class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
                 [attr.data-lazy-src]="imagesPublish().data.fotoPrincipal" />
             </div>
             @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
@@ -243,57 +243,53 @@
         <hr class="my-4">
       </ng-container>
       <ng-container right>
-        <!-- information auction -->
-        @if (auction().data) {
-        <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
-        }
-
-        <section class="md:hidden shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
-          <h3 class="font-semibold mb-2">Información adicional</h3>
-
-          @if (auction().data) {
-          <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
-            @for (item of auction().data.attributes.artHistory.extraInfo; track $index) {
-            <li>{{item}}</li>
+        <div class="h-full">
+          <div class="flex flex-col justify-between h-full">
+            <!-- information auction -->
+            @if (auction().data) {
+            <div #rightColumn>
+              <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
+            </div>
             }
-          </ul>
-
-          <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
-
-          <ul class="space-y-1">
-            <li>
-              <span class="text-gray4">Lote #:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionArtForm.lotNumber}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">
-                {{auction().data.attributes.auctionArtForm.state}}</span>
-            </li>
-          </ul>
-
-          <div class="my-4">
-            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
-            <span class="align-middle">
-              {{auction().data.attributes.dataUser.username}}
-            </span>
+            <section class="md:hidden shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
+              <h3 class="font-semibold mb-2">Información adicional</h3>
+              @if (auction().data) {
+              <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
+                @for (item of auction().data.attributes.artHistory.extraInfo; track $index) {
+                <li>{{item}}</li>
+                }
+              </ul>
+              <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
+              <ul class="space-y-1">
+                <li>
+                  <span class="text-gray4">Lote #:</span>&nbsp;<span
+                    class="font-semibold">{{auction().data.attributes.auctionArtForm.lotNumber}}</span>
+                </li>
+                <li>
+                  <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">
+                    {{auction().data.attributes.auctionArtForm.state}}</span>
+                </li>
+              </ul>
+              <div class="my-4">
+                <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+                <span class="align-middle">
+                  {{auction().data.attributes.dataUser.username}}
+                </span>
+              </div>
+              <div>
+                <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+              </div>
+              <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
+              <ol class="list-inside list-disc mb-8">
+                @for (item of auction().data.attributes.artDetail.additionalCharges; track $index) {
+                <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+                }
+              </ol>
+              }
+            </section>
+            <hr class="my-4">
           </div>
-
-          <div>
-            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
-          </div>
-
-          <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
-
-          <ol class="list-inside list-disc mb-8">
-            @for (item of auction().data.attributes.artDetail.additionalCharges; track $index) {
-            <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
-            }
-          </ol>
-          }
-
-        </section>
-
-        <hr class="my-6">
+        </div>
       </ng-container>
     </two-column-auction-grid>
 

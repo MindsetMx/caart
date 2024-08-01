@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, untracked, viewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
@@ -67,6 +67,8 @@ import { UserData } from '@auth/interfaces';
 export class AuctionArtComponent {
   myCarousel = viewChild<ElementRef>('myCarousel');
   videoGallery = viewChild<ElementRef>('videoGallery');
+  leftColumn = viewChild<ElementRef>('leftColumn');
+  rightColumn = viewChild<ElementRef>('rightColumn');
 
   readonly #baseUrl = environments.baseUrl;
 
@@ -102,6 +104,7 @@ export class AuctionArtComponent {
   #commentsService = inject(CommentsService);
   #activityRequestsService = inject(ActivityRequestsService);
   #appService = inject(AppService);
+  #renderer = inject(Renderer2);
 
   get user(): UserData | null {
     return this.#authService.currentUser();
@@ -153,6 +156,15 @@ export class AuctionArtComponent {
       },
     }
   };
+
+  columnsEffect = effect(() => {
+    if (this.leftColumn()?.nativeElement && this.rightColumn()?.nativeElement) {
+      console.log('columnsEffect');
+
+      const rightColumnHeight = this.rightColumn()?.nativeElement.offsetHeight;
+      this.#renderer.setStyle(this.leftColumn()?.nativeElement, 'maxHeight', `${rightColumnHeight}px`);
+    }
+  });
 
   authStatusEffect = effect(() => {
     switch (this.authStatus) {

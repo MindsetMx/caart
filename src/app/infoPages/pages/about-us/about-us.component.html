@@ -12,21 +12,24 @@
       <p>Reinventamos la experiencia de las subastas a través de una plataforma digital accesible para todos. Nos
         especializamos en la curación y selección de cada pieza. En CAART puedes adquirir o vender objetos únicos.
       </p>
+
+      @if (isNotAuthenticated) {
       <br>
       <span>¡Regístrate para comenzar a subastar!</span>
 
-      <button class="block mt-8" width="w-fit" px="px-4" py="py-2" sharedPrimaryButton>
+      <button (click)="openRegisterModal()" class="block mt-8" width="w-fit" px="px-4" py="py-2" sharedPrimaryButton>
         Quiero registrarme
       </button>
+      }
     </div>
     <div>
-      <img class="h-80 w-full" src="https://via.placeholder.com/500" alt="About us">
+      <img class="w-full" src="../../../../assets/img/nosotros/caart_autos.jpg" alt="About us">
     </div>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
     <div>
-      <img class="h-80 w-full" src="https://via.placeholder.com/500" alt="About us">
+      <img class="w-full" src="../../../../assets/img/nosotros/caart_arte.jpg" alt="About us">
     </div>
     <div>
       <h3 class="text-xl font-bold font-optima mb-4">
@@ -39,7 +42,7 @@
       </p>
       <br>
 
-      <button class="block mt-8" width="w-fit" px="px-4" py="py-2" sharedTertiaryButton>
+      <button routerLink="/subastas-en-vivo" class="block mt-8" width="w-fit" px="px-4" py="py-2" sharedTertiaryButton>
         Ver subastas en vivo
       </button>
     </div>
@@ -49,21 +52,21 @@
     <h3 class="text-2xl font-optima font-bold mb-8">Lo que nos distingue:</h3>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
       <div>
-        <img src="https://via.placeholder.com/100" alt="About us">
-        <p class="font-bold my-2">1. Asesoría personalizada</p>
+        <img class="w-12 h-12" src="../../../../assets/img/nosotros/personalizada.png" alt="About us">
+        <p class="font-bold my-2">Asesoría personalizada</p>
         <span>Estamos aquí para asesorarte en cada etapa del proceso de compra y venta.</span>
       </div>
       <div>
-        <img src="https://via.placeholder.com/100" alt="About us">
-        <p class="font-bold my-2">2. Procesos seguros</p>
+        <img class="w-12 h-12" src="../../../../assets/img/nosotros/procesos_seguros.png" alt="About us">
+        <p class="font-bold my-2">Procesos seguros</p>
         <span>
           Nuestro equipo se asegura de verificar la autenticidad y el estado de las piezas para satisfacer tu
           experiencia como usuario.
         </span>
       </div>
       <div>
-        <img src="https://via.placeholder.com/100" alt="About us">
-        <p class="font-bold my-2">3. Transparencia</p>
+        <img class="w-12 h-12" src="../../../../assets/img/nosotros/transparencia.png" alt="About us">
+        <p class="font-bold my-2">Transparencia</p>
         <span>
           Nos aseguramos que en cada subasta exista competencia justa entre los usuarios, logrando un trato íntegro
           entre vendedor y comprador.
@@ -78,18 +81,21 @@
     <h3 class="text-2xl font-optima font-bold mb-4">Última oportunidad</h3>
     <span>En esta sección encontrarás piezas únicas disponibles en el marketplace. ¡No te las pierdas!</span>
     <br>
-    <button class="mt-6 bg-white rounded-lg px-4 py-2 w-52">¡Me interesa!</button>
+    <button routerLink="/ultima-oportunidad" class="mt-6 bg-white rounded-lg px-4 py-2 w-52">¡Me interesa!</button>
   </div>
 </section>
 
 <section class="container sm:max-w-3xl mt-20 mb-32">
+  @if (isNotAuthenticated) {
   <h2 class="text-3xl font-optima font-bold mb-8 text-center">Regístrate</h2>
 
   <p class="text-center">Estás a punto de entrar en un mundo de subastas digital.</p>
 
-  <button sharedPrimaryButton class="block mt-8 mx-auto" width="w-fit" px="px-6" py="py-2.5">
+  <button (click)="openRegisterModal()" sharedPrimaryButton class="block mt-8 mx-auto" width="w-fit" px="px-6"
+    py="py-2.5">
     ¡Quiero ser parte!
   </button>
+  }
 
   <h3 class="text-center font-optima mt-12 text-2xl">
     ¿Preguntas?
@@ -100,3 +106,5 @@
       Encuentra las respuestas en la sección de <span class="underline">preguntas frecuentes.</span></p>
   </div>
 </section>
+
+<register-modal [isOpen]="registerModalIsOpen"></register-modal>

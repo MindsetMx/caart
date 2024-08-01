@@ -42,7 +42,7 @@ export const routes: Routes = [
   },
   // {
   //   path: 'registrarse',
-  //   canActivate: [VerifiedGuard,GuestGuard],
+  //   canActivate: [GuestGuard],
   //   loadComponent: () => import('./auth/pages/register/register.component').then((m) => m.RegisterComponent),
   // },
   {

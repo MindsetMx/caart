@@ -179,64 +179,68 @@
         <hr class="my-4">
       </ng-container>
       <ng-container right>
-        <!-- information auction -->
-        @if (auction().data) {
-        <div #rightColumn>
-          <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
+        <div class="h-full">
+          <div class="flex flex-col justify-between h-full">
+            <!-- information auction -->
+            @if (auction().data) {
+            <div #rightColumn>
+              <auction-details-table-component [auctionDetails]="auctionDetails()"></auction-details-table-component>
+            </div>
+            }
+
+            <section class="md:hidden shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
+              <h3 class="font-semibold mb-2">Información adicional</h3>
+
+              @if (auction().data) {
+              <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
+                @for (item of auction().data.attributes.carHistory.extraInfo; track $index) {
+                <li>{{item}}</li>
+                }
+              </ul>
+
+              <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
+
+              <ul class="space-y-1">
+                <li>
+                  <span class="text-gray4">Lote #:</span>&nbsp;<span
+                    class="font-semibold">{{auction().data.attributes.auctionArtForm.lotNumber}}</span>
+                </li>
+                <li>
+                  <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">
+                    {{auction().data.attributes.auctionArtForm.state}}</span>
+                </li>
+              </ul>
+
+              <div class="my-4">
+                <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
+                <span class="align-middle">
+                  {{auction().data.attributes.dataUser.username}}
+                </span>
+              </div>
+
+              <div>
+                <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+              </div>
+              }
+
+              <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
+
+              @if (auction().data) {
+              <ol class="list-inside list-disc mb-8">
+                @for (item of auction().data.attributes.artDetail.additionalCharges; track $index) {
+                <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
+                }
+              </ol>
+              }
+
+              <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
+                  HACER UNA OFERTA
+                </button> -->
+            </section>
+
+            <hr class="my-4">
+          </div>
         </div>
-        }
-
-        <section class="md:hidden shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
-          <h3 class="font-semibold mb-2">Información adicional</h3>
-
-          @if (auction().data) {
-          <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
-            @for (item of auction().data.attributes.carHistory.extraInfo; track $index) {
-            <li>{{item}}</li>
-            }
-          </ul>
-
-          <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
-
-          <ul class="space-y-1">
-            <li>
-              <span class="text-gray4">Lote #:</span>&nbsp;<span
-                class="font-semibold">{{auction().data.attributes.auctionArtForm.lotNumber}}</span>
-            </li>
-            <li>
-              <span class="text-gray4">Ubicación:</span>&nbsp;<span class="font-semibold">
-                {{auction().data.attributes.auctionArtForm.state}}</span>
-            </li>
-          </ul>
-
-          <div class="my-4">
-            <img class="inline-block mr-2" src="assets/img/icons/person-circle-outline.svg" alt="">
-            <span class="align-middle">
-              {{auction().data.attributes.dataUser.username}}
-            </span>
-          </div>
-
-          <div>
-            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
-          </div>
-          }
-
-          <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
-
-          @if (auction().data) {
-          <ol class="list-inside list-disc mb-8">
-            @for (item of auction().data.attributes.artDetail.additionalCharges; track $index) {
-            <li>{{item.chargeType}}: {{item.amount | currency:'USD':'symbol':'1.0-2'}} MXN</li>
-            }
-          </ol>
-          }
-
-          <!-- <button class="mt-4" (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button> -->
-        </section>
-
-        <hr class="my-6">
       </ng-container>
     </two-column-auction-grid>
 

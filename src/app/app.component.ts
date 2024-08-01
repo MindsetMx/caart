@@ -33,7 +33,7 @@ import { UserData } from '@auth/interfaces';
     ]),
   ]
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnDestroy, AfterViewInit {
   readonly #baseUrl = environments.baseUrl;
 
   title = 'caart';
@@ -69,6 +69,15 @@ export class AppComponent implements OnDestroy {
 
   get user(): UserData | null {
     return this.#authService.currentUser();
+  }
+
+  ngAfterViewInit(): void {
+    const loader = document.getElementById('globalLoader');
+    if (loader) {
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 1000);
+    }
   }
 
   ngOnDestroy(): void {
