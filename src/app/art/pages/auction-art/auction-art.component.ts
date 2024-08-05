@@ -40,6 +40,7 @@ import { ActivityRequestsService } from '@activity/services/activity-requests.se
 import { AppService } from '@app/app.service';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 import { UserData } from '@auth/interfaces';
+import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 @Component({
   standalone: true,
   imports: [
@@ -58,6 +59,7 @@ import { UserData } from '@auth/interfaces';
     TwoColumnAuctionGridComponent,
     ConfirmationModalComponent,
     UpdateReservePriceModalComponent,
+    NoReserveTagComponentComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction-art.component.html',

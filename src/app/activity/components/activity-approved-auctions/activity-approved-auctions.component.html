@@ -91,6 +91,14 @@
                   Ver ofertas
                 </button>
                 }
+
+                @case (myAuctionsStatus.sold) {
+                <!-- Ver datos del comprador -->
+                <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
+                  (click)="openWinnerDetailsModal(auction.attributes.winnerInfo)">
+                  Ver datos del comprador
+                </button>
+                }
                 }
               </td>
             </tr>
@@ -117,6 +125,10 @@
 <update-reserve-price-modal [(isOpen)]="isUpdateReservePriceModalOpen" [currentReservePrice]="reserveAmount()"
   [auctionType]="auctionType()" [auctionId]="auctionId()" (reserveAmountUpdated)="getMyApproved()">
 </update-reserve-price-modal>
+
+<winner-details-modal [(isOpen)]="isWinnerDetailsModalOpen" [winnerInfo]="winnerInfo()">
+</winner-details-modal>
+
 } @else {
 <div class="flex justify-center items-center h-64">
   <p class="text-gray4 text-lg">No tienes subastas aprobadas</p>

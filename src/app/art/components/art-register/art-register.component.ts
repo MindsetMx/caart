@@ -24,6 +24,7 @@ import { Rarity } from '../../enum/rarity.enum';
 import { AuthStatus } from '@auth/enums';
 import { AuthService } from '@auth/services/auth.service';
 import { AppComponent } from '@app/app.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'art-register',
@@ -38,7 +39,8 @@ import { AppComponent } from '@app/app.component';
     NgxMaskDirective,
     MatAutocompleteModule,
     AsyncPipe,
-    NgClass
+    NgClass,
+    MatTooltipModule,
   ],
   templateUrl: './art-register.component.html',
   styleUrl: './art-register.component.css',

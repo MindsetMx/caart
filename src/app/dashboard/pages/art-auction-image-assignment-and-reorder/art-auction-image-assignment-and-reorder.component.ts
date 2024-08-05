@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, WritableSignal, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
@@ -63,6 +63,7 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
   #appService = inject(AppService);
+  #changeDetectorRef = inject(ChangeDetectorRef);
 
   get fotoPrincipal(): FormControl {
     return this.auctionImagesForm.get('fotoPrincipal') as FormControl;
@@ -228,6 +229,8 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
         //   (imageUrl: string) => this.#formBuilder.control(imageUrl, Validators.required)
         // )));
         response.data.fotosCarrusel.forEach((imageUrl: string) => this.fotosCarruselFormArray.push(this.#formBuilder.control(imageUrl, Validators.required)));
+
+        this.#changeDetectorRef.detectChanges();
       },
       error: (error) => {
         console.error(error);

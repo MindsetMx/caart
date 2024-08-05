@@ -26,6 +26,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { states } from '@shared/states';
 import { SubastaAutomovilesTypes } from '@app/register-car/enums/subastaAutomovilesTypes.enum';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'car-register',
@@ -42,6 +43,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     UppyAngularDashboardModule,
     MatAutocompleteModule,
     NgxMaskDirective,
+    MatTooltipModule,
   ],
   templateUrl: './car-register.component.html',
   styleUrl: './car-register.component.css',

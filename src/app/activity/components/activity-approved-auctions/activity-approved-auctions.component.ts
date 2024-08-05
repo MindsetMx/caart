@@ -4,13 +4,14 @@ import { CurrencyPipe, NgClass } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
-import { Approved, MyAuctionsStatus } from '@activity/interfaces';
+import { Approved, MyAuctionsStatus, WinnerInfo } from '@activity/interfaces';
 import { ApprovedService } from '@activity/services/approved.service';
 import { AuctionOffersApprovalTableModalComponent } from '@activity/modals/auction-offers-approval-table-modal/auction-offers-approval-table-modal.component';
 import { CountdownService } from '@shared/services/countdown.service';
 import { AuctionTypes } from '@activity/enums';
 import { AuctionOffersTableModalComponent } from '@activity/modals/auction-offers-table-modal/auction-offers-table-modal.component';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
+import { WinnerDetailsModalComponent } from '@activity/modals/winner-details-modal/winner-details-modal.component';
 
 @Component({
   selector: 'activity-approved-auctions',
@@ -23,6 +24,7 @@ import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserv
     AuctionOffersApprovalTableModalComponent,
     AuctionOffersTableModalComponent,
     UpdateReservePriceModalComponent,
+    WinnerDetailsModalComponent
   ],
   templateUrl: './activity-approved-auctions.component.html',
   styleUrl: './activity-approved-auctions.component.css',
@@ -45,6 +47,8 @@ export class ActivityApprovedAuctionsComponent {
   auctionId = signal<string>('');
   auctionType = signal<AuctionTypes>(AuctionTypes.auto);
   reserveAmount = signal<number>(0);
+  winnerInfo = signal<WinnerInfo>({} as WinnerInfo);
+  isWinnerDetailsModalOpen = signal<boolean>(false);
 
   getMyApprovedEffect = effect(() => {
     this.getMyApproved();
@@ -52,6 +56,11 @@ export class ActivityApprovedAuctionsComponent {
 
   get myAuctionsStatus(): typeof MyAuctionsStatus {
     return MyAuctionsStatus;
+  }
+
+  openWinnerDetailsModal(winnerInfo: WinnerInfo): void {
+    this.winnerInfo.set(winnerInfo);
+    this.isWinnerDetailsModalOpen.set(true);
   }
 
   openUpdateReservePriceModal(auctionId: string, auctionType: AuctionTypes, reservePrice: number): void {

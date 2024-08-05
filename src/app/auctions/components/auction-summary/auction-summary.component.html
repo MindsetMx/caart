@@ -80,9 +80,11 @@
     </div>
     <!-- <span class="col-span-8 lg:col-span-9 font-semibold">3</span> -->
     <span class="col-span-8 lg:col-span-9 font-semibold">
-      <!-- {{auction().data.attributes.bids.length}} -->
-      {{auction().data.attributes.bids[auction().data.attributes.bids.length - 1].userId === null ? 0 :
-      auction().data.attributes.bids.length - 1}}
+      <!-- {{auction().data.attributes.bids[auction().data.attributes.bids.length - 1].userId === null ? 0 :
+      auction().data.attributes.bids.length - 1}} -->
+      {{ auction().data && auction().data.attributes.bids.length > 0 ?
+      auction().data.attributes.bids[0].userId === null ? auction().data.attributes.bids.length - 1 :
+      auction().data.attributes.bids.length : 0}}
     </span>
   </div>
 

@@ -20,6 +20,18 @@ export interface ApprovedAttributes {
   tiempo?: string;
   reserva: number;
   ofertaMasAlta: number;
+  winnerInfo: WinnerInfo;
+}
+
+export interface WinnerInfo {
+  userId: string;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  amount: number;
+  chargeId: string;
+  purchaseDate: Date;
 }
 
 export interface ApprovedMeta {
@@ -33,4 +45,5 @@ export interface ApprovedMeta {
 export enum MyAuctionsStatus {
   lastChance = 'Última oportunidad',
   liveAuction = 'Subasta en vivo',
+  sold = 'Vendido',
 }

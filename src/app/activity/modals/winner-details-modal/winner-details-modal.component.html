@@ -1,0 +1,38 @@
+<shared-modal [verticalCenter]="true" [(isOpen)]="isOpen">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Detalles del ganador</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <div class="px-4 sm:px-6 lg:px-8">
+    <div class="flow-root">
+      <div class="space-y-2">
+        <div>
+          <span class="font-semibold">Nombre de usuario: </span>
+          <span>{{ winnerInfo().username }}</span>
+        </div>
+        <div>
+          <span class="font-semibold">Email: </span>
+          <span>{{ winnerInfo().email }}</span>
+        </div>
+        <div>
+          <span class="font-semibold">Nombre: </span>
+          <span>{{ winnerInfo().firstName }}</span>
+        </div>
+        <div>
+          <span class="font-semibold">Apellido: </span>
+          <span>{{ winnerInfo().lastName }}</span>
+        </div>
+        <div>
+          <span class="font-semibold">Monto: </span>
+          <span>{{ winnerInfo().amount | currency:'MXN':'symbol':'1.0-0' }}</span>
+        </div>
+        <div>
+          <span class="font-semibold">Fecha de compra: </span>
+          <span>{{ winnerInfo().purchaseDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</shared-modal>
