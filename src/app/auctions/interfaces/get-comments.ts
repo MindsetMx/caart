@@ -1,5 +1,13 @@
 export interface GetComments {
   data: GetCommentsData[];
+  meta: GetCommentsMeta;
+}
+
+export interface GetCommentsMeta {
+  totalCount: number;
+  pageCount: number;
+  currentPage: number;
+  pageSize: number;
 }
 
 export interface GetCommentsData {
@@ -19,6 +27,7 @@ export interface GetCommentsAttributes {
   likesCount: number;
   parentCommentId: null;
   text: string;
+  read: boolean;
 }
 
 export interface GetCommentsRelationships {

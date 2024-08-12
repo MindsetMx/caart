@@ -13,6 +13,8 @@ export interface ApprovedData {
 }
 
 export interface ApprovedAttributes {
+  bids: ApprovedBids[];
+  hasUnreadComments: boolean;
   lote?: number;
   portada: string;
   title: string;
@@ -21,6 +23,24 @@ export interface ApprovedAttributes {
   reserva: number;
   ofertaMasAlta: number;
   winnerInfo: WinnerInfo;
+}
+
+export interface ApprovedBids {
+  userId: string;
+  bidAmount: number;
+  bidDate: Date;
+  paymentIntentId: string;
+  rejected: boolean;
+  _id: string;
+  userInfo: ApprovedUserInfo;
+}
+
+export interface ApprovedUserInfo {
+  userId: string;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface WinnerInfo {
@@ -43,7 +63,8 @@ export interface ApprovedMeta {
 }
 
 export enum MyAuctionsStatus {
-  lastChance = 'Última oportunidad',
-  liveAuction = 'Subasta en vivo',
+  lastChance = 'lastChance',
+  liveAuction = 'active',
   sold = 'Vendido',
+  preview = 'Vista previa',
 }

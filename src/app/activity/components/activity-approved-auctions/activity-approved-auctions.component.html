@@ -28,10 +28,10 @@
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
                 <img [src]="auction.attributes.portada" [alt]="auction.attributes.title"
-                  class="w-28 h-28 object-cover rounded-lg border border-gray-200">
+                  class="min-w-28 h-28 object-cover rounded-lg border border-gray-200">
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
-                <div class="font-semibold text-lg">
+                <div class="font-semibold">
                   {{ auction.attributes.title }}
                 </div>
                 <!-- <div class="text-lg text-gray-500">
@@ -76,30 +76,39 @@
                 {{ auction.attributes.ofertaMasAlta| currency:'MXN':'symbol':'1.0-0' }}
                 }
               </td>
-              <td class="whitespace-nowrap py-5 pl-3 pr-4 sm:pr-0 text-right text-sm font-medium">
-                @switch (auction.attributes.status) {
-                @case (myAuctionsStatus.lastChance) {
-                <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
-                  (click)="openAuctionOffersApprovalTableModal(auction.id, auction.type)">
-                  Ver ofertas
-                </button>
-                }
-
-                @case (myAuctionsStatus.liveAuction) {
-                <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
-                  (click)="openAuctionOffersTableModal(auction.id, auction.type)">
-                  Ver ofertas
-                </button>
-                }
-
-                @case (myAuctionsStatus.sold) {
-                <!-- Ver datos del comprador -->
-                <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
-                  (click)="openWinnerDetailsModal(auction.attributes.winnerInfo)">
-                  Ver datos del comprador
-                </button>
-                }
-                }
+              <td class="whitespace-nowrap gap-2 py-5 pl-3 pr-4 sm:pr-0 text-right text-sm font-medium">
+                <div class="flex items-center gap-2">
+                  @switch (auction.attributes.status) {
+                  @case (myAuctionsStatus.lastChance) {
+                  <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
+                    title="Ver ofertas" (click)="openAuctionOffersApprovalTableModal(auction.id, auction.type)">
+                    <img class="w-7" src="assets/img/icons/money.svg" alt="ícono de subasta">
+                  </button>
+                  }
+                  @case (myAuctionsStatus.liveAuction) {
+                  <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
+                    title="Ver ofertas" (click)="openAuctionOffersTableModal(auction.id, auction.type)">
+                    <img class="w-7" src="assets/img/icons/money.svg" alt="ícono de subasta">
+                  </button>
+                  }
+                  @case (myAuctionsStatus.sold) {
+                  <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
+                    (click)="openWinnerDetailsModal(auction.attributes.winnerInfo)" title="Ver datos del comprador">
+                    <img class="w-7" src="assets/img/icons/user-round.svg" alt="">
+                  </button>
+                  <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
+                    (click)="openSoldAuctionBidTableModal(auction.attributes.bids)" title="Ver historial de ofertas">
+                    <img class="w-7" src="assets/img/icons/money.svg" alt="">
+                  </button>
+                  }
+                  }
+                  <a matBadge="!" matBadgeSize="small" [matBadgeHidden]="!auction.attributes.hasUnreadComments"
+                    title="Mis comentarios" routerLink="/mis-comentarios" [queryParams]="{ auctionType: auction.type === auctionTypes.auto ? auctionTypes2.car : auctionTypes2.art
+                      , auctionId: auction.id, commentAuctionTypes: auction.attributes.status}"
+                    class="text-black hover:text-gray-900 underline font-semibold demo-section">
+                    <img class="w-6" src="assets/img/icons/comment.svg" alt="">
+                  </a>
+                </div>
               </td>
             </tr>
             }
@@ -128,6 +137,9 @@
 
 <winner-details-modal [(isOpen)]="isWinnerDetailsModalOpen" [winnerInfo]="winnerInfo()">
 </winner-details-modal>
+
+<sold-auction-bid-table-modal [(isOpen)]="isSoldAuctionBidTableModalOpen"
+  [bids]="bids()"></sold-auction-bid-table-modal>
 
 } @else {
 <div class="flex justify-center items-center h-64">

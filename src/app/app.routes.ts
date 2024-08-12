@@ -100,6 +100,11 @@ export const routes: Routes = [
     loadComponent: () => import('./activity/pages/activity/activity.component').then((m) => m.ActivityComponent),
   },
   {
+    path: 'mis-comentarios',
+    canActivate: [VerifiedGuard, AuthGuard],
+    loadComponent: () => import('./activity/pages/my-comments/my-comments.component').then((m) => m.MyCommentsComponent),
+  },
+  {
     path: 'ultima-oportunidad/:id',
     canActivate: [VerifiedGuard],
     loadComponent: () => import('./last-chance/pages/last-chance-detail/last-chance-detail.component').then((m) => m.LastChanceDetailComponent),

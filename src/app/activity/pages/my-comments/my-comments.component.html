@@ -1,0 +1,163 @@
+<section class="container mt-12 mb-32">
+  <h1 class="font-lato font-bold text-4xl mb-8">Mis comentarios</h1>
+
+  <div class="flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <div class="relative">
+          @if (selectedCommentsIds().length > 0) {
+          <div class="absolute left-14 top-0 flex h-12 items-center space-x-3 bg-white sm:left-12">
+            <button type="button" (click)="markAsRead()"
+              class="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white">
+              Marcar como leído
+            </button>
+          </div>
+          }
+          @if (comments().data && comments().data.length > 0) {
+          <table class="min-w-full table-fixed divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th scope="col" class="relative px-7 sm:w-12 sm:px-6">
+                  <input type="checkbox"
+                    class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    [checked]="selectedCommentsIds().length === comments().data.length"
+                    [indeterminate]="indeterminate()" (change)="toggleAll($event)">
+                </th>
+                <!-- createdBy -->
+                <th scope="col" class="min-w-[12rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">
+                  Creado por
+                </th>
+                <th scope="col" class="min-w-[12rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">
+                  Comentario
+                </th>
+                <!-- read -->
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  Leído
+                </th>
+                <!-- ver comentario -->
+                <!-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  Ver comentario
+                </th> -->
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  Fecha
+                </th>
+                <!-- <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-3">
+                    <span class="sr-only">Edit</span>
+                  </th> -->
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <!-- export interface GetComments {
+                  data: GetCommentsData[];
+                  meta: GetCommentsMeta;
+                }
+
+                export interface GetCommentsMeta {
+                  totalCount: number;
+                  pageCount: number;
+                  currentPage: number;
+                  pageSize: number;
+                }
+
+                export interface GetCommentsData {
+                  id: string;
+                  type: string;
+                  attributes: GetCommentsAttributes;
+                  relationships: GetCommentsRelationships;
+                }
+
+                export interface GetCommentsAttributes {
+                  createdBy: string;
+                  dateCreated: string;
+                  images: string[];
+                  isBid: boolean;
+                  isSeller: boolean;
+                  likedByMe: boolean;
+                  likesCount: number;
+                  parentCommentId: null;
+                  text: string;
+                }
+
+                export interface GetCommentsRelationships {
+                  responses: any[];
+                } -->
+
+              @for (comment of comments().data; track $index) {
+              <tr [class.bg-gray-50]="selectedCommentsIds().includes(comment.id)">
+                <td class="relative px-7 sm:w-12 sm:px-6">
+                  @if (selectedCommentsIds().includes(comment.id)) {
+                  <div class="absolute inset-y-0 left-0 w-0.5 bg-indigo-600"></div>
+                  }
+                  <input type="checkbox"
+                    class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    [value]="comment.id" (change)="toggleSelection(comment.id, $event)"
+                    [checked]="selectedCommentsIds().includes(comment.id)">
+                </td>
+                <td class="whitespace-nowrap py-4 pr-3 text-sm font-medium"
+                  [ngClass]="selectedCommentsIds().includes(comment.id) ? 'text-indigo-600' : 'text-gray-900'">
+                  {{ comment.attributes.createdBy }}
+                </td>
+                <td class="py-4 pr-3 text-sm font-medium"
+                  [ngClass]="selectedCommentsIds().includes(comment.id) ? 'text-indigo-600' : 'text-gray-900'">
+
+                  @if (comment.attributes.images.length > 0) {
+                  <div class="flex flex-wrap gap-4 mt-2">
+                    @for (image of comment.attributes.images; track image) {
+                    <!-- <a [href]="image" [attr.data-fancybox]="'gallery' + uniqueId()"> -->
+                    <img (click)="openCommentModal(comment)" [src]="image" class="object-cover w-20 h-20 cursor-pointer"
+                      alt="">
+                    <!-- </a> -->
+                    }
+                  </div>
+                  }
+
+                  <span class="line-clamp-3 max-w-lg underline cursor-pointer" (click)="openCommentModal(comment)">{{
+                    comment.attributes.text }}</span>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <span [ngClass]="{
+                      'bg-green-50 text-green-700 ring-green-600/20': comment.attributes.read,
+                      'bg-red-50 text-red-700 ring-red-600/20': !comment.attributes.read
+                    }" class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                    {{ comment.attributes.read ? 'Sí' : 'No' }}
+                  </span>
+                </td>
+                <!-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <button type="button" (click)="openCommentModal(comment)" class="underline">Ver comentario</button>
+                </td> -->
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ comment.attributes.dateCreated | date: 'dd/MM/yyyy HH:mm' }}
+                </td>
+              </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6">
+                  @if (comments() && comments().meta) {
+                  <mat-paginator #matPaginator [length]="comments().meta.totalCount"
+                    [pageSize]="comments().meta.pageSize" [pageSizeOptions]="pageSizeOptions()"
+                    (page)="onPageChange($event)" aria-label="Select page">
+                  </mat-paginator>
+                  }
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          } @else {
+          <div class="p-6 text-center text-gray-500">
+            No hay comentarios
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+@if (comment().attributes) {
+<view-and-reply-comment-modal [(isOpen)]="isCommentModalOpen" [comment]="comment()" [auctionId]="auctionId()!"
+  [commentAuctionTypes]="commentAuctionTypes()!" [auctionType]="auctionType()!" (commentReplied)="commentReplied()"
+  (commentLiked)="getComments()">
+</view-and-reply-comment-modal>
+}

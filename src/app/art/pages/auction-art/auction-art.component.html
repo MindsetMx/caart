@@ -377,7 +377,7 @@
           @for (comment of comments().data; track $index) {
           <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionArtId"
             [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.art"
-            (commentCreated)="getComments()"></comment>
+            (commentCreated)="getComments()" (commentLiked)="getComments()"></comment>
           }
         </section>
         }

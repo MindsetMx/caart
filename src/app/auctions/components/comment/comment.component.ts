@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Fancybox } from "@fancyapps/ui";
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input, output, signal } from '@angular/core';
 
 import { GetCommentsData } from '@auctions/interfaces';
 import { CommentsService } from '@auctions/services/comments.service';
@@ -31,6 +31,7 @@ export class CommentComponent implements AfterViewInit {
   auctionType = input.required<AuctionTypes>();
   auctionTypeComment = input.required<AuctionTypesComments>();
   @Output() commentCreated = new EventEmitter<void>();
+  commentLiked = output<void>();
 
   replyIsOpen = signal<boolean>(false);
   responsesIsOpen = signal<boolean>(false);
@@ -61,7 +62,8 @@ export class CommentComponent implements AfterViewInit {
 
     this.#comments.likeComment$(commentId).subscribe({
       next: () => {
-        this.commentCreated.emit();
+        // this.commentCreated.emit();
+        this.commentLiked.emit();
       },
       error: (error) => {
         console.error(error);

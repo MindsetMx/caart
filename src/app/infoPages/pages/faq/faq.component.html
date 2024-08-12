@@ -12,8 +12,9 @@
           <!-- Expand/collapse question button -->
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-0" aria-expanded="false" (click)="toggleAnswer(0, expandedGeneralQuestions)">
-            <span class="text-base font-semibold leading-7">¿Cuál es el proceso para participar en una
-              subasta?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Cómo puedo inscribirme?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedGeneralQuestions()[0]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -33,9 +34,11 @@
         @if (expandedGeneralQuestions()[0]) {
         <dd class="mt-2 pr-12" id="faq-0">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            El registro es gratuito, Haz clic aquí para registrarte.
+            Sé el primero en recibir noticias sobre nuevas subastas por correo electrónico.
+            Recibe actualizaciones cuando los Vehículos en los que estás interesado estén disponibles.
+            Obtén acceso a miles de resultados de subastas de CAART.
+            Interactúa y comenta en cada pieza
           </p>
         </dd>
         }
@@ -46,8 +49,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-1" aria-expanded="false" (click)="toggleAnswer(1,expandedGeneralQuestions)">
-            <span class="text-base font-semibold leading-7">¿Cuáles son los requisitos para registrarme como usuario o
-              vendedor?</span>
+            <span class="text-base font-semibold leading-7">
+              No he recibido mi correo de verificación de registro, ¿qué debo hacer?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedGeneralQuestions()[1]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -66,9 +70,9 @@
         @if (expandedGeneralQuestions()[1]) {
         <dd class="mt-2 pr-12" id="faq-1">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            Por favor, revisa tu bandeja de entrada de correo no deseado o spam. Si necesitas otro correo de
+            verificación, intenta iniciar sesión nuevamente y haz clic en el enlace "reenviar verificación" (esto solo
+            estará disponible si tu cuenta aún no está verificada).
           </p>
         </dd>
         }
@@ -79,8 +83,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-2" aria-expanded="false" (click)="toggleAnswer(2, expandedGeneralQuestions)">
-            <span class="text-base font-semibold leading-7">¿Qué medidas de seguridad se implementan en las
-              transacciones?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Cómo puedo restablecer mi contraseña olvidada?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedGeneralQuestions()[2]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -99,9 +104,7 @@
         @if (expandedGeneralQuestions()[2]) {
         <dd class="mt-2 pr-12" id="faq-2">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            Hay un enlace en la página de inicio de sesión para restablecer tu contraseña. También puedes acceder aquí.
           </p>
         </dd>
         }
@@ -112,8 +115,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-3" aria-expanded="false" (click)="toggleAnswer(3, expandedGeneralQuestions)">
-            <span class="text-base font-semibold leading-7">¿Cuál es la diferencia entre una subasta y las piezas de
-              última oportunidad?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Cómo puedo cancelar mi suscripción a los correos electrónicos diarios?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedGeneralQuestions()[3]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -132,9 +136,9 @@
         @if (expandedGeneralQuestions()[3]) {
         <dd class="mt-2 pr-12" id="faq-3">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            En la parte inferior de cada correo electrónico encontrarás un enlace para "cancelar suscripción de forma
+            segura". Si deseas recibir menos correos electrónicos, visita la seccion de "favoritos" para configurar
+            notificaciones específicas sobre Vehículos.
           </p>
         </dd>
         }
@@ -145,7 +149,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-4" aria-expanded="false" (click)="toggleAnswer(4, expandedGeneralQuestions)">
-            <span class="text-base font-semibold leading-7">¿Cómo puedo saber qué subastas hay en vivo?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Cómo puedo ponerme en contacto con CAART?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedGeneralQuestions()[4]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -164,9 +170,8 @@
         @if (expandedGeneralQuestions()[4]) {
         <dd class="mt-2 pr-12" id="faq-4">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            Por favor, haz clic <a class="underline" href="mailto:hola@caart.com">aquí</a> y nos pondremos en contacto
+            contigo lo más pronto posible.
           </p>
         </dd>
         }
@@ -184,8 +189,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-5" aria-expanded="false" (click)="toggleAnswer(0, expandedBuyerQuestions)">
-            <span class="text-base font-semibold leading-7">Acabo de hacer una oferta, ¿por qué tengo un cargo en mi
-              tarjeta de crédito?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Cómo funciona la subasta?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedBuyerQuestions()[0]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -203,11 +209,46 @@
         </dt>
         @if (expandedBuyerQuestions()[0]) {
         <dd class="mt-2 pr-12" id="faq-5">
-          <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
-          </p>
+          <div class="text-base leading-7 text-gray-600">
+            <p>
+              Una vez registrado para subastar, haz clic en "Hacer oferta" en la parte inferior de cada página de
+              subasta.
+              La ventana de confirmación te preguntará si ya leíste los "Términos y condiciones", así como el "Acuerdo
+              del
+              comprador".
+            </p>
+
+            <p>
+              Todas las ofertas son vinculantes, pregunta todo lo necesario antes de hacer la oferta. CAART hace todo lo
+              posible para representar la subasta lo mejor posible con la información proporcionada por el vendedor,
+              pero no es completamente responsable de su precisión. Mira detalladamente las fotos, lee bien las
+              descripciones y haz preguntas.
+            </p>
+
+            <p>
+              Si se realizan ofertas con menos de 2 minutos restantes en el reloj de cuenta regresiva de la subasta, el
+              reloj de cuenta regresiva se extenderá automáticamente a 2 minutos. Esto sucederá indefinidamente hasta
+              que se haga la última oferta.
+            </p>
+
+            <p>
+              Si ganas una unidad, se espera que pagues al vendedor directamente y eres responsable de recogerla o
+              enviarla.
+            </p>
+
+            <p>
+              Las tarifas de subasta de “Última oportunidad” son las mismas que las tarifas de "subasta en vivo". Todas
+              las ofertas de “Última oportunidad” expirará 1 mes después de ser colocadas.
+            </p>
+
+            <p>Las tarifas de CAART no son reembolsables.</p>
+
+            <p>
+              Algunas computadoras y dispositivos móviles experimentan "desfase horario" si un navegador está abierto
+              durante mucho tiempo. Es importante que actualices ocasionalmente tu navegador para asegurarte de estar
+              sincronizado con los servidores de CAART si estás pujando activamente.
+            </p>
+          </div>
         </dd>
         }
       </div>
@@ -217,8 +258,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-6" aria-expanded="false" (click)="toggleAnswer(1, expandedBuyerQuestions)">
-            <span class="text-base font-semibold leading-7">¿Es posible programar una visita presencial para revisar una
-              pieza antes de ofertar?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Puedo realizar una Inspección Pre-Compra (IPC)?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedBuyerQuestions()[1]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -236,11 +278,17 @@
         </dt>
         @if (expandedBuyerQuestions()[1]) {
         <dd class="mt-2 pr-12" id="faq-6">
-          <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
-          </p>
+          <div class="text-base leading-7 text-gray-600">
+            <p>
+              Antes de ofertar, el postor puede solicitar un IPC al vendedor, pero el vendedor no está obligado a
+              facilitar esta solicitud. ¿Puedo retirar mi oferta?
+            </p>
+
+            <p>
+              No retiramos ni cancelamos ofertas. Una oferta te compromete a comprar la unidad en caso de que tu oferta
+              resulta ganadora en la subasta. Por favor, sigue el proceso adecuado y ten cuidado al ofertar.
+            </p>
+          </div>
         </dd>
         }
       </div>
@@ -250,7 +298,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-7" aria-expanded="false" (click)="toggleAnswer(2, expandedBuyerQuestions)">
-            <span class="text-base font-semibold leading-7">Una vez que hice mi oferta, ¿puedo cancelarla?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Tarifa del Comprador?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedBuyerQuestions()[2]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -268,11 +318,13 @@
         </dt>
         @if (expandedBuyerQuestions()[2]) {
         <dd class="mt-2 pr-12" id="faq-7">
-          <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
-          </p>
+          <div class="text-base leading-7 text-gray-600">
+            <p>Autos - La tarifa del comprador es del 5% de la oferta ganadora.</p>
+
+            <p>Obras de Arte - La tarifa del comprador es del 10% de la oferta ganadora.</p>
+
+            <p>Memorabilia / Coleccionables - La tarifa del comprador es del 10% de la oferta ganadora</p>
+          </div>
         </dd>
         }
       </div>
@@ -282,7 +334,7 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-8" aria-expanded="false" (click)="toggleAnswer(3, expandedBuyerQuestions)">
-            <span class="text-base font-semibold leading-7">¿Hay alguna comisión para el comprador?</span>
+            <span class="text-base font-semibold leading-7">¿Cuánto es la Tarifa del Vendedor?</span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedBuyerQuestions()[3]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -300,11 +352,13 @@
         </dt>
         @if (expandedBuyerQuestions()[3]) {
         <dd class="mt-2 pr-12" id="faq-8">
-          <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
-          </p>
+          <div class="text-base leading-7 text-gray-600">
+            <p>Autos - Publicación $1,999.00MXN</p>
+
+            <p>Obras de Arte - Publicación $399.00 MXN, La tarifa del vendedor es del 10% de la oferta ganadora.</p>
+
+            <p>Memorabilia / Coleccionables - 399.00 MXN, La tarifa del vendedor es del 10% de la oferta ganadora.</p>
+          </div>
         </dd>
         }
       </div>
@@ -314,7 +368,7 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-9" aria-expanded="false" (click)="toggleAnswer(4, expandedBuyerQuestions)">
-            <span class="text-base font-semibold leading-7">¿Cómo funciona el envío de mi pieza?</span>
+            <span class="text-base font-semibold leading-7">¿Cómo se maneja el envío?</span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedBuyerQuestions()[4]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -333,9 +387,8 @@
         @if (expandedBuyerQuestions()[4]) {
         <dd class="mt-2 pr-12" id="faq-9">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            La responsabilidad del envío recae en el comprador a menos que se especifique lo contrario en la lista de la
+            subasta.
           </p>
         </dd>
         }
@@ -346,7 +399,8 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-10" aria-expanded="false" (click)="toggleAnswer(5, expandedBuyerQuestions)">
-            <span class="text-base font-semibold leading-7">¿Puedo comprar una pieza que no llegó a la reserva?</span>
+            <span class="text-base font-semibold leading-7">Acabo de realizar una oferta, ¿por qué aparece un cargo en
+              mi tarjeta de crédito? </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedBuyerQuestions()[5]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -365,9 +419,11 @@
         @if (expandedBuyerQuestions()[5]) {
         <dd class="mt-2 pr-12" id="faq-10">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            Lo que estás viendo es una "preautorización" de la tarifa de subasta, aunque en algunas tarjetas de débito
+            puede parecer un cargo real. Al realizar tu primera oferta o hacer una oferta en "Última oportunidad",
+            preautorizamos un 5% o 10% de esa cantidad en tu tarjeta (5% para Automóviles, 10% para Obras de Arte;
+            consulta los términos para más detalles). Si ganas la subasta, se realizará el cargo correspondiente en tu
+            tarjeta; si no ganas, la preautorización se cancelará automáticamente al día hábil siguiente.
           </p>
         </dd>
         }
@@ -384,7 +440,7 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-11" aria-expanded="false" (click)="toggleAnswer(0, expandedSellerQuestions)">
-            <span class="text-base font-semibold leading-7">¿Puedo subastar una pieza si no estoy en México?</span>
+            <span class="text-base font-semibold leading-7">¿Cuánto cuesta publicar mi pieza?</span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedSellerQuestions()[0]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -402,11 +458,13 @@
         </dt>
         @if (expandedSellerQuestions()[0]) {
         <dd class="mt-2 pr-12" id="faq-11">
-          <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
-          </p>
+          <div class="text-base leading-7 text-gray-600">
+            <p>Costo por publicación de Vehículo: $1,999 MXN</p>
+
+            <p>Costo por publicación de Memorabilia / Coleccionables: $399 MXN</p>
+
+            <p>Costo por publicación de Obra de Arte: $399 MXN</p>
+          </div>
         </dd>
         }
       </div>
@@ -416,7 +474,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-12" aria-expanded="false" (click)="toggleAnswer(1, expandedSellerQuestions)">
-            <span class="text-base font-semibold leading-7">¿Hay algún costo por la publicación de mi pieza?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Cómo envío mi Vehículo, Pieza de Automóvil, Memorabilia u Obra de Arte?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedSellerQuestions()[1]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -435,9 +495,7 @@
         @if (expandedSellerQuestions()[1]) {
         <dd class="mt-2 pr-12" id="faq-12">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            Es responsabilidad del Comprador/Vendedor coordinar el envío de la pieza.
           </p>
         </dd>
         }
@@ -448,7 +506,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-13" aria-expanded="false" (click)="toggleAnswer(2, expandedSellerQuestions)">
-            <span class="text-base font-semibold leading-7">¿Cómo tomo las imágenes de mi pieza?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Cómo puedo tomar fotos como las que veo publicadas en CAART?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedSellerQuestions()[2]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -467,9 +527,8 @@
         @if (expandedSellerQuestions()[2]) {
         <dd class="mt-2 pr-12" id="faq-13">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            El personal de CAART te brindará asesoría para obtener las mejores fotos posibles. Si prefieres que se tomen
+            fotos profesionales, haz clic aquí.
           </p>
         </dd>
         }
@@ -480,8 +539,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-14" aria-expanded="false" (click)="toggleAnswer(3, expandedSellerQuestions)">
-            <span class="text-base font-semibold leading-7">La subasta terminó y mi pieza sí se vendió, ¿qué
-              sigue?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Cuánto tiempo dura la subasta una vez que comienza?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedSellerQuestions()[3]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -500,9 +560,8 @@
         @if (expandedSellerQuestions()[3]) {
         <dd class="mt-2 pr-12" id="faq-14">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            Las subastas suelen durar al menos 14 días, sin embargo, CAART se reserva el derecho de hacerlas más largas
+            o más cortas según la rareza del artículo o el calendario de vacaciones.
           </p>
         </dd>
         }
@@ -513,8 +572,9 @@
         <dt>
           <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
             aria-controls="faq-15" aria-expanded="false" (click)="toggleAnswer(4, expandedSellerQuestions)">
-            <span class="text-base font-semibold leading-7">La subasta terminó y mi pieza no se vendió, ¿qué
-              sigue?</span>
+            <span class="text-base font-semibold leading-7">
+              ¿Puedo publicar mi Vehículo en otros sitios web o plataformas de subastas durante la subasta?
+            </span>
             <span class="ml-6 flex h-7 items-center">
               @if (expandedSellerQuestions()[4]) {
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -533,10 +593,131 @@
         @if (expandedSellerQuestions()[4]) {
         <dd class="mt-2 pr-12" id="faq-15">
           <p class="text-base leading-7 text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae repellendus repudiandae eum autem
-            adipisci, quas sunt laudantium harum! Nesciunt possimus obcaecati neque ipsa repudiandae quae minima
-            suscipit beatae nulla dolor.
+            No. CAART requiere exclusividad durante el período de subasta en vivo y “Última Oportunidad”. Toda otra
+            publicidad debe suspenderse temporalmente.
           </p>
+        </dd>
+        }
+      </div>
+
+      <!-- ¿Qué es un IPC y cómo me ayudará en mi subasta? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-16" aria-expanded="false" (click)="toggleAnswer(5, expandedSellerQuestions)">
+            <span class="text-base font-semibold leading-7">
+              ¿Qué es un IPC y cómo me ayudará en mi subasta?
+            </span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedSellerQuestions()[5]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedSellerQuestions()[5]) {
+        <dd class="mt-2 pr-12" id="faq-16">
+          <p class="text-base leading-7 text-gray-600">
+            Una inspección previa a la compra es una evaluación detallada realizada por una persona calificada para
+            determinar la condición de la pieza antes de completar la compra. Algunos compradores pueden solicitar que
+            se realice esto a su cargo antes de ofertar; sin embargo, si tú (vendedor) puedes proporcionar un IPC con tu
+            presentación (realizado por un especialista calificado competente que comprenda la pieza que estás
+            vendiendo), proporcionará confianza a todos los postores, ya que responderá algunas de las preguntas y
+            preocupaciones más comunes.
+          </p>
+        </dd>
+        }
+      </div>
+
+      <!-- La subasta ha finalizado y mi unidad se vendió, ¿qué sucede ahora? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-17" aria-expanded="false" (click)="toggleAnswer(6, expandedSellerQuestions)">
+            <span class="text-base font-semibold leading-7">
+              La subasta ha finalizado y mi unidad se vendió, ¿qué sucede ahora?
+            </span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedSellerQuestions()[6]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedSellerQuestions()[6]) {
+        <dd class="mt-2 pr-12" id="faq-17">
+          <div class="text-base leading-7 text-gray-600">
+            <p>
+              ¡Felicidades! Tanto el comprador como el vendedor recibirán correos electrónicos informándoles que la
+              subasta ha finalizado y les proporcionaremos la información de contacto del otro. En este punto, el
+              comprador y el vendedor se comunicarán directamente para completar la transacción.
+            </p>
+
+            <p>
+              El envío siempre es responsabilidad del comprador a menos que el comprador y el vendedor negocien lo
+              contrario antes de que finalice la subasta.
+            </p>
+          </div>
+        </dd>
+        }
+      </div>
+
+      <!-- La subasta ha finalizado y mi unidad no se vendió, ¿qué sucede ahora? -->
+      <div class="px-4 py-4 bg-gray1 rounded-xl">
+        <dt>
+          <button type="button" class="flex w-full items-start justify-between text-left text-gray-900"
+            aria-controls="faq-18" aria-expanded="false" (click)="toggleAnswer(7, expandedSellerQuestions)">
+            <span class="text-base font-semibold leading-7">
+              La subasta ha finalizado y mi unidad no se vendió, ¿qué sucede ahora?
+            </span>
+            <span class="ml-6 flex h-7 items-center">
+              @if (expandedSellerQuestions()[7]) {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+              </svg>
+              }@else {
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+              }
+            </span>
+          </button>
+        </dt>
+        @if (expandedSellerQuestions()[7]) {
+        <dd class="mt-2 pr-12" id="faq-18">
+          <div class="text-base leading-7 text-gray-600">
+            <p>
+              El final de una subasta no significa que tu unidad no se venderá. Al finalizar una subasta sin venta, tu
+              unidad pasará a la sección de "Última oportunidad", en la cual las personas pueden seguir comentando,
+              haciendo preguntas, haciendo ofertas o incluso tener la oportunidad de "Comprar ahora". Todas las ofertas
+              de
+              “Última oportunidad” tendrán duración de 1 mes.
+            </p>
+
+            <p>
+              Las publicaciones de “Última oportunidad” duran 30 días, recibirás un correo electrónico cada dos (2)
+              semanas preguntando si deseas extenderla. Nunca hay una tarifa por “Última oportunidad” después de una
+              subasta.
+            </p>
+          </div>
         </dd>
         }
       </div>

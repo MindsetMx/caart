@@ -1,10 +1,12 @@
+import { AuctionTypes as AuctionTypes2 } from '@auctions/enums/auction-types';
 import { ChangeDetectionStrategy, Component, effect, inject, model, signal } from '@angular/core';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { CurrencyPipe, NgClass } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatBadgeModule } from '@angular/material/badge';
 
-import { Approved, MyAuctionsStatus, WinnerInfo } from '@activity/interfaces';
+import { Approved, ApprovedBids, MyAuctionsStatus, WinnerInfo } from '@activity/interfaces';
 import { ApprovedService } from '@activity/services/approved.service';
 import { AuctionOffersApprovalTableModalComponent } from '@activity/modals/auction-offers-approval-table-modal/auction-offers-approval-table-modal.component';
 import { CountdownService } from '@shared/services/countdown.service';
@@ -12,6 +14,7 @@ import { AuctionTypes } from '@activity/enums';
 import { AuctionOffersTableModalComponent } from '@activity/modals/auction-offers-table-modal/auction-offers-table-modal.component';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 import { WinnerDetailsModalComponent } from '@activity/modals/winner-details-modal/winner-details-modal.component';
+import { SoldAuctionBidTableModalComponent } from '@activity/modals/sold-auction-bid-table-modal/sold-auction-bid-table-modal.component';
 
 @Component({
   selector: 'activity-approved-auctions',
@@ -24,7 +27,10 @@ import { WinnerDetailsModalComponent } from '@activity/modals/winner-details-mod
     AuctionOffersApprovalTableModalComponent,
     AuctionOffersTableModalComponent,
     UpdateReservePriceModalComponent,
-    WinnerDetailsModalComponent
+    WinnerDetailsModalComponent,
+    RouterLink,
+    MatBadgeModule,
+    SoldAuctionBidTableModalComponent,
   ],
   templateUrl: './activity-approved-auctions.component.html',
   styleUrl: './activity-approved-auctions.component.css',
@@ -50,12 +56,28 @@ export class ActivityApprovedAuctionsComponent {
   winnerInfo = signal<WinnerInfo>({} as WinnerInfo);
   isWinnerDetailsModalOpen = signal<boolean>(false);
 
+  isSoldAuctionBidTableModalOpen = signal<boolean>(false);
+  bids = signal<ApprovedBids[]>([]);
+
   getMyApprovedEffect = effect(() => {
     this.getMyApproved();
   });
 
   get myAuctionsStatus(): typeof MyAuctionsStatus {
     return MyAuctionsStatus;
+  }
+
+  get auctionTypes(): typeof AuctionTypes {
+    return AuctionTypes;
+  }
+
+  get auctionTypes2(): typeof AuctionTypes2 {
+    return AuctionTypes2;
+  }
+
+  openSoldAuctionBidTableModal(bids: ApprovedBids[]): void {
+    this.bids.set(bids);
+    this.isSoldAuctionBidTableModalOpen.set(true);
   }
 
   openWinnerDetailsModal(winnerInfo: WinnerInfo): void {

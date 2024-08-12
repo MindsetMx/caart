@@ -1,0 +1,13 @@
+<shared-modal [verticalCenter]="true" [(isOpen)]="isOpen">
+  <div class="relative">
+    <h3 class="text-center font-bold text-lg mb-12">Detalles del comentario</h3>
+
+    <hr class="absolute w-full -bottom-4">
+  </div>
+
+  <div class="px-4 sm:px-6 lg:px-8">
+    <comment [comment]="comment()" [auctionCarPublishId]="auctionId()" [auctionTypeComment]="commentAuctionTypes()"
+      [auctionType]="auctionType()" (commentCreated)="emitCommentReplied()" (commentLiked)="emitCommentLiked()">
+    </comment>
+  </div>
+</shared-modal>

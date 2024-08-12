@@ -284,7 +284,7 @@
           @for (comment of comments().data; track $index) {
           <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
             [auctionTypeComment]="auctionTypesComments.lastChance" [auctionType]="auctionType.car"
-            (commentCreated)="getComments()"></comment>
+            (commentCreated)="getComments()" (commentLiked)="getComments()"></comment>
           }
 
           <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
