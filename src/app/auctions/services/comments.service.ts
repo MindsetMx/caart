@@ -28,11 +28,11 @@ export class CommentsService {
     });
   }
 
-  // http://localhost:3000/comments/art/66b05da8700b8b62c060badd/active?page=1&size=10&orderBy=dateCreated&orderDirection=desc
+  // http://localhost:3000/comments/art/66b05da8700b8b62c060badd/active?page=1&size=10&orderBy=dateCreated&orderDirection=asc
   getComments$(auctionCarPublishId: string, itemType: string, auctionType: AuctionTypesComments, page: number = 1, size: number = 10): Observable<GetComments> {
     // return this.#http.get<GetComments>(`${this.#baseUrl}/comments/${itemType}/${auctionCarPublishId}/${auctionType}`);
 
-    return this.#http.get<GetComments>(`${this.#baseUrl}/comments/${itemType}/${auctionCarPublishId}/${auctionType}?page=${page}&size=${size}&orderBy=dateCreated&orderDirection=desc`);
+    return this.#http.get<GetComments>(`${this.#baseUrl}/comments/${itemType}/${auctionCarPublishId}/${auctionType}?page=${page}&size=${size}&orderBy=dateCreated&orderDirection=asc`);
   }
 
   likeComment$(commentId: string): Observable<LikeComment> {
