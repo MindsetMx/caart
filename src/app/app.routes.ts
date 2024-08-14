@@ -47,7 +47,7 @@ export const routes: Routes = [
   // },
   {
     path: 'completar-registro',
-    canActivate: [VerifiedGuard, AuthGuard, IncompleteAccountGuard],
+    canActivate: [AuthGuard, VerifiedGuard, IncompleteAccountGuard],
     loadComponent: () => import('./auth/pages/complete-register/complete-register.component').then((m) => m.CompleteRegisterComponent),
   },
   {
@@ -57,27 +57,27 @@ export const routes: Routes = [
   },
   {
     path: 'registro-exitoso',
-    canActivate: [VerifiedGuard, AuthGuard],
+    canActivate: [AuthGuard, VerifiedGuard],
     loadComponent: () => import('./register-car/pages/successful-register-request/successful-register-request.component').then((m) => m.SuccessfulRegisterRequestComponent),
   },
   {
     path: 'completar-registro-vehiculo/:id',
-    canActivate: [VerifiedGuard, AuthGuard, CompleteAccountGuard],
+    canActivate: [AuthGuard, VerifiedGuard, CompleteAccountGuard],
     loadComponent: () => import('./register-car/pages/complete-car-register/complete-car-register.component').then((m) => m.CompleteCarRegisterComponent),
   },
   {
     path: 'completar-registro-memorabilia/:id',
-    canActivate: [VerifiedGuard, AuthGuard, CompleteAccountGuard],
+    canActivate: [AuthGuard, VerifiedGuard, CompleteAccountGuard],
     loadComponent: () => import('./register-memorabilia/pages/complete-memorabilia-register/complete-memorabilia-register.component').then((m) => m.CompleteMemorabiliaRegisterComponent),
   },
   {
     path: 'completar-registro-arte/:id',
-    canActivate: [VerifiedGuard, AuthGuard, CompleteAccountGuard],
+    canActivate: [AuthGuard, VerifiedGuard, CompleteAccountGuard],
     loadComponent: () => import('./art/pages/complete-art-register/complete-art-register.component').then((m) => m.CompleteArtRegisterComponent),
   },
   {
     path: 'registro-completado',
-    canActivate: [VerifiedGuard, AuthGuard],
+    canActivate: [AuthGuard, VerifiedGuard],
     loadComponent: () => import('./register-car/pages/successful-car-registration/successful-car-registration.component').then((m) => m.SuccessfulCarRegistrationComponent),
   }, {
     path: 'subasta/:id',
@@ -96,12 +96,12 @@ export const routes: Routes = [
   },
   {
     path: 'mis-subastas',
-    canActivate: [VerifiedGuard, AuthGuard],
+    canActivate: [AuthGuard, VerifiedGuard],
     loadComponent: () => import('./activity/pages/activity/activity.component').then((m) => m.ActivityComponent),
   },
   {
     path: 'mis-comentarios',
-    canActivate: [VerifiedGuard, AuthGuard],
+    canActivate: [AuthGuard, VerifiedGuard],
     loadComponent: () => import('./activity/pages/my-comments/my-comments.component').then((m) => m.MyCommentsComponent),
   },
   {
@@ -131,12 +131,12 @@ export const routes: Routes = [
   },
   {
     path: 'reestablecer-contrasena',
-    canActivate: [VerifiedGuard, GuestGuard],
+    canActivate: [GuestGuard, VerifiedGuard],
     loadComponent: () => import('./auth/components/password-reset/password-reset.component').then((m) => m.PasswordResetComponent),
   },
   {
     path: 'configuracion-de-la-cuenta',
-    canActivate: [VerifiedGuard, AuthGuard],
+    canActivate: [AuthGuard, VerifiedGuard],
     loadComponent: () => import('./account/pages/account-settings/account-settings.component').then((m) => m.AccountSettingsComponent),
   },
   {
@@ -146,12 +146,12 @@ export const routes: Routes = [
   },
   {
     path: 'mis-favoritos',
-    canActivate: [VerifiedGuard, AuthGuard],
+    canActivate: [AuthGuard, VerifiedGuard],
     loadComponent: () => import('./favorites/pages/favorites/favorites.component').then((m) => m.FavoritesComponent),
   },
   {
     path: 'dashboard',
-    canActivate: [VerifiedGuard, AuthGuard],
+    canActivate: [AuthGuard, VerifiedGuard],
     children: [
       {
         path: 'publicaciones',
