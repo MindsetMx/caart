@@ -33,6 +33,7 @@ export interface AuctionDetailsAttributes {
   exteriorDetails: AuctionDetailsExteriorDetails;
   carHistory: AuctionDetailsCarHistory;
   dataUser: AuctionDetailsDataUser;
+  secondsRemaining: number;
 }
 
 export interface AuctionDetailsAuctionCarForm {

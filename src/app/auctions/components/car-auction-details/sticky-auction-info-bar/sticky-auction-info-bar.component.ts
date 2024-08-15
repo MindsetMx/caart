@@ -99,7 +99,9 @@ export class StickyAuctionInfoBarComponent {
 
     return {
       leftTime: leftTime,
-      format: this.getFormat(leftTime)
+      format: this.getFormat(leftTime),
+      // leftTime: this.auction().data.attributes.secondsRemaining,
+      // format: this.auction().data.attributes.secondsRemaining >= 86400 ? 'd\' Días\'' : 'HH:mm:ss',
     };
   }
 
