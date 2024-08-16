@@ -24,6 +24,7 @@ export interface GetAllAuctionsAttributes {
   materials?: string;
   rarity?: string;
   extract: string;
+  secondsRemaining: number;
   status: AuctionStatus;
 }
 

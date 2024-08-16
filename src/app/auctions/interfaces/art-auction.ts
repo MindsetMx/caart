@@ -22,6 +22,7 @@ export interface ArtAuctionAttributes {
   extract: string;
   reserve: boolean;
   status: AuctionStatus;
+  secondsRemaining: number;
 }
 
 export interface ArtAuctionMeta {

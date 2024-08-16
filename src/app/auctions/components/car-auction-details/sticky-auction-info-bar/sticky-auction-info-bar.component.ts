@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, model, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, model, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 
@@ -40,6 +40,8 @@ export class StickyAuctionInfoBarComponent {
   #auctionFollowService = inject(AuctionFollowService);
   #appComponent = inject(AppComponent);
 
+  #secondsRemaining = signal<number>(0);
+
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
   }
@@ -47,6 +49,24 @@ export class StickyAuctionInfoBarComponent {
   get auctionCarStatus(): typeof AuctionCarStatus {
     return AuctionCarStatus;
   }
+
+  auctionEffect = effect((onCleanup) => {
+    if (this.auction().data) {
+      this.#secondsRemaining.set(this.auction().data.attributes.secondsRemaining);
+
+      const interval = setInterval(() => {
+        if (this.#secondsRemaining() > 0) {
+          this.#secondsRemaining.update((value) => value - 1);
+        }
+      }, 1000);
+
+      this.auctionEffect.destroy();
+
+      onCleanup(() => {
+        clearInterval(interval);
+      });
+    }
+  }, { allowSignalWrites: true });
 
   followOrUnfollowAuction(auctionId: string): void {
     if (this.authStatus === AuthStatus.notAuthenticated) {
@@ -95,18 +115,10 @@ export class StickyAuctionInfoBarComponent {
   }
 
   countdownConfig(): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
-
     return {
-      leftTime: leftTime,
-      format: this.getFormat(leftTime),
-      // leftTime: this.auction().data.attributes.secondsRemaining,
-      // format: this.auction().data.attributes.secondsRemaining >= 86400 ? 'd\' Días\'' : 'HH:mm:ss',
+      leftTime: this.#secondsRemaining(),
+      format: this.getFormat(this.#secondsRemaining()),
     };
-  }
-
-  getSecondsUntilEndDate(endDate: string): number {
-    return this.#countdownService.getSecondsUntilEndDate(endDate);
   }
 
   getFormat(seconds: number): string {

@@ -198,13 +198,15 @@
       <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
         [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
         [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-        [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-card>
+        [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+        [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
       }
       @case (auctionTypesAll.auctionsArt) {
       <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
         [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
         [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-        [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></art-auction-card>
+        [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+        [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
       }
       }
     </swiper-slide>

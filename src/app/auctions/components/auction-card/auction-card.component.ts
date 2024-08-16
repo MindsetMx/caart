@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Router, RouterLink } from '@angular/router';
@@ -35,6 +35,7 @@ export class AuctionCardComponent {
   lastBid = input.required<number>();
   endDate = input.required<string>();
   status = input.required<AuctionStatus>();
+  secondsRemaining = model.required<number>();
 
   #countdownService = inject(CountdownService);
   #router = inject(Router);
@@ -51,16 +52,25 @@ export class AuctionCardComponent {
     return this.#router.url === '/home';
   }
 
-  countdownConfig(): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(this.endDate());
-    return {
-      leftTime: leftTime,
-      format: this.getFormat(leftTime)
-    };
-  }
+  secondsRemainingEffect = effect((onCleanup) => {
+    if (this.secondsRemaining() > 0) {
+      const interval = setInterval(() => {
+        this.secondsRemaining.update((value) => value - 1);
+      }, 1000);
 
-  getSecondsUntilEndDate(endDate: string): number {
-    return this.#countdownService.getSecondsUntilEndDate(endDate);
+      this.secondsRemainingEffect.destroy();
+
+      onCleanup(() => {
+        clearInterval(interval);
+      });
+    }
+  });
+
+  countdownConfig(): CountdownConfig {
+    return {
+      leftTime: this.secondsRemaining(),
+      format: this.getFormat(this.secondsRemaining())
+    };
   }
 
   getFormat(seconds: number): string {

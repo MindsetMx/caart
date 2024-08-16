@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
@@ -95,6 +95,8 @@ export class AuctionArtComponent {
   isAcceptPreviewArtAuctionButtonDisabled = signal<boolean>(false);
   isUpdateReservePriceModalOpen = signal<boolean>(false);
 
+  #secondsRemaining = signal<number>(0);
+
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
   #authService = inject(AuthService);
@@ -177,9 +179,17 @@ export class AuctionArtComponent {
     }
   });
 
-  auctionEffect = effect(() => {
+  auctionEffect = effect((onCleanup) => {
     if (this.auction().data) {
       untracked(() => {
+        this.#secondsRemaining.set(this.auction().data.attributes.secondsRemaining);
+
+        const interval = setInterval(() => {
+          if (this.#secondsRemaining() > 0) {
+            this.#secondsRemaining.update((value) => value - 1);
+          }
+        }, 1000);
+
         this.auctionDetails.set([
           { label: 'Artista', value: this.auction().data.attributes.auctionArtForm.artist },
           { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
@@ -197,6 +207,12 @@ export class AuctionArtComponent {
           { label: 'Procedencia de la obra', value: this.auction().data.attributes.artDetail.procedenciaObra },
           // { label: 'Historia del artista', value: this.auction().data.attributes.artDetail.historiaArtista },
         ]);
+
+        onCleanup(() => {
+          clearInterval(interval);
+        });
+
+        this.auctionEffect.destroy();
       });
     }
   });
@@ -437,15 +453,10 @@ export class AuctionArtComponent {
   }
 
   countdownConfig(): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
     return {
-      leftTime: leftTime,
-      format: this.getFormat(leftTime)
+      leftTime: this.#secondsRemaining(),
+      format: this.getFormat(this.#secondsRemaining()),
     };
-  }
-
-  getSecondsUntilEndDate(endDate: string): number {
-    return this.#countdownService.getSecondsUntilEndDate(endDate);
   }
 
   getFormat(seconds: number): string {

@@ -162,13 +162,14 @@
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.cover"
     [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
     [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" intersection (visible)="getLiveAuctions(false)"></art-auction-card>
+    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining" intersection
+    (visible)="getLiveAuctions(false)"></art-auction-card>
   }
   @else {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.cover"
     [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
     [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate"></art-auction-card>
+    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
   }
   } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>

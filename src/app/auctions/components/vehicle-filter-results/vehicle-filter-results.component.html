@@ -162,13 +162,14 @@
   <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
     [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
     [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" intersection (visible)="getLiveAuctions(false)"></auction-card>
+    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining" intersection
+    (visible)="getLiveAuctions(false)"></auction-card>
   }
   @else {
   <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
     [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
     [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate"></auction-card>
+    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
   }
   } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>

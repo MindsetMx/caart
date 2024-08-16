@@ -25,4 +25,5 @@ export interface GetLiveCarAuctionAttributes {
   city: string;
   cover: string;
   status: AuctionStatus;
+  secondsRemaining: number;
 }
