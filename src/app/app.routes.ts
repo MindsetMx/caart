@@ -191,6 +191,10 @@ export const routes: Routes = [
         path: 'subastas-en-vivo',
         loadComponent: () => import('./dashboard/pages/live-auctions/live-auctions.component').then((m) => m.LiveAuctionsComponent),
       },
+      {
+        path: 'resultados',
+        loadComponent: () => import('./dashboard/pages/auction-results/auction-results.component').then((m) => m.AuctionResultsComponent),
+      },
       { path: '**', redirectTo: 'publicaciones' }
     ]
   },
