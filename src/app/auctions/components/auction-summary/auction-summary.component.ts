@@ -44,6 +44,7 @@ export class AuctionSummaryComponent {
   auctionType = input.required<AuctionTypes>();
   metrics = input.required<AuctionMetrics>();
   specificAuction = input.required<SpecificAuction | SpecificMemorabiliaAuction | SpecificArtAuction>();
+  countdownConfig = input.required<CountdownConfig>();
 
   @Output() makeAnOfferModalIsOpenChanged = new EventEmitter<number>();
 
@@ -150,13 +151,13 @@ export class AuctionSummaryComponent {
     });
   }
 
-  countdownConfig(): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
-    return {
-      leftTime: leftTime,
-      format: this.getFormat(leftTime)
-    };
-  }
+  // countdownConfig(): CountdownConfig {
+  //   let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
+  //   return {
+  //     leftTime: leftTime,
+  //     format: this.getFormat(leftTime)
+  //   };
+  // }
 
   getFormat(seconds: number): string {
     return this.#countdownService.getFormat(seconds);

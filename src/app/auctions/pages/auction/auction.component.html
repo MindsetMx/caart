@@ -80,11 +80,11 @@
   }
 
   <sticky-auction-info-bar [auction]="auction()" [specificAuction]="specificAuction()" [(isFollowing)]="isFollowing"
-    (openMakeAnOfferModalChange)="openMakeAnOfferModal()"
+    [countdownConfig]="countdownConfig()" (openMakeAnOfferModalChange)="openMakeAnOfferModal()"
     (getMetricsChange)="getMetrics($event)"></sticky-auction-info-bar>
 
   <div class="container">
-    @defer (when auction().data) {
+    @if (auction().data) {
 
     <section>
       <!-- <div class="flex items-center"> -->
@@ -351,7 +351,7 @@
 
         @if (auction().data.attributes.status !== auctionCarStatus.Preview) {
         <auction-summary class="hidden md:block" [auction]="auction()" [metrics]="metrics()"
-          [specificAuction]="specificAuction()" [auctionType]="auctionType.car"
+          [countdownConfig]="countdownConfig()" [specificAuction]="specificAuction()" [auctionType]="auctionType.car"
           (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
         }

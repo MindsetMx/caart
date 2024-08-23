@@ -1,14 +1,26 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, model, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Router, RouterLink } from '@angular/router';
 
 import { CountdownService } from '@shared/services/countdown.service';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
-import { VehicleAuctionData } from '@app/auctions/interfaces';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { NoReserveTagComponentComponent } from '../no-reserve-tag-component/no-reserve-tag-component.component';
 import { AuctionStatus } from '@auctions/enums';
+import { environments } from '@env/environments';
+
+export interface EventData {
+  type: string;
+  auctions: Auction[];
+}
+
+export interface Auction {
+  id: string;
+  originalAuctionId: string;
+  secondsRemaining: number;
+  auctionType: string;
+}
 
 @Component({
   selector: 'auction-card',
@@ -24,8 +36,9 @@ import { AuctionStatus } from '@auctions/enums';
   styleUrl: './auction-card.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionCardComponent {
-  // auction = input.required<VehicleAuctionData>();
+export class AuctionCardComponent implements OnDestroy {
+  readonly #baseUrl = environments.baseUrl;
+
   originalAuctionCarId = input.required<string>();
   cover = input.required<string>();
   title = input.required<string>();
@@ -40,6 +53,8 @@ export class AuctionCardComponent {
   #countdownService = inject(CountdownService);
   #router = inject(Router);
 
+  eventSource?: EventSource;
+
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
   }
@@ -52,19 +67,30 @@ export class AuctionCardComponent {
     return this.#router.url === '/home';
   }
 
-  secondsRemainingEffect = effect((onCleanup) => {
-    if (this.secondsRemaining() > 0) {
-      const interval = setInterval(() => {
-        this.secondsRemaining.update((value) => value - 1);
-      }, 1000);
+  constructor() {
+    this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-all-auctions`);
 
-      this.secondsRemainingEffect.destroy();
+    this.eventSource.onmessage = (event) => {
+      const data: EventData = JSON.parse(event.data);
 
-      onCleanup(() => {
-        clearInterval(interval);
-      });
+      const auctions = data.auctions;
+
+      if (data.type === 'TIME_UPDATE') {
+
+        const auction = auctions.find(auction => auction.originalAuctionId === this.originalAuctionCarId());
+
+        if (auction) {
+          this.secondsRemaining.set(auction.secondsRemaining);
+        }
+      }
     }
-  });
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSource) {
+      this.eventSource.close();
+    }
+  }
 
   countdownConfig(): CountdownConfig {
     return {

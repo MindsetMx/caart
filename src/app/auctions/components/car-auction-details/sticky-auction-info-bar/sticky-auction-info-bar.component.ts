@@ -1,18 +1,18 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 
 import { AppComponent } from '@app/app.component';
+import { AuctionCarStatus } from '@dashboard/interfaces';
 import { AuctionDetails, SpecificAuction } from '@auctions/interfaces';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
 import { AuctionTypes } from '@auctions/enums';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
 import { CountdownService } from '@shared/services/countdown.service';
-import { StarComponent } from '@shared/components/icons/star/star.component';
-import { PrimaryButtonDirective } from '@shared/directives';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
-import { AuctionCarStatus } from '@dashboard/interfaces';
+import { PrimaryButtonDirective } from '@shared/directives';
+import { StarComponent } from '@shared/components/icons/star/star.component';
 
 @Component({
   selector: 'sticky-auction-info-bar',
@@ -31,6 +31,7 @@ import { AuctionCarStatus } from '@dashboard/interfaces';
 export class StickyAuctionInfoBarComponent {
   auction = input.required<AuctionDetails>();
   specificAuction = input.required<SpecificAuction>();
+  countdownConfig = input.required<CountdownConfig>();
   isFollowing = model.required<boolean>();
   openMakeAnOfferModalChange = output<void>();
   getMetricsChange = output<string>();
@@ -40,8 +41,6 @@ export class StickyAuctionInfoBarComponent {
   #auctionFollowService = inject(AuctionFollowService);
   #appComponent = inject(AppComponent);
 
-  #secondsRemaining = signal<number>(0);
-
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
   }
@@ -49,24 +48,6 @@ export class StickyAuctionInfoBarComponent {
   get auctionCarStatus(): typeof AuctionCarStatus {
     return AuctionCarStatus;
   }
-
-  auctionEffect = effect((onCleanup) => {
-    if (this.auction().data) {
-      this.#secondsRemaining.set(this.auction().data.attributes.secondsRemaining);
-
-      const interval = setInterval(() => {
-        if (this.#secondsRemaining() > 0) {
-          this.#secondsRemaining.update((value) => value - 1);
-        }
-      }, 1000);
-
-      this.auctionEffect.destroy();
-
-      onCleanup(() => {
-        clearInterval(interval);
-      });
-    }
-  }, { allowSignalWrites: true });
 
   followOrUnfollowAuction(auctionId: string): void {
     if (this.authStatus === AuthStatus.notAuthenticated) {
@@ -114,12 +95,12 @@ export class StickyAuctionInfoBarComponent {
     this.#appComponent.openSignInModal();
   }
 
-  countdownConfig(): CountdownConfig {
-    return {
-      leftTime: this.#secondsRemaining(),
-      format: this.getFormat(this.#secondsRemaining()),
-    };
-  }
+  // countdownConfig(): CountdownConfig {
+  //   return {
+  //     leftTime: this.#secondsRemaining(),
+  //     format: this.getFormat(this.#secondsRemaining()),
+  //   };
+  // }
 
   getFormat(seconds: number): string {
     return this.#countdownService.getFormat(seconds);

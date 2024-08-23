@@ -114,8 +114,8 @@
 
           <div>
             <!-- <label for="phoneNumber" class="block mb-1 text-sm hidden">Celular <span class="font-bold text-red-500 inline-block">*</span></label> -->
-            <input class="mt-6" id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel"
-              sharedInput>
+            <input class="mt-6" id="phoneNumber" formControlName="phoneNumber" autocomplete="tel" type="tel" onlyDigits
+              maxlength="10" sharedInput>
             @if(!phoneNumberIsAvailable()) {
             <shared-input-error message="El número de teléfono ya está en uso"></shared-input-error>
             }

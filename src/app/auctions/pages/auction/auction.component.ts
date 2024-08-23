@@ -43,6 +43,8 @@ import { AppService } from '@app/app.service';
 import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 import { UserData } from '@auth/interfaces';
+import { EventData } from '@app/art/pages/auction-art/auction-art.component';
+import { CountdownConfig } from 'ngx-countdown';
 
 @Component({
   standalone: true,
@@ -103,6 +105,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   confirmAcceptPreviewCarModalIsOpen = signal<boolean>(false);
   isAcceptPreviewCarAuctionButtonDisabled = signal<boolean>(false);
   isUpdateReservePriceModalOpen = signal<boolean>(false);
+  secondsRemaining = signal<number>(0);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -209,17 +212,38 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
 
       this.eventSource.onmessage = (event) => {
-        console.log({ event: event });
+        const data: EventData = JSON.parse(event.data);
+        console.log(data);
+
         this.newOfferMade.set(this.newOfferMade() + 1);
 
-        if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
+        if (data.type !== 'INITIAL_CONNECTION' && data.type !== 'TIME_UPDATE') {
           this.getSpecificAuctionDetails();
           this.getAuctionDetails(this.auctionId());
           this.getComments();
         }
 
-        if (JSON.parse(event.data).type === 'CANCELLED') {
-          this.auctionCancelledModalIsOpen.set(true);
+        // if (JSON.parse(event.data).type === 'CANCELLED') {
+        //   this.auctionCancelledModalIsOpen.set(true);
+        // }
+
+        switch (data.type) {
+          case 'CANCELLED':
+            this.auctionCancelledModalIsOpen.set(true);
+            break;
+
+          case 'TIME_UPDATE':
+            const auctions = data.auctions;
+
+            console.log(auctions);
+
+
+            if (auctions) {
+              untracked(() => {
+                this.secondsRemaining.set(auctions[0].secondsRemaining);
+              });
+            }
+            break;
         }
       };
     }
@@ -251,6 +275,17 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     Fancybox.bind("[data-fancybox='gallery4']", { Hash: false });
     Fancybox.bind("[data-fancybox='gallery5']", { Hash: false });
     Fancybox.bind("[data-fancybox='gallery6']", { Hash: false });
+  }
+
+  countdownConfig(): CountdownConfig {
+    return {
+      leftTime: this.secondsRemaining(),
+      format: this.getFormat(this.secondsRemaining()),
+    };
+  }
+
+  getFormat(seconds: number): string {
+    return this.#countdownService.getFormat(seconds);
   }
 
   openUpdateReservePriceModal(): void {

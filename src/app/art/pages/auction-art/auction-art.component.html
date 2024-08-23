@@ -352,7 +352,8 @@
         @defer (when auction().data) {
         @if (auction().data.attributes.status !== auctionCarStatus.Preview) {
         <auction-summary [auction]="auction()" [metrics]="metrics()" [auctionType]="auctionType.art"
-          [specificAuction]="specificAuction()" (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
+          [countdownConfig]="countdownConfig()" [specificAuction]="specificAuction()"
+          (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
         }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -27,7 +27,7 @@ import { GetLiveArtAuction, GetLiveCarAuction } from '@auctions/interfaces';
   styleUrl: './live-auctions.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LiveAuctionsComponent {
+export class LiveAuctionsComponent implements OnDestroy {
   readonly #baseUrl = environments.baseUrl;
 
   tabs?: TabWithIcon[];
@@ -81,8 +81,6 @@ export class LiveAuctionsComponent {
     this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-all-auctions`);
 
     this.eventSource.onmessage = (event) => {
-      console.log('event', event);
-
       if (JSON.parse(event.data).type === 'AUCTION_UPDATE' || JSON.parse(event.data).type === 'LAST_CHANCE' || JSON.parse(event.data).type === 'COMPLETED') {
         const auctionType = JSON.parse(event.data).auctionType;
 
@@ -111,6 +109,12 @@ export class LiveAuctionsComponent {
       //   }
       // }
     };
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSource) {
+      this.eventSource.close();
+    }
   }
 
   getUpdatedCarAuction(auctionCarId: string): void {

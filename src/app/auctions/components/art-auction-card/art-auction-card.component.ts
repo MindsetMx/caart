@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, model, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Router, RouterLink } from '@angular/router';
@@ -7,7 +7,19 @@ import { AuctionStatus, AuctionTypes } from '@auctions/enums';
 import { CountdownService } from '@shared/services/countdown.service';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
+import { environments } from '@env/environments';
 
+export interface EventData {
+  type: string;
+  auctions: Auction[];
+}
+
+export interface Auction {
+  id: string;
+  originalAuctionId: string;
+  secondsRemaining: number;
+  auctionType: string;
+}
 @Component({
   selector: 'art-auction-card',
   standalone: true,
@@ -22,7 +34,9 @@ import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-
   styleUrl: './art-auction-card.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ArtAuctionCardComponent {
+export class ArtAuctionCardComponent implements OnDestroy {
+  readonly #baseUrl = environments.baseUrl;
+
   originalAuctionArtId = input.required<string>();
   cover = input.required<string>();
   title = input.required<string>();
@@ -37,6 +51,8 @@ export class ArtAuctionCardComponent {
   #countdownService = inject(CountdownService);
   #router = inject(Router);
 
+  eventSource?: EventSource;
+
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
   }
@@ -49,13 +65,36 @@ export class ArtAuctionCardComponent {
     return this.#router.url === '/home';
   }
 
+  constructor() {
+    this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-all-auctions`);
+
+    this.eventSource.onmessage = (event) => {
+      const data: EventData = JSON.parse(event.data);
+
+      const auctions = data.auctions;
+
+      if (data.type === 'TIME_UPDATE') {
+
+        const auction = auctions.find(auction => auction.originalAuctionId === this.originalAuctionArtId());
+
+        if (auction) {
+          this.secondsRemaining.set(auction.secondsRemaining);
+        }
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSource) {
+      this.eventSource.close();
+    }
+  }
+
   secondsRemainingEffect = effect((onCleanup) => {
     if (this.secondsRemaining() > 0) {
       const interval = setInterval(() => {
         this.secondsRemaining.update((value) => value - 1);
       }, 1000);
-
-      this.secondsRemainingEffect.destroy();
 
       onCleanup(() => {
         clearInterval(interval);

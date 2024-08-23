@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnInit, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
@@ -41,6 +41,18 @@ import { AppService } from '@app/app.service';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 import { UserData } from '@auth/interfaces';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
+
+export interface EventData {
+  type: string;
+  auctions: Auction[];
+}
+
+export interface Auction {
+  id: string;
+  secondsRemaining: number;
+  auctionType: string;
+}
+
 @Component({
   standalone: true,
   imports: [
@@ -66,7 +78,7 @@ import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-
   styleUrl: './auction-art.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionArtComponent {
+export class AuctionArtComponent implements OnDestroy {
   myCarousel = viewChild<ElementRef>('myCarousel');
   videoGallery = viewChild<ElementRef>('videoGallery');
   leftColumn = viewChild<ElementRef>('leftColumn');
@@ -95,7 +107,7 @@ export class AuctionArtComponent {
   isAcceptPreviewArtAuctionButtonDisabled = signal<boolean>(false);
   isUpdateReservePriceModalOpen = signal<boolean>(false);
 
-  #secondsRemaining = signal<number>(0);
+  secondsRemaining = signal<number>(0);
 
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
@@ -182,14 +194,6 @@ export class AuctionArtComponent {
   auctionEffect = effect((onCleanup) => {
     if (this.auction().data) {
       untracked(() => {
-        this.#secondsRemaining.set(this.auction().data.attributes.secondsRemaining);
-
-        const interval = setInterval(() => {
-          if (this.#secondsRemaining() > 0) {
-            this.#secondsRemaining.update((value) => value - 1);
-          }
-        }, 1000);
-
         this.auctionDetails.set([
           { label: 'Artista', value: this.auction().data.attributes.auctionArtForm.artist },
           { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
@@ -207,11 +211,6 @@ export class AuctionArtComponent {
           { label: 'Procedencia de la obra', value: this.auction().data.attributes.artDetail.procedenciaObra },
           // { label: 'Historia del artista', value: this.auction().data.attributes.artDetail.historiaArtista },
         ]);
-
-        onCleanup(() => {
-          clearInterval(interval);
-        });
-
         this.auctionEffect.destroy();
       });
     }
@@ -224,16 +223,45 @@ export class AuctionArtComponent {
       this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-auction/${this.auctionId2()}`);
 
       this.eventSource.onmessage = (event) => {
+        const data: EventData = JSON.parse(event.data);
+
         this.newOfferMade.set(this.newOfferMade() + 1);
 
-        if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION') {
-          // this.getSpecificAuctionDetails();
+        if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION' && data.type !== 'TIME_UPDATE') {
           this.getAuctionDetails(this.auctionId());
           this.getComments();
         }
 
-        if (JSON.parse(event.data).type === 'CANCELLED') {
-          this.auctionCancelledModalIsOpen.set(true);
+        // if (JSON.parse(event.data).type === 'CANCELLED') {
+        //   this.auctionCancelledModalIsOpen.set(true);
+        // }
+
+        // if (data.type === 'TIME_UPDATE') {
+
+        //   const auction = auctions.find(auction => auction.originalAuctionId === this.auctionId2());
+
+        //   if (auction) {
+        //     this.secondsRemaining.set(auction.secondsRemaining);
+        //     console.log('secondsRemaining', this.secondsRemaining());
+        //   }
+        // }
+
+        switch (data.type) {
+          case 'CANCELLED':
+            this.auctionCancelledModalIsOpen.set(true);
+
+            break;
+
+          case 'TIME_UPDATE':
+            const auctions = data.auctions;
+
+            if (auctions) {
+              untracked(() => {
+                this.secondsRemaining.set(auctions[0].secondsRemaining);
+              });
+            }
+
+            break;
         }
       };
     }
@@ -332,6 +360,12 @@ export class AuctionArtComponent {
       this.getAuctionDetails(id);
       this.getImagesPublish(id!);
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSource) {
+      this.eventSource.close();
+    }
   }
 
   getPhotoFromVideoUrl(videoUrl: string): string {
@@ -454,8 +488,8 @@ export class AuctionArtComponent {
 
   countdownConfig(): CountdownConfig {
     return {
-      leftTime: this.#secondsRemaining(),
-      format: this.getFormat(this.#secondsRemaining()),
+      leftTime: this.secondsRemaining(),
+      format: this.getFormat(this.secondsRemaining()),
     };
   }
 

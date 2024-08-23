@@ -5,3 +5,4 @@ export * from './primary-button.directive';
 export * from './secondary-button.directive';
 export * from './tertiary-button.directive';
 export * from './intersection.directive';
+export * from './onlyDigits.directive';

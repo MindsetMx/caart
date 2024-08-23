@@ -22,6 +22,7 @@ import { TelephonePrefixes } from '@app/register-car/interfaces';
 import { telephonePrefixes } from '@shared/telephone-prefixes';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
+import { OnlyDigitsDirective } from '@shared/directives';
 
 @Component({
   selector: 'register',
@@ -36,7 +37,8 @@ import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cr
     MatAutocompleteModule,
     MatSelectModule,
     MatIconModule,
-    AsyncPipe
+    AsyncPipe,
+    OnlyDigitsDirective,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
