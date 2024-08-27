@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule } from '@angular/common';
@@ -112,6 +112,7 @@ export class AuctionArtComponent implements OnDestroy {
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
   #authService = inject(AuthService);
+  #router = inject(Router);
   #route = inject(ActivatedRoute);
   #artAuctionImageAssigmentAndReorderService = inject(ArtAuctionImageAssigmentAndReorderService);
   #appComponent = inject(AppComponent);
@@ -457,6 +458,9 @@ export class AuctionArtComponent implements OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        if (error.status === 403) {
+          this.#router.navigate(['/not-found']);
+        }
       }
     });
   }

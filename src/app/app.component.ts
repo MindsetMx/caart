@@ -99,6 +99,10 @@ export class AppComponent implements OnDestroy, AfterViewInit {
     return this.#router.url.startsWith('/dashboard');
   }
 
+  isNotFoundRoute(): boolean {
+    return this.#router.url === '/not-found';
+  }
+
   openSignInModal(): void {
     this.signInModalIsOpen.set(true);
   }

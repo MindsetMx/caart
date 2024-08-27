@@ -203,5 +203,9 @@ export const routes: Routes = [
     canActivate: [UnverifiedGuard],
     loadComponent: () => import('./auth/components/confirmation/confirmation.component').then((m) => m.ConfirmationComponent),
   },
+  {
+    path: 'not-found',
+    loadComponent: () => import('./shared/pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
+  },
   { path: '**', redirectTo: '/subastas-en-vivo' }
 ];

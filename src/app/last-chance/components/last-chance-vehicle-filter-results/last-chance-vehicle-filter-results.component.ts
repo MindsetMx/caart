@@ -44,6 +44,7 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
   era = signal<string[]>([]);
   yearRange = signal<{ yearFrom: number, yearTo: number } | undefined>(undefined);
   currentOffer = signal<string[]>([]);
+  orderBy = signal<string>('desc');
   states = signal<string[]>([]);
 
   search = signal<string>('');
@@ -72,6 +73,14 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
     { value: 'lessThan750000', label: 'Menor a 750,000' },
     { value: 'lessThan1000000', label: 'Menor a 1,000,000' },
     { value: 'lessThan2000000', label: 'Menor a 2,000,000' },
+  ];
+
+  orderByList: { value: string; label: string }[] = [
+    { value: 'asc', label: 'Más antiguos' },
+    { value: 'desc', label: 'Más recientes' },
+    { value: 'highestPrice', label: 'Precio más alto' },
+    { value: 'lowestPrice', label: 'Precio más bajo' },
+    // { value: 'zipCode', label: 'Codigo Postal' },
   ];
 
   eraList: { value: string; label: string }[] = [
@@ -111,6 +120,8 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
       this.era().join(','),
       this.yearRange(),
       this.currentOffer().join(','),
+      this.orderBy(),
+      undefined,
       this.states().join(','),
       this.search()
     ).subscribe({
@@ -170,6 +181,12 @@ export class LastChanceVehicleFilterResultsComponent implements OnInit {
 
   setYearRange(value: { yearFrom: number, yearTo: number }): void {
     this.yearRange.set(value);
+    this.resetPage();
+    this.getVehicles(true);
+  }
+
+  setOrderBy(value: string): void {
+    this.orderBy.set(value);
     this.resetPage();
     this.getVehicles(true);
   }

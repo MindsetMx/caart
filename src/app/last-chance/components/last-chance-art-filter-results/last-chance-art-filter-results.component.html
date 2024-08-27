@@ -13,6 +13,17 @@
     </div>
   </div>
 
+  <div class="hidden md:block w-fit">
+    <mat-form-field name="mat-form-field1">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select [ngModel]="orderBy()" (ngModelChange)="setOrderBy($event)">
+        @for (orderBy of orderByList; track $index) {
+        <mat-option name="mat-option1" [value]="orderBy.value">{{orderBy.label}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <div class="hidden md:flex gap-4">
     <a routerLink="/subastas-en-vivo" px="px-4" width="lg:w-fit w-full"
       class="text-sm whitespace-nowrap flex items-center justify-center" sharedTertiaryButton>

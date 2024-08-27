@@ -19,7 +19,7 @@ export class LastChanceArtFilterService {
     era?: string,
     range?: { yearFrom: number, yearTo: number },
     // currentOffer?: string,
-    // orderBy?: string,
+    orderBy?: string,
     // endsIn?: string,
     states?: string,
     search?: string

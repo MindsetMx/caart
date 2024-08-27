@@ -1,5 +1,5 @@
 import 'moment/locale/es';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, untracked } from '@angular/core';
 import { CommonModule, CurrencyPipe, DecimalPipe, SlicePipe } from '@angular/common';
 import { Fancybox } from "@fancyapps/ui";
@@ -113,6 +113,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   #commentsService = inject(CommentsService);
   #countdownService = inject(CountdownService);
   #paymentMethodsService = inject(PaymentMethodsService);
+  #router = inject(Router);
   #route = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
   #activityRequestsService = inject(ActivityRequestsService);
@@ -381,6 +382,9 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        if (error.status === 401) {
+          this.#router.navigate(['/not-found']);
+        }
       }
     });
   }
