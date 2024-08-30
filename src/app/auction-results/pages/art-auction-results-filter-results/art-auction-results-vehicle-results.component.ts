@@ -66,7 +66,7 @@ export class ArtAuctionResultsFilterResultsComponent {
   era = signal<string[]>([]);
   yearRange = signal<{ yearFrom: number, yearTo: number } | undefined>(undefined);
   currentOffer = signal<string[]>([]);
-  orderBy = signal<string>('');
+  orderBy = signal<string>('desc');
   endsIn = signal<string[]>([]);
   states = signal<string[]>([]);
 
@@ -129,10 +129,10 @@ export class ArtAuctionResultsFilterResultsComponent {
   ];
 
   orderByList: { value: string; label: string }[] = [
-    { value: 'EndingSoonest', label: 'Tiempo Menor a mayor' },
-    { value: 'EndingLatest', label: 'Tiempo Mayor a Menor' },
-    { value: 'BidLowestFirst', label: 'Precio Menor a Mayor' },
-    { value: 'BidHighestFirst', label: 'Precio Mayor a Menor' },
+    { value: 'asc', label: 'Más antiguos' },
+    { value: 'desc', label: 'Más recientes' },
+    { value: 'highestPrice', label: 'Precio más alto' },
+    { value: 'lowestPrice', label: 'Precio más bajo' },
     // { value: 'zipCode', label: 'Codigo Postal' },
   ];
 
@@ -158,7 +158,7 @@ export class ArtAuctionResultsFilterResultsComponent {
       // this.era().join(','),
       this.yearRange(),
       // this.currentOffer().join(','),
-      // this.orderBy(),
+      this.orderBy(),
       // this.endsIn().join(','),
       this.states().join(','),
       this.search(),

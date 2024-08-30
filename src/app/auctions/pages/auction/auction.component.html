@@ -526,7 +526,7 @@
           @defer (when specificAuction().data) {
           <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
             @if (specificAuction().data.winnerInfo) {
-            <div class="flex gap-x-4 p-4 rounded-xl">
+            <div class="flex gap-x-4 p-4 rounded-xl bg-green1/30">
               <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
               <div class="text-gray4">
                 <p class="text-gray4 text-sm">Vendido</p>
@@ -542,7 +542,8 @@
             </div>
             }
             @for (item of specificAuction().data.bids; track $index; let last = $last) {
-            <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0}">
+            <div class="flex gap-x-4 p-4 rounded-xl"
+              [ngClass]="{'bg-green1/30': $index === 0 && !specificAuction().data.winnerInfo}">
               <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
               <div class="text-gray4">
                 <p class="font-semibold text-black">

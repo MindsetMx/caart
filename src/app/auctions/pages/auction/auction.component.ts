@@ -113,7 +113,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   #commentsService = inject(CommentsService);
   #countdownService = inject(CountdownService);
   #paymentMethodsService = inject(PaymentMethodsService);
-  #router = inject(Router);
   #route = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
   #activityRequestsService = inject(ActivityRequestsService);
@@ -214,9 +213,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
       this.eventSource.onmessage = (event) => {
         const data: EventData = JSON.parse(event.data);
-        console.log(data);
 
-        this.newOfferMade.set(this.newOfferMade() + 1);
+        // this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (data.type !== 'INITIAL_CONNECTION' && data.type !== 'TIME_UPDATE') {
           this.getSpecificAuctionDetails();
@@ -235,9 +233,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
 
           case 'TIME_UPDATE':
             const auctions = data.auctions;
-
-            console.log(auctions);
-
 
             if (auctions) {
               untracked(() => {
@@ -382,9 +377,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        if (error.status === 401) {
-          this.#router.navigate(['/not-found']);
-        }
       }
     });
   }

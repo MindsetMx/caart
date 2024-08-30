@@ -47,7 +47,7 @@ export class ResultsAuctionFilterResultsComponent {
   auctionType = signal<string[]>([]);
   era = signal<string[]>([]);
   yearRange = signal<{ yearFrom: number, yearTo: number } | undefined>(undefined);
-  orderBy = signal<string>('EndingSoonest');
+  orderBy = signal<string>('desc');
   states = signal<string[]>([]);
 
   search = signal<string>('');
@@ -100,10 +100,10 @@ export class ResultsAuctionFilterResultsComponent {
   ];
 
   orderByList: { value: string; label: string }[] = [
-    { value: 'EndingSoonest', label: 'Tiempo Menor a mayor' },
-    { value: 'EndingLatest', label: 'Tiempo Mayor a Menor' },
-    { value: 'BidLowestFirst', label: 'Precio Menor a Mayor' },
-    { value: 'BidHighestFirst', label: 'Precio Mayor a Menor' },
+    { value: 'asc', label: 'Más antiguos' },
+    { value: 'desc', label: 'Más recientes' },
+    { value: 'highestPrice', label: 'Precio más alto' },
+    { value: 'lowestPrice', label: 'Precio más bajo' },
     // { value: 'zipCode', label: 'Codigo Postal' },
   ];
 

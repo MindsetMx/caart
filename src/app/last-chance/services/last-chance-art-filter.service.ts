@@ -34,7 +34,7 @@ export class LastChanceArtFilterService {
     if (era) { params = params.set('epoch', era); }
     if (range && range.yearFrom && range.yearTo) { params = params.set('yearFrom', range.yearFrom.toString()); params = params.set('yearTo', range.yearTo.toString()); }
     // if (currentOffer) { params = params.set('currentBid', currentOffer); }
-    // if (orderBy) { params = params.set('sort', orderBy); }
+    if (orderBy) { params = params.set('sort', orderBy); }
     // if (endsIn) { params = params.set('endingIn', endsIn); }
     if (states) { params = params.set('state', states); }
     if (search) { params = params.set('searchTerm', search); }

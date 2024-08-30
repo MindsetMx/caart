@@ -180,6 +180,29 @@
               <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
               <span class="text-sm font-medium">¡En vivo!</span>
             </div>
+            <div>
+              @switch (request.attributes.etiqueta) {
+              @case (activityRequestsEtiqueta.lastChance) {
+              <span
+                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                Última oportunidad
+              </span>
+              }
+
+              @case (activityRequestsEtiqueta.live) {
+              <span
+                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                Subasta en vivo
+              </span>
+              }
+
+              @default {
+              <span class="text-sm font-semibold">
+                {{ request.attributes.etiqueta }}
+              </span>
+              }
+              }
+            </div>
           </div>
         </li>
       </ol>

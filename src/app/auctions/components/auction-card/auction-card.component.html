@@ -45,8 +45,8 @@
       {{extract()}}
     </p>
     }
-    <span [ngClass]="{'mt-8': reserve() === true && !premium() && isHomeRoute}"
-      class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: {{ lastBid()
+    <span class="flex items-center bg-gray1 rounded-md px-4 py-2 mt-10"
+      [ngClass]="{'mt-10': reserve() === true && !premium() && isHomeRoute}">Oferta: {{ lastBid()
       | currency:'USD':'symbol':'1.0-2' }} MXN &nbsp; · &nbsp;
       <img class="w-5 h-5" src="assets/img/icons/time-outline.svg" alt=""> &nbsp; &nbsp;
       <countdown [config]="countdownConfig()" [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}">

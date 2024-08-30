@@ -4,7 +4,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 
-import { ActivityRequests, ActivityRequestsStatus, ActivityRequestsType } from '@activity/interfaces';
+import { ActivityRequests, ActivityRequestsStatus, ActivityRequestsType, Etiqueta } from '@activity/interfaces';
 import { ActivityRequestsService } from '@activity/services/activity-requests.service';
 import { AppService } from '@app/app.service';
 
@@ -38,6 +38,10 @@ export class ActivityAuctionRequestsProgressComponent {
 
   get activityRequestsType(): typeof ActivityRequestsType {
     return ActivityRequestsType;
+  }
+
+  get activityRequestsEtiqueta(): typeof Etiqueta {
+    return Etiqueta;
   }
 
   getMyRequestsEffect = effect(() => {

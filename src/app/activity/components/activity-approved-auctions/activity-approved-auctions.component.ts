@@ -1,7 +1,7 @@
 import { AuctionTypes as AuctionTypes2 } from '@auctions/enums/auction-types';
 import { ChangeDetectionStrategy, Component, effect, inject, model, signal } from '@angular/core';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
-import { CurrencyPipe, NgClass } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { Router, RouterLink } from '@angular/router';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -31,6 +31,7 @@ import { SoldAuctionBidTableModalComponent } from '@activity/modals/sold-auction
     RouterLink,
     MatBadgeModule,
     SoldAuctionBidTableModalComponent,
+    DatePipe,
   ],
   templateUrl: './activity-approved-auctions.component.html',
   styleUrl: './activity-approved-auctions.component.css',

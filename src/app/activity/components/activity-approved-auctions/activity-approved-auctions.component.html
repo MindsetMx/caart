@@ -12,7 +12,7 @@
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Imagen</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Pieza</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Tiempo</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Tiempo restante</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Reserva</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Oferta más alta</th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
@@ -54,6 +54,14 @@
                   Subasta en vivo
                   }
 
+                  @case (myAuctionsStatus.proxima) {
+                  Próxima
+                  }
+
+                  @case (myAuctionsStatus.preview) {
+                  Pendiente
+                  }
+
                   @default {
                   {{ auction.attributes.status }}
                   }
@@ -61,12 +69,18 @@
                 </span>
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
+                @if (auction.attributes.status === myAuctionsStatus.proxima) {
+                <!-- <span class="block text-center"> -->
+                Comienza el {{ auction.attributes.startDate | date:'dd/MM/yyyy HH:mm' }}
+                <!-- </span> -->
+                } @else {
                 @if (auction.attributes.tiempo) {
                 <countdown [config]="countdownConfig(auction.attributes.tiempo)"
                   [ngClass]="{'text-red-500': countdownConfig(auction.attributes.tiempo).leftTime! <= 86400}">
                 </countdown>
                 } @else {
                 <span class="block text-center">-</span>
+                }
                 }
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
@@ -93,14 +107,16 @@
                 <div class="flex items-center gap-2">
                   @switch (auction.attributes.status) {
                   @case (myAuctionsStatus.lastChance) {
-                  <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
-                    title="Ver ofertas" (click)="openAuctionOffersApprovalTableModal(auction.id, auction.type)">
+                  <button matBadge="!" matBadgeSize="small" [matBadgeHidden]="!auction.attributes.hasUnreadComments"
+                    class="text-black hover:text-gray-900 underline font-semibold" type="button" title="Ver ofertas"
+                    (click)="openAuctionOffersApprovalTableModal(auction.id, auction.type)">
                     <img class="w-7" src="assets/img/icons/money.svg" alt="ícono de subasta">
                   </button>
                   }
                   @case (myAuctionsStatus.liveAuction) {
-                  <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
-                    title="Ver ofertas" (click)="openAuctionOffersTableModal(auction.id, auction.type)">
+                  <button matBadge="!" matBadgeSize="small" [matBadgeHidden]="!auction.attributes.hasUnreadComments"
+                    class="text-black hover:text-gray-900 underline font-semibold" type="button" title="Ver ofertas"
+                    (click)="openAuctionOffersTableModal(auction.id, auction.type)">
                     <img class="w-7" src="assets/img/icons/money.svg" alt="ícono de subasta">
                   </button>
                   }
@@ -109,7 +125,8 @@
                     (click)="openWinnerDetailsModal(auction.attributes.winnerInfo)" title="Ver datos del comprador">
                     <img class="w-7" src="assets/img/icons/user-round.svg" alt="">
                   </button>
-                  <button class="text-black hover:text-gray-900 underline font-semibold" type="button"
+                  <button matBadge="!" matBadgeSize="small" [matBadgeHidden]="!auction.attributes.hasUnreadComments"
+                    class="text-black hover:text-gray-900 underline font-semibold" type="button"
                     (click)="openSoldAuctionBidTableModal(auction.attributes.bids)" title="Ver historial de ofertas">
                     <img class="w-7" src="assets/img/icons/money.svg" alt="">
                   </button>
@@ -117,7 +134,7 @@
                   }
                   <a matBadge="!" matBadgeSize="small" [matBadgeHidden]="!auction.attributes.hasUnreadComments"
                     title="Mis comentarios" routerLink="/mis-comentarios" [queryParams]="{ auctionType: auction.type === auctionTypes.auto ? auctionTypes2.car : auctionTypes2.art
-                      , auctionId: auction.id, commentAuctionTypes: auction.attributes.status}"
+                      , auctionId: auction.id, commentAuctionTypes: auction.route}"
                     class="text-black hover:text-gray-900 underline font-semibold demo-section">
                     <img class="w-6" src="assets/img/icons/comment.svg" alt="">
                   </a>

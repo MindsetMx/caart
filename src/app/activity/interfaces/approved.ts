@@ -9,7 +9,13 @@ export interface ApprovedData {
   type: AuctionTypes;
   id: string;
   _id: string;
+  route: Route;
   attributes: ApprovedAttributes;
+}
+
+export enum Route {
+  lastChance = 'lastChance',
+  active = 'active',
 }
 
 export interface ApprovedAttributes {
@@ -20,6 +26,7 @@ export interface ApprovedAttributes {
   title: string;
   status: MyAuctionsStatus;
   tiempo?: string;
+  startDate: Date;
   reserva: number;
   ofertaMasAlta: number;
   winnerInfo: WinnerInfo;
@@ -52,6 +59,7 @@ export interface WinnerInfo {
   amount: number;
   chargeId: string;
   purchaseDate: Date;
+  phoneNumber: string;
 }
 
 export interface ApprovedMeta {
@@ -66,5 +74,6 @@ export enum MyAuctionsStatus {
   lastChance = 'lastChance',
   liveAuction = 'active',
   sold = 'Vendido',
-  preview = 'Vista previa',
+  preview = 'Preview',
+  proxima = 'proxima',
 }

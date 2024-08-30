@@ -39,6 +39,9 @@
       "@favorites/*": [
         "./src/app/favorites/*"
       ],
+      "@art/*": [
+        "./src/app/art/*"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

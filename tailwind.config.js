@@ -55,6 +55,7 @@ module.exports = {
     "h-64",
     "bg-indigo-100",
     "bg-red-100",
+    "mt-10"
   ]
 }
 

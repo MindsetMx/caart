@@ -1,7 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, WritableSignal, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CompleteArtRegistrationService } from '@app/art/services/complete-art-registration.service';
+import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { CompleteArtRegistrationService } from '@art/services/complete-art-registration.service';
+import { AuctionArtWizardSteps } from '@app/art/interfaces';
 
 @Component({
   selector: 'complete-art-registration-menu',
@@ -18,6 +20,8 @@ export class CompleteArtRegistrationMenuComponent {
   #activatedRoute = inject(ActivatedRoute);
 
   publicationId: string = this.#activatedRoute.snapshot.params['id'];
+
+  wizardSteps = signal<AuctionArtWizardSteps | null>(null);
 
   get indexCurrentStep(): WritableSignal<number> {
     return this.#completeArtRegistrationService.indexCurrentStep;
@@ -52,6 +56,7 @@ export class CompleteArtRegistrationMenuComponent {
 
   getWizardSteps(): void {
     this.#completeArtRegistrationService.wizardSteps$(this.publicationId).subscribe((wizardSteps) => {
+      this.wizardSteps.set(wizardSteps);
       this.indexCurrentStep = wizardSteps.data.attributes.currentStep;
       this.indexTargetStep = wizardSteps.data.attributes.currentStep;
       this.originalAuctionArtId = wizardSteps.data.id;

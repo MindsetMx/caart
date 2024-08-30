@@ -17,6 +17,7 @@ export class CompletedArtAuctionsService {
     pageSize: number,
     category?: string,
     range?: { yearFrom: number, yearTo: number },
+    sort?: string,
     states?: string,
     searchTerm?: string,
   ): Observable<CompletedArtAuctions> {
@@ -28,6 +29,7 @@ export class CompletedArtAuctionsService {
     params = params.set('size', pageSize.toString());
     if (category) { params = params.set('category', category); }
     if (range && range.yearFrom && range.yearTo) { params = params.set('yearFrom', range.yearFrom.toString()); params = params.set('yearTo', range.yearTo.toString()); }
+    if (sort) { params = params.set('sort', sort); }
     if (states) { params = params.set('state', states); }
     if (searchTerm) { params = params.set('searchTerm', searchTerm); }
 

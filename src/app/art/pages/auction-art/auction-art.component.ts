@@ -112,7 +112,6 @@ export class AuctionArtComponent implements OnDestroy {
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
   #authService = inject(AuthService);
-  #router = inject(Router);
   #route = inject(ActivatedRoute);
   #artAuctionImageAssigmentAndReorderService = inject(ArtAuctionImageAssigmentAndReorderService);
   #appComponent = inject(AppComponent);
@@ -226,7 +225,7 @@ export class AuctionArtComponent implements OnDestroy {
       this.eventSource.onmessage = (event) => {
         const data: EventData = JSON.parse(event.data);
 
-        this.newOfferMade.set(this.newOfferMade() + 1);
+        // this.newOfferMade.set(this.newOfferMade() + 1);
 
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION' && data.type !== 'TIME_UPDATE') {
           this.getAuctionDetails(this.auctionId());
@@ -458,9 +457,6 @@ export class AuctionArtComponent implements OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        if (error.status === 403) {
-          this.#router.navigate(['/not-found']);
-        }
       }
     });
   }

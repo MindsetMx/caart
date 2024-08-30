@@ -1,7 +1,9 @@
+import { AuthGuard, GuestGuard, UnverifiedGuard, VerifiedGuard, CompleteAccountGuard } from '@auth/guards';
 import { Routes } from '@angular/router';
 
-import { AuthGuard, GuestGuard, UnverifiedGuard, VerifiedGuard, CompleteAccountGuard } from '@auth/guards';
 import { IncompleteAccountGuard } from '@auth/guards/incomplete-account.guard';
+import { PreviewArtGuard } from '@art/guards';
+import { PreviewCarGuard } from '@auctions/guards';
 
 export const routes: Routes = [
   {
@@ -81,12 +83,12 @@ export const routes: Routes = [
     loadComponent: () => import('./register-car/pages/successful-car-registration/successful-car-registration.component').then((m) => m.SuccessfulCarRegistrationComponent),
   }, {
     path: 'subasta/:id',
-    canActivate: [VerifiedGuard],
+    canActivate: [VerifiedGuard, PreviewCarGuard],
     loadComponent: () => import('./auctions/pages/auction/auction.component').then((m) => m.AuctionComponent),
   },
   {
     path: 'subasta-arte/:id',
-    canActivate: [VerifiedGuard],
+    canActivate: [VerifiedGuard, PreviewArtGuard],
     loadComponent: () => import('./art/pages/auction-art/auction-art.component').then((m) => m.AuctionArtComponent),
   },
   {

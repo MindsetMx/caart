@@ -21,12 +21,18 @@ export interface ActivityRequestsAttributes {
   formularios: boolean;
   autorizacion: boolean;
   enVivo: boolean;
+  etiqueta: Etiqueta;
   artista?: string;
   titulo?: string;
   portada: string;
   auctionPaymentId: string;
   auctionLiveId: string;
   acceptedBySeller: boolean;
+}
+
+export enum Etiqueta {
+  live = "live",
+  lastChance = "lastChance",
 }
 
 export enum ActivityRequestsStatus {
