@@ -1,17 +1,19 @@
-import { AuctionTypes as AuctionTypes2 } from '@app/auctions/enums/auction-types';
-import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Signal, computed, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { CompleteArtRegistrationService } from '@app/art/services/complete-art-registration.service';
+import { ChangeDetectionStrategy, Component, DestroyRef, Signal, WritableSignal, computed, effect, inject, signal } from '@angular/core';
+import { CurrencyPipe, JsonPipe, TitleCasePipe } from '@angular/common';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { ApplyDiscountCode, AuctionTypes } from '@app/register-car/interfaces';
-import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
-import { PaymentMethod } from '@auth/interfaces/general-info';
+import { AuctionTypes as AuctionTypes2 } from '@auctions/enums/auction-types';
+import { CompleteArtRegistrationService } from '@art/services/complete-art-registration.service';
 import { GeneralInfoService } from '@auth/services/general-info.service';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { InputDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { PaymentMethod } from '@auth/interfaces/general-info';
+import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'art-registration-payment',
@@ -26,7 +28,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
     SpinnerComponent,
     PaymentMethodModalComponent,
     TitleCasePipe,
-    TertiaryButtonDirective
+    TertiaryButtonDirective,
   ],
   templateUrl: './art-registration-payment.component.html',
   styleUrl: './art-registration-payment.component.css',
@@ -38,6 +40,7 @@ export class ArtRegistrationPaymentComponent {
   #fb = inject(FormBuilder);
   #generalInfoService = inject(GeneralInfoService);
   #route = inject(ActivatedRoute);
+  #destroyRef: DestroyRef = inject(DestroyRef);
 
   artRegistrationPaymentForm: FormGroup;
 
@@ -47,6 +50,7 @@ export class ArtRegistrationPaymentComponent {
   paymentMethods = signal<PaymentMethod[]>([] as PaymentMethod[]);
   applyDiscountCodeResponse = signal<ApplyDiscountCode>({} as ApplyDiscountCode);
   error = signal<string | undefined>(undefined);
+  auctionTypeIdSignal = signal<string | undefined>(undefined);
 
   isValidDiscountCode: Signal<boolean | undefined> = computed(() => {
     if (!this.applyDiscountCodeResponse().discountInfo) return undefined;
@@ -60,6 +64,24 @@ export class ArtRegistrationPaymentComponent {
     return this.applyDiscountCodeResponse().discountInfo.attributes.message;
   });
 
+  get auctionTypeId(): FormControl {
+    return this.artRegistrationPaymentForm.get('auctionTypeId') as FormControl;
+  }
+
+  auctionTypeIdEffect = effect(() => {
+    this.auctionTypeId.valueChanges.pipe(
+      takeUntilDestroyed(this.#destroyRef),
+    ).subscribe((auctionTypeId) => {
+      this.auctionTypeIdSignal.set(auctionTypeId);
+    });
+  });
+
+  get hasToPay(): WritableSignal<boolean> {
+    return this.applyDiscountCodeResponse().data && this.applyDiscountCodeResponse().data.length > 0
+      ? signal(this.applyDiscountCodeResponse().data.find((discount) => discount.id === this.auctionTypeIdSignal())!.attributes.hasToPay)
+      : signal(true);
+  }
+
   constructor() {
     this.artRegistrationPaymentForm = this.#fb.group({
       paymentMethodId: ['', [Validators.required]],
@@ -68,6 +90,16 @@ export class ArtRegistrationPaymentComponent {
       discountCode: [''],
     });
   }
+
+  hasToPayEffect = effect(() => {
+    if (this.hasToPay()) {
+      this.artRegistrationPaymentForm.get('paymentMethodId')?.setValidators([Validators.required]);
+      this.artRegistrationPaymentForm.get('paymentMethodId')?.updateValueAndValidity();
+    } else {
+      this.artRegistrationPaymentForm.get('paymentMethodId')?.clearValidators();
+      this.artRegistrationPaymentForm.get('paymentMethodId')?.updateValueAndValidity();
+    }
+  });
 
   ngOnInit(): void {
     this.getAuctionTypes();
@@ -126,6 +158,8 @@ export class ArtRegistrationPaymentComponent {
   getAuctionTypes(): void {
     this.#completeArtRegistrationService.getAuctionTypes$(AuctionTypes2.art).subscribe((auctionTypes) => {
       this.auctionTypes.set(auctionTypes);
+
+      this.auctionTypeId?.setValue(auctionTypes.data[0].id);
     });
   }
 

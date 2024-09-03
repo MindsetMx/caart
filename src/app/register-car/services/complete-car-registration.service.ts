@@ -59,7 +59,7 @@ export class CompleteCarRegistrationService {
   }
 
   applyDiscountCode$(discountCode: string): Observable<ApplyDiscountCode> {
-    const url = `${this.#baseUrl}/discounts/validate/${discountCode}`;
+    const url = `${this.#baseUrl}/discounts/validate/${discountCode}/car`;
 
     return this.#http.get<ApplyDiscountCode>(url);
   }

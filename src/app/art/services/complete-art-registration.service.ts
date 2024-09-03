@@ -30,7 +30,7 @@ export class CompleteArtRegistrationService {
   }
 
   applyDiscountCode$(discountCode: string): Observable<ApplyDiscountCode> {
-    const url = `${this.#baseUrl}/discounts/validate/${discountCode}`;
+    const url = `${this.#baseUrl}/discounts/validate/${discountCode}/art`;
 
     return this.#http.get<ApplyDiscountCode>(url);
   }

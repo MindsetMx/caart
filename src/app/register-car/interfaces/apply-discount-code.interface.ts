@@ -18,6 +18,7 @@ export interface DatumAttributes {
   __v: number;
   originalAmount: number;
   discountedAmount: number;
+  hasToPay: boolean;
 }
 
 export interface DiscountInfo {

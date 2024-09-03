@@ -25,7 +25,7 @@
           <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
             <div class="flex items-center justify-center gap-x-2">
               <div class="flex-none rounded-full p-1 bg-green-400/10"
-                [ngClass]="auction.wizardSteps.generalInfo ? 'text-green-400':'text-orange-400'">
+                [ngClass]="auction.wizardSteps.generalInfo && auction.wizardSteps.artDetails ? 'text-green-400':'text-orange-400'">
                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
               </div>
               <!-- <div>{{ auction.wizardSteps.generalInfo ? 'Completado':'Pendiente' }}</div> -->
@@ -78,7 +78,9 @@
                 <span>Asignar y reordenar imágenes</span>
               </button>
               @if (auction.status !== status.Preview) {
-              <button (click)="openModalToReleaseAuctionForPreview(auction.auctionArtId)" mat-menu-item>
+              <button (click)="openModalToReleaseAuctionForPreview(auction.auctionArtId)"
+                [disabled]="!auction.wizardSteps.artDetails || !auction.wizardSteps.generalInfo || !auction.publishImages || !auction.artHistoryExists"
+                mat-menu-item>
                 <span>Liberar arte para vista previa</span>
               </button>
               }

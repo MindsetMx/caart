@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
-import { ChangeDetectionStrategy, Component, OnInit, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, Signal, WritableSignal, computed, effect, inject, signal } from '@angular/core';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AuctionTypes } from '@app/register-car/interfaces/auction-types.interface';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
@@ -20,6 +20,7 @@ import { PaymentMethodDeletionConfirmationModalComponent } from '@account/modals
 import { MatIcon } from '@angular/material/icon';
 import { PaymentMethodsService } from '@shared/services/payment-methods.service';
 import { AppService } from '@app/app.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'register-car-general-information',
@@ -50,6 +51,7 @@ export class GeneralInformationComponent implements OnInit {
   #route = inject(ActivatedRoute);
   #paymentMethodsService = inject(PaymentMethodsService);
   #appService = inject(AppService);
+  #destroyRef: DestroyRef = inject(DestroyRef);
 
   generalInformationForm: FormGroup;
 
@@ -58,6 +60,7 @@ export class GeneralInformationComponent implements OnInit {
   paymentMethodModalIsOpen: WritableSignal<boolean> = signal(false);
   paymentMethods: WritableSignal<PaymentMethod[]> = signal([] as PaymentMethod[]);
   applyDiscountCodeResponse: WritableSignal<ApplyDiscountCode> = signal({} as ApplyDiscountCode);
+  auctionTypeIdSignal = signal<string | undefined>(undefined);
 
   deletePaymentMethodButtonIsDisabled = signal<boolean[]>([]);
   paymentMethodIdToDelete = signal<string>('');
@@ -77,6 +80,24 @@ export class GeneralInformationComponent implements OnInit {
     return this.applyDiscountCodeResponse().discountInfo.attributes.message;
   });
 
+  get auctionTypeId(): FormControl {
+    return this.generalInformationForm.get('auctionTypeId') as FormControl;
+  }
+
+  auctionTypeIdEffect = effect(() => {
+    this.auctionTypeId.valueChanges.pipe(
+      takeUntilDestroyed(this.#destroyRef),
+    ).subscribe((auctionTypeId) => {
+      this.auctionTypeIdSignal.set(auctionTypeId);
+    });
+  });
+
+  get hasToPay(): WritableSignal<boolean> {
+    return this.applyDiscountCodeResponse().data && this.applyDiscountCodeResponse().data.length > 0
+      ? signal(this.applyDiscountCodeResponse().data.find((discount) => discount.id === this.auctionTypeIdSignal())!.attributes.hasToPay)
+      : signal(true);
+  }
+
   constructor() {
     this.generalInformationForm = this.#fb.group({
       paymentMethodId: ['', [Validators.required]],
@@ -85,6 +106,16 @@ export class GeneralInformationComponent implements OnInit {
       discountCode: [''],
     });
   }
+
+  asToPayEffect = effect(() => {
+    if (this.hasToPay()) {
+      this.generalInformationForm.get('paymentMethodId')?.setValidators([Validators.required]);
+      this.generalInformationForm.get('paymentMethodId')?.updateValueAndValidity();
+    } else {
+      this.generalInformationForm.get('paymentMethodId')?.clearValidators();
+      this.generalInformationForm.get('paymentMethodId')?.updateValueAndValidity();
+    }
+  });
 
   ngOnInit(): void {
     this.getAuctionTypes();
@@ -150,6 +181,8 @@ export class GeneralInformationComponent implements OnInit {
   getAuctionTypes(): void {
     this.#completeCarRegistrationService.getAuctionTypes$(AuctionTypes2.car).subscribe((auctionTypes) => {
       this.auctionTypes.set(auctionTypes);
+
+      this.auctionTypeId?.setValue(auctionTypes.data[0].id);
     });
   }
 
