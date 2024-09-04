@@ -4,6 +4,8 @@ import { Routes } from '@angular/router';
 import { IncompleteAccountGuard } from '@auth/guards/incomplete-account.guard';
 import { PreviewArtGuard } from '@art/guards';
 import { PreviewCarGuard } from '@auctions/guards';
+import { WizardCompletionArtGuard } from '@art/guards';
+import { WizardCompletionCarGuard } from '@app/register-car/guards';
 
 export const routes: Routes = [
   {
@@ -64,7 +66,7 @@ export const routes: Routes = [
   },
   {
     path: 'completar-registro-vehiculo/:id',
-    canActivate: [AuthGuard, VerifiedGuard, CompleteAccountGuard],
+    canActivate: [AuthGuard, VerifiedGuard, CompleteAccountGuard, WizardCompletionCarGuard],
     loadComponent: () => import('./register-car/pages/complete-car-register/complete-car-register.component').then((m) => m.CompleteCarRegisterComponent),
   },
   {
@@ -74,7 +76,7 @@ export const routes: Routes = [
   },
   {
     path: 'completar-registro-arte/:id',
-    canActivate: [AuthGuard, VerifiedGuard, CompleteAccountGuard],
+    canActivate: [AuthGuard, VerifiedGuard, CompleteAccountGuard, WizardCompletionArtGuard],
     loadComponent: () => import('./art/pages/complete-art-register/complete-art-register.component').then((m) => m.CompleteArtRegisterComponent),
   },
   {

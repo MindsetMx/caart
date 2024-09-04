@@ -15,6 +15,7 @@ interface Attributes {
   currentStep: number;
   originalAuctionCarId: string;
   carDetails: CarDetails;
+  completed: boolean;
 }
 
 interface Steps {
