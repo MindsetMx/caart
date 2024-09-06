@@ -26,9 +26,59 @@
               <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                 {{ auction.attributes.lote }}
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm">
-                <img [src]="auction.attributes.portada" [alt]="auction.attributes.title"
-                  class="min-w-28 h-28 object-cover rounded-lg border border-gray-200">
+              <td class="whitespace-nowrap px-3 py-5 text-sm flex">
+                <div>
+                  <img [src]="auction.attributes.portada" [alt]="auction.attributes.title"
+                    class="min-w-28 h-28 object-cover rounded-lg border border-gray-200">
+                  <!-- Ver publicación button -->
+                  @switch (auction.attributes.status) {
+                  @case (myAuctionsStatus.lastChance) {
+                  @switch (auction.type) {
+                  @case (auctionTypes.auto) {
+                  <a [routerLink]="['/ultima-oportunidad', auction.id]" class="block text-center underline mt-2">
+                    Ver publicación
+                  </a>
+                  }
+                  @case (auctionTypes.arte) {
+                  <a [routerLink]="['/ultima-oportunidad-arte', auction.id]" class="block text-center underline mt-2">
+                    Ver publicación
+                  </a>
+                  }
+                  }
+                  }
+                  @case (myAuctionsStatus.liveAuction) {
+                  @switch (auction.type) {
+                  @case (auctionTypes.auto) {
+                  <a [routerLink]="['/subasta', auction.id]" class="block text-center underline mt-2">
+                    Ver publicación
+                  </a>
+                  }
+                  @case (auctionTypes.arte) {
+                  <a [routerLink]="['/subasta-arte', auction.id]" class="block text-center underline mt-2">
+                    Ver publicación
+                  </a>
+                  }
+                  }
+                  }
+                  <!-- @case (myAuctionsStatus.sold) {} -->
+                  <!-- @case (myAuctionsStatus.proxima) {} -->
+                  <!-- @case (myAuctionsStatus.preview) {} -->
+                  @default {
+                  @switch (auction.type) {
+                  @case (auctionTypes.auto) {
+                  <a [routerLink]="['/subasta', auction.id]" class="block text-center underline mt-2">
+                    Ver publicación
+                  </a>
+                  }
+                  @case (auctionTypes.arte) {
+                  <a [routerLink]="['/subasta-arte', auction.id]" class="block text-center underline mt-2">
+                    Ver publicación
+                  </a>
+                  }
+                  }
+                  }
+                  }
+                </div>
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm">
                 <div class="font-semibold">
@@ -43,7 +93,8 @@
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                 <span
-                  class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                  [ngClass]="auction.attributes.status === myAuctionsStatus.proxima ? 'text-yellow-700 bg-yellow-50 ring-yellow-600/20' : 'text-green-700 bg-green-50 ring-green-600/20'"
+                  class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
                   <!-- {{ auction.attributes.status }} -->
                   @switch (auction.attributes.status) {
                   @case (myAuctionsStatus.lastChance) {

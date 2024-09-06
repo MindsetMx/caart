@@ -138,7 +138,7 @@
             @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
             <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
               [attr.data-src]="auction">
-              <img class="object-contain mx-auto" [attr.data-lazy-src]="auction" />
+              <img class="object-contain mx-auto absolute" [attr.data-lazy-src]="auction" />
             </div>
             }
           </div>

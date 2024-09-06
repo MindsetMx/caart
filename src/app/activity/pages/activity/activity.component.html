@@ -1,25 +1,52 @@
 <section class="container mt-12 mb-32">
-  <h1 class="font-lato font-bold text-4xl">Solicitudes</h1>
+  <h1 class="font-lato font-bold text-4xl">
+    @switch (currentActivityTab()) {
+    @case (activityTabs.requests) {
+    Mis subastas
+    }
+
+    @case (activityTabs.approved) {
+    Mis subastas aprobadas
+    }
+    }
+  </h1>
 
   <div class="flex gap-4 mt-4">
     @if (currentActivityTab()===activityTabs.requests) {
     <button py="py-2" classes="font-semibold font-lato" width="w-fit" sharedPrimaryButton>
-      Solicitudes
+      Mis subastas
     </button>
     } @else {
     <button py="py-2" (click)="setActivityTab(activityTabs.requests)" width="w-fit" sharedSecondaryButton>
-      Solicitudes
+      Mis subastas
     </button>
     }
 
     @if (currentActivityTab()===activityTabs.approved) {
     <button py="py-2" classes="font-semibold font-lato" width="w-fit" sharedPrimaryButton>
-      Aprobadas
+      Mis subastas aprobadas
     </button>
     } @else {
     <button py="py-2" (click)="setActivityTab(activityTabs.approved)" width="w-fit" sharedSecondaryButton>
-      Aprobadas
+      Mis subastas aprobadas
     </button>
+    }
+  </div>
+
+  <div class="mt-4">
+    @switch (currentActivityTab()) {
+    @case (activityTabs.requests) {
+    <p>
+      Estas son todas tus solicitudes de autos y arte, en el apartado de Subastas aprobadas, podrás dar el seguimiento a
+      ofertas y comentarios.
+    </p>
+    }
+    @case (activityTabs.approved) {
+    <p>
+      Estas son tus subastas aceptadas, aquí podrás ver tus ofertas, comentarios y en que etapa se encuentra (Subasta en
+      Vivo o Última oportunidad)
+    </p>
+    }
     }
   </div>
 

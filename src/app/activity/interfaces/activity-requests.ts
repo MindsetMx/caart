@@ -33,6 +33,7 @@ export interface ActivityRequestsAttributes {
 export enum Etiqueta {
   live = "live",
   lastChance = "lastChance",
+  proxima = "proxima",
 }
 
 export enum ActivityRequestsStatus {

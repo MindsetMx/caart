@@ -223,7 +223,7 @@ select {
 
 .f-carousel__slide {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-items: center;
 }
 
