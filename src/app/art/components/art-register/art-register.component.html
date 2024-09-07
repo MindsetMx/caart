@@ -22,7 +22,7 @@
     <div>
       <label for="year" class="block mb-1 text-sm">Año <span
           class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="year" id="year" type="number" sharedInput>
+      <input formControlName="year" id="year" type="number" min="1500" [max]="currentYear" sharedInput>
       @if (hasError('year')) {
       <shared-input-error [message]="getError('year')"></shared-input-error>
       }

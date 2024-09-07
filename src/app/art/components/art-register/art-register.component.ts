@@ -59,6 +59,7 @@ export class ArtRegisterComponent {
   rarities = signal<Rarity[]>(Object.values(Rarity));
 
   filteredStates?: Observable<string[]>;
+  currentYear = new Date().getFullYear();
 
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
   #registerArtService = inject(RegisterArtService);
@@ -239,7 +240,7 @@ export class ArtRegisterComponent {
     this.registerArtForm = this.#formBuilder.group({
       artist: ['', [Validators.required]],
       title: ['', [Validators.required]],
-      year: ['', [Validators.required]],
+      year: ['', [Validators.required, Validators.min(1500), Validators.max(this.currentYear)]],
       materials: ['', [Validators.required]],
       category: ['', [Validators.required]],
       otherCategory: [''],

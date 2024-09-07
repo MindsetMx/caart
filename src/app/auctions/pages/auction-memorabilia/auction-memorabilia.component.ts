@@ -35,6 +35,7 @@ import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recentl
 import { RecentlyCompletedMemorabiliaAuctionComponent } from '@auctions/components/recently-completed-memorabilia-auctions/recently-completed-memorabilia-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   standalone: true,
@@ -57,7 +58,8 @@ import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-
     CurrentAuctionsComponent,
     CurrentMemorabiliaAuctionsComponent,
     RecentlyCompletedMemorabiliaAuctionComponent,
-    NoReserveTagComponentComponent
+    NoReserveTagComponentComponent,
+    MatPaginator,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction-memorabilia.component.html',
@@ -82,6 +84,10 @@ export class AuctionMemorabiliaComponent {
   specificAuction = signal<SpecificMemorabiliaAuction>({} as SpecificMemorabiliaAuction);
   offeredAmount = signal<number | undefined>(undefined);
   newOfferMade = signal<number>(0);
+
+  page = signal<number>(1);
+  size = signal<number>(10);
+  pageSizeOptions = signal<number[]>([]);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -205,17 +211,35 @@ export class AuctionMemorabiliaComponent {
   }
 
   getComments(): void {
-    this.#commentsService.getComments$(this.auction().data.attributes.originalMemorabiliaId, AuctionTypes.memorabilia, this.auctionTypesComments.active).subscribe({
-      next: (response) => {
-        this.comments.set(response);
+    this.#commentsService.getComments$(this.auction().data.attributes.originalMemorabiliaId, AuctionTypes.memorabilia, this.auctionTypesComments.active, this.page(), this.size()).subscribe({
+      next: (comments) => {
+        this.comments.set(comments);
+        this.pageSizeOptions.set(this.calculatePageSizeOptions(comments.meta.totalCount));
 
         //invertir el orden de los comentarios
-        this.comments().data = this.comments().data.reverse();
+        // this.comments().data = this.comments().data.reverse();
       },
       error: (error) => {
         console.error(error);
       }
     });
+  }
+
+  private calculatePageSizeOptions(totalItems: number): number[] {
+    const pageSizeOptions = [];
+    if (totalItems > 0) {
+      for (let i = this.comments().meta.pageSize; i <= totalItems; i += this.comments().meta.pageSize) {
+        pageSizeOptions.push(i);
+      }
+    }
+
+    return pageSizeOptions;
+  }
+
+  onPageChange(event: any): void {
+    this.page.set(event.pageIndex + 1);
+    this.size.set(event.pageSize);
+    this.getComments();
   }
 
   followAuction(auctionId: string): void {

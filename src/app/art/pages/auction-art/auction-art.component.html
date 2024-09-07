@@ -380,6 +380,12 @@
             [auctionTypeComment]="auctionTypesComments.active" [auctionType]="auctionType.art"
             (commentCreated)="getComments()" (commentLiked)="getComments()"></comment>
           }
+
+          @if (comments() && comments().meta) {
+          <mat-paginator #matPaginator [length]="comments().meta.totalCount" [pageSize]="comments().meta.pageSize"
+            [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
+          </mat-paginator>
+          }
         </section>
         }
         }

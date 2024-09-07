@@ -41,6 +41,7 @@ import { AppService } from '@app/app.service';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 import { UserData } from '@auth/interfaces';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface EventData {
   type: string;
@@ -72,6 +73,7 @@ export interface Auction {
     ConfirmationModalComponent,
     UpdateReservePriceModalComponent,
     NoReserveTagComponentComponent,
+    MatPaginator,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction-art.component.html',
@@ -106,6 +108,10 @@ export class AuctionArtComponent implements OnDestroy {
   confirmAcceptPreviewArtModalIsOpen = signal<boolean>(false);
   isAcceptPreviewArtAuctionButtonDisabled = signal<boolean>(false);
   isUpdateReservePriceModalOpen = signal<boolean>(false);
+
+  page = signal<number>(1);
+  size = signal<number>(10);
+  pageSizeOptions = signal<number[]>([]);
 
   secondsRemaining = signal<number>(0);
 
@@ -473,17 +479,35 @@ export class AuctionArtComponent implements OnDestroy {
   // }
 
   getComments(): void {
-    this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionArtId, this.auctionType.art, this.auctionTypesComments.active).subscribe({
-      next: (response) => {
-        this.comments.set(response);
+    this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionArtId, this.auctionType.art, this.auctionTypesComments.active, this.page(), this.size()).subscribe({
+      next: (comments) => {
+        this.comments.set(comments);
+        this.pageSizeOptions.set(this.calculatePageSizeOptions(comments.meta.totalCount));
 
         //invertir el orden de los comentarios
-        this.comments().data = this.comments().data.reverse();
+        // this.comments().data = this.comments().data.reverse();
       },
       error: (error) => {
         console.error(error);
       }
     });
+  }
+
+  private calculatePageSizeOptions(totalItems: number): number[] {
+    const pageSizeOptions = [];
+    if (totalItems > 0) {
+      for (let i = this.comments().meta.pageSize; i <= totalItems; i += this.comments().meta.pageSize) {
+        pageSizeOptions.push(i);
+      }
+    }
+
+    return pageSizeOptions;
+  }
+
+  onPageChange(event: any): void {
+    this.page.set(event.pageIndex + 1);
+    this.size.set(event.pageSize);
+    this.getComments();
   }
 
   countdownConfig(): CountdownConfig {

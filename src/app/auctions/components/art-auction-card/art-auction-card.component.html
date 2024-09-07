@@ -23,7 +23,8 @@
       </span>
       }
       @if (status() === statusTypes.cancelled) {
-      <span class="text-xs md:text-sm w-fit bg-red-500 px-4 py-1 rounded-2xl border-red-700 text-red-700 border-2">
+      <span
+        class="inline-block font-bold text-xs md:text-sm w-fit bg-red-500 px-4 py-1 rounded-2xl border-red-700 text-red-700 border-2">
         Reserva no alcanzada
       </span>
       }
@@ -37,11 +38,12 @@
     }
     @if (!isHomeRoute) {
     <p class="text-gray4 line-clamp-3 min-h-[72px]" style="word-wrap: break-word;"
-      [ngClass]="{'mt-9': !reserve() === false && !premium()}">
+      [ngClass]="{'mt-9': !reserve() === false && !premium() && status() !== statusTypes.cancelled}">
       {{extract()}}
     </p>
     }
-    <span class="flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: {{ lastBid()
+    <span class="flex items-center bg-gray1 rounded-md px-4 py-2"
+      [ngClass]="{'mt-8': reserve() === true && !premium() && isHomeRoute}">Oferta: {{ lastBid()
       | currency:'USD':'symbol':'1.0-2' }} MXN &nbsp; · &nbsp;
       <img class="w-5 h-5" src="assets/img/icons/time-outline.svg" alt=""> &nbsp; &nbsp;
       <countdown [config]="countdownConfig()" [ngClass]="{'text-red-500': countdownConfig().leftTime! <= 86400}">

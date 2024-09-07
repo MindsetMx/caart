@@ -42,6 +42,7 @@ import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recentl
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 import { AppService } from '@app/app.service';
+import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
@@ -65,7 +66,8 @@ import { AppService } from '@app/app.service';
     LastChanceStickyInfoBarComponent,
     TwoColumnAuctionGridComponent,
     AuctionDetailsTableComponentComponent,
-    LastChanceBuyNowModalComponent
+    LastChanceBuyNowModalComponent,
+    MatPaginator,
   ],
   providers: [
     DecimalPipe,
@@ -100,6 +102,10 @@ export class LastChanceDetailComponent implements AfterViewInit {
   auctionDetails2 = signal<{ label: string, value: string | number }[]>([]);
   comission = signal<number | undefined>(undefined);
   reserveAmount = signal<number | undefined>(undefined);
+
+  page = signal<number>(1);
+  size = signal<number>(10);
+  pageSizeOptions = signal<number[]>([]);
 
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
@@ -268,17 +274,35 @@ export class LastChanceDetailComponent implements AfterViewInit {
   }
 
   getComments(): void {
-    this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.lastChance).subscribe({
-      next: (response) => {
-        this.comments.set(response);
+    this.#commentsService.getComments$(this.auction().data.attributes.originalAuctionCarId, this.auctionType.car, this.auctionTypesComments.lastChance, this.page(), this.size()).subscribe({
+      next: (comments) => {
+        this.comments.set(comments);
+        this.pageSizeOptions.set(this.calculatePageSizeOptions(comments.meta.totalCount));
 
         //invertir el orden de los comentarios
-        this.comments().data = this.comments().data.reverse();
+        // this.comments().data = this.comments().data.reverse();
       },
       error: (error) => {
         console.error(error);
       }
     });
+  }
+
+  private calculatePageSizeOptions(totalItems: number): number[] {
+    const pageSizeOptions = [];
+    if (totalItems > 0) {
+      for (let i = this.comments().meta.pageSize; i <= totalItems; i += this.comments().meta.pageSize) {
+        pageSizeOptions.push(i);
+      }
+    }
+
+    return pageSizeOptions;
+  }
+
+  onPageChange(event: any): void {
+    this.page.set(event.pageIndex + 1);
+    this.size.set(event.pageSize);
+    this.getComments();
   }
 
   getMetrics(auctionId: string | null): void {
