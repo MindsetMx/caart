@@ -6,7 +6,7 @@
   </div>
 
   <section class="container">
-    @defer (when wizardData().data) {
+    @if (wizardData().data && userDetails().data) {
     <mat-tab-group [selectedIndex]="selectedTabIndex()" (selectedIndexChange)="changeTab($event)">
       <mat-tab label="Exterior">
         <auction-car-exterior-details class="mt-4" [auctionCarId]="auctionCarId()"
@@ -54,7 +54,6 @@
         <p><b>Verificación de cuenta:</b> {{userDetails().data.accountVerified ? 'Sí' : 'No'}}</p>
       </mat-tab>
     </mat-tab-group>
-
     }
   </section>
 </shared-modal>

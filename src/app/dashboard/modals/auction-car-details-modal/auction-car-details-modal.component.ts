@@ -50,7 +50,7 @@ export class AuctionCarDetailsModalComponent {
   }
 
   auctionCarIdAndIsOpenEffect = effect(() => {
-    if (this.auctionCarId() && this.isOpen()) {
+    if (this.auctionCarId()) {
       untracked(() => {
         this.selectedTabIndex.set(0);
         this.wizardData.set({} as WizardData);
