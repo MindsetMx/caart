@@ -1,4 +1,4 @@
-import { AuctionResultsTypes } from '@app/auction-results/enums';
+import { AuctionResultsTypes } from "@app/auction-results/enums/auction-results-types.enum";
 
 export interface AuctionResults {
   data: AuctionResultsData[];
@@ -6,7 +6,7 @@ export interface AuctionResults {
 }
 
 export interface AuctionResultsData {
-  type: AuctionResultsTypes;
+  auctionType: AuctionResultsTypes;
   id: string;
   originalAuctionId: string;
   attributes: AuctionResultsAttributes;
@@ -14,19 +14,25 @@ export interface AuctionResultsData {
 
 export interface AuctionResultsAttributes {
   reserve: boolean;
-  lastBid: number | null;
+  premium: boolean;
+  lastBid: number;
   endDate: string;
   title: string;
   cover: string;
-  brand?: string;
-  model?: string;
-  year?: number;
-  artist?: string;
-  artTitle?: string;
-  materials?: string;
-  rarity?: string;
-  premium: boolean;
+  brand: string;
+  model: string;
+  year: number | string;
+  artist: string;
+  artTitle: string;
+  materials: string;
+  category: string;
+  rarity: string;
   extract: string;
+}
+
+export enum AuctionResultsAuctionType {
+  Art = "art",
+  Car = "car",
 }
 
 export interface AuctionResultsMeta {

@@ -7,7 +7,7 @@
 
   <section class="container">
     @defer (when wizardData().data) {
-    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab-group [selectedIndex]="selectedTabIndex()" (selectedIndexChange)="changeTab($event)">
       <mat-tab label="Exterior">
         <auction-car-exterior-details class="mt-4" [auctionCarId]="auctionCarId()"
           [wizardData]="wizardData()"></auction-car-exterior-details>

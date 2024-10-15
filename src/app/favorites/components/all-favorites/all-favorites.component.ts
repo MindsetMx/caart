@@ -4,6 +4,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { FavoritesSource } from '@app/favorites/enums';
+import { Favorites } from '@app/favorites/interfaces';
+import { LastChanceArtCardComponent } from '@app/last-chance/components/last-chance-art-card/last-chance-art-card.component';
+import { LastChanceVehicleCardComponent } from '@app/last-chance/components/last-chance-vehicle-card/last-chance-vehicle-card.component';
 import { ArtAuctionCardComponent } from '@auctions/components/art-auction-card/art-auction-card.component';
 import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
 import { AuctionTypes } from '@auctions/enums';
@@ -22,6 +26,8 @@ import { IntersectionDirective } from '@shared/directives';
     ArtAuctionCardComponent,
     AuctionCardComponent,
     IntersectionDirective,
+    LastChanceVehicleCardComponent,
+    LastChanceArtCardComponent,
   ],
   templateUrl: './all-favorites.component.html',
   styleUrl: './all-favorites.component.css',
@@ -36,14 +42,20 @@ export class AllFavoritesComponent {
   size = signal<number>(10);
 
   searchControl = new FormControl<string>('');
-  orderByControl = new FormControl<string>('EndingSoonest');
+  orderByControl = new FormControl<string>('asc');
 
   orderByList: { value: string; label: string }[] = [
-    { value: '1', label: 'Más Recientes' },
-    { value: '-1', label: 'Más Antiguos' },
+    {
+      value: 'asc',
+      label: 'Más Recientes'
+    },
+    {
+      value: 'desc',
+      label: 'Más Antiguos'
+    },
   ];
 
-  favorites = signal<any>('');
+  favorites = signal<Favorites>({} as Favorites);
 
   getFavoritesEffect = effect(() => {
     untracked(() => {
@@ -67,6 +79,10 @@ export class AllFavoritesComponent {
     return AuctionTypes;
   }
 
+  get favoritesSource(): typeof FavoritesSource {
+    return FavoritesSource;
+  }
+
   constructor() {
     this.orderByControl.valueChanges.pipe(
       takeUntilDestroyed(),
@@ -83,8 +99,9 @@ export class AllFavoritesComponent {
       this.orderByControl.value!,
       untracked(() => this.auctionType())
     ).subscribe((response) => {
-      untracked(() => {
+      console.log(response);
 
+      untracked(() => {
         if (replace) {
           this.favorites.set(response);
           this.currentPage.update((page) => page + 1);

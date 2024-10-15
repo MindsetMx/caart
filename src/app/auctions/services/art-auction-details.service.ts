@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { ArtAuctionDetails, SpecificArtAuction, SpecificArtAuctionDetailsLastChance } from '@auctions/interfaces';
 import { ArtMetrics } from '@auctions/interfaces/art-metrics';
+import { GetBids, GetBidsBid } from '@auctions/interfaces/get-bids';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,12 @@ export class ArtAuctionDetailsService {
     const url = `${this.#baseUrl}/auctions-cars/${id}/metrics-art`;
 
     return this.#http.get<ArtMetrics>(url);
+  }
+
+  // /auctions-cars/auction/active/panel-bids-art/66abe397253f62c7e0df7284?page=1&size=20
+  getPanelBids$(id: string, page: number, size: number): Observable<GetBids> {
+    const url = `${this.#baseUrl}/auctions-cars/auction/active/panel-bids-art/${id}?page=${page}&size=${size}`;
+
+    return this.#http.get<GetBids>(url);
   }
 }

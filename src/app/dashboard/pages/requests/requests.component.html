@@ -18,13 +18,13 @@
     <div class="mt-8 flow-root">
       @switch (requestType.value) {
       @case (typesOfRequests.Car) {
-      <vehicle-requests></vehicle-requests>
+      <vehicle-requests [(page)]="page1" [(size)]="size1"></vehicle-requests>
       }
       @case (typesOfRequests.Art) {
-      <art-requests></art-requests>
+      <art-requests [(page)]="page2" [(size)]="size2"></art-requests>
       }
       @default {
-      <vehicle-requests></vehicle-requests>
+      <vehicle-requests [(page)]="page1" [(size)]="size1"></vehicle-requests>
       }
       }
     </div>

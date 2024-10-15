@@ -29,7 +29,7 @@ import { GetComments } from '@auctions/interfaces/get-comments';
 import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
 import { ImagesPublish } from '@dashboard/interfaces/images-publish';
 import { InputDirective } from '@shared/directives/input.directive';
-import { LastChanceAuctionVehicleDetail } from '@app/last-chance/interfaces';
+import { LastChanceAuctionVehicleDetail, LastChanceBidsBid } from '@app/last-chance/interfaces';
 import { LastChanceBidModalComponent } from '@auctions/modals/last-chance-bid-modal/last-chance-bid-modal.component';
 import { LastChanceBuyNowModalComponent } from '@auctions/modals/last-chance-buy-now-modal/last-chance-buy-now-modal.component';
 import { LastChancePurchaseService } from '@auctions/services/last-chance-purchase.service';
@@ -43,6 +43,7 @@ import { StarComponent } from '@shared/components/icons/star/star.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 import { AppService } from '@app/app.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { BidHistoryComponent } from '@auctions/components/bid-history/bid-history.component';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
@@ -68,6 +69,7 @@ import { MatPaginator } from '@angular/material/paginator';
     AuctionDetailsTableComponentComponent,
     LastChanceBuyNowModalComponent,
     MatPaginator,
+    BidHistoryComponent,
   ],
   providers: [
     DecimalPipe,
@@ -102,9 +104,12 @@ export class LastChanceDetailComponent implements AfterViewInit {
   auctionDetails2 = signal<{ label: string, value: string | number }[]>([]);
   comission = signal<number | undefined>(undefined);
   reserveAmount = signal<number | undefined>(undefined);
+  bids = signal<LastChanceBidsBid[]>([]);
 
   page = signal<number>(1);
   size = signal<number>(10);
+  page2 = signal<number>(0);
+  size2 = signal<number>(10)
   pageSizeOptions = signal<number[]>([]);
 
   #appComponent = inject(AppComponent);
@@ -195,6 +200,8 @@ export class LastChanceDetailComponent implements AfterViewInit {
           { label: 'Color', value: this.auction().data.attributes.auctionCarForm.exteriorColor },
           { label: 'Entregado en', value: 'CDMX, México' },
         ]);
+
+        this.getBids();
       });
     }
   });
@@ -213,6 +220,8 @@ export class LastChanceDetailComponent implements AfterViewInit {
           // this.getSpecificAuctionDetails();
           this.getAuctionDetails(this.auctionId());
           this.getComments();
+          this.page2.set(0);
+          this.getBids(true);
         }
 
         if (JSON.parse(event.data).type === 'CANCELLED') {
@@ -248,6 +257,29 @@ export class LastChanceDetailComponent implements AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery4']", { Hash: false });
     Fancybox.bind("[data-fancybox='gallery5']", { Hash: false });
     Fancybox.bind("[data-fancybox='gallery6']", { Hash: false });
+  }
+
+  getBids(replace: boolean = false): void {
+    this.page2.update((page) => page + 1);
+
+    this.#lastChanceVehicleDetailService.getPanelBids$(this.auction().data.attributes.originalAuctionCarId, this.page2(), this.size2()).subscribe({
+      next: (bids) => {
+        console.log(bids);
+
+        if (replace) {
+          this.bids.set(bids.data.auction.bids);
+          this.getBids(false);
+          return;
+        }
+
+        this.bids.update((bid) => {
+          return [...bid, ...bids.data.auction.bids];
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   getImagesPublish(originalAuctionCarId: string): void {

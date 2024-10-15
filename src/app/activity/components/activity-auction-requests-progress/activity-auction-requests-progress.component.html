@@ -1,4 +1,4 @@
-@if (requests().data && requests().data.length > 0) {
+@defer (when requests().data && requests().data.length > 0) {
 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-8">
   @for (request of requests().data; track request.id) {
   <div class="col-span-4">
@@ -224,8 +224,81 @@
   [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
 </mat-paginator>
 }
-} @else {
-<div class="flex justify-center items-center h-64">
-  <p class="text-gray4 text-lg">No tienes solicitudes</p>
+} @placeholder(minimum 500ms) {
+<!-- skeleton -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-8">
+  <div class="col-span-4">
+    <div class="flex gap-4">
+      <div class="rounded-lg min-w-32 min-h-32 w-32 h-32 object-cover border border-gray-200 bg-gray-200 animate-pulse">
+      </div>
+      <div>
+        <div class="font-lato font-bold text-lg animate-pulse">-</div>
+        <p class="animate-pulse">-</p>
+        <p class="font-semibold text-sm animate-pulse">-</p>
+        <span class="animate-pulse">-</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-8">
+    <nav aria-label="Progress">
+      <ol role="list" class="space-y-4 md:flex md:space-x-8 md:space-y-0">
+        <li class="md:flex-1">
+          <div
+            class="group cursor-pointer flex flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4 animate-pulse">
+            <div class="flex items-center gap-2">
+              <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
+              <span class="text-sm font-medium animate-pulse">-</span>
+            </div>
+            <span class="text-sm font-semibold animate-pulse">-</span>
+          </div>
+        </li>
+        <li class="md:flex-1">
+          <div
+            class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4 animate-pulse">
+            <div class="flex items-center gap-2">
+              <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
+              <p class="text-sm font-medium tex animate-pulse">-</p>
+            </div>
+            <a class="underline font-semibold text-sm animate-pulse">-</a>
+          </div>
+        </li>
+        <li class="md:flex-1">
+          <div
+            class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4 animate-pulse">
+            <div class="flex items-center gap-2">
+              <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
+              <span class="text-sm font-medium tex animate-pulse">-</span>
+            </div>
+            <a class="underline font-semibold text-sm animate-pulse">-</a>
+          </div>
+        </li>
+        <li class="md:flex-1">
+          <div
+            class="flex cursor-pointer flex-col border-l-4 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4 animate-pulse">
+            <div class="flex items-center gap-2">
+              <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
+              <span class="text-sm font-medium tex animate-pulse">-</span>
+
+            </div>
+            <a class="underline font-semibold text-sm animate-pulse">-</a>
+          </div>
+        </li>
+        <li class="md:flex-1">
+          <div
+            class="group cursor-pointer flex flex-col border-l-4 border-gray-200 py-2 pl-4 hover:border-gray-300 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4 animate-pulse">
+            <div class="flex items-center gap-2">
+              <mat-icon #tooltip="matTooltip" matTooltip="Info about the action">info</mat-icon>
+              <span class="text-sm font-medium animate-pulse">-</span>
+            </div>
+            <div>
+              <span class="text-sm font-semibold animate-pulse">-</span>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </nav>
+  </div>
 </div>
+
 }

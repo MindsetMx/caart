@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Fancybox } from '@fancyapps/ui';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
@@ -111,6 +112,8 @@ export class AuctionCarExteriorDetailsComponent {
 
       this.otherTransmissionControl?.updateValueAndValidity();
     });
+
+    Fancybox.bind("[data-fancybox='exteriorPhotosGallery']", { Hash: false });
   }
 
   wizardDataEffect = effect(() => {

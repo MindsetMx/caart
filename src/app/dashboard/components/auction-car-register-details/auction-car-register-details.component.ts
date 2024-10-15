@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
 import { NgxMaskDirective } from 'ngx-mask';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Fancybox } from '@fancyapps/ui';
 
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -157,6 +158,8 @@ export class AuctionCarRegisterDetailsComponent {
 
         this.carRegisterForm.get('otherTransmission')?.updateValueAndValidity();
       });
+
+    Fancybox.bind("[data-fancybox='registerCarPhotoGallery']", { Hash: false });
   }
 
   wizardDataEffect = effect(() => {

@@ -49,7 +49,9 @@
     <p><b>Imágenes de validación:</b></p>
     <div class="grid grid-cols-3 gap-4">
       @for (img of user().attributes.validationImg; track $index) {
-      <img [src]="img" alt="Imagen de validación {{ $index + 1}">
+      <a [href]="img" data-fancybox="photoGallery">
+        <img [src]="img" alt="Imagen de validación {{ $index + 1}">
+      </a>
       }
     </div>
     <p><b>Acepta términos y condiciones:</b> {{user().attributes.acceptTermsAndConditions ? 'Sí' : 'No'}}</p>

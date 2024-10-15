@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, model, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Router, RouterLink } from '@angular/router';
 
-import { CountdownService } from '@shared/services/countdown.service';
-import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
-import { AuctionTypes } from '@auctions/enums/auction-types';
-import { NoReserveTagComponentComponent } from '../no-reserve-tag-component/no-reserve-tag-component.component';
 import { AuctionStatus } from '@auctions/enums';
+import { AuctionStatusComponent } from '@auctions/components/auction-status/auction-status.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
+import { CountdownService } from '@shared/services/countdown.service';
 import { environments } from '@env/environments';
+import { FavoritesSource } from '@favorites/enums';
+import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
+import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 
 export interface EventData {
   type: string;
@@ -30,7 +32,8 @@ export interface Auction {
     CountdownModule,
     RouterLink,
     FollowButtonComponent,
-    NoReserveTagComponentComponent
+    NoReserveTagComponentComponent,
+    AuctionStatusComponent,
   ],
   templateUrl: './auction-card.component.html',
   styleUrl: './auction-card.component.css',
@@ -49,6 +52,8 @@ export class AuctionCardComponent implements OnDestroy {
   endDate = input.required<string>();
   status = input.required<AuctionStatus>();
   secondsRemaining = model.required<number>();
+
+  source = input<FavoritesSource>();
 
   #countdownService = inject(CountdownService);
   #router = inject(Router);

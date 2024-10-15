@@ -13,6 +13,7 @@ import { ResultsAuctionService } from '@app/auction-results/services/results-auc
 import { states } from '@shared/states';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
+import { ResultTypes } from '@app/auction-results/enums';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -113,6 +114,10 @@ export class ResultsAuctionFilterResultsComponent {
 
   auctions = signal<AuctionResults>({} as AuctionResults);
 
+  get resultTypes(): typeof ResultTypes {
+    return ResultTypes;
+  }
+
   ngOnInit(): void {
     this.getLiveAuctions(true);
   }
@@ -120,7 +125,8 @@ export class ResultsAuctionFilterResultsComponent {
   getLiveAuctions(replace: boolean = false): void {
     this.currentPage.update((page) => page + 1);
 
-    this.#resultsAuctionService.getAllLiveAuctions$(
+    this.#resultsAuctionService.getLiveAuctions$(
+      this.resultTypes.any,
       this.currentPage(),
       this.size(),
       this.orderBy(),
@@ -128,6 +134,7 @@ export class ResultsAuctionFilterResultsComponent {
       this.era().join(','),
       this.states().join(','),
       this.yearRange(),
+      this.search(),
     ).subscribe({
       next: (auctions: any) => {
         if (replace) {

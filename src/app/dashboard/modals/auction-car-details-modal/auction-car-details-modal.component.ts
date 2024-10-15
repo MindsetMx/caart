@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, model, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, model, signal, untracked, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { tap } from 'rxjs';
+import { forkJoin, tap } from 'rxjs';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Carousel, Fancybox } from '@fancyapps/ui';
 import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
@@ -41,16 +41,29 @@ export class AuctionCarDetailsModalComponent {
 
   wizardData = signal<WizardData>({} as WizardData);
   userDetails = signal<UserDetails>({} as UserDetails);
+  selectedTabIndex = signal<number>(0);
 
   #wizardDataService = inject(WizardDataService);
 
+  constructor() {
+    Fancybox.bind("[data-fancybox='idPhotoGallery']", { Hash: false });
+  }
+
   auctionCarIdAndIsOpenEffect = effect(() => {
     if (this.auctionCarId() && this.isOpen()) {
-      this.#wizardDataService.getWizardData$(this.auctionCarId()).pipe(
-        tap(() => this.getUserDetails())
-      ).subscribe({
-        next: (response) => {
-          this.wizardData.set(response);
+      untracked(() => {
+        this.selectedTabIndex.set(0);
+        this.wizardData.set({} as WizardData);
+        this.userDetails.set({} as UserDetails);
+      });
+
+      forkJoin({
+        wizardData: this.#wizardDataService.getWizardData$(this.auctionCarId()),
+        userDetails: this.#wizardDataService.getUserDetails$(this.auctionCarId())
+      }).subscribe({
+        next: ({ wizardData, userDetails }) => {
+          this.wizardData.set(wizardData);
+          this.userDetails.set(userDetails);
         },
         error: (error) => {
           console.error(error);
@@ -59,10 +72,14 @@ export class AuctionCarDetailsModalComponent {
     }
   });
 
-  onTabChange(event: MatTabChangeEvent) {
-    if (event.index === 5) {
-      Fancybox.bind("[data-fancybox='idPhotoGallery']", { Hash: false });
-    }
+  // onTabChange(event: MatTabChangeEvent) {
+  //   if (event.index === 5) {
+  //     Fancybox.bind("[data-fancybox='idPhotoGallery']", { Hash: false });
+  //   }
+  // }
+
+  changeTab(index: number): void {
+    this.selectedTabIndex.set(index);
   }
 
   getUserDetails(): void {

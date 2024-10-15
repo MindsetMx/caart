@@ -1,5 +1,10 @@
 <div [routerLink]="['/ultima-oportunidad-arte', originalAuctionArtId()]" class="relative cursor-pointer">
   <img class="w-full object-cover rounded-md" [src]="cover()" alt="">
+
+  @if (source()) {
+  <auction-status [source]="source()!"></auction-status>
+  }
+
   <follow-button [auctionId]="originalAuctionArtId()" [auctionType]="auctionType.art" class="absolute top-3 right-5">
   </follow-button>
 

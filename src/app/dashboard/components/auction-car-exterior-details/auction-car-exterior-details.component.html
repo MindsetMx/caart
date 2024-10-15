@@ -277,7 +277,9 @@
     <p><b>Fotos:</b></p>
     <div class="grid grid-cols-3 gap-4">
       @for (photo of wizardData().data.exteriorDetails.exteriorPhotos; track $index) {
-      <img [src]="photo" alt="Foto exterior">
+      <a [href]="photo" data-fancybox="exteriorPhotosGallery">
+        <img [src]="photo" alt="Foto exterior">
+      </a>
       } @empty {
       <p>No hay fotos</p>
       }

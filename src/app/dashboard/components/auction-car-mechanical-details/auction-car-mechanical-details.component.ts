@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
+import { Fancybox } from '@fancyapps/ui';
 
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
@@ -111,6 +112,8 @@ export class AuctionCarMechanicalDetailsComponent {
       // servicesDoneWithDates: ['', [Validators.required]],
       // improvementOrModification: ['', [Validators.required]],
     });
+
+    Fancybox.bind("[data-fancybox='mechanicsPhotoGallery']", { Hash: false });
   }
 
   updateMechanicsDetails(): void {

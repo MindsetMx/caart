@@ -3,18 +3,18 @@ import { CommonModule } from '@angular/common';
 import { CountdownModule } from 'ngx-countdown';
 import { RouterLink } from '@angular/router';
 
-import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
-import { VehicleAuctionData } from '@auctions/interfaces';
-import { PrimaryButtonDirective } from '@shared/directives';
-import { LastChanceVehiclesData } from '@app/last-chance/interfaces';
-import { AuctionTypes } from '@auctions/enums/auction-types';
-import { LastChanceBidModalComponent } from '@auctions/modals/last-chance-bid-modal/last-chance-bid-modal.component';
-import { AuthStatus } from '@auth/enums';
-import { AuthService } from '@auth/services/auth.service';
 import { AppComponent } from '@app/app.component';
-import { PaymentMethodsService } from '@shared/services/payment-methods.service';
-import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { AuctionStatusComponent } from '@auctions/components/auction-status/auction-status.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
+import { AuthService } from '@auth/services/auth.service';
+import { AuthStatus } from '@auth/enums';
+import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
+import { LastChanceBidModalComponent } from '@auctions/modals/last-chance-bid-modal/last-chance-bid-modal.component';
 import { LastChanceBuyNowModalComponent } from '@auctions/modals/last-chance-buy-now-modal/last-chance-buy-now-modal.component';
+import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
+import { PaymentMethodsService } from '@shared/services/payment-methods.service';
+import { PrimaryButtonDirective } from '@shared/directives';
+import { FavoritesSource } from '@app/favorites/enums';
 
 @Component({
   selector: 'last-chance-vehicle-card',
@@ -28,6 +28,7 @@ import { LastChanceBuyNowModalComponent } from '@auctions/modals/last-chance-buy
     LastChanceBidModalComponent,
     PaymentMethodModalComponent,
     LastChanceBuyNowModalComponent,
+    AuctionStatusComponent,
   ],
   templateUrl: './last-chance-vehicle-card.component.html',
   styleUrl: './last-chance-vehicle-card.component.css',
@@ -42,6 +43,8 @@ export class LastChanceVehicleCardComponent {
   extract = input.required<string>();
   isPremium = input.required<boolean>();
   reserveAmount = input.required<number>();
+
+  source = input<FavoritesSource>();
 
   makeAnOfferModalIsOpen = signal<boolean>(false);
   newOfferMade = signal<number>(0);

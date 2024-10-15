@@ -1,9 +1,9 @@
 import { Carousel, Fancybox } from '@fancyapps/ui';
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, output, signal, untracked, viewChild } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { tap } from 'rxjs';
+import { forkJoin, tap } from 'rxjs';
 import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 
 import { AuctionDetails, UserDetails } from '@dashboard/interfaces';
@@ -32,24 +32,45 @@ export class RequestsDetailsModalComponent {
 
   auction = signal<AuctionDetails>({} as AuctionDetails);
   userDetails = signal<UserDetails>({} as UserDetails);
+  selectedTabIndex = signal<number>(0);
 
   #requestsDetailsService = inject(RequestsDetailsService);
   #sanitizer = inject(DomSanitizer);
 
+
   publicationIdEffect = effect(() => {
     if (this.publicationId()) {
-      this.#requestsDetailsService.getAuctionCarById$(this.publicationId()).pipe(
-        tap(() => this.getUserDetails())
-      ).subscribe((response) => {
-        this.auction.set(response);
+      untracked(() => {
+        this.selectedTabIndex.set(0);
+        this.auction.set({} as AuctionDetails);
+        this.userDetails.set({} as UserDetails);
+      });
+
+      forkJoin({
+        auction: this.#requestsDetailsService.getAuctionCarById$(this.publicationId()),
+        userDetails: this.#requestsDetailsService.getUserDetails$(this.publicationId())
+      }).subscribe({
+        next: ({ auction, userDetails }) => {
+          this.auction.set(auction);
+          this.userDetails.set(userDetails);
+          Fancybox.bind("[data-fancybox='photoGallery']", { Hash: false });
+          Fancybox.bind("[data-fancybox='idPhotoGallery']", { Hash: false });
+        },
+        error: (error) => {
+          console.error(error);
+        }
       });
     }
   });
 
-  onTabChange(event: MatTabChangeEvent) {
-    if (event.index === 1) {
-      Fancybox.bind("[data-fancybox='idPhotoGallery']", { Hash: false });
-    }
+  // onTabChange(event: MatTabChangeEvent) {
+  //   if (event.index === 1) {
+  //     Fancybox.bind("[data-fancybox='idPhotoGallery']", { Hash: false });
+  //   }
+  // }
+
+  changeTab(index: number): void {
+    this.selectedTabIndex.set(index);
   }
 
   getSafeUrl(video: string): SafeResourceUrl {

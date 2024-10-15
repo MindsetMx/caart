@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { AuctionCarPublications } from '../interfaces/auction-car-publishes';
+
+import { AuctionCarPublications, PublicationRequests } from '@auctions/interfaces';
+import { environments } from '@env/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +33,16 @@ export class AuctionService {
 
   // auction-items/all-auction-cars
   // http://localhost:3000/auction-items/all-auction-cars?page=1&size=10&orderBy=createdAt&order=-1
-  getAllAuctionCars$(): Observable<any> {
-    const url = `${this.#baseUrl}/auction-items/all-auction-cars?page=1&size=10&orderBy=createdAt&order=-1`;
+  getAllAuctionCars$(page: number, size: number): Observable<PublicationRequests> {
+    const url = `${this.#baseUrl}/auction-items/all-auction-cars`;
 
-    return this.#http.get<any>(url);
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('orderBy', 'createdAt')
+      .set('order', '-1');
+
+    return this.#http.get<PublicationRequests>(url, { params });
   }
 
 }

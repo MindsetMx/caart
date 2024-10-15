@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200 bg-white">
-        @for (publication of publicationRequests(); track $index) {
+        @for (publication of publicationRequests().data; track $index) {
         <tr>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
             <div class="flex items-center">
@@ -43,7 +43,7 @@
             </button>
           </td>
           <!-- <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">Member</td> -->
-          @if (publication.attributes.status === 'Pendiente') {
+          @if (publication.attributes.status === publicationRequestsStatus.Pendiente) {
           <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
             <!-- <button [disabled]="acceptPublicationRequestButtonIsDisabled()"
               [class.opacity-50]="acceptPublicationRequestButtonIsDisabled()"
@@ -61,6 +61,18 @@
         </tr>
         }
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">
+            @if (publicationRequests() && publicationRequests().meta) {
+            <mat-paginator [length]="publicationRequests().meta.total" [pageSize]="publicationRequests().meta.size"
+              [pageIndex]="page() - 1" [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)"
+              aria-label="Select page">
+            </mat-paginator>
+            }
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </div>

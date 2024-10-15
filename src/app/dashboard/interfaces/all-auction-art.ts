@@ -1,8 +1,9 @@
 export interface AllAuctionArt {
-  data: AllAuctionArtData[];
+  data: AllAuctionArtDatum[];
+  meta: AllAuctionArtMeta;
 }
 
-export interface AllAuctionArtData {
+export interface AllAuctionArtDatum {
   type: AllAuctionArtType;
   id: string;
   attributes: AllAuctionArtAttributes;
@@ -22,4 +23,10 @@ export enum AllAuctionArtStatus {
 
 export enum AllAuctionArtType {
   AuctionArt = "auctionArt",
+}
+
+export interface AllAuctionArtMeta {
+  page: number;
+  size: number;
+  total: number;
 }

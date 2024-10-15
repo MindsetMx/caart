@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
-import { NgxMaskDirective } from 'ngx-mask';
+import { Fancybox } from '@fancyapps/ui';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgxMaskDirective } from 'ngx-mask';
 
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -52,6 +53,8 @@ export class AuctionCarInteriorDetailsComponent {
       interiorVideos: [[]],
       originalAuctionCarId: ['', [Validators.required]],
     });
+
+    Fancybox.bind("[data-fancybox='interiorPhotos']", { Hash: false });
   }
 
   wizardDataEffect = effect(() => {

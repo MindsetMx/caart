@@ -4,10 +4,12 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuctionStatus, AuctionTypes } from '@auctions/enums';
+import { AuctionStatusComponent } from '@auctions/components/auction-status/auction-status.component';
 import { CountdownService } from '@shared/services/countdown.service';
+import { environments } from '@env/environments';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
-import { environments } from '@env/environments';
+import { FavoritesSource } from '@favorites/enums';
 
 export interface EventData {
   type: string;
@@ -28,7 +30,8 @@ export interface Auction {
     CountdownModule,
     RouterLink,
     FollowButtonComponent,
-    NoReserveTagComponentComponent
+    NoReserveTagComponentComponent,
+    AuctionStatusComponent,
   ],
   templateUrl: './art-auction-card.component.html',
   styleUrl: './art-auction-card.component.css',
@@ -47,6 +50,8 @@ export class ArtAuctionCardComponent implements OnDestroy {
   endDate = input.required<string>();
   status = input.required<string>();
   secondsRemaining = model.required<number>();
+
+  source = input<FavoritesSource>();
 
   #countdownService = inject(CountdownService);
   #router = inject(Router);

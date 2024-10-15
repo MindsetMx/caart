@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, Renderer2, effect, inject, signal, untracked, viewChild, viewChildren } from '@angular/core';
 import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
@@ -42,6 +42,8 @@ import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserv
 import { UserData } from '@auth/interfaces';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { BidHistoryComponent } from '@auctions/components/bid-history/bid-history.component';
+import { GetBidsBid } from '@auctions/interfaces/get-bids';
 
 export interface EventData {
   type: string;
@@ -74,6 +76,7 @@ export interface Auction {
     UpdateReservePriceModalComponent,
     NoReserveTagComponentComponent,
     MatPaginator,
+    BidHistoryComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auction-art.component.html',
@@ -83,8 +86,8 @@ export interface Auction {
 export class AuctionArtComponent implements OnDestroy {
   myCarousel = viewChild<ElementRef>('myCarousel');
   videoGallery = viewChild<ElementRef>('videoGallery');
-  leftColumn = viewChild<ElementRef>('leftColumn');
   rightColumn = viewChild<ElementRef>('rightColumn');
+  images = viewChildren<ElementRef>('images');
 
   readonly #baseUrl = environments.baseUrl;
 
@@ -108,9 +111,13 @@ export class AuctionArtComponent implements OnDestroy {
   confirmAcceptPreviewArtModalIsOpen = signal<boolean>(false);
   isAcceptPreviewArtAuctionButtonDisabled = signal<boolean>(false);
   isUpdateReservePriceModalOpen = signal<boolean>(false);
+  bids = signal<GetBidsBid[]>([]);
 
   page = signal<number>(1);
   size = signal<number>(10);
+
+  page2 = signal<number>(0);
+  size2 = signal<number>(10);
   pageSizeOptions = signal<number[]>([]);
 
   secondsRemaining = signal<number>(0);
@@ -179,12 +186,13 @@ export class AuctionArtComponent implements OnDestroy {
     }
   };
 
-  columnsEffect = effect(() => {
-    if (this.leftColumn()?.nativeElement && this.rightColumn()?.nativeElement) {
-      console.log('columnsEffect');
-
+  imagesEffect = effect(() => {
+    if (this.images().length > 0 && this.imagesPublish().data) {
       const rightColumnHeight = this.rightColumn()?.nativeElement.offsetHeight;
-      this.#renderer.setStyle(this.leftColumn()?.nativeElement, 'maxHeight', `${rightColumnHeight}px`);
+
+      this.images().forEach((image) => {
+        this.#renderer.setStyle(image.nativeElement, 'maxHeight', `${rightColumnHeight}px`);
+      });
     }
   });
 
@@ -197,7 +205,7 @@ export class AuctionArtComponent implements OnDestroy {
     }
   });
 
-  auctionEffect = effect((onCleanup) => {
+  auctionEffect = effect(() => {
     if (this.auction().data) {
       untracked(() => {
         this.auctionDetails.set([
@@ -217,6 +225,8 @@ export class AuctionArtComponent implements OnDestroy {
           { label: 'Procedencia de la obra', value: this.auction().data.attributes.artDetail.procedenciaObra },
           // { label: 'Historia del artista', value: this.auction().data.attributes.artDetail.historiaArtista },
         ]);
+
+        this.getBids();
         this.auctionEffect.destroy();
       });
     }
@@ -236,6 +246,8 @@ export class AuctionArtComponent implements OnDestroy {
         if (JSON.parse(event.data).type !== 'INITIAL_CONNECTION' && data.type !== 'TIME_UPDATE') {
           this.getAuctionDetails(this.auctionId());
           this.getComments();
+          this.page2.set(0);
+          this.getBids(true);
         }
 
         // if (JSON.parse(event.data).type === 'CANCELLED') {
@@ -372,6 +384,29 @@ export class AuctionArtComponent implements OnDestroy {
     if (this.eventSource) {
       this.eventSource.close();
     }
+  }
+
+  getBids(replace: boolean = false): void {
+    this.page2.update((page) => page + 1);
+
+    this.#artAuctionDetailsService.getPanelBids$(this.auction().data.attributes.originalAuctionArtId, this.page2(), this.size2()).subscribe({
+      next: (bids) => {
+        console.log(bids);
+
+        if (replace) {
+          this.bids.set(bids.data.bids);
+          this.getBids(false);
+          return;
+        }
+
+        this.bids.update((bid) => {
+          return [...bid, ...bids.data.bids];
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   getPhotoFromVideoUrl(videoUrl: string): string {

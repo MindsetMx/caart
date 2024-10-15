@@ -4,6 +4,10 @@
     <img class="w-6 h-6" src="assets/img/icons/star.svg" alt="ícono estrella">
   </button> -->
 
+  @if (source()) {
+  <auction-status [source]="source()!"></auction-status>
+  }
+
   <follow-button [auctionId]="originalAuctionArtId()" [auctionType]="auctionType.art" class="absolute top-3 right-5">
   </follow-button>
 

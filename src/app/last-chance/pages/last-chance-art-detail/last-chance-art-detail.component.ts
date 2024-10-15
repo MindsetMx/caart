@@ -30,7 +30,7 @@ import { AuctionSummaryComponent } from '@auctions/components/auction-summary/au
 import { MomentModule } from 'ngx-moment';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
-import { LastChanceAuctionArtDetail } from '@app/last-chance/interfaces';
+import { LastChanceAuctionArtDetail, LastChanceBidsBid } from '@app/last-chance/interfaces';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
 import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
 import { LastChanceBidModalComponent } from '@auctions/modals/last-chance-bid-modal/last-chance-bid-modal.component';
@@ -38,6 +38,8 @@ import { LastChanceBuyNowModalComponent } from '@auctions/modals/last-chance-buy
 import { LastChanceArtPurchaseService } from '@app/last-chance/services/last-chance-art-purchase.service';
 import { AppService } from '@app/app.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { BidHistoryComponent } from '@auctions/components/bid-history/bid-history.component';
+import { GetBidsBid } from '@auctions/interfaces/get-bids';
 
 @Component({
   standalone: true,
@@ -57,6 +59,7 @@ import { MatPaginator } from '@angular/material/paginator';
     AuctionDetailsTableComponentComponent,
     LastChanceBuyNowModalComponent,
     MatPaginator,
+    BidHistoryComponent,
   ],
   templateUrl: './last-chance-art-detail.component.html',
   styleUrl: './last-chance-art-detail.component.css',
@@ -88,9 +91,13 @@ export class LastChanceArtDetailComponent {
   reserveAmount = signal<number | undefined>(undefined);
   comission = signal<number | undefined>(undefined);
   buyNowModalIsOpen = signal<boolean>(false);
+  bids = signal<LastChanceBidsBid[]>([]);
 
   page = signal<number>(1);
   size = signal<number>(10);
+
+  page2 = signal<number>(0);
+  size2 = signal<number>(10)
   pageSizeOptions = signal<number[]>([]);
 
   #countdownService = inject(CountdownService);
@@ -147,6 +154,8 @@ export class LastChanceArtDetailComponent {
           { label: 'Firma del artista', value: this.auction().data.attributes.artDetail.firmaArtista ? 'Sí' : 'No' },
           { label: 'Procedencia de la obra', value: this.auction().data.attributes.artDetail.procedenciaObra },
         ]);
+
+        this.getBids();
       });
     }
   });
@@ -165,6 +174,8 @@ export class LastChanceArtDetailComponent {
           // this.getSpecificAuctionDetails();
           this.getAuctionDetails();
           this.getComments();
+          this.page2.set(0);
+          this.getBids(true);
         }
 
         if (JSON.parse(event.data).type === 'CANCELLED') {
@@ -267,6 +278,29 @@ export class LastChanceArtDetailComponent {
       this.auctionId.set(id);
       this.getAuctionDetails();
       this.getImagesPublish(id!);
+    });
+  }
+
+  getBids(replace: boolean = false): void {
+    this.page2.update((page) => page + 1);
+
+    this.#lastChanceArtDetailService.getPanelBids$(this.auction().data.attributes.originalAuctionArtId, this.page2(), this.size2()).subscribe({
+      next: (bids) => {
+        console.log(bids);
+
+        if (replace) {
+          this.bids.set(bids.data.auction.bids);
+          this.getBids(false);
+          return;
+        }
+
+        this.bids.update((bid) => {
+          return [...bid, ...bids.data.auction.bids];
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      }
     });
   }
 

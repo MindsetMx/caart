@@ -43,7 +43,7 @@
             </button>
           </td>
           <!-- <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">Member</td> -->
-          @if (publication.attributes.status === 'Pendiente') {
+          @if (publication.attributes.status === allAuctionArtStatus.Pendiente) {
           <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
             <!-- TODO: descomentar cuando me devuelvan el id de la publicación -->
             <select sharedInput (change)="updatePublicationRequestStatus(publication.id, $event)">
@@ -56,6 +56,18 @@
         </tr>
         }
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">
+            @if (artRequests() && artRequests().meta) {
+            <mat-paginator [length]="artRequests().meta.total" [pageSize]="artRequests().meta.size"
+              [pageIndex]="page() - 1" [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)"
+              aria-label="Select page">
+            </mat-paginator>
+            }
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </div>

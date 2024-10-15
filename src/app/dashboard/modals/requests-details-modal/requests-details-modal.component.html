@@ -6,8 +6,8 @@
   </div>
 
   <section class="container">
-    @defer (when auction().data) {
-    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    @if (auction().data && userDetails().data) {
+    <mat-tab-group [selectedIndex]="selectedTabIndex()" (selectedIndexChange)="changeTab($event)">
       <mat-tab label="Detalles">
         <h4 class="mt-4">
           {{auction().data.attributes.brand}} {{auction().data.attributes.carModel}}
@@ -30,7 +30,9 @@
         <p><b>Fotos:</b></p>
         <div class="grid grid-cols-3 gap-4">
           @for (photo of auction().data.attributes.photos; track $index) {
-          <img [src]="photo" alt="Foto {{ $index + 1}">
+          <a [href]="photo" data-fancybox="photoGallery">
+            <img [src]="photo" alt="Foto {{ $index + 1}">
+          </a>
           } @empty {
           <p>No hay fotos</p>
           }

@@ -1,4 +1,4 @@
-@if (auctions().data && auctions().data.length > 0) {
+@defer (when auctions().data && auctions().data.length > 0) {
 <div class="px-4 sm:px-6 lg:px-8">
   <div class="mt-8 flow-root">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -101,8 +101,59 @@
   [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
 </mat-paginator>
 }
-} @else {
-<div class="flex justify-center items-center h-64">
-  <p class="text-gray4 text-lg">No tienes subastas aprobadas</p>
+} @placeholder (minimum 500ms) {
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="mt-8 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-0 lg:px-0">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                # de lote
+              </th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Imagen</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Pieza</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Tiempo</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Reserva</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Oferta más alta</th>
+              <!-- <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                <span class="sr-only">Ver ofertas</span>
+              </th> -->
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr>
+              <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                <div class="animate-pulse bg-gray-200 h-4 w-20 rounded-md"></div>
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <div class="animate-pulse bg-gray-200 h-28 w-28 rounded-lg"></div>
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <div class="animate-pulse bg-gray-200 h-4 w-40 rounded-md"></div>
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <div class="animate-pulse bg-gray-200 h-4 w-20 rounded-md"></div>
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <div class="animate-pulse bg-gray-200 h-4 w-20 rounded-md"></div>
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <div class="animate-pulse bg-gray-200 h-4 w-20 rounded-md"></div>
+              </td>
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
+                <div class="animate-pulse bg-gray-200 h-4 w-20 rounded-md"></div>
+              </td>
+              <!-- <td class="whitespace-nowrap py-5 pl-3 pr-4 sm:pr-0 text-right text-sm font-medium">
+                <div class="animate-pulse bg-gray-200 h-4 w-20 rounded-md"></div>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 }

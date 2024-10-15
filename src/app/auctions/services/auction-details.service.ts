@@ -8,6 +8,7 @@ import { AuctionMemorabiliaDetails } from '@auctions/interfaces/auction-memorabi
 import { SpecificMemorabiliaAuction } from '@auctions/interfaces/specific-memorabilia-auction';
 import { ArtMetrics } from '@auctions/interfaces/art-metrics';
 import { SpecificCarAuctionDetailsLastChance } from '@auctions/interfaces/specific-car-auction-details-last-chance';
+import { GetBids } from '@auctions/interfaces/get-bids';
 
 @Injectable({
   providedIn: 'root'
@@ -63,5 +64,19 @@ export class AuctionDetailsService {
     const url = `${this.#baseUrl}/auctions-cars/${id}/metrics-art`;
 
     return this.#http.get<ArtMetrics>(url);
+  }
+
+  // /auctions-cars/auction/active/panel-bids/66abe397253f62c7e0df7284?page=1&size=2
+  getPanelBids$(id: string, page: number, size: number): Observable<GetBids> {
+    const url = `${this.#baseUrl}/auctions-cars/auction/active/panel-bids/${id}?page=${page}&size=${size}`;
+
+    return this.#http.get<GetBids>(url);
+  }
+
+  // http://localhost:3000/auctions-cars/can-enter/?type=art&id=66d1fba6db52cf95a07b1a17
+  canEnterAuction$(type: string, id: string): Observable<boolean> {
+    const url = `${this.#baseUrl}/auctions-cars/can-enter/?type=${type}&id=${id}`;
+
+    return this.#http.get<boolean>(url);
   }
 }

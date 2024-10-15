@@ -311,3 +311,7 @@ select {
 .fancybox__slide {
   padding: 8px;
 }
+
+/* .f-carousel__track {
+  transform: matrix(1, 0, 0, 1, 0, 0) !important;
+} */

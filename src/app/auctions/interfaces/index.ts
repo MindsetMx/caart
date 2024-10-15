@@ -31,3 +31,4 @@ export * from './get-car-bidding-conditions';
 export * from './get-art-bidding-conditions';
 export * from './get-art-bid-conditions';
 export * from './get-car-bid-conditions';
+export * from './publication-requests';

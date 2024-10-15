@@ -1,27 +1,41 @@
 import 'moment/locale/es';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, untracked } from '@angular/core';
 import { CommonModule, CurrencyPipe, DecimalPipe, SlicePipe } from '@angular/common';
+import { CountdownConfig } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
+import { MatPaginator } from '@angular/material/paginator';
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
 import { switchMap } from 'rxjs';
 register();
 
+import { ActivityRequestsService } from '@activity/services/activity-requests.service';
 import { AppComponent } from '@app/app.component';
+import { AppService } from '@app/app.service';
+import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
+import { AuctionCarStatus } from '@app/dashboard/interfaces';
 import { AuctionDetails, AuctionMetrics, SpecificAuction } from '@auctions/interfaces';
 import { AuctionDetailsService } from '@auctions/services/auction-details.service';
+import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
+import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
 import { AuctionSummaryComponent } from '@auctions/components/auction-summary/auction-summary.component';
+import { AuctionTypes } from '@auctions/enums/auction-types';
+import { AuctionTypesComments } from '@auctions/enums';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
+import { BidHistoryComponent } from '@auctions/components/bid-history/bid-history.component';
 import { CommentComponent } from '@auctions/components/comment/comment.component';
 import { CommentsService } from '@auctions/services/comments.service';
 import { CommentsTextareaComponent } from '@auctions/components/comments-textarea/comments-textarea.component';
+import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
 import { CountdownService } from '@shared/services/countdown.service';
 import { CurrentAuctionsComponent } from '@auctions/components/current-auctions/current-auctions.component';
 import { environments } from '@env/environments';
+import { EventData } from '@app/art/pages/auction-art/auction-art.component';
 import { GetComments } from '@auctions/interfaces/get-comments';
 import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
+import { ImagesPublish } from '@dashboard/interfaces/images-publish';
 import { InputDirective } from '@shared/directives/input.directive';
 import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
@@ -29,23 +43,11 @@ import { PaymentMethodsService } from '@shared/services/payment-methods.service'
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
-import { AuctionTypes } from '@auctions/enums/auction-types';
-import { AuctionCancelledComponent } from '@auctions/modals/auction-cancelled/auction-cancelled.component';
-import { AuctionImageAssigmentAndReorderService } from '@dashboard/services/auction-image-assigment-and-reorder.service';
-import { ImagesPublish } from '@dashboard/interfaces/images-publish';
-import { AuctionTypesComments } from '@auctions/enums';
 import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
-import { AuctionDetailsTableComponentComponent } from '@auctions/components/auction-details-table-component/auction-details-table-component.component';
-import { AuctionCarStatus } from '@app/dashboard/interfaces';
-import { ActivityRequestsService } from '@activity/services/activity-requests.service';
-import { AppService } from '@app/app.service';
-import { ConfirmationModalComponent } from '@shared/modals/confirmation-modal/confirmation-modal.component';
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 import { UserData } from '@auth/interfaces';
-import { EventData } from '@app/art/pages/auction-art/auction-art.component';
-import { CountdownConfig } from 'ngx-countdown';
-import { MatPaginator } from '@angular/material/paginator';
+import { GetBidsBid } from '@auctions/interfaces/get-bids';
 
 @Component({
   standalone: true,
@@ -72,6 +74,7 @@ import { MatPaginator } from '@angular/material/paginator';
     ConfirmationModalComponent,
     UpdateReservePriceModalComponent,
     MatPaginator,
+    BidHistoryComponent,
   ],
   providers: [
     DecimalPipe,
@@ -108,9 +111,13 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   isAcceptPreviewCarAuctionButtonDisabled = signal<boolean>(false);
   isUpdateReservePriceModalOpen = signal<boolean>(false);
   secondsRemaining = signal<number>(0);
+  bids = signal<GetBidsBid[]>([]);
 
   page = signal<number>(1);
   size = signal<number>(10);
+
+  page2 = signal<number>(0);
+  size2 = signal<number>(10);
   pageSizeOptions = signal<number[]>([]);
 
   #appComponent = inject(AppComponent);
@@ -207,6 +214,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
           { label: 'Color', value: this.auction().data.attributes.auctionCarForm.exteriorColor },
           { label: 'Entregado en', value: 'CDMX, México' },
         ]);
+
+        this.getBids();
       });
     }
   });
@@ -226,6 +235,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
           this.getSpecificAuctionDetails();
           this.getAuctionDetails(this.auctionId());
           this.getComments();
+          this.page2.set(0);
+          this.getBids(true);
         }
 
         // if (JSON.parse(event.data).type === 'CANCELLED') {
@@ -261,7 +272,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
       this.getAuctionDetails(id);
       this.getImagesPublish(id!);
     });
-
   }
 
   ngOnDestroy(): void {
@@ -299,6 +309,28 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     this.confirmAcceptPreviewCarModalIsOpen.set(true);
   }
 
+  getBids(replace: boolean = false): void {
+    this.page2.update((page) => page + 1);
+
+    this.#auctionDetailsService.getPanelBids$(this.auction().data.attributes.originalAuctionCarId, this.page2(), this.size2()).subscribe({
+      next: (bids) => {
+        console.log(bids);
+
+        if (replace) {
+          this.bids.set(bids.data.bids);
+          this.getBids(false);
+          return;
+        }
+
+        this.bids.update((bid) => {
+          return [...bid, ...bids.data.bids];
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
 
   acceptPreviewCar(): void {
     this.isAcceptPreviewCarAuctionButtonDisabled.set(true);

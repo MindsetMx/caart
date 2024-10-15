@@ -2,8 +2,8 @@ import { AuthGuard, GuestGuard, UnverifiedGuard, VerifiedGuard, CompleteAccountG
 import { Routes } from '@angular/router';
 
 import { IncompleteAccountGuard } from '@auth/guards/incomplete-account.guard';
-import { PreviewArtGuard } from '@art/guards';
-import { PreviewCarGuard } from '@auctions/guards';
+import { LiveArtGuard, PreviewArtGuard } from '@art/guards';
+import { liveCarGuard, PreviewCarGuard } from '@auctions/guards';
 import { WizardCompletionArtGuard } from '@art/guards';
 import { WizardCompletionCarGuard } from '@app/register-car/guards';
 
@@ -85,12 +85,12 @@ export const routes: Routes = [
     loadComponent: () => import('./register-car/pages/successful-car-registration/successful-car-registration.component').then((m) => m.SuccessfulCarRegistrationComponent),
   }, {
     path: 'subasta/:id',
-    canActivate: [VerifiedGuard, PreviewCarGuard],
+    canActivate: [VerifiedGuard, PreviewCarGuard, liveCarGuard],
     loadComponent: () => import('./auctions/pages/auction/auction.component').then((m) => m.AuctionComponent),
   },
   {
     path: 'subasta-arte/:id',
-    canActivate: [VerifiedGuard, PreviewArtGuard],
+    canActivate: [VerifiedGuard, PreviewArtGuard, LiveArtGuard],
     loadComponent: () => import('./art/pages/auction-art/auction-art.component').then((m) => m.AuctionArtComponent),
   },
   {
@@ -210,6 +210,10 @@ export const routes: Routes = [
   {
     path: 'not-found',
     loadComponent: () => import('./shared/pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
+  },
+  {
+    path: 'subasta-no-iniciada',
+    loadComponent: () => import('./art/pages/auction-not-active/auction-not-active.component').then((m) => m.AuctionNotActiveComponent),
   },
   { path: '**', redirectTo: '/subastas-en-vivo' }
 ];

@@ -214,13 +214,13 @@
           <div id="productCarousel" #myCarousel class="f-carousel">
             <div class="f-carousel__slide" [attr.data-thumb-src]="imagesPublish().data.fotoPrincipal"
               data-fancybox="gallery" [attr.data-src]="imagesPublish().data.fotoPrincipal">
-              <img #leftColumn class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
+              <img #images class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
                 [attr.data-lazy-src]="imagesPublish().data.fotoPrincipal" />
             </div>
             @for (auction of imagesPublish().data.fotosCarrusel; track $index) {
             <div class="f-carousel__slide" [attr.data-thumb-src]="auction" data-fancybox="gallery"
               [attr.data-src]="auction">
-              <img class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
+              <img #images class="object-contain max-h-72 md:max-h-[27rem]" width="100%" height="100"
                 [attr.data-lazy-src]="auction" />
             </div>
             }
@@ -319,7 +319,7 @@
           @for (item of auction().data.attributes.artHistory.blocks; track $index) {
           @switch (item.type) {
           @case ('text') {
-          <p class="text-justify text-xs md:text-base" style="word-wrap: break-word;">
+          <p class="text-justify text-sm md:text-lg" style="word-wrap: break-word;">
             {{item.content}}
           </p>
           }
@@ -360,7 +360,7 @@
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <section class="mt-12">
           @defer (when comments().data) {
-          <h3 class="text-xl font-bold mb-6">{{comments().data.length}} Comentarios</h3>
+          <h3 class="text-xl font-bold mb-6">{{comments().meta.totalCount}} Comentarios</h3>
           }
 
           @defer (when auction().data) {
@@ -446,49 +446,11 @@
         </section>
 
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {
-        <section class="shadow mt-8 rounded-xl border border-gray3 px-6 py-6 ml-auto">
-          <div class="xl:flex items-center justify-between">
-            <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
-            <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold text-sm" width="w-fit" px="px-6"
-              sharedPrimaryButton>
-              HACER UNA OFERTA
-            </button>
-          </div>
-
-          @defer (when specificAuction().data) {
-          <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
-            @if (specificAuction().data.winnerInfo) {
-            <div class="flex gap-x-4 p-4 rounded-xl bg-green1/30">
-              <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-              <div class="text-gray4">
-                <p class="text-gray4 text-sm">Vendido</p>
-                <p class="font-semibold text-black">
-                  {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
-                </p>
-                <p>{{specificAuction().data.winnerInfo.userName}}</p>
-                <span>{{transformDate(specificAuction().data.winnerInfo.purchaseDate) | amTimeAgo}}</span>
-              </div>
-            </div>
-            }
-            @for (item of specificAuction().data.bids; track $index; let last = $last) {
-            <div class="flex gap-x-4 p-4 rounded-xl"
-              [ngClass]="{'bg-green1/30': $index === 0 && !specificAuction().data.winnerInfo}">
-              <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
-              <div class="text-gray4">
-                <p class="font-semibold text-black">
-                  {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
-                <p>{{item.userName || 'Precio de salida'}}</p>
-                <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
-              </div>
-            </div>
-
-            @if ($index !== 0 && !last) {
-            <hr>
-            }
-            }
-          </div>
-          }
-        </section>
+        <bid-history (loadMoreBidsChange)="getBids(false)"
+          [amount]="specificAuction().data && specificAuction().data.winnerInfo ? specificAuction().data.winnerInfo.amount : undefined"
+          [userName]="specificAuction().data && specificAuction().data.winnerInfo ? specificAuction().data.winnerInfo.userName : undefined"
+          [purchaseDate]="specificAuction().data && specificAuction().data.winnerInfo ? specificAuction().data.winnerInfo.purchaseDate : undefined"
+          [bids]="bids()" [isWinnerInfoInitialized]="!!specificAuction().data.winnerInfo"></bid-history>
         }
 
         <!-- <current-memorabilia-auctions [auctionId]="auctionId()"></current-memorabilia-auctions> -->

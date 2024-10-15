@@ -1,0 +1,73 @@
+<section class="shadow mt-8 rounded-xl border border-gray3 px-6 py-6">
+  <div class="xl:flex items-center justify-between">
+    <h3 class="mb-2 xl:mb-0 font-semibold">Historial de ofertas</h3>
+  </div>
+
+  <div class="overflow-y-scroll custom-scrollbar mt-6 max-h-[26rem] pr-3">
+    @if (amount()) {
+    <div class="flex gap-x-4 p-4 rounded-xl bg-green1/30">
+      <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+      <div class="text-gray4">
+        <p class="text-gray4 text-sm">Vendido</p>
+        <p class="font-semibold text-black">
+          {{amount() | currency:'USD':'symbol':'1.0-2'}} MXN
+        </p>
+        <!-- <pre>
+            specificAuction: {{specificAuction().data | json}}
+          </pre> -->
+        @if (userName()) {
+        <p>{{userName()}}</p>
+        }
+        @if (purchaseDate()) {
+        <span>{{transformDate(purchaseDate()!) | amTimeAgo}}</span>
+        }
+      </div>
+    </div>
+    }
+    @for (item of bids(); track $index; let last = $last) {
+    @if (last) {
+    <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0 && isWinnerInfoInitialized}"
+      intersection (visible)="loadMoreBids()">
+      <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+      <div class="text-gray4">
+        <p class="font-semibold text-black">
+          {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+          <!-- <p>Jorge Sanders</p> -->
+        <p>{{item.userName || 'Precio de salida'}}</p>
+        <!-- <span>Hace 10 minutos</span> -->
+        @if (isGetBidsBid(item)) {
+        <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
+        }
+
+        @if (isLastChanceBidsBid(item)) {
+        <span>{{transformDate(item.bidDate) | amTimeAgo}}</span>
+        }
+      </div>
+    </div>
+    }@else {
+    <div class="flex gap-x-4 p-4 rounded-xl" [ngClass]="{'bg-green1/30': $index === 0 && isWinnerInfoInitialized}">
+      <img src="assets/img/icons/arrow-up-circle-outline.svg" alt="">
+      <div class="text-gray4">
+        <p class="font-semibold text-black">
+          {{item.bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
+          <!-- <p>Jorge Sanders</p> -->
+        <p>{{item.userName || 'Precio de salida'}}</p>
+        <!-- <span>Hace 10 minutos</span> -->
+        @if (isGetBidsBid(item)) {
+        <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
+        }
+
+        @if (isLastChanceBidsBid(item)) {
+        <span>{{transformDate(item.bidDate) | amTimeAgo}}</span>
+        }
+      </div>
+    </div>
+    }
+
+    @if ($index !== 0 && !last) {
+    <hr>
+    }
+    }
+  </div>
+
+</section>

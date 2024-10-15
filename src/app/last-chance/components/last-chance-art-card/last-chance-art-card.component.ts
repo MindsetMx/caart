@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { CountdownModule } from 'ngx-countdown';
 import { RouterLink } from '@angular/router';
-import { LastChanceArtsData } from '@app/last-chance/interfaces';
+
+import { AuctionStatusComponent } from '@auctions/components/auction-status/auction-status.component';
 import { AuctionTypes } from '@auctions/enums';
+import { FavoritesSource } from '@favorites/enums';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { PrimaryButtonDirective } from '@shared/directives';
-import { CountdownModule } from 'ngx-countdown';
 
 @Component({
   selector: 'last-chance-art-card',
@@ -16,7 +18,8 @@ import { CountdownModule } from 'ngx-countdown';
     RouterLink,
     FollowButtonComponent,
     PrimaryButtonDirective,
-    LastChanceArtCardComponent
+    LastChanceArtCardComponent,
+    AuctionStatusComponent,
   ],
   templateUrl: './last-chance-art-card.component.html',
   styleUrl: './last-chance-art-card.component.css',
@@ -29,6 +32,8 @@ export class LastChanceArtCardComponent {
   title = input.required<string>();
   extract = input.required<string>();
   reserveAmount = input.required<number>();
+
+  source = input<FavoritesSource>();
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;

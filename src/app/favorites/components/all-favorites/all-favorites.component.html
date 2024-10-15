@@ -30,36 +30,81 @@
   @if (last) {
   @switch (auction.type) {
   @case (auctionTypes.car){
+  @switch (auction.source) {
+  @case (favoritesSource.liveAuction) {
   <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
-    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
-    [status]="auction.attributes.status" [secondsRemaining]="auction.attributes.secondsRemaining" intersection
+    [source]="auction.source" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate" [status]="auction.attributes.status"
+    [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getFavorites(false)"></auction-card>
   }
 
+  @case (favoritesSource.lastChance) {
+  <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionId"
+    [source]="auction.source" [reserveAmount]="auction.attributes.reserveAmount"
+    [isPremium]="auction.attributes.premium" [title]="auction.attributes.title" [extract]="auction.attributes.extract"
+    [cover]="auction.attributes.cover" intersection (visible)="getFavorites(false)"></last-chance-vehicle-card>
+  }
+  }
+  }
+
   @case (auctionTypes.art) {
+  @switch (auction.source) {
+  @case (favoritesSource.liveAuction) {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
-    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" intersection (visible)="getFavorites(false)"
-    [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
+    [source]="auction.source" [status]="auction.attributes.status" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" intersection
+    (visible)="getFavorites(false)" [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
+  }
+
+  @case (favoritesSource.lastChance) {
+  <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
+    [source]="auction.source" [reserveAmount]="auction.attributes.reserveAmount" [title]="auction.attributes.title"
+    [extract]="auction.attributes.extract" intersection (visible)="getFavorites(false)"></last-chance-art-card>
+  }
+  }
   }
   }
   }
   @else {
   @switch (auction.type) {
   @case (auctionTypes.car) {
+  @switch (auction.source) {
+  @case (favoritesSource.liveAuction) {
   <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
-    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
+    [source]="auction.source" [status]="auction.attributes.status" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
+  }
+
+  @case (favoritesSource.lastChance) {
+  <last-chance-vehicle-card [auctionId]="auction.id" [originalAuctionId]="auction.originalAuctionId"
+    [source]="auction.source" [reserveAmount]="auction.attributes.reserveAmount"
+    [isPremium]="auction.attributes.premium" [title]="auction.attributes.title" [extract]="auction.attributes.extract"
+    [cover]="auction.attributes.cover"></last-chance-vehicle-card>
+  }
+  }
   }
 
   @case (auctionTypes.art) {
+  @switch (auction.source) {
+  @case (favoritesSource.liveAuction) {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
-    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
+    [source]="auction.source" [status]="auction.attributes.status" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
+  }
+
+  @case (favoritesSource.lastChance) {
+  <last-chance-art-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
+    [source]="auction.source" [reserveAmount]="auction.attributes.reserveAmount" [title]="auction.attributes.title"
+    [extract]="auction.attributes.extract"></last-chance-art-card>
+  }
+  }
   }
   }
   }

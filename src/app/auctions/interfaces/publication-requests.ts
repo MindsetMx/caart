@@ -1,17 +1,32 @@
 export interface PublicationRequests {
   data: PublicationRequestsData[];
+  meta: PublicationRequestsMeta;
 }
 
 export interface PublicationRequestsData {
-  type: string;
+  type: PublicationRequestsType;
   id: string;
-  attributes: Attributes;
-  status: string;
+  attributes: PublicationRequestsAttributes;
 }
 
-export interface Attributes {
-  status: string;
+export interface PublicationRequestsAttributes {
   brand: string;
   year: number;
   photo: string;
+  status: PublicationRequestsStatus;
+}
+
+export enum PublicationRequestsStatus {
+  Aceptado = "Aceptado",
+  Pendiente = "Pendiente",
+}
+
+export enum PublicationRequestsType {
+  AuctionCar = "auctionCar",
+}
+
+export interface PublicationRequestsMeta {
+  page: number;
+  size: number;
+  total: number;
 }

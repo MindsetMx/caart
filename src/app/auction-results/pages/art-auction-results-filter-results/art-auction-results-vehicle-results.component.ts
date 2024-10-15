@@ -14,6 +14,9 @@ import { states } from '@shared/states';
 import { CompletedArtAuctions } from '@auctions/interfaces';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 import { CompletedArtAuctionsService } from '@auctions/services/completed-art-auctions.service';
+import { ResultsAuctionService } from '@app/auction-results/services/results-auction.service';
+import { ResultTypes } from '@app/auction-results/enums';
+import { AuctionResults } from '@app/auction-results/interfaces';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 @Component({
@@ -139,9 +142,13 @@ export class ArtAuctionResultsFilterResultsComponent {
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
   // #vehicleFilterService = inject(VehicleFilterService);
-  #completedArtAuctionsService = inject(CompletedArtAuctionsService);
+  #completedArtAuctionsService = inject(ResultsAuctionService);
 
-  auctions = signal<CompletedArtAuctions | undefined>(undefined);
+  auctions = signal<AuctionResults | undefined>(undefined);
+
+  get resultTypes(): typeof ResultTypes {
+    return ResultTypes;
+  }
 
   ngOnInit(): void {
     this.getCompletedAuctions(true);
@@ -150,18 +157,20 @@ export class ArtAuctionResultsFilterResultsComponent {
   getCompletedAuctions(replace: boolean = false): void {
     this.currentPage.update((page) => page + 1);
 
-    this.#completedArtAuctionsService.getCompletedAuctions$(
+    this.#completedArtAuctionsService.getLiveAuctions$(
+      this.resultTypes.art,
       this.currentPage(),
       this.size(),
-      // this.auctionType().join(','),
-      this.category().join(','),
-      // this.era().join(','),
-      this.yearRange(),
-      // this.currentOffer().join(','),
       this.orderBy(),
-      // this.endsIn().join(','),
+      this.auctionType().join(','),
+      this.era().join(','),
       this.states().join(','),
+      this.yearRange(),
       this.search(),
+
+      // this.category().join(','),
+      // this.currentOffer().join(','),
+      // this.endsIn().join(','),
     ).subscribe({
       next: (auctions: any) => {
         if (replace) {
