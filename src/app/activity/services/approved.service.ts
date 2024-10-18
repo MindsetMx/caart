@@ -14,7 +14,7 @@ export class ApprovedService {
 
   getMyApproved$(page: number, size: number): Observable<Approved> {
     const params = new HttpParams()
-      .set('sort', 'asc')
+      .set('sort', 'desc')
       .set('page', page)
       .set('size', size);
 

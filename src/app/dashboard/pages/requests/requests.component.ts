@@ -29,9 +29,9 @@ export class RequestsComponent {
   requestType: FormControl = new FormControl(TypesOfRequests.Car);
 
   page1 = signal<number>(1);
-  size1 = signal<number>(5);
+  size1 = signal<number>(10);
   page2 = signal<number>(1);
-  size2 = signal<number>(5);
+  size2 = signal<number>(10);
 
   get typesOfRequests(): typeof TypesOfRequests {
     return TypesOfRequests;

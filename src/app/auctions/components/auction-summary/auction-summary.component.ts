@@ -77,21 +77,18 @@ export class AuctionSummaryComponent {
   }
 
   authStatusEffect = effect(() => {
-    switch (this.authStatus) {
-      case AuthStatus.authenticated:
-        switch (this.auctionType()) {
-          case AuctionTypes.car:
-            this.getBiddingConditions();
-            break;
-          case AuctionTypes.art:
-            this.getBiddingArtConditions();
-            break;
-          case AuctionTypes.memorabilia:
-            this.getBiddingMemorabiliaConditions();
-            break;
-        }
-
-        break;
+    if (this.auction()) {
+      switch (this.auctionType()) {
+        case AuctionTypes.car:
+          this.getBiddingConditions();
+          break;
+        case AuctionTypes.art:
+          this.getBiddingArtConditions();
+          break;
+        case AuctionTypes.memorabilia:
+          this.getBiddingMemorabiliaConditions();
+          break;
+      }
     }
   });
 
