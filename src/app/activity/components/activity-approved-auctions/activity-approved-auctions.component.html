@@ -1,4 +1,5 @@
-@defer (when approvedAuctions().data && approvedAuctions().data.length > 0) {
+@defer (when approvedAuctions().data) {
+@if (approvedAuctions().data.length > 0) {
 <div class="px-4 sm:px-6 lg:px-8">
   <div class="mt-8 flow-root">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -85,11 +86,11 @@
                   {{ auction.attributes.title }}
                 </div>
                 <!-- <div class="text-lg text-gray-500">
-                    {{ auction.attributes.year }}
-                  </div> -->
+                        {{ auction.attributes.year }}
+                      </div> -->
                 <!-- <div class="font-semibold text-sm">
-                    {{ auction.attributes.porcentaje }}% completo
-                  </div> -->
+                        {{ auction.attributes.porcentaje }}% completo
+                      </div> -->
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                 <span
@@ -185,7 +186,7 @@
                   }
                   <a matBadge="!" matBadgeSize="small" [matBadgeHidden]="!auction.attributes.hasUnreadComments"
                     title="Mis comentarios" routerLink="/mis-comentarios" [queryParams]="{ auctionType: auction.type === auctionTypes.auto ? auctionTypes2.car : auctionTypes2.art
-                      , auctionId: auction.id, commentAuctionTypes: auction.route}"
+                          , auctionId: auction.id, commentAuctionTypes: auction.route}"
                     class="text-black hover:text-gray-900 underline font-semibold demo-section">
                     <img class="w-6" src="assets/img/icons/comment.svg" alt="">
                   </a>
@@ -200,10 +201,17 @@
   </div>
 </div>
 
-@if (approvedAuctions().data) {
+@if (approvedAuctions().data && approvedAuctions().meta.totalCount > approvedAuctions().meta.pageSize) {
 <mat-paginator [length]="approvedAuctions().meta.totalCount" [pageSize]="size()" [pageIndex]="page() - 1"
   [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
 </mat-paginator>
+}
+} @else {
+<div class="flex justify-center mt-8">
+  <p class="text-gray-500">
+    No hay subastas aprobadas
+  </p>
+</div>
 }
 
 <auction-offers-approval-table-modal [(isOpen)]="isAuctionOffersApprovalTableModalOpen" [auctionId]="auctionId()"
