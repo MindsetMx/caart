@@ -1,4 +1,4 @@
-@defer (when requests().data && requests().data.length > 0) {
+@defer (when requests().data) {
 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-8">
   @for (request of requests().data; track request.id) {
   <div class="col-span-4">
@@ -219,7 +219,7 @@
   }
 </div>
 
-@if (requests().data) {
+@if (requests().data && requests().meta.totalCount > requests().meta.pageSize) {
 <mat-paginator [length]="requests().meta.totalCount" [pageSize]="requests().meta.pageSize" [pageIndex]="page() - 1"
   [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" aria-label="Select page">
 </mat-paginator>

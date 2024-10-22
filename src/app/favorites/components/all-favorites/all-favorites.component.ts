@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { AuctionResultsVehicleCardComponent } from '@app/auction-results/components/auction-results-vehicle-card/auction-results-vehicle-card.component';
 import { FavoritesSource } from '@app/favorites/enums';
 import { Favorites } from '@app/favorites/interfaces';
 import { LastChanceArtCardComponent } from '@app/last-chance/components/last-chance-art-card/last-chance-art-card.component';
@@ -28,6 +29,7 @@ import { IntersectionDirective } from '@shared/directives';
     IntersectionDirective,
     LastChanceVehicleCardComponent,
     LastChanceArtCardComponent,
+    AuctionResultsVehicleCardComponent,
   ],
   templateUrl: './all-favorites.component.html',
   styleUrl: './all-favorites.component.css',

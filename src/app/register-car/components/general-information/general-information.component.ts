@@ -67,17 +67,22 @@ export class GeneralInformationComponent implements OnInit {
   deletePaymentMethodIsOpen = signal<boolean>(false);
   deletePaymentMethodSubmitButtonIsDisabled = signal<boolean>(false);
   error = signal<string | undefined>(undefined);
+  couponError = signal<string | undefined>(undefined);
 
   isValidDiscountCode: Signal<boolean | undefined> = computed(() => {
-    if (!this.applyDiscountCodeResponse().discountInfo) return undefined;
-
-    return this.applyDiscountCodeResponse().discountInfo.attributes.isValid;
+    return this.couponError() === undefined && this.applyDiscountCodeResponse().discountInfo?.attributes.isValid;
   });
 
   discountCodeMessage: Signal<string | undefined> = computed(() => {
-    if (!this.applyDiscountCodeResponse().discountInfo) return undefined;
+    if (this.couponError()) {
+      return this.couponError();
+    }
 
-    return this.applyDiscountCodeResponse().discountInfo.attributes.message;
+    if (this.isValidDiscountCode() === undefined) {
+      return undefined;
+    }
+
+    return this.applyDiscountCodeResponse().discountInfo?.attributes.message;
   });
 
   get auctionTypeId(): FormControl {
@@ -157,6 +162,10 @@ export class GeneralInformationComponent implements OnInit {
   }
 
   applyDiscountCode(): void {
+    this.applyDiscountCodeResponse.set({} as ApplyDiscountCode);
+    this.couponError.set(undefined);
+    if (!this.generalInformationForm.value.discountCode) return;
+
     this.#completeCarRegistrationService.applyDiscountCode$(this.generalInformationForm.value.discountCode)
       .subscribe({
         next: (response) => {
@@ -164,6 +173,10 @@ export class GeneralInformationComponent implements OnInit {
         },
         error: (error) => {
           console.error(error);
+          // agregar codigo de error de cupon a una señal
+          this.couponError.set(error.error.error);
+          console.log(error.error.error);
+
         },
       });
   }

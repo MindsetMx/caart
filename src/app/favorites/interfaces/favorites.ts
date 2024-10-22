@@ -1,3 +1,4 @@
+import { AuctionResultsTypes } from "@app/auction-results/enums";
 import { AuctionStatus } from "@auctions/enums";
 import { FavoritesSource } from "@favorites/enums";
 
@@ -10,7 +11,7 @@ export interface FavoritesData {
   type: string;
   id: string;
   originalAuctionId: string;
-  auctionType: string;
+  auctionType: AuctionResultsTypes;
   source: FavoritesSource;
   attributes: FavoritesAttributes;
 }

@@ -6,6 +6,8 @@ import { AuctionTypes } from '@auctions/enums/auction-types';
 import { FollowButtonComponent } from '@shared/components/follow-button/follow-button.component';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 import { RouterLink } from '@angular/router';
+import { AuctionStatusComponent } from '@auctions/components/auction-status/auction-status.component';
+import { FavoritesSource } from '@app/favorites/enums';
 
 @Component({
   selector: 'auction-results-vehicle-card',
@@ -14,7 +16,8 @@ import { RouterLink } from '@angular/router';
     CommonModule,
     RouterLink,
     FollowButtonComponent,
-    NoReserveTagComponentComponent
+    NoReserveTagComponentComponent,
+    AuctionStatusComponent,
   ],
   templateUrl: './auction-results-vehicle-card.component.html',
   styleUrl: './auction-results-vehicle-card.component.css',
@@ -30,6 +33,7 @@ export class AuctionResultsVehicleCardComponent {
   extract = input.required<string>();
   lastBid = input.required<number | null>();
   endDate = input.required<string>();
+  source = input<FavoritesSource>();
 
   auctionLink = signal<string | undefined>(undefined);
 
