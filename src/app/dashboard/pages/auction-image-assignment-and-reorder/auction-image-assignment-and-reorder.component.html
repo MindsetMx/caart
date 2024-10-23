@@ -228,10 +228,10 @@
 
 </sidebar-layout>
 
-<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" [aspectRatios]="aspectRatios()"
-  [allowMultipleSelection]="allowMultipleSelection()" (isOpenChange)="closeModal(carPhotoGalleryIsOpen)"
-  (selectedImageChange)="setImage($event)" (selectedImagesChange)="setImages($event)" [cropImage]="cropImage()"
-  [auctionCarId]="originalAuctionCarId()">
+<car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" [aspectRatios]="aspectRatios()" [collection]="collection()"
+  [uploadAction]="uploadAction.AddPhotosVideos" [allowMultipleSelection]="allowMultipleSelection()"
+  (isOpenChange)="closeModal(carPhotoGalleryIsOpen)" (selectedImageChange)="setImage($event)"
+  (selectedImagesChange)="setImages($event)" [cropImage]="cropImage()" [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
 
 <auction-image-deletion-confirmation-modal (deleteImagesChange)="removePhoto()" [(isOpen)]="deleteImageModalIsOpen"

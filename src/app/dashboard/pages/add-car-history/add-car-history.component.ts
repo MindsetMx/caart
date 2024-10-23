@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { JsonPipe } from '@angular/common';
+import { MediaCollection, UploadAction } from '@dashboard/enums';
 
 @Component({
   standalone: true,
@@ -43,6 +44,9 @@ export class AddCarHistoryComponent {
   addCarHistoryForm: FormGroup;
   addCarHistorySubmitButtonIsDisabled = signal<boolean>(false);
   auctionCarDetailsModalIsOpen = signal<boolean>(false);
+
+  uploadAction = UploadAction;
+  mediaCollection = MediaCollection;
 
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);

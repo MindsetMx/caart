@@ -333,22 +333,19 @@
         <section [ngClass]="(auction().data.attributes.exteriorDetails.exteriorVideos.length > 0) ? 'mt-6' : 'mt-8'">
           <h2 class="text-xl font-bold mb-6">Galería de fotos exteriores</h2>
 
-          <image-gallery [photos]="auction().data.attributes.exteriorDetails.exteriorPhotos"
-            [index]="3"></image-gallery>
+          <image-gallery [photos]="imagesPublish().data.fotosExterior" [index]="3"></image-gallery>
         </section>
 
         <section class="mt-6">
           <h2 class="text-xl font-bold mb-6">Galería de fotos interiores</h2>
 
-          <image-gallery [photos]="auction().data.attributes.interiorDetails.interiorPhotos"
-            [index]="4"></image-gallery>
+          <image-gallery [photos]="imagesPublish().data.fotosInterior" [index]="4"></image-gallery>
         </section>
 
         <section class="mt-6">
           <h2 class="text-xl font-bold mb-6">Galería de fotos mecánicas</h2>
 
-          <image-gallery [photos]="auction().data.attributes.mechanicsDetails.mechanicsPhotos"
-            [index]="5"></image-gallery>
+          <image-gallery [photos]="imagesPublish().data.fotosMecanicas" [index]="5"></image-gallery>
         </section>
 
         @if (auction().data.attributes.status !== auctionCarStatus.Preview) {

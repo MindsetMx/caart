@@ -205,7 +205,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
           { label: 'Marca', value: this.auction().data.attributes.auctionCarForm.brand },
           { label: 'Modelo', value: this.auction().data.attributes.auctionCarForm.carModel },
           { label: 'Año', value: this.auction().data.attributes.auctionCarForm.year },
-          { label: 'VIN', value: this.auction().data.attributes.exteriorDetails.VIN },
+          // { label: 'VIN', value: this.auction().data.attributes.exteriorDetails.VIN },
+          { label: 'Motor', value: this.auction().data.attributes.auctionCarForm.engine },
         ]);
 
         this.auctionDetails2.set([

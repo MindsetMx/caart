@@ -129,10 +129,18 @@ export class ArtPhotoGalleryComponent {
     this.batchTokenDirect();
   }
 
-  getAllArtMedia(): void {
+  getAllArtMedia(url?: string): void {
     this.#artPhotoGalleryService.getAllArtMedia$(this.auctionArtId()).subscribe({
       next: (response) => {
         this.artPhotoGallery.set(response);
+
+        if (url) {
+          if (this.allowMultipleSelection()) {
+            this.selectedImages.push(new FormControl(url));
+          } else {
+            this.selectedImage.setValue(url);
+          }
+        }
       },
       error: (error) => {
         console.error(error);
@@ -143,7 +151,7 @@ export class ArtPhotoGalleryComponent {
   addExtraPhoto(photoUrls: string[]): void {
     this.#artPhotoGalleryService.addExtraPhoto$(this.auctionArtId(), photoUrls).subscribe({
       next: () => {
-        this.getAllArtMedia();
+        this.getAllArtMedia(photoUrls[0]);
       },
       error: (error) => {
         console.error(error);

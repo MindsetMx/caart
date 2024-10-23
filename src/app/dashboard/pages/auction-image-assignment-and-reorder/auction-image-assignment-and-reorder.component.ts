@@ -18,6 +18,7 @@ import { AuctionImageDeletionConfirmationModalComponent } from '@dashboard/modal
 import { AllPhotosDeletionConfirmationModalComponent } from '@dashboard/modals/all-photos-deletion-confirmation-modal/all-photos-deletion-confirmation-modal.component';
 import { AuctionPhotoSections } from '@dashboard/enums/auction-photo-sections.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MediaCollection, UploadAction } from '@dashboard/enums';
 
 @Component({
   standalone: true,
@@ -47,6 +48,12 @@ export class AuctionImageAssignmentAndReorderComponent {
   fotosMecanicas = signal<string[]>([]);
   fotosInterior = signal<string[]>([]);
   fotosExterior = signal<string[]>([]);
+
+  uploadAction = UploadAction;
+  selectedUploadAction = signal<UploadAction>(UploadAction.AddExtraPhoto);
+  mediaCollection = MediaCollection;
+
+  collection = signal<MediaCollection>(MediaCollection.Register);
 
   carPhotoGalleryIsOpen = signal<boolean>(false);
   saveImagesButtonIsDisabled = signal<boolean>(false);
@@ -306,6 +313,27 @@ export class AuctionImageAssignmentAndReorderComponent {
   }
 
   openModal(varName: WritableSignal<boolean>, formFieldName: string, cropImage: boolean, index?: number, allowMultipleSelection?: boolean): void {
+    switch (formFieldName) {
+      case 'fotoCatalogo':
+        this.collection.set(MediaCollection.Register);
+        break;
+      case 'fotoPrincipal':
+        this.collection.set(MediaCollection.Register);
+        break;
+      case 'fotosSliderPrincipal':
+        this.collection.set(MediaCollection.Register);
+        break;
+      case 'fotosMecanicas':
+        this.collection.set(MediaCollection.Mechanics);
+        break;
+      case 'fotosInterior':
+        this.collection.set(MediaCollection.Interior);
+        break;
+      case 'fotosExterior':
+        this.collection.set(MediaCollection.Exterior);
+        break;
+    }
+
     if (cropImage) {
       switch (formFieldName) {
         case 'fotoCatalogo':

@@ -156,6 +156,7 @@ export class AuctionOffersApprovalTableModalComponent {
       }
     }).add(() => {
       this.isAcceptLastChanceBidModalOpen.set(false);
+      this.isAcceptLastChanceBidButtonDisabled.set(false);
       this.offerAccepted.emit();
     });
   }
@@ -174,6 +175,7 @@ export class AuctionOffersApprovalTableModalComponent {
     }).add(() => {
       this.isRejectBidModalOpen.set(false);
       this.isOpen.set(true);
+      this.isRejectBidButtonDisabled.set(false);
       this.getCarAuctionOffersApproval();
     });
   }
@@ -191,6 +193,7 @@ export class AuctionOffersApprovalTableModalComponent {
       }
     }).add(() => {
       this.isAcceptLastChanceBidModalOpen.set(false);
+      this.isAcceptLastChanceBidButtonDisabled.set(false);
       this.offerAccepted.emit();
     });
   }
@@ -209,6 +212,7 @@ export class AuctionOffersApprovalTableModalComponent {
     }).add(() => {
       this.isRejectBidModalOpen.set(false);
       this.isOpen.set(true);
+      this.isRejectBidButtonDisabled.set(false);
       this.getArtAuctionOffersApproval();
     });
   }

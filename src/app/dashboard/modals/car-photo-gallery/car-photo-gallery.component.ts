@@ -1,5 +1,5 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, viewChild, viewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, effect, inject, input, output, signal, viewChild, viewChildren } from '@angular/core';
 import { JsonPipe, NgClass } from '@angular/common';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
@@ -13,6 +13,7 @@ import { CropImageModalComponent } from '@shared/components/crop-image-modal/cro
 import { GetAllCarMedia } from '@dashboard/interfaces';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
+import { MediaCollection, MediaType, UploadAction } from '@dashboard/enums';
 
 @Component({
   selector: 'car-photo-gallery',
@@ -35,8 +36,13 @@ export class CarPhotoGalleryComponent {
   interiorImageSelectionInputs = viewChildren<ElementRef>('interiorImageSelectionInputs');
   exteriorImageSelectionInputs = viewChildren<ElementRef>('exteriorImageSelectionInputs');
 
+  uploadAction = input.required<UploadAction>();
+  collection = input.required<MediaCollection>();
+
   uppyDashboardImages = viewChild<ElementRef>('uppyDashboardImages');
   uppyImages?: Uppy;
+  mediaCollection = MediaCollection;
+  mediaType = MediaType;
 
   isOpen = input.required<boolean>();
   auctionCarId = input.required<string>();
@@ -116,7 +122,17 @@ export class CarPhotoGalleryComponent {
           result.successful.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
 
-            this.addExtraPhoto([url]);
+            // this.addExtraPhoto([url]);
+
+            switch (this.uploadAction()) {
+              case UploadAction.AddExtraPhoto:
+                this.addExtraPhoto([url]);
+                break;
+
+              case UploadAction.AddPhotosVideos:
+                this.addPhotosVideos(MediaType.Car, this.collection(), [url], []);
+                break;
+            }
           });
 
           this.toastSuccess('Imagenes agregadas');
@@ -133,10 +149,19 @@ export class CarPhotoGalleryComponent {
     this.batchTokenDirect();
   }
 
-  getAllCarMedia(): void {
+  getAllCarMedia(url?: string): void {
     this.#carPhotoGalleryService.getAllCarMedia$(this.auctionCarId()).subscribe({
       next: (response) => {
         this.carPhotoGallery.set(response);
+
+        //seleccionar imagenes
+        if (url) {
+          if (this.allowMultipleSelection()) {
+            this.selectedImages.push(new FormControl(url));
+          } else {
+            this.selectedImage.setValue(url);
+          }
+        }
       },
       error: (error) => {
         console.error(error);
@@ -147,7 +172,18 @@ export class CarPhotoGalleryComponent {
   addExtraPhoto(photoUrls: string[]): void {
     this.#carPhotoGalleryService.addExtraPhoto$(this.auctionCarId(), photoUrls).subscribe({
       next: () => {
-        this.getAllCarMedia();
+        this.getAllCarMedia(photoUrls[0]);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  addPhotosVideos(type: MediaType, collection: MediaCollection, photoUrls: string[], videoUrls: string[]): void {
+    this.#carPhotoGalleryService.addPhotosVideos$(this.auctionCarId(), type, collection, photoUrls, videoUrls).subscribe({
+      next: () => {
+        this.getAllCarMedia(photoUrls[0]);
       },
       error: (error) => {
         console.error(error);

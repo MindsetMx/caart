@@ -9,3 +9,7 @@
 #myCarousel .f-carousel__slide img {
   @apply w-full h-auto max-h-60 md:max-h-[500px] object-cover;
 }
+
+li {
+  @apply -indent-5 pl-5;
+}

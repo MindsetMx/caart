@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environments } from '@env/environments';
 import { GetAllCarMedia } from '@dashboard/interfaces';
+import { MediaCollection, MediaType } from '@dashboard/enums';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,30 @@ export class CarPhotoGalleryService {
       auctionId,
       type: 'car',
       photoUrls
+    });
+  }
+
+  //   /auctions-cars/add-photos-videos
+  // 17:31
+  // {
+  //   "auctionId": "6716b7d3e8e8977236c0d2fb",
+  //   "type": "art",
+  //   "collection": "extra",
+  //   "photoUrls": [
+  //     "https://cloudflare.com/photo3.jpg",
+  //     "https://cloudflare.com/photo4.jpg"
+  //   ],
+  //   "videoUrls": []
+  // }
+  //   type: 'car' | 'art'
+  // collection: 'exterior' | 'interior' | 'mechanics' | 'extra';
+  addPhotosVideos$(auctionId: string, type: MediaType, collection: MediaCollection, photoUrls: string[], videoUrls: string[]): Observable<void> {
+    return this.#http.post<void>(`${this.#baseUrl}/auctions-cars/add-photos-videos`, {
+      auctionId,
+      type,
+      collection,
+      photoUrls,
+      videoUrls
     });
   }
 }

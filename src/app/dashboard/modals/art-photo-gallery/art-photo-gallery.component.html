@@ -23,9 +23,10 @@
           <div class="absolute bottom-3 right-3">
             @if (allowMultipleSelection()) {
             <input #registerImageSelectionInputs type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
-              (change)="onImageSelect($event, url)">
+              [checked]="selectedImages.value.includes(url)" (change)="onImageSelect($event, url)">
             } @else {
-            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred"
+              [checked]="selectedImage.value === url">
             }
           </div>
         </div>
@@ -37,7 +38,7 @@
     <!-- extra -->
     @defer (when artPhotoGallery() && artPhotoGallery().data && artPhotoGallery().data.extra &&
     artPhotoGallery().data.extra.photos.length > 0) {
-    <h3 class="text-center font-bold text-lg mb-12">Extra</h3>
+    <h3 class="text-center font-bold text-lg mb-12">Fotos subidas desde el dashboard</h3>
     <div class="container grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 mt-8">
       @for (url of artPhotoGallery().data.extra.photos; track $index) {
       <label>
@@ -46,9 +47,10 @@
           <div class="absolute bottom-3 right-3">
             @if (allowMultipleSelection()) {
             <input #extraImageSelectionInput type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
-              (change)="onImageSelect($event, url)">
+              [checked]="selectedImages.value.includes(url)" (change)="onImageSelect($event, url)">
             } @else {
-            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred"
+              [checked]="selectedImage.value === url">
             }
           </div>
         </div>

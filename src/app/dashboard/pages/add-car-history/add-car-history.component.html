@@ -120,7 +120,8 @@
 </sidebar-layout>
 
 <car-photo-gallery [isOpen]="carPhotoGalleryIsOpen()" (isOpenChange)="closeCarPhotoGallery()" [cropImage]="true"
-  [aspectRatios]="aspectRatios()" (selectedImageChange)="setImage($event)" [auctionCarId]="originalAuctionCarId()">
+  [collection]="mediaCollection.Extra" [uploadAction]="uploadAction.AddExtraPhoto" [aspectRatios]="aspectRatios()"
+  (selectedImageChange)="setImage($event)" [auctionCarId]="originalAuctionCarId()">
 </car-photo-gallery>
 
 <auction-car-details-modal [(isOpen)]="auctionCarDetailsModalIsOpen" (isOpenChange)="closeAuctionCarDetailsModal()"

@@ -25,9 +25,10 @@
           <div class="absolute bottom-3 right-3">
             @if (allowMultipleSelection()) {
             <input #registerImageSelectionInputs type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
-              (change)="onImageSelect($event, url)">
+              [checked]="selectedImages.value.includes(url)" (change)="onImageSelect($event, url)">
             } @else {
-            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred"
+              [checked]="selectedImage.value === url">
             }
           </div>
         </div>
@@ -48,9 +49,10 @@
           <div class="absolute bottom-3 right-3">
             @if (allowMultipleSelection()) {
             <input #mechanicsImageSelectionInput type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
-              (change)="onImageSelect($event, url)">
+              [checked]="selectedImages.value.includes(url)" (change)="onImageSelect($event, url)">
             } @else {
-            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred"
+              [checked]="selectedImage.value === url">
             }
           </div>
         </div>
@@ -72,9 +74,10 @@
           <div class="absolute bottom-3 right-3">
             @if (allowMultipleSelection()) {
             <input type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
-              (change)="onImageSelect($event, url)">
+              [checked]="selectedImages.value.includes(url)" (change)="onImageSelect($event, url)">
             } @else {
-            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred"
+              [checked]="selectedImage.value === url">
             }
           </div>
         </div>
@@ -96,9 +99,10 @@
           <div class="absolute bottom-3 right-3">
             @if (allowMultipleSelection()) {
             <input type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
-              (change)="onImageSelect($event, url)">
+              [checked]="selectedImages.value.includes(url)" (change)="onImageSelect($event, url)">
             } @else {
-            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+            <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred"
+              [checked]="selectedImage.value === url">
             }
           </div>
         </div>
@@ -120,9 +124,10 @@
         <div class="absolute bottom-3 right-3">
           @if (allowMultipleSelection()) {
           <input type="checkbox" class="form-check h-5 w-5 text-pred" [value]="url"
-            (change)="onImageSelect($event, url)">
+            [checked]="selectedImages.value.includes(url)" (change)="onImageSelect($event, url)">
           } @else {
-          <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred">
+          <input [formControl]="selectedImage" [value]="url" type="radio" class="form-radio h-5 w-5 text-pred"
+            [checked]="selectedImage.value === url">
           }
         </div>
       </div>
