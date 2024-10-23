@@ -2,8 +2,8 @@
   <tbody class="table-row-group">
     @for (detail of auctionDetails(); track $index) {
     <tr class="bg-[rgba(0,0,0,.04)] even:bg-white">
-      <th class="text-left py-[10px] md:py-[15px] pr-[24px] pl-[16px]">{{detail.label}}</th>
-      <td>{{detail.value}}</td>
+      <th class="text-left py-[10px] md:py-[15px] pr-[24px] pl-[16px] w-1/2">{{detail.label}}</th>
+      <td class="w-1/2">{{detail.value}}</td>
     </tr>
     }
   </tbody>
