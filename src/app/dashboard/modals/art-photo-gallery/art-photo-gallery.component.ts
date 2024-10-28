@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, viewChild, viewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, untracked, viewChild, viewChildren } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
@@ -13,6 +13,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CropImageModalComponent } from '@shared/components/crop-image-modal/crop-image-modal.component';
 import { ArtMedia } from '@dashboard/interfaces';
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'art-photo-gallery',
@@ -57,7 +58,13 @@ export class ArtPhotoGalleryComponent {
 
   auctionArtIdEffect = effect(() => {
     if (this.auctionArtId()) {
-      this.getAllArtMedia();
+      this.getAllArtMedia().subscribe({
+        next: (response) => {
+          untracked(() => {
+            this.artPhotoGallery.set(response);
+          });
+        }
+      });
     }
   });
 
@@ -108,9 +115,14 @@ export class ArtPhotoGalleryComponent {
           }
         })
         .on('complete', (result) => {
-
           result.successful.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
+
+            if (this.allowMultipleSelection()) {
+              this.selectedImages.push(new FormControl(url));
+            } else {
+              this.selectedImage.setValue(url);
+            }
 
             this.addExtraPhoto([url]);
           });
@@ -121,6 +133,13 @@ export class ArtPhotoGalleryComponent {
           this.uppyImages?.getFiles().forEach((file) => {
             this.uppyImages?.removeFile(file.id);
           });
+
+          this.getAllArtMedia().subscribe({
+            next: (response) => {
+              this.artPhotoGallery.set(response);
+              this.selectImage();
+            }
+          });
         });
     }
   });
@@ -129,34 +148,12 @@ export class ArtPhotoGalleryComponent {
     this.batchTokenDirect();
   }
 
-  getAllArtMedia(url?: string): void {
-    this.#artPhotoGalleryService.getAllArtMedia$(this.auctionArtId()).subscribe({
-      next: (response) => {
-        this.artPhotoGallery.set(response);
-
-        if (url) {
-          if (this.allowMultipleSelection()) {
-            this.selectedImages.push(new FormControl(url));
-          } else {
-            this.selectedImage.setValue(url);
-          }
-        }
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+  getAllArtMedia(): Observable<ArtMedia> {
+    return this.#artPhotoGalleryService.getAllArtMedia$(this.auctionArtId());
   }
 
   addExtraPhoto(photoUrls: string[]): void {
-    this.#artPhotoGalleryService.addExtraPhoto$(this.auctionArtId(), photoUrls).subscribe({
-      next: () => {
-        this.getAllArtMedia(photoUrls[0]);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    this.#artPhotoGalleryService.addExtraPhoto$(this.auctionArtId(), photoUrls).subscribe();
   }
 
   batchTokenDirect(): void {
@@ -164,8 +161,6 @@ export class ArtPhotoGalleryComponent {
       subscribe({
         next: (response) => {
           this.token.set(response.result.token);
-          console.log({ token: response.result.token });
-          console.log({ token: this.token() });
         },
         error: (error) => {
           console.error(error);

@@ -1,5 +1,5 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, effect, inject, input, output, signal, viewChild, viewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, effect, inject, input, output, signal, untracked, viewChild, viewChildren } from '@angular/core';
 import { JsonPipe, NgClass } from '@angular/common';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
@@ -14,6 +14,7 @@ import { GetAllCarMedia } from '@dashboard/interfaces';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 import { MediaCollection, MediaType, UploadAction } from '@dashboard/enums';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'car-photo-gallery',
@@ -67,7 +68,13 @@ export class CarPhotoGalleryComponent {
 
   auctionCarIdEffect = effect(() => {
     if (this.auctionCarId()) {
-      this.getAllCarMedia();
+      this.getAllCarMedia().subscribe({
+        next: (response) => {
+          untracked(() => {
+            this.carPhotoGallery.set(response);
+          });
+        }
+      });
     }
   });
 
@@ -118,11 +125,16 @@ export class CarPhotoGalleryComponent {
           }
         })
         .on('complete', (result) => {
-
           result.successful.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
 
             // this.addExtraPhoto([url]);
+
+            if (this.allowMultipleSelection()) {
+              this.selectedImages.push(new FormControl(url));
+            } else {
+              this.selectedImage.setValue(url);
+            }
 
             switch (this.uploadAction()) {
               case UploadAction.AddExtraPhoto:
@@ -141,6 +153,14 @@ export class CarPhotoGalleryComponent {
           this.uppyImages?.getFiles().forEach((file) => {
             this.uppyImages?.removeFile(file.id);
           });
+
+          this.getAllCarMedia().subscribe({
+            next: (response) => {
+              this.carPhotoGallery.set(response);
+              this.selectImage();
+            }
+          });
+
         });
     }
   });
@@ -149,46 +169,16 @@ export class CarPhotoGalleryComponent {
     this.batchTokenDirect();
   }
 
-  getAllCarMedia(url?: string): void {
-    this.#carPhotoGalleryService.getAllCarMedia$(this.auctionCarId()).subscribe({
-      next: (response) => {
-        this.carPhotoGallery.set(response);
-
-        //seleccionar imagenes
-        if (url) {
-          if (this.allowMultipleSelection()) {
-            this.selectedImages.push(new FormControl(url));
-          } else {
-            this.selectedImage.setValue(url);
-          }
-        }
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+  getAllCarMedia(): Observable<GetAllCarMedia> {
+    return this.#carPhotoGalleryService.getAllCarMedia$(this.auctionCarId());
   }
 
   addExtraPhoto(photoUrls: string[]): void {
-    this.#carPhotoGalleryService.addExtraPhoto$(this.auctionCarId(), photoUrls).subscribe({
-      next: () => {
-        this.getAllCarMedia(photoUrls[0]);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    this.#carPhotoGalleryService.addExtraPhoto$(this.auctionCarId(), photoUrls).subscribe();
   }
 
   addPhotosVideos(type: MediaType, collection: MediaCollection, photoUrls: string[], videoUrls: string[]): void {
-    this.#carPhotoGalleryService.addPhotosVideos$(this.auctionCarId(), type, collection, photoUrls, videoUrls).subscribe({
-      next: () => {
-        this.getAllCarMedia(photoUrls[0]);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    this.#carPhotoGalleryService.addPhotosVideos$(this.auctionCarId(), type, collection, photoUrls, videoUrls).subscribe();
   }
 
   batchTokenDirect(): void {
@@ -196,8 +186,6 @@ export class CarPhotoGalleryComponent {
       subscribe({
         next: (response) => {
           this.token.set(response.result.token);
-          console.log({ token: response.result.token });
-          console.log({ token: this.token() });
         },
         error: (error) => {
           console.error(error);
