@@ -1,0 +1,26 @@
+<sidebar-layout>
+  <div class="px-4 sm:px-6 lg:px-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h1 class="text-base font-semibold leading-6 text-gray-900">Asigna y reordena los archivos multimedia</h1>
+      </div>
+
+      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <select [formControl]="multimediaTypeControl" class="ml-auto mt-4" width="w-36" sharedInput>
+          <option [value]="multimediaType.Images">Imágenes</option>
+          <option [value]="multimediaType.Videos">Videos</option>
+        </select>
+      </div>
+    </div>
+
+    @switch (multimediaTypeControl.value) {
+    @case (multimediaType.Images) {
+    <car-auction-image-assignment-and-reorder></car-auction-image-assignment-and-reorder>
+    }
+    @case (multimediaType.Videos) {
+    <car-auction-video-assignment-and-reorder></car-auction-video-assignment-and-reorder>
+    }
+    }
+  </div>
+
+</sidebar-layout>

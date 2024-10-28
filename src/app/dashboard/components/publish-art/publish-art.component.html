@@ -73,9 +73,9 @@
               <button [routerLink]="['/dashboard/agregar-historia-arte', auction.auctionArtId]" mat-menu-item>
                 <span>Agregar historia del arte</span>
               </button>
-              <button [routerLink]="['/dashboard/asignar-y-reordenar-imagenes-subasta-arte', auction.auctionArtId]"
+              <button [routerLink]="['/dashboard/asignar-y-reordenar-multimedia-arte', auction.auctionArtId]"
                 mat-menu-item>
-                <span>Asignar y reordenar imágenes</span>
+                <span>Asignar y reordenar archivos multimedia</span>
               </button>
               @if (auction.status !== status.Preview) {
               <button (click)="openModalToReleaseAuctionForPreview(auction.auctionArtId)"

@@ -21,9 +21,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MediaCollection, UploadAction } from '@dashboard/enums';
 
 @Component({
+  selector: 'car-auction-image-assignment-and-reorder',
   standalone: true,
   imports: [
-    SidebarComponent,
     CdkDropListGroup,
     CdkDropList,
     CdkDrag,

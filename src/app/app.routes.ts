@@ -183,11 +183,11 @@ export const routes: Routes = [
       },
       {
         // auction-image-assignment-and-reorder
-        path: 'asignar-y-reordenar-imagenes-subasta/:id',
-        loadComponent: () => import('./dashboard/pages/auction-image-assignment-and-reorder/auction-image-assignment-and-reorder.component').then((m) => m.AuctionImageAssignmentAndReorderComponent),
+        path: 'asignar-y-reordenar-multimedia-autos/:id',
+        loadComponent: () => import('./dashboard/pages/car-auction-media-assignment-and-reorder/car-auction-media-assignment-and-reorder.component').then((m) => m.CarAuctionMediaAssignmentAndReorderComponent),
       },
       {
-        path: 'asignar-y-reordenar-imagenes-subasta-arte/:id',
+        path: 'asignar-y-reordenar-multimedia-arte/:id',
         loadComponent: () => import('./dashboard/pages/art-auction-image-assignment-and-reorder/art-auction-image-assignment-and-reorder.component').then((m) => m.ArtAuctionImageAssignmentAndReorderComponent),
       },
       // subastas en vivo
