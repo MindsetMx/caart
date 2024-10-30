@@ -44,6 +44,9 @@ import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-a
 import { AppService } from '@app/app.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { BidHistoryComponent } from '@auctions/components/bid-history/bid-history.component';
+import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
+import { MediaType } from '@dashboard/enums';
+import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
@@ -112,6 +115,9 @@ export class LastChanceDetailComponent implements AfterViewInit {
   size2 = signal<number>(10)
   pageSizeOptions = signal<number[]>([]);
 
+  mediaTypes = MediaType;
+  videos = signal<VideosGallery>({} as VideosGallery);
+
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
   #lastChanceVehicleDetailService = inject(LastChanceVehicleDetailService);
@@ -124,6 +130,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   #lastChancePurchaseService = inject(LastChancePurchaseService);
   #decimalPipe = inject(DecimalPipe);
   #appService = inject(AppService);
+  #videoGalleryService = inject(VideoGalleryService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -168,6 +175,10 @@ export class LastChanceDetailComponent implements AfterViewInit {
     return AuctionTypes;
   }
 
+  getAllVideosEffect = effect(() => {
+    this.getAllVideos();
+  });
+
   authStatusEffect = effect(() => {
     switch (this.authStatus) {
       case AuthStatus.authenticated:
@@ -196,7 +207,10 @@ export class LastChanceDetailComponent implements AfterViewInit {
 
         this.auctionDetails2.set([
           // { label: 'Km', value: this.auction().data.attributes.auctionCarForm.kmInput },
-          { label: 'Km', value: this.#decimalPipe.transform(this.auction().data.attributes.auctionCarForm.kmInput, '1.0-0')! },
+          {
+            label: this.auction().data.attributes.auctionCarForm.kmType.charAt(0).toUpperCase() + this.auction().data.attributes.auctionCarForm.kmType.slice(1).toLowerCase(),
+            value: this.#decimalPipe.transform(this.auction().data.attributes.auctionCarForm.kmInput, '1.0-0')!
+          },
           { label: 'Transmisión', value: this.auction().data.attributes.auctionCarForm.transmissionType },
           { label: 'Color', value: this.auction().data.attributes.auctionCarForm.exteriorColor },
           { label: 'Entregado en', value: 'CDMX, México' },
@@ -258,6 +272,12 @@ export class LastChanceDetailComponent implements AfterViewInit {
     Fancybox.bind("[data-fancybox='gallery4']", { Hash: false });
     Fancybox.bind("[data-fancybox='gallery5']", { Hash: false });
     Fancybox.bind("[data-fancybox='gallery6']", { Hash: false });
+  }
+
+  getAllVideos(): void {
+    this.#videoGalleryService.getAllVideos$(this.auctionId()!, this.mediaTypes.Car).subscribe((response) => {
+      this.videos.set(response.data);
+    });
   }
 
   getBids(replace: boolean = false): void {

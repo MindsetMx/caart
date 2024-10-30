@@ -54,7 +54,7 @@ export interface AuctionDetailsAuctionCarForm {
   state: string;
   reserve: boolean;
   reserveAmount: number;
-  kmType: string;
+  kmType: KmType;
   kmInput: number;
   howDidYouHearAboutUs: string;
   photos: string[];
@@ -65,6 +65,11 @@ export interface AuctionDetailsAuctionCarForm {
   userId: string;
   lotNumber: number;
   __v: number;
+}
+
+export enum KmType {
+  Kilometrage = 'KM',
+  Mileage = 'MI',
 }
 
 export interface AuctionDetailsCarHistory {

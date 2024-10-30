@@ -83,7 +83,7 @@ export class ArtRegistrationExtraInfoComponent {
         autoProceed: true,
         locale: Spanish,
         restrictions: {
-          maxFileSize: 15000000,
+          maxFileSize: 20000000,
           // maxNumberOfFiles: 20,
           minNumberOfFiles: 1,
           allowedFileTypes: ['image/*'],

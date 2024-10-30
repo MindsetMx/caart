@@ -40,6 +40,9 @@ import { AppService } from '@app/app.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { BidHistoryComponent } from '@auctions/components/bid-history/bid-history.component';
 import { GetBidsBid } from '@auctions/interfaces/get-bids';
+import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
+import { MediaType } from '@dashboard/enums';
+import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
 
 @Component({
   standalone: true,
@@ -100,6 +103,9 @@ export class LastChanceArtDetailComponent {
   size2 = signal<number>(10)
   pageSizeOptions = signal<number[]>([]);
 
+  mediaTypes = MediaType;
+  videos = signal<VideosGallery>({} as VideosGallery);
+
   #countdownService = inject(CountdownService);
   #artAuctionDetailsService = inject(ArtAuctionDetailsService);
   #lastChanceArtDetailService = inject(LastChanceArtDetailService);
@@ -112,7 +118,7 @@ export class LastChanceArtDetailComponent {
   #commentsService = inject(CommentsService);
   #lastChanceArtPurchaseService = inject(LastChanceArtPurchaseService);
   #appService = inject(AppService);
-
+  #videoGalleryService = inject(VideoGalleryService);
   #renderer = inject(Renderer2);
 
   get auctionType(): typeof AuctionTypes {
@@ -271,6 +277,10 @@ export class LastChanceArtDetailComponent {
     }
   });
 
+  getAllVideosEffect = effect(() => {
+    this.getAllVideos();
+  });
+
   constructor() {
     this.#route.paramMap.subscribe(params => {
       let id = params.get('id');
@@ -278,6 +288,12 @@ export class LastChanceArtDetailComponent {
       this.auctionId.set(id);
       this.getAuctionDetails();
       this.getImagesPublish(id!);
+    });
+  }
+
+  getAllVideos(): void {
+    this.#videoGalleryService.getAllVideos$(this.auctionId()!, this.mediaTypes.Car).subscribe((response) => {
+      this.videos.set(response.data);
     });
   }
 

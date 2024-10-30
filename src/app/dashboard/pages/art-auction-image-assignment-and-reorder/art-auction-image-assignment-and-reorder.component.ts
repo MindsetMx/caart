@@ -18,6 +18,7 @@ import { PrimaryButtonDirective } from '@shared/directives';
 import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
+  selector: 'art-auction-image-assignment-and-reorder',
   standalone: true,
   imports: [
     SidebarComponent,

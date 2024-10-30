@@ -1,107 +1,87 @@
-<sidebar-layout>
-  <div class="px-4 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold leading-6 text-gray-900">Asigna y reordena los archivos multimedia</h1>
-        <!-- <p class="mt-2 text-sm text-gray-700">
-
-        </p> -->
-      </div>
-      <!-- <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <button type="button"
-          class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add
-          user</button>
-      </div> -->
-    </div>
-
-    <form class="mt-4 space-y-4" [formGroup]="auctionImagesForm" (submit)="saveImages()">
-      <!-- fotoCatalogo -->
-      <h2 class="mb-2">Foto portada catálogo</h2>
-      <div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          @if(fotoCatalogo.value) {
-          <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoCatalogo', true)">
-            <img [src]="fotoCatalogo.value" class="cell object-contain" />
-          </button>
-          }@else {
-          <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoCatalogo', true)" class="cell">
-            Foto portada catálogo
-          </button>
-          }
-        </div>
-        @if (hasError('fotoCatalogo')) {
-        <shared-input-error [message]="getError('fotoCatalogo')"></shared-input-error>
-        }
-      </div>
-
-      <h2 class="mb-2">Foto principal</h2>
-      <div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          @if(fotoPrincipal.value) {
-          <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoPrincipal', true)">
-            <img [src]="fotoPrincipal.value" class="cell object-contain" />
-          </button>
-          }@else {
-          <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoPrincipal', true)" class="cell">
-            Foto principal
-          </button>
-          }
-        </div>
-        @if (hasError('fotoPrincipal')) {
-        <shared-input-error [message]="getError('fotoPrincipal')"></shared-input-error>
-        }
-      </div>
-
-      @defer (when fotosCarrusel) {
-      <div>
-        <!-- <pre>
-          {{fotosCarrusel() | json}}
-        </pre> -->
-        <h2 class="mb-2">Fotos carrusel</h2>
-
-        <div class="board" cdkDropListGroup>
-          @for (imageUrl of fotosCarrusel(); track i; let i = $index) {
-          <div>
-            <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosCarruselFormArray)"
-              [cdkDropListData]="{imageUrl, index: i}">
-              <button cdkDrag type="button" class="w-full relative"
-                (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, i)">
-                <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
-
-                <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosCarruselFormArray, i)"
-                  class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
-                  <mat-icon class="text-red-500">delete</mat-icon>
-                </button>
-              </button>
-            </div>
-            @if (formArrayHasError(fotosCarruselFormArray, i)) {
-            <shared-input-error [message]="getErrorFromFormArray(fotosCarruselFormArray, i)"></shared-input-error>
-            }
-          </div>
-          }
-          <!-- agregar nueva foto del carousel -->
-          <button type="button"
-            (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, fotosCarrusel.length, true)" class="cell">
-            <mat-icon class="text-gray-500">add</mat-icon>
-          </button>
-
-        </div>
-      </div>
-      }
-
-      <button type="submit" [class.opacity-50]="saveImagesButtonIsDisabled()" [disabled]="saveImagesButtonIsDisabled()"
-        class="flex items-center justify-center" sharedPrimaryButton>
-        @if (saveImagesButtonIsDisabled()) {
-        <shared-spinner></shared-spinner>
-        } @else {
-        Guardar cambios
-        }
+<form class="mt-4 space-y-4" [formGroup]="auctionImagesForm" (submit)="saveImages()">
+  <!-- fotoCatalogo -->
+  <h2 class="mb-2">Foto portada catálogo</h2>
+  <div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      @if(fotoCatalogo.value) {
+      <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoCatalogo', true)">
+        <img [src]="fotoCatalogo.value" class="cell object-contain" />
       </button>
-    </form>
-
+      }@else {
+      <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoCatalogo', true)" class="cell">
+        Foto portada catálogo
+      </button>
+      }
+    </div>
+    @if (hasError('fotoCatalogo')) {
+    <shared-input-error [message]="getError('fotoCatalogo')"></shared-input-error>
+    }
   </div>
 
-</sidebar-layout>
+  <h2 class="mb-2">Foto principal</h2>
+  <div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      @if(fotoPrincipal.value) {
+      <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoPrincipal', true)">
+        <img [src]="fotoPrincipal.value" class="cell object-contain" />
+      </button>
+      }@else {
+      <button type="button" (click)="openModal(artPhotoGalleryIsOpen, 'fotoPrincipal', true)" class="cell">
+        Foto principal
+      </button>
+      }
+    </div>
+    @if (hasError('fotoPrincipal')) {
+    <shared-input-error [message]="getError('fotoPrincipal')"></shared-input-error>
+    }
+  </div>
+
+  @defer (when fotosCarrusel) {
+  <div>
+    <!-- <pre>
+      {{fotosCarrusel() | json}}
+    </pre> -->
+    <h2 class="mb-2">Fotos carrusel</h2>
+
+    <div class="board" cdkDropListGroup>
+      @for (imageUrl of fotosCarrusel(); track i; let i = $index) {
+      <div>
+        <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosCarruselFormArray)"
+          [cdkDropListData]="{imageUrl, index: i}">
+          <button cdkDrag type="button" class="w-full relative"
+            (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, i)">
+            <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
+
+            <button type="button" class="flex" (click)="openDeleteImageModal($event, fotosCarruselFormArray, i)"
+              class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+              <mat-icon class="text-red-500">delete</mat-icon>
+            </button>
+          </button>
+        </div>
+        @if (formArrayHasError(fotosCarruselFormArray, i)) {
+        <shared-input-error [message]="getErrorFromFormArray(fotosCarruselFormArray, i)"></shared-input-error>
+        }
+      </div>
+      }
+      <!-- agregar nueva foto del carousel -->
+      <button type="button"
+        (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, fotosCarrusel.length, true)" class="cell">
+        <mat-icon class="text-gray-500">add</mat-icon>
+      </button>
+
+    </div>
+  </div>
+  }
+
+  <button type="submit" [class.opacity-50]="saveImagesButtonIsDisabled()" [disabled]="saveImagesButtonIsDisabled()"
+    class="flex items-center justify-center" sharedPrimaryButton>
+    @if (saveImagesButtonIsDisabled()) {
+    <shared-spinner></shared-spinner>
+    } @else {
+    Guardar cambios
+    }
+  </button>
+</form>
 
 <auction-image-deletion-confirmation-modal (deleteImagesChange)="removePhoto()" [(isOpen)]="deleteImageModalIsOpen"
   [isButtonSubmitDisabled]="deleteImageSubmitButtonIsDisabled()"></auction-image-deletion-confirmation-modal>

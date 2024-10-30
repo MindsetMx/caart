@@ -48,6 +48,9 @@ import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-a
 import { UpdateReservePriceModalComponent } from '@auctions/modals/update-reserve-price-modal/update-reserve-price-modal.component';
 import { UserData } from '@auth/interfaces';
 import { GetBidsBid } from '@auctions/interfaces/get-bids';
+import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
+import { MediaType } from '@dashboard/enums';
+import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
 
 @Component({
   standalone: true,
@@ -120,6 +123,9 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   size2 = signal<number>(10);
   pageSizeOptions = signal<number[]>([]);
 
+  mediaTypes = MediaType;
+  videos = signal<VideosGallery>({} as VideosGallery);
+
   #appComponent = inject(AppComponent);
   #auctionDetailsService = inject(AuctionDetailsService);
   #authService = inject(AuthService);
@@ -128,6 +134,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   #paymentMethodsService = inject(PaymentMethodsService);
   #route = inject(ActivatedRoute);
   #auctionImageAssigmentAndReorderService = inject(AuctionImageAssigmentAndReorderService);
+  #videoGalleryService = inject(VideoGalleryService);
   #activityRequestsService = inject(ActivityRequestsService);
   #appService = inject(AppService);
   #decimalPipe = inject(DecimalPipe);
@@ -210,7 +217,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
         ]);
 
         this.auctionDetails2.set([
-          { label: 'Km', value: this.#decimalPipe.transform(this.auction().data.attributes.auctionCarForm.kmInput, '1.0-0')! },
+          {
+            label: this.auction().data.attributes.auctionCarForm.kmType.charAt(0).toUpperCase() + this.auction().data.attributes.auctionCarForm.kmType.slice(1).toLowerCase(),
+            value: this.#decimalPipe.transform(this.auction().data.attributes.auctionCarForm.kmInput, '1.0-0')!
+          },
           { label: 'Transmisión', value: this.auction().data.attributes.auctionCarForm.transmissionType },
           { label: 'Color', value: this.auction().data.attributes.auctionCarForm.exteriorColor },
           { label: 'Entregado en', value: 'CDMX, México' },
@@ -263,6 +273,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     }
   });
 
+  getAllVideosEffect = effect(() => {
+    this.getAllVideos();
+  });
+
   constructor() {
     this.auctionId.set(this.#route.snapshot.paramMap.get('id'));
 
@@ -288,6 +302,12 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     Fancybox.bind("[data-fancybox='gallery4']", { Hash: false });
     Fancybox.bind("[data-fancybox='gallery5']", { Hash: false });
     Fancybox.bind("[data-fancybox='gallery6']", { Hash: false });
+  }
+
+  getAllVideos(): void {
+    this.#videoGalleryService.getAllVideos$(this.auctionId()!, this.mediaTypes.Car).subscribe((response) => {
+      this.videos.set(response.data);
+    });
   }
 
   countdownConfig(): CountdownConfig {

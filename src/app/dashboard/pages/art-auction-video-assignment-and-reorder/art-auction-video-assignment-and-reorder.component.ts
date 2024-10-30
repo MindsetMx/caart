@@ -18,7 +18,7 @@ import { VideoGalleryVideo } from '@dashboard/interfaces';
 import { AllVideosDeletionConfirmationModalComponent } from '@dashboard/modals/all-videos-deletion-confirmation-modal/all-videos-deletion-confirmation-modal.component';
 
 @Component({
-  selector: 'car-auction-video-assignment-and-reorder',
+  selector: 'art-auction-video-assignment-and-reorder',
   standalone: true,
   imports: [
     CdkDropList,
@@ -31,11 +31,11 @@ import { AllVideosDeletionConfirmationModalComponent } from '@dashboard/modals/a
     AuctionVideoDeletionConfirmationModalComponent,
     AllVideosDeletionConfirmationModalComponent
   ],
-  templateUrl: './car-auction-video-assignment-and-reorder.component.html',
-  styleUrl: './car-auction-video-assignment-and-reorder.component.css',
+  templateUrl: './art-auction-video-assignment-and-reorder.component.html',
+  styleUrl: './art-auction-video-assignment-and-reorder.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarAuctionVideoAssignmentAndReorderComponent {
+export class ArtAuctionVideoAssignmentAndReorderComponent {
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
   #activatedRoute = inject(ActivatedRoute);
@@ -55,7 +55,7 @@ export class CarAuctionVideoAssignmentAndReorderComponent {
   deleteAllVideosSubmitButtonIsDisabled = signal<boolean>(false);
   deleteAllVideosModalIsOpen = signal<boolean>(false);
 
-  mediaType = MediaType;
+  mediaTypes = MediaType;
 
   videosEffect = effect(() => {
     this.videosFormArray.setValue(this.videos(), { emitEvent: false });
@@ -74,7 +74,7 @@ export class CarAuctionVideoAssignmentAndReorderComponent {
   }
 
   getAllVideos(): void {
-    this.#videoGalleryService.getAllVideos$(this.auctionId(), this.mediaType.Car).subscribe((response) => {
+    this.#videoGalleryService.getAllVideos$(this.auctionId(), this.mediaTypes.Art).subscribe((response) => {
       this.setSelectedVideos(response.data.videos);
     });
   }
@@ -95,7 +95,7 @@ export class CarAuctionVideoAssignmentAndReorderComponent {
       .map((video) => video?.videoUrl)
       .filter((videoUrl): videoUrl is string => videoUrl !== undefined);
 
-    this.#videoGalleryService.saveVideos$(this.auctionId(), videos, this.mediaType.Car).subscribe(() => {
+    this.#videoGalleryService.saveVideos$(this.auctionId(), videos, this.mediaTypes.Art).subscribe(() => {
       this.toastSuccess('Videos agregados');
     }).add(() => {
       this.isSaveVideosButtonDisabled.set(false);

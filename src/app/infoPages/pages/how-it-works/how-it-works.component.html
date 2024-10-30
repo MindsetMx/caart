@@ -27,7 +27,8 @@
         </li>
       </ol>
 
-      <button class="mt-10" width="w-fit" py="py-2.5" sharedPrimaryButton>Subasta tu pieza</button>
+      <button routerLink="/registrar-subasta" class="mt-10" width="w-fit" py="py-2.5" sharedPrimaryButton>Subasta tu
+        pieza</button>
     </div>
     <div class="bg-gray8 px-6 pt-6 pb-12 rounded-lg">
       <p class="text-2xl font-bold font-optima">¿Eres comprador?</p>
@@ -50,7 +51,9 @@
         </li>
       </ol>
 
-      <button class="mt-10" width="w-fit" py="py-2.5" sharedPrimaryButton>Hacer una oferta</button>
+      <button routerLink="/subastas-en-vivo" class="mt-10" width="w-fit" py="py-2.5" sharedPrimaryButton>
+        Subastas en vivo
+      </button>
     </div>
   </div>
 
@@ -88,10 +91,10 @@
       </li>
     </ul>
 
-    <p class="text-xl font-semibold mt-8">Tarifas de servicio(Vendedor)</p>
+    <p class="text-xl font-semibold mt-8">Tarifas de servicio (Vendedor)</p>
     <ul class="list-disc list-inside">
       <li>
-        Precio por publicación de Auto: $1,800.00 MXN
+        Precio por publicación de Auto: $1,999.00 MXN
       </li>
       <li>
         Precio por publicación de Obra de Arte: $399.00 MXN
@@ -114,17 +117,44 @@
       </li>
     </ul>
 
-    <p class="text-xl font-semibold mt-8">Tarifas de servicio(Comprador)</p>
+    <p class="text-xl font-semibold mt-8">Tarifas de servicio (Comprador)</p>
 
     <ul class="list-disc list-inside">
       <li>
-        Comision Auto: 5% Min:$5,000 MXN - Max $200,000 MXN
+        <strong>Auto</strong>
+        <ul class="list-disc list-inside ml-4">
+          <li>
+            Comisión: 5%
+          </li>
+          <li>
+            Mínimo: $5,000 MXN
+          </li>
+          <li>
+            Máximo: $200,000 MXN
+          </li>
+        </ul>
       </li>
       <li>
-        Comisión Obra de Arte: 10% Min:$250 MXN
+        <strong>Obra de Arte</strong>
+        <ul class="list-disc list-inside ml-4">
+          <li>
+            Comisión: 10%
+          </li>
+          <li>
+            Mínimo: $250 MXN
+          </li>
+        </ul>
       </li>
       <li>
-        Comisión Memorabilia / Coleccionables: 10% Min:$250 MXN
+        <strong>Memorabilia / Coleccionables</strong>
+        <ul class="list-disc list-inside ml-4">
+          <li>
+            Comisión: 10%
+          </li>
+          <li>
+            Mínimo: $250 MXN
+          </li>
+        </ul>
       </li>
     </ul>
     <br>

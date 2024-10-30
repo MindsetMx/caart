@@ -43,7 +43,7 @@
   </button>
 </form>
 
-<video-gallery [(isOpen)]="isVideoGalleryOpen" [auctionId]="auctionId()" [mediaType]="mediaType.Car"
+<video-gallery [(isOpen)]="isVideoGalleryOpen" [auctionId]="auctionId()" [mediaType]="mediaTypes.Art"
   [allowMultipleSelection]="allowMultipleSelection()" (selectedVideoChange)="setVideoUrl($event)"
   (selectedVideosChange)="setSelectedVideos($event)"></video-gallery>
 

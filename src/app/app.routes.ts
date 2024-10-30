@@ -188,7 +188,7 @@ export const routes: Routes = [
       },
       {
         path: 'asignar-y-reordenar-multimedia-arte/:id',
-        loadComponent: () => import('./dashboard/pages/art-auction-image-assignment-and-reorder/art-auction-image-assignment-and-reorder.component').then((m) => m.ArtAuctionImageAssignmentAndReorderComponent),
+        loadComponent: () => import('./dashboard/pages/art-auction-media-assignment-and-reorder/art-auction-media-assignment-and-reorder.component').then((m) => m.ArtAuctionMediaAssignmentAndReorderComponent),
       },
       // subastas en vivo
       {

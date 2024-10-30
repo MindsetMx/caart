@@ -34,6 +34,7 @@ export class VideoGalleryComponent {
 
   isOpen = model.required<boolean>();
   auctionId = input.required<string>();
+  mediaType = input.required<MediaType>();
   allowMultipleSelection = input<boolean>(false);
   selectedVideosChange = output<VideoGalleryVideo[]>();
   selectedVideoChange = output<VideoGalleryVideo>();
@@ -44,7 +45,6 @@ export class VideoGalleryComponent {
 
   videoGallery = signal<VideoGallery>({} as VideoGallery);
 
-  mediaType = MediaType;
   mediaCollection = MediaCollection;
 
   selectedVideos: FormArray;
@@ -56,8 +56,6 @@ export class VideoGalleryComponent {
     if (this.auctionId()) {
       this.getAllCarMedia().subscribe({
         next: (response) => {
-          console.log(response);
-
           untracked(() => {
             this.videoGallery.set(response);
           });
@@ -80,7 +78,7 @@ export class VideoGalleryComponent {
         autoProceed: true,
         locale: Spanish,
         restrictions: {
-          maxFileSize: 20000000,
+          maxFileSize: 500000000,
           // maxNumberOfFiles: 20,
           minNumberOfFiles: 1,
           allowedFileTypes: ['video/*'],
@@ -158,7 +156,7 @@ export class VideoGalleryComponent {
   }
 
   addVideosToLibrary(videoUrls: string[]): void {
-    this.#videoGalleryService.addVideosToLibrary$(this.auctionId(), this.mediaType.Car, this.mediaCollection.Register, [], videoUrls).subscribe(() => {
+    this.#videoGalleryService.addVideosToLibrary$(this.auctionId(), this.mediaType(), this.mediaCollection.Register, [], videoUrls).subscribe(() => {
       this.getAllCarMedia().subscribe({
         next: (response) => {
           this.videoGallery.set(response);
@@ -169,7 +167,7 @@ export class VideoGalleryComponent {
   }
 
   getAllCarMedia(): Observable<VideoGallery> {
-    return this.#videoGalleryService.getAllCarVideos$(this.auctionId(), this.mediaType.Car);
+    return this.#videoGalleryService.getAllCarVideos$(this.auctionId(), this.mediaType());
   }
 
   onCheckboxChange(event: Event) {

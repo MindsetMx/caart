@@ -44,6 +44,9 @@ import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-
 import { MatPaginator } from '@angular/material/paginator';
 import { BidHistoryComponent } from '@auctions/components/bid-history/bid-history.component';
 import { GetBidsBid } from '@auctions/interfaces/get-bids';
+import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
+import { MediaType } from '@dashboard/enums';
+import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
 
 export interface EventData {
   type: string;
@@ -120,6 +123,9 @@ export class AuctionArtComponent implements OnDestroy {
   size2 = signal<number>(10);
   pageSizeOptions = signal<number[]>([]);
 
+  mediaTypes = MediaType;
+  videos = signal<VideosGallery>({} as VideosGallery);
+
   secondsRemaining = signal<number>(0);
 
   #countdownService = inject(CountdownService);
@@ -134,6 +140,7 @@ export class AuctionArtComponent implements OnDestroy {
   #activityRequestsService = inject(ActivityRequestsService);
   #appService = inject(AppService);
   #renderer = inject(Renderer2);
+  #videoGalleryService = inject(VideoGalleryService);
 
   get user(): UserData | null {
     return this.#authService.currentUser();
@@ -370,6 +377,10 @@ export class AuctionArtComponent implements OnDestroy {
     }
   });
 
+  getAllVideosEffect = effect(() => {
+    this.getAllVideos();
+  });
+
   constructor() {
     this.#route.paramMap.subscribe(params => {
       let id = params.get('id');
@@ -384,6 +395,12 @@ export class AuctionArtComponent implements OnDestroy {
     if (this.eventSource) {
       this.eventSource.close();
     }
+  }
+
+  getAllVideos(): void {
+    this.#videoGalleryService.getAllVideos$(this.auctionId()!, this.mediaTypes.Car).subscribe((response) => {
+      this.videos.set(response.data);
+    });
   }
 
   getBids(replace: boolean = false): void {

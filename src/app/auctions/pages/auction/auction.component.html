@@ -290,34 +290,14 @@
           }
         </section>
 
-        @if (auction().data.attributes.exteriorDetails.exteriorVideos.length +
-        auction().data.attributes.interiorDetails.interiorVideos.length +
-        auction().data.attributes.mechanicsDetails.mechanicsVideos.length > 0) {
+        @if (this.videos().videos.length > 0) {
         <section>
           <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
           <swiper-container init="false" #videoGallery>
-            @for (item of this.auction().data.attributes.exteriorDetails.exteriorVideos; track $index) {
+            @for (video of this.videos().videos; track $index) {
             <swiper-slide class="pb-12">
-              <a class="relative" [href]="item" data-fancybox="gallery2" data-type="iframe">
-                <img [src]="getPhotoFromVideoUrl(item)" alt="">
-                <img src="assets/img/icons/play-circle.svg" alt=""
-                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
-              </a>
-            </swiper-slide>
-            }
-            @for (item of this.auction().data.attributes.interiorDetails.interiorVideos; track $index) {
-            <swiper-slide class="pb-12">
-              <a class="relative" [href]="item" data-fancybox="gallery2" data-type="iframe">
-                <img [src]="getPhotoFromVideoUrl(item)" alt="">
-                <img src="assets/img/icons/play-circle.svg" alt=""
-                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
-              </a>
-            </swiper-slide>
-            }
-            @for (item of this.auction().data.attributes.mechanicsDetails.mechanicsVideos; track $index) {
-            <swiper-slide class="pb-12">
-              <a class="relative" [href]="item" data-fancybox="gallery2" data-type="iframe">
-                <img [src]="getPhotoFromVideoUrl(item)" alt="">
+              <a class="relative" [href]="video.videoUrl" data-fancybox="gallery2" data-type="iframe">
+                <img [src]="video.thumbnailUrl" alt="">
                 <img src="assets/img/icons/play-circle.svg" alt=""
                   class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16">
               </a>
