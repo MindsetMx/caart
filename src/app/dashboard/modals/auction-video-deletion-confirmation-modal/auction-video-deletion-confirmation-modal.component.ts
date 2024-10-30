@@ -1,20 +1,20 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
-
 import { AlertModalComponent } from '@shared/components/alert-modal/alert-modal.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
-  selector: 'auction-image-deletion-confirmation-modal',
+  selector: 'auction-video-deletion-confirmation-modal',
   standalone: true,
   imports: [
     AlertModalComponent,
     SpinnerComponent
   ],
-  templateUrl: './auction-image-deletion-confirmation-modal.component.html',
-  styleUrl: './auction-image-deletion-confirmation-modal.component.css',
+  templateUrl: './auction-video-deletion-confirmation-modal.component.html',
+  styleUrl: './auction-video-deletion-confirmation-modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionImageDeletionConfirmationModalComponent {
+export class AuctionVideoDeletionConfirmationModalComponent {
   isOpen = model.required<boolean>();
   deleteImagesChange = output<void>();
 

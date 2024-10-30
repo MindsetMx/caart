@@ -1,6 +1,6 @@
 import { animate, query, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, WritableSignal, effect, input, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, WritableSignal, effect, input, model, signal, viewChild } from '@angular/core';
 import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 
 @Component({
@@ -40,15 +40,15 @@ export class ModalComponent {
   modal = viewChild<ElementRef>('modal');
 
   // @Input() isOpen: WritableSignal<boolean> = signal(false);
-  isOpen = input.required<boolean>();
-  @Output() isOpenChange = new EventEmitter<boolean>();
+  isOpen = model.required<boolean>();
+  // @Output() isOpenChange = new EventEmitter<boolean>();
 
   @Input() modalMaxWidth: string = 'sm:max-w-lg';
   @Input() verticalCenter: boolean = false;
   @Input() scrollable: boolean = false;
 
   closeModal(): void {
-    this.isOpenChange.emit(false);
+    this.isOpen.set(false);
   }
 
   constructor() {

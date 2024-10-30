@@ -19,3 +19,4 @@ export * from './user-details';
 export * from './users';
 export * from './get-live-auctions';
 export * from './get-car-history';
+export * from './video-gallery';

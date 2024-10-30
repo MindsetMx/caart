@@ -1,5 +1,5 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, effect, inject, input, output, signal, untracked, viewChild, viewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, untracked, viewChild, viewChildren } from '@angular/core';
 import { JsonPipe, NgClass } from '@angular/common';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';

@@ -1,5 +1,60 @@
-<!-- <div cdkDropList cdkDropListOrientation="mixed" class="example-list" (cdkDropListDropped)="drop($event)">
-  @for (item of items; track item) {
-    <div class="example-box" cdkDrag>{{item}}</div>
-  }
-</div> -->
+<form class="mt-4 space-y-4" (submit)="saveVideos($event)">
+  <div>
+    <h2 class="mb-2 md:flex md:items-center">
+      Videos
+      <button type="button" (click)="openDeleteAllVideosModal()" class="text-red-500 md:ml-2 flex items-center">
+        <mat-icon>delete</mat-icon>
+        Eliminar todos los videos
+      </button>
+    </h2>
+    <!-- <pre>
+      {{ videosFormArray.value | json }}
+    </pre> -->
+    <div class="board" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event, videosFormArray)">
+      @for (video of videos(); track i; let i = $index) {
+      <div cdkDrag>
+        <div>
+          <button type="button" class="w-full relative" (click)="openModal(i, false)">
+            <img [src]="video?.thumbnailUrl" class="cell w-full h-40 object-contain" />
+
+            <button type="button" class="flex" (click)="openDeleteVideoModal($event, i)"
+              class="absolute flex top-2 right-2 bg-gray1 border rounded-full p-1">
+              <mat-icon class="text-red-500">delete</mat-icon>
+            </button>
+          </button>
+        </div>
+        @if (formArrayHasError(videosFormArray, i)) {
+        <shared-input-error [message]="getErrorFromFormArray(videosFormArray, i)"></shared-input-error>
+        }
+      </div>
+      }
+      <!-- agregar nueva foto mecánica -->
+      <button type="button" (click)="openModal(videosFormArray.length, true)" class="cell">
+        <mat-icon class="text-gray-500">add</mat-icon>
+      </button>
+
+    </div>
+    @if (videosFormArray.errors && videosFormArray.touched) {
+    <shared-input-error message="El campo debe tener al menos un video"></shared-input-error>
+    }
+  </div>
+
+  <button type="submit" [class.opacity-50]="isSaveVideosButtonDisabled()" [disabled]="isSaveVideosButtonDisabled()"
+    class="flex items-center justify-center" sharedPrimaryButton>
+    @if (isSaveVideosButtonDisabled()) {
+    <shared-spinner></shared-spinner>
+    } @else {
+    Guardar cambios
+    }
+  </button>
+</form>
+
+<video-gallery [(isOpen)]="isVideoGalleryOpen" [auctionId]="auctionId()"
+  [allowMultipleSelection]="allowMultipleSelection()" (selectedVideoChange)="setVideoUrl($event)"
+  (selectedVideosChange)="setSelectedVideos($event)"></video-gallery>
+
+<auction-video-deletion-confirmation-modal (deleteImagesChange)="removePhoto()" [(isOpen)]="deleteImageModalIsOpen"
+  [isButtonSubmitDisabled]="deleteImageSubmitButtonIsDisabled()"></auction-video-deletion-confirmation-modal>
+
+<all-videos-deletion-confirmation-modal (deleteImageChange)="removeAllVideos()" [(isOpen)]="deleteAllVideosModalIsOpen"
+  [isButtonSubmitDisabled]="deleteAllVideosSubmitButtonIsDisabled()"></all-videos-deletion-confirmation-modal>

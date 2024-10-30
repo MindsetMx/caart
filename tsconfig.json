@@ -12,9 +12,6 @@
       "@auctions/*": [
         "./src/app/auctions/*"
       ],
-      "@app/*": [
-        "./src/app/*"
-      ],
       "@lastChance/*": [
         "./src/app/last-chance/*"
       ],
@@ -41,6 +38,9 @@
       ],
       "@art/*": [
         "./src/app/art/*"
+      ],
+      "@app/*": [
+        "./src/app/*"
       ],
     },
     "outDir": "./dist/out-tsc",

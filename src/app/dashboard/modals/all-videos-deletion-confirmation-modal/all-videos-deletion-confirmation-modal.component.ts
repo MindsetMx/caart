@@ -4,24 +4,24 @@ import { AlertModalComponent } from '@shared/components/alert-modal/alert-modal.
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
-  selector: 'auction-image-deletion-confirmation-modal',
+  selector: 'all-videos-deletion-confirmation-modal',
   standalone: true,
   imports: [
     AlertModalComponent,
     SpinnerComponent
   ],
-  templateUrl: './auction-image-deletion-confirmation-modal.component.html',
-  styleUrl: './auction-image-deletion-confirmation-modal.component.css',
+  templateUrl: './all-videos-deletion-confirmation-modal.component.html',
+  styleUrl: './all-videos-deletion-confirmation-modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionImageDeletionConfirmationModalComponent {
+export class AllVideosDeletionConfirmationModalComponent {
   isOpen = model.required<boolean>();
-  deleteImagesChange = output<void>();
+  deleteImageChange = output<void>();
 
   isButtonSubmitDisabled = input.required<boolean>();
 
   deleteImage(): void {
-    this.deleteImagesChange.emit();
+    this.deleteImageChange.emit();
   }
 
   closeModal(): void {

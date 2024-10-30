@@ -8,6 +8,7 @@ export interface GetAllCarMediaData {
   interior: GetAllCarMediaUrls;
   exterior: GetAllCarMediaUrls;
   extra: GetAllCarMediaUrls;
+  videos: string[];
 }
 
 export interface GetAllCarMediaUrls {
