@@ -61,7 +61,7 @@ export class RegisterComponent implements OnDestroy {
   states: string[] = states;
   filteredStates: Observable<string[]> = of(this.states);
   telephonePrefixes: TelephonePrefixes[] = telephonePrefixes;
-  dropdownIsOpen: WritableSignal<boolean> = signal(false);
+  // dropdownIsOpen: WritableSignal<boolean> = signal(false);
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   previewImages: WritableSignal<string[]> = signal(['', '']);
   registerForm: FormGroup;
@@ -328,35 +328,35 @@ export class RegisterComponent implements OnDestroy {
     });
   }
 
-  addOptionalFieldsToRegisterForm(): void {
-    console.log('addOptionalFieldsToRegisterForm');
+  // addOptionalFieldsToRegisterForm(): void {
+  //   console.log('addOptionalFieldsToRegisterForm');
 
-    this.registerForm?.addControl('postalCode', new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]));
-    this.registerForm?.addControl('streetAndNumber', new FormControl('', Validators.required));
-    this.registerForm?.addControl('taxId', new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(13)]));
-    this.registerForm?.addControl('validationImg', new FormArray([
-      new FormControl('', Validators.required),
-      new FormControl('', Validators.required),
-    ]));
-    this.registerForm?.addControl('validationType', new FormControl(idTypes.ine, Validators.required));
+  //   this.registerForm?.addControl('postalCode', new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]));
+  //   this.registerForm?.addControl('streetAndNumber', new FormControl('', Validators.required));
+  //   this.registerForm?.addControl('taxId', new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(13)]));
+  //   this.registerForm?.addControl('validationImg', new FormArray([
+  //     new FormControl('', Validators.required),
+  //     new FormControl('', Validators.required),
+  //   ]));
+  //   this.registerForm?.addControl('validationType', new FormControl(idTypes.ine, Validators.required));
 
-    this.validationTypeSubscription = this.validationType.valueChanges.subscribe((value) => {
-      this.setValidationType(value);
-    });
+  //   this.validationTypeSubscription = this.validationType.valueChanges.subscribe((value) => {
+  //     this.setValidationType(value);
+  //   });
 
-    this.setValidationType(idTypes.ine);
-  }
+  //   this.setValidationType(idTypes.ine);
+  // }
 
-  removeOptionalFieldsFromRegisterForm(): void {
-    this.registerForm?.removeControl('postalCode');
-    this.registerForm?.removeControl('streetAndNumber');
-    this.registerForm?.removeControl('taxId');
-    this.registerForm?.removeControl('validationImg');
-    this.registerForm?.removeControl('validationType');
+  // removeOptionalFieldsFromRegisterForm(): void {
+  //   this.registerForm?.removeControl('postalCode');
+  //   this.registerForm?.removeControl('streetAndNumber');
+  //   this.registerForm?.removeControl('taxId');
+  //   this.registerForm?.removeControl('validationImg');
+  //   this.registerForm?.removeControl('validationType');
 
-    if (this.validationTypeSubscription)
-      this.validationTypeSubscription.unsubscribe();
-  }
+  //   if (this.validationTypeSubscription)
+  //     this.validationTypeSubscription.unsubscribe();
+  // }
 
   get validationImgFormArray(): FormArray {
     return this.registerForm.get('validationImg') as FormArray;
@@ -408,17 +408,17 @@ export class RegisterComponent implements OnDestroy {
     return this.#validatorsService.getErrorFromFormArray(this.validationImgFormArray, index);
   }
 
-  toggleDropdown(): void {
-    this.dropdownIsOpen.update((value) => !value);
+  // toggleDropdown(): void {
+  //   this.dropdownIsOpen.update((value) => !value);
 
-    if (!this.registerForm) return;
+  //   if (!this.registerForm) return;
 
-    if (this.dropdownIsOpen()) {
-      this.addOptionalFieldsToRegisterForm();
-    } else {
-      this.removeOptionalFieldsFromRegisterForm();
-    }
-  }
+  //   if (this.dropdownIsOpen()) {
+  //     this.addOptionalFieldsToRegisterForm();
+  //   } else {
+  //     this.removeOptionalFieldsFromRegisterForm();
+  //   }
+  // }
 
   toastSuccess(message: string): void {
     this.#appService.toastSuccess(message);
