@@ -218,7 +218,7 @@
           }
         </section>
 
-        @if (this.videos().videos.length > 0) {
+        @if (this.videos() && this.videos().videos && this.videos().videos.length > 0) {
         <section>
           <h2 class="text-xl font-bold mt-8 mb-6">Galería de video</h2>
           <swiper-container init="false" #videoGallery>
