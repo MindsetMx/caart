@@ -20,3 +20,4 @@ export * from './users';
 export * from './get-live-auctions';
 export * from './get-car-history';
 export * from './video-gallery';
+export * from './coming-soon';

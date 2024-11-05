@@ -12,6 +12,7 @@ import { AuctionArtService } from '@dashboard/services/auction-art.service';
 import { ConfirmReleaseAuctionModalComponent } from '@dashboard/modals/confirm-release-auction-modal/confirm-release-auction-modal.component';
 import { ReleaseArtAuctionForPreviewModalComponent } from '@dashboard/modals/release-art-auction-for-preview-modal/release-art-auction-for-preview-modal.component';
 import { EditArtAuctionPreviewComponent } from '@dashboard/modals/edit-art-auction-preview-modal/edit-art-auction-preview-modal.component';
+import { AuctionTypes } from '@auctions/enums';
 
 @Component({
   selector: 'publish-art',
@@ -44,6 +45,8 @@ export class PublishArtComponent {
   isConfirmReleaseAuctionButtonDisabled = signal<boolean>(false);
   editAuctionPreviewModalIsOpen = signal<boolean>(false);
 
+  auctionTypes = AuctionTypes;
+
   get status(): typeof AuctionArtStatus {
     return AuctionArtStatus;
   }
@@ -56,7 +59,7 @@ export class PublishArtComponent {
     this.isConfirmReleaseAuctionButtonDisabled.set(true);
 
     this.#auctionArtService.releaseArtForLiveAuction$(this.auctionArtId(), event.startDate, event.endDate).subscribe({
-      next: () => {
+      next: (response) => {
         this.releaseAuctionForPreviewModalIsOpen.set(false);
         this.confirmReleaseAuctionModalIsOpen.set(false);
         this.dashboardInfo();
@@ -67,6 +70,14 @@ export class PublishArtComponent {
       },
     }).add(() => {
       this.isConfirmReleaseAuctionButtonDisabled.set(false);
+    });
+  }
+
+  toggleComingSoon(originalId: string): void {
+    this.#auctionArtService.toggleComingSoon$(originalId, this.auctionTypes.art).subscribe((response) => {
+      this.dashboardInfo();
+
+      response.data.comingSoon ? this.toastSuccess('La obra se ha marcado como "Próximamente"') : this.toastSuccess('La obra se ha desmarcado como "Próximamente"');
     });
   }
 

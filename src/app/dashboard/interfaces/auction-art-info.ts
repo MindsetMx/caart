@@ -3,16 +3,17 @@ export interface AuctionArtInfo {
 }
 
 export interface AuctionArtInfoData {
-  auctionArtId: string;
-  year: number;
-  name: string;
-  wizardSteps: AuctionArtInfoWizardSteps;
-  paymentCompleted: boolean;
-  artHistoryExists: boolean;
-  publishImages: boolean;
-  published: boolean;
-  status: AuctionArtStatus;
   aceeptedByUser: boolean;
+  artHistoryExists: boolean;
+  auctionArtId: string;
+  comingSoon: boolean;
+  name: string;
+  paymentCompleted: boolean;
+  published: boolean;
+  publishImages: boolean;
+  status: AuctionArtStatus;
+  wizardSteps: AuctionArtInfoWizardSteps;
+  year: number;
 }
 
 export interface AuctionArtInfoWizardSteps {

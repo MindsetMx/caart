@@ -3,9 +3,10 @@ import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { AuctionCarInfo, GetCarHistory } from '@dashboard/interfaces';
+import { AuctionCarInfo, ComingSoon, GetCarHistory } from '@dashboard/interfaces';
 import { FormGroup } from '@angular/forms';
 import { AppService } from '@app/app.service';
+import { AuctionTypes } from '@auctions/enums';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,10 @@ export class AuctionCarService {
   // http://localhost:3000/car-history/car/{{originalAuctionCarId}}
   getCarHistory$(originalAuctionCarId: string): Observable<GetCarHistory> {
     return this.#http.get<GetCarHistory>(`${this.#baseUrl}/car-history/car/${originalAuctionCarId}`);
+  }
+
+  // http://localhost:3000/auctions-cars/toggle-coming-soon/originalID?type=art
+  toggleComingSoon$(originalId: string, type: AuctionTypes): Observable<ComingSoon> {
+    return this.#http.patch<ComingSoon>(`${this.#baseUrl}/auctions-cars/toggle-coming-soon/${originalId}?type=${type}`, {});
   }
 }

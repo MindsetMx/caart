@@ -6,14 +6,15 @@ export interface AuctionCarInfoData {
   aceeptedByUser: boolean;
   auctionCarId: string;
   brand: string;
+  carHistoryExists: boolean;
+  comingSoon: boolean;
   model: string;
-  year: number;
-  wizardSteps: AuctionCarInfoWizardSteps;
   paymentCompleted: boolean;
   published: boolean;
-  carHistoryExists: boolean;
   publishImages: boolean;
   status: AuctionCarStatus;
+  wizardSteps: AuctionCarInfoWizardSteps;
+  year: number;
 }
 
 export interface AuctionCarInfoWizardSteps {

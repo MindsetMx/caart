@@ -12,6 +12,7 @@ import { AuctionCarService } from '@dashboard/services/auction-car.service';
 import { ConfirmReleaseAuctionModalComponent } from '@dashboard/modals/confirm-release-auction-modal/confirm-release-auction-modal.component';
 import { ReleaseCarAuctionForPreviewModalComponent } from '@dashboard/modals/release-car-auction-for-preview-modal/release-car-auction-for-preview-modal.component';
 import { EditCarAuctionPreviewModalComponent } from '@app/dashboard/modals/edit-car-auction-preview-modal/edit-car-auction-preview-modal.component';
+import { AuctionTypes } from '@auctions/enums';
 
 @Component({
   selector: 'publish-cars',
@@ -44,6 +45,8 @@ export class PublishCarsComponent {
   isConfirmReleaseAuctionButtonDisabled = signal<boolean>(false);
   editAuctionPreviewModalIsOpen = signal<boolean>(false);
 
+  auctionTypes = AuctionTypes;
+
   constructor() {
     this.dashboardInfo();
   }
@@ -59,7 +62,6 @@ export class PublishCarsComponent {
       next: () => {
         this.releaseAuctionForPreviewModalIsOpen.set(false);
         this.confirmReleaseAuctionModalIsOpen.set(false);
-        this.dashboardInfo();
         this.toastSuccess('El auto se ha publicado en subastas en vivo');
       },
       error: (error) => {
@@ -67,6 +69,14 @@ export class PublishCarsComponent {
       },
     }).add(() => {
       this.isConfirmReleaseAuctionButtonDisabled.set(false);
+    });
+  }
+
+  toggleComingSoon(originalId: string): void {
+    this.#auctionCarService.toggleComingSoon$(originalId, this.auctionTypes.car).subscribe((response) => {
+      this.dashboardInfo();
+
+      response.data.comingSoon ? this.toastSuccess('El auto se ha marcado como próximo') : this.toastSuccess('El auto se ha desmarcado como próximo');
     });
   }
 

@@ -3,8 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { AppService } from '@app/app.service';
 import { environments } from '@env/environments';
 import { Observable } from 'rxjs';
-import { AuctionArtInfo } from '@dashboard/interfaces';
+import { AuctionArtInfo, ComingSoon } from '@dashboard/interfaces';
 import { FormGroup } from '@angular/forms';
+import { AuctionTypes } from '@auctions/enums';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,9 @@ export class AuctionArtService {
   // http://localhost:3000/car-history/art/{{originalAuctionArtId}}
   getArtHistory$(originalAuctionArtId: string): Observable<any> {
     return this.#http.get(`${this.#baseUrl}/car-history/art/${originalAuctionArtId}`);
+  }
+
+  toggleComingSoon$(originalId: string, type: AuctionTypes): Observable<ComingSoon> {
+    return this.#http.patch<ComingSoon>(`${this.#baseUrl}/auctions-cars/toggle-coming-soon/${originalId}?type=${type}`, {});
   }
 }

@@ -140,6 +140,9 @@
               <button (click)="openConfirmReleaseAuctionModal(auction.auctionCarId)" mat-menu-item>
                 <span>Liberar auto para subasta en vivo</span>
               </button>
+              <button mat-menu-item (click)="toggleComingSoon(auction.auctionCarId)">
+                {{auction.comingSoon ? 'Desactivar proximamente':'Activar proximamente'}}
+              </button>
               }
             </mat-menu>
             }
