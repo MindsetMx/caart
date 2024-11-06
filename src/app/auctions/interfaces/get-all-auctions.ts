@@ -13,6 +13,7 @@ export interface GetAllAuctionsData {
 }
 
 export interface GetAllAuctionsAttributes {
+  startDate: string;
   reserve: boolean;
   premium: boolean;
   lastBid: number;

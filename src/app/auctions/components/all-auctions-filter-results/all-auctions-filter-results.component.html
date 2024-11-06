@@ -134,18 +134,18 @@
   @switch (auction.type) {
   @case (auctionTypesAll.auctionsCar){
   <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [isComingSoon]="false" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
-    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" [status]="auction.attributes.status"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="false" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" [status]="auction.attributes.status"
     [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getLiveAuctions(false)"></auction-card>
   }
 
   @case (auctionTypesAll.auctionsArt) {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [isComingSoon]="false" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="false" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getLiveAuctions(false)"></art-auction-card>
   }
@@ -155,17 +155,17 @@
   @switch (auction.type) {
   @case (auctionTypesAll.auctionsCar) {
   <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [isComingSoon]="false" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="false" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
   }
 
   @case (auctionTypesAll.auctionsArt) {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [isComingSoon]="false" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="false" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
   }
   }
@@ -195,18 +195,18 @@
   @switch (auction.type) {
   @case (auctionTypesAll.auctionsCar) {
   <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [isComingSoon]="true" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
-    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" [status]="auction.attributes.status"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="true" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" [status]="auction.attributes.status"
     [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getAllComingSoonAuctions(false)"></auction-card>
   }
 
   @case (auctionTypesAll.auctionsArt) {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [isComingSoon]="true" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="true" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getAllComingSoonAuctions(false)"></art-auction-card>
   }
@@ -215,17 +215,17 @@
   @switch (auction.type) {
   @case (auctionTypesAll.auctionsCar) {
   <auction-card [originalAuctionCarId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [isComingSoon]="true" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="true" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
   }
 
   @case (auctionTypesAll.auctionsArt) {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
-    [isComingSoon]="true" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="true" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
   }
   }

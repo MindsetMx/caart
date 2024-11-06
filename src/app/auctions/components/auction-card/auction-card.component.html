@@ -52,7 +52,11 @@
     <span class="flex items-center bg-gray1 rounded-md px-4 py-2"
       [ngClass]="{'mt-8': reserve() === true && !premium() && isHomeRoute}">
       @if (isComingSoon()) {
+      @if (startDate()) {
+      Empieza: {{ startDate() | date: 'dd/MM/yyyy' }}
+      }@else {
       Próximamente
+      }
       }@else {
       Oferta: {{ lastBid()
       | currency:'USD':'symbol':'1.0-2' }} MXN &nbsp; · &nbsp;

@@ -160,17 +160,17 @@
   @defer () {
   @if (last) {
   <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
-    [isComingSoon]="false" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="false" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getLiveAuctions(false)"></auction-card>
   }
   @else {
   <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
-    [isComingSoon]="false" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="false" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
   }
   } @placeholder (minimum 300ms) {
@@ -196,17 +196,17 @@
   @defer () {
   @if (last) {
   <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
-    [isComingSoon]="true" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="true" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getLiveAuctions(false)"></auction-card>
   }
   @else {
   <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
-    [isComingSoon]="true" [status]="auction.attributes.status" [title]="auction.attributes.title"
-    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [startDate]="auction.attributes.startDate" [isComingSoon]="true" [status]="auction.attributes.status"
+    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
+    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
     [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
   }
   } @placeholder (minimum 300ms) {

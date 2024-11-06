@@ -26,4 +26,5 @@ export interface GetLiveCarAuctionAttributes {
   cover: string;
   status: AuctionStatus;
   secondsRemaining: number;
+  startDate: string;
 }

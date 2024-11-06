@@ -27,6 +27,7 @@ export interface VehicleAuctionAttributes {
   title: string;
   status: AuctionStatus;
   secondsRemaining: number;
+  startDate: string;
 }
 
 export interface VehicleAuctionMeta {

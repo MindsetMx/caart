@@ -22,4 +22,5 @@ export interface GetLiveArtAuctionAttributes {
   extract: string;
   status: AuctionStatus;
   secondsRemaining: number;
+  startDate: string;
 }
