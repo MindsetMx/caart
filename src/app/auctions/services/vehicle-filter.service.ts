@@ -46,4 +46,15 @@ export class VehicleFilterService {
 
     return this.#http.get<VehicleAuction>(url, { params });
   }
+
+  // http://localhost:3000/auctions-cars/coming-soon-car?page=1&size=10
+  getComingSoonAuctions$(page: number, size: number): Observable<VehicleAuction> {
+    const url = `${this.#baseUrl}/auctions-cars/coming-soon-car`;
+
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
+
+    return this.#http.get<VehicleAuction>(url, { params });
+  }
 }

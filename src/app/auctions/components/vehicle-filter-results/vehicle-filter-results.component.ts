@@ -42,6 +42,8 @@ export class VehicleFilterResultsComponent {
 
   currentPage = signal<number>(1);
   size = signal<number>(10);
+  currentPage2 = signal<number>(1);
+  size2 = signal<number>(10);
 
   auctionType = signal<string[]>([]);
   category = signal<string[]>([]);
@@ -133,6 +135,7 @@ export class VehicleFilterResultsComponent {
   #vehicleFilterService = inject(VehicleFilterService);
 
   auctions = signal<VehicleAuction>({} as VehicleAuction);
+  comingSoonAuctions = signal<VehicleAuction>({} as VehicleAuction);
 
   updatedAuctionCarEffect = effect(() => {
     this.addCarAuction();
@@ -145,6 +148,14 @@ export class VehicleFilterResultsComponent {
 
     this.getLiveAuctions(true);
   }, { allowSignalWrites: true });
+
+  getComingSoonAuctionsEffect = effect(() => {
+    untracked(() => {
+      this.currentPage2.set(1);
+    });
+
+    this.getComingSoonAuctions(true);
+  });
 
   auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
   categoryEffect = effect(() => this.categoryControl.setValue(this.category(), { emitEvent: false }));
@@ -244,6 +255,34 @@ export class VehicleFilterResultsComponent {
           }
 
           this.auctions.update((auction) => {
+            return {
+              data: auction ? [...auction.data, ...auctions.data] : auctions.data,
+              meta: auctions.meta,
+            };
+          });
+        });
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  getComingSoonAuctions(replace: boolean = false): void {
+    this.#vehicleFilterService.getComingSoonAuctions$(
+      untracked(() => this.currentPage2()),
+      untracked(() => this.size2()),
+    ).subscribe({
+      next: (auctions: VehicleAuction) => {
+        untracked(() => {
+          if (replace) {
+            this.comingSoonAuctions.set(auctions);
+            this.currentPage2.update((page) => page + 1);
+            this.getComingSoonAuctions(false);
+            return;
+          }
+
+          this.comingSoonAuctions.update((auction) => {
             return {
               data: auction ? [...auction.data, ...auctions.data] : auctions.data,
               meta: auctions.meta,

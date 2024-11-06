@@ -32,6 +32,7 @@
   }
 
   @if (specificAuction().data && specificAuction().data.status === 'preview') {
+  @if (auction().data.attributes.isOwner) {
   <div
     class="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
     <div class="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
@@ -59,6 +60,7 @@
         }
       </p>
 
+
       @if (auction().data.attributes.acceptedBySeller === false) {
       <button (click)="openConfirmAcceptPreviewArtModal(auction().data.attributes.originalAuctionArtId)"
         class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
@@ -76,6 +78,7 @@
     <div class="flex flex-1 justify-end">
     </div>
   </div>
+  }
   }
 
   <div class="sticky inset-0 z-[5] bg-white pt-4 pb-2">
@@ -105,6 +108,8 @@
         <div
           class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
           @if(specificAuction().data && specificAuction().data.bids.length > 0) {
+
+          @if (!auction().data.attributes.comingSoon) {
           <div class="py-1">
             <p class="leading-5">
               {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
@@ -113,6 +118,7 @@
             <span class="text-sm">Precio de salida</span>
             }
           </div>
+          }
 
           <div>
             @if (specificAuction().data.bids[0].userId !== null) {
@@ -137,6 +143,7 @@
           </div>
           }
           @if (auction().data) {
+          @if (!auction().data.attributes.comingSoon) {
           @switch (auction().data.attributes.status) {
           @case (auctionCarStatus.Preview) {
           @if (specificAuction().data) {
@@ -160,6 +167,7 @@
               <br>
             </div>
           </div>
+          }
           }
           }
           }

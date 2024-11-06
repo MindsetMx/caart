@@ -34,6 +34,7 @@
         </div>
         } @else {
         @if(specificAuction().data.bids.length > 0) {
+        @if (!auction().data.attributes.comingSoon) {
         <div class="py-1 leading-5">
           <p>
             {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
@@ -43,6 +44,7 @@
           <span class="text-sm">Precio de salida</span>
           }
         </div>
+        }
         }
         }
 
@@ -66,11 +68,13 @@
         @case (auctionCarStatus.Preview) {
         @if (specificAuction().data) {
         <div [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
+          @if (!auction().data.attributes.comingSoon) {
           {{auction().data.attributes.daysActive}}
           @if (auction().data.attributes.daysActive === 1) {
           día
           } @else {
           días
+          }
           }
         </div>
         }

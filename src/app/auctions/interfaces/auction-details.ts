@@ -12,6 +12,8 @@ export interface AuctionDetailsData {
 
 export interface AuctionDetailsAttributes {
   acceptedBySeller: boolean;
+  isOwner: boolean;
+  comingSoon: boolean;
   _id: string;
   originalAuctionCarId: string;
   isWithReserve: boolean;

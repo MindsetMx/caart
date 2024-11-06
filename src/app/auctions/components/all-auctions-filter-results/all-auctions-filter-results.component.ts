@@ -48,6 +48,8 @@ export class AllAuctionsFilterResultsComponent {
 
   currentPage = signal<number>(1);
   size = signal<number>(10);
+  currentPage2 = signal<number>(1);
+  size2 = signal<number>(10);
 
   auctionType = signal<string[]>([]);
   era = signal<string[]>([]);
@@ -128,6 +130,7 @@ export class AllAuctionsFilterResultsComponent {
   #allAuctionsService = inject(GetAllAuctionsService);
 
   auctions = signal<GetAllAuctions>({} as GetAllAuctions);
+  comingSoonAuctions = signal<GetAllAuctions>({} as GetAllAuctions);
 
   get auctionTypesAll(): typeof AuctionTypesAll {
     return AuctionTypesAll;
@@ -147,6 +150,14 @@ export class AllAuctionsFilterResultsComponent {
     });
 
     this.getLiveAuctions(true);
+  }, { allowSignalWrites: true });
+
+  getAllComingSoonAuctionsEffect = effect(() => {
+    untracked(() => {
+      this.currentPage2.set(1);
+    });
+
+    this.getAllComingSoonAuctions(true);
   }, { allowSignalWrites: true });
 
   auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
@@ -282,6 +293,29 @@ export class AllAuctionsFilterResultsComponent {
       error: (err) => {
         console.error(err);
       },
+    });
+  }
+
+  getAllComingSoonAuctions(replace: boolean = false): void {
+    this.#allAuctionsService.getAllComingSoonAuctions$(
+      untracked(() => this.currentPage2()),
+      untracked(() => this.size2())
+    ).subscribe((response) => {
+      untracked(() => {
+        if (replace) {
+          this.comingSoonAuctions.set(response);
+          this.currentPage2.update((page) => page + 1);
+          this.getAllComingSoonAuctions(false);
+          return;
+        }
+
+        this.comingSoonAuctions.update((auction) => {
+          return {
+            data: auction ? [...auction.data, ...response.data] : response.data,
+            meta: response.meta,
+          };
+        });
+      });
     });
   }
 

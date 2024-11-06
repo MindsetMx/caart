@@ -160,16 +160,18 @@
   @defer () {
   @if (last) {
   <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
-    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
-    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining" intersection
+    [isComingSoon]="false" [status]="auction.attributes.status" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getLiveAuctions(false)"></auction-card>
   }
   @else {
   <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
-    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
-    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
-    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
+    [isComingSoon]="false" [status]="auction.attributes.status" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
   }
   } @placeholder (minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
@@ -186,6 +188,39 @@
   }
   @else {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+
+  <!-- coming soon auctions -->
+  @if (comingSoonAuctions()) {
+  @for (auction of comingSoonAuctions().data; track $index; let last = $last) {
+  @defer () {
+  @if (last) {
+  <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
+    [isComingSoon]="true" [status]="auction.attributes.status" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [secondsRemaining]="auction.attributes.secondsRemaining" intersection
+    (visible)="getLiveAuctions(false)"></auction-card>
+  }
+  @else {
+  <auction-card [originalAuctionCarId]="auction.originalAuctionCarId" [cover]="auction.attributes.cover"
+    [isComingSoon]="true" [status]="auction.attributes.status" [title]="auction.attributes.title"
+    [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium" [extract]="auction.attributes.extract"
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
+    [secondsRemaining]="auction.attributes.secondsRemaining"></auction-card>
+  }
+  } @placeholder (minimum 300ms) {
+  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+  @loading (after 100ms) {
+  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+  }
+  }
+  @empty {
+  <div class="col-span-3 mt-12">
+    <p class=" text-center text-gray4">No se encontraron resultados.</p>
+  </div>
+  }
   }
 
 </div>

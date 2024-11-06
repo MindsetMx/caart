@@ -10,6 +10,8 @@ export interface ArtAuctionDetailsData {
 
 export interface ArtAuctionDetailsAttributes {
   acceptedBySeller: boolean;
+  isOwner: boolean;
+  comingSoon: boolean;
   _id: string;
   originalAuctionArtId: string;
   isWithReserve: boolean;

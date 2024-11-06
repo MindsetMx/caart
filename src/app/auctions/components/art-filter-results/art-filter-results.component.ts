@@ -40,6 +40,8 @@ export class ArtFilterResultsComponent {
 
   currentPage = signal<number>(0);
   size = signal<number>(10);
+  currentPage2 = signal<number>(1);
+  size2 = signal<number>(10);
 
   auctionType = signal<string[]>([]);
   category = signal<string[]>([]);
@@ -170,10 +172,19 @@ export class ArtFilterResultsComponent {
   #artFilterService = inject(ArtFilterService);
 
   auctions = signal<ArtAuction>({} as ArtAuction);
+  comingSoonAuctions = signal<ArtAuction>({} as ArtAuction);
 
   updatedAuctionArtEffect = effect(() => {
     this.addArtAuction();
   }, { allowSignalWrites: true });
+
+  getComingSoonArtAuctionsEffect = effect(() => {
+    untracked(() => {
+      this.currentPage2.set(1);
+    });
+
+    this.getComingSoonArtAuctions(true);
+  });
 
   ngOnInit(): void {
     this.getLiveAuctions(true);
@@ -246,6 +257,31 @@ export class ArtFilterResultsComponent {
         }
 
         this.auctions.update((auction) => {
+          return {
+            data: auction ? [...auction.data, ...auctions.data] : auctions.data,
+            meta: auctions.meta,
+          };
+        });
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  getComingSoonArtAuctions(replace: boolean = false): void {
+    this.#artFilterService.getComingSoonArtAuctions$(
+      untracked(() => this.currentPage2() + 1),
+      untracked(() => this.size2()),
+    ).subscribe({
+      next: (auctions: ArtAuction) => {
+        if (replace) {
+          this.comingSoonAuctions.set(auctions);
+          this.getComingSoonArtAuctions(false);
+          return;
+        }
+
+        this.comingSoonAuctions.update((auction) => {
           return {
             data: auction ? [...auction.data, ...auctions.data] : auctions.data,
             meta: auctions.meta,

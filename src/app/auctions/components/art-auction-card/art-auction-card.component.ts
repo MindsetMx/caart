@@ -49,6 +49,7 @@ export class ArtAuctionCardComponent implements OnDestroy {
   lastBid = input.required<number>();
   endDate = input.required<string>();
   status = input.required<string>();
+  isComingSoon = input.required<boolean>();
   secondsRemaining = model.required<number>();
 
   source = input<FavoritesSource>();
