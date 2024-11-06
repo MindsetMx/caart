@@ -7,15 +7,25 @@
         {{auction().data.attributes.title}}
       </span>
 
-      @if (auction().data.attributes.isWithReserve === false) {
-      <no-reserve-tag-component class="inline-flex align-middle"
-        [ngClass]="{'mr-2': auction().data.attributes.premium === true}"></no-reserve-tag-component>
-      }
-
-      @if (auction().data.attributes.premium === true) {
-      <div
-        class="inline-block align-middle text-xs md:text-sm w-fit bg-[gainsboro] text-black px-2 md:px-4 py-1 rounded-2xl border-black border-2">
-        Premium
+      @if (auction().data.attributes.isWithReserve === false || auction().data.attributes.premium === true || (auction()
+      && auction().data && auction().data.attributes.comingSoon)) {
+      <div class="gap-2 inline-flex items-center">
+        @if (auction().data.attributes.isWithReserve === false) {
+        <no-reserve-tag-component class="inline-flex align-middle"
+          [ngClass]="{'mr-2': auction().data.attributes.premium === true}"></no-reserve-tag-component>
+        }
+        @if (auction().data.attributes.premium === true) {
+        <div
+          class="inline-block align-middle text-xs md:text-sm w-fit bg-[gainsboro] text-black px-2 md:px-4 py-1 rounded-2xl border-black border-2">
+          Premium
+        </div>
+        }
+        @if (auction() && auction().data && auction().data.attributes.comingSoon) {
+        <div
+          class="inline-block align-middle text-xs md:text-sm w-fit bg-orange-200 text-orange-700 px-2 md:px-4 py-1 rounded-2xl border-red-700 border-2">
+          Proximamente
+        </div>
+        }
       </div>
       }
     </h1>
