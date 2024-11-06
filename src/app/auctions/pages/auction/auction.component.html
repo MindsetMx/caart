@@ -330,13 +330,16 @@
           <image-gallery [photos]="imagesPublish().data.fotosMecanicas" [index]="5"></image-gallery>
         </section>
 
+        @if (!auction().data.attributes.comingSoon) {
         @if (auction().data.attributes.status !== auctionCarStatus.Preview) {
         <auction-summary class="hidden md:block" [auction]="auction()" [metrics]="metrics()"
           [countdownConfig]="countdownConfig()" [specificAuction]="specificAuction()" [auctionType]="auctionType.car"
           (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
         }
+        }
 
+        @if (auction() && auction().data && !auction().data.attributes.comingSoon) {
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {
         <section class="mt-6">
           @defer (when comments().data) {
@@ -351,9 +354,9 @@
           }
 
           <!-- <div class="mt-4">
-                <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
-                <span class="underline">Mantenme en la conversación por correo</span>
-              </div> -->
+                  <img class="inline mr-2" src="assets/img/icons/notifications-outline.svg" alt="">
+                  <span class="underline">Mantenme en la conversación por correo</span>
+                </div> -->
 
           @for (comment of comments().data; track $index) {
           <comment [comment]="comment" [auctionCarPublishId]="auction().data.attributes.originalAuctionCarId"
@@ -368,52 +371,53 @@
           }
 
           <!-- <div class="md:grid md:grid-cols-12 md:gap-x-4 md:gap-y-6 mt-16">
-                <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-                  Nov 15 a las 03:38 PM
-                </div>
-                <div class="md:col-span-9 mb-4 md:mb-0">
-                  <div class="px-2 py-1 rounded-lg bg-gray1">
-                    <p class="font-semibold">John Smith (Vendedor)</p>
-                    <p>19,914 km</p>
-                    <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                    <span class="align-middle">2</span>
+                  <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                    Nov 15 a las 03:38 PM
                   </div>
-                </div>
+                  <div class="md:col-span-9 mb-4 md:mb-0">
+                    <div class="px-2 py-1 rounded-lg bg-gray1">
+                      <p class="font-semibold">John Smith (Vendedor)</p>
+                      <p>19,914 km</p>
+                      <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                      <span class="align-middle">2</span>
+                    </div>
+                  </div>
 
-                <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-                  Nov 15 a las 02:54 PM
-                </div>
-                <div class="md:col-span-9 mb-4 md:mb-0">
-                  <div class="px-2 py-1">
-                    <p class="font-semibold">Andrés Gallardo</p>
-                    <p>¿Qué kilometraje tiene el auto?</p>
-                    <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                    <span class="align-middle">0</span>
+                  <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                    Nov 15 a las 02:54 PM
                   </div>
-                </div>
+                  <div class="md:col-span-9 mb-4 md:mb-0">
+                    <div class="px-2 py-1">
+                      <p class="font-semibold">Andrés Gallardo</p>
+                      <p>¿Qué kilometraje tiene el auto?</p>
+                      <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                      <span class="align-middle">0</span>
+                    </div>
+                  </div>
 
-                <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-                  Nov 15 a las 02:38 PM
-                </div>
-                <div class="md:col-span-9 mb-4 md:mb-0">
-                  <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
-                    Nueva puja de $215,000 por Adam Smith
+                  <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                    Nov 15 a las 02:38 PM
                   </div>
-                </div>
+                  <div class="md:col-span-9 mb-4 md:mb-0">
+                    <div class="px-2 py-1 rounded-lg bg-gray1 bg-green1/30">
+                      Nueva puja de $215,000 por Adam Smith
+                    </div>
+                  </div>
 
-                <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
-                  Nov 15 a las 11:43 AM
-                </div>
-                <div class="md:col-span-9 mb-4 md:mb-0">
-                  <div class="px-2 py-1">
-                    <p class="font-semibold">Andrés Gallardo</p>
-                    <p>El color es magnifico</p>
-                    <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
-                    <span class="align-middle">0</span>
+                  <div class="md:col-span-3 md:px-2 md:py-1 text-sm">
+                    Nov 15 a las 11:43 AM
                   </div>
-                </div>
-              </div> -->
+                  <div class="md:col-span-9 mb-4 md:mb-0">
+                    <div class="px-2 py-1">
+                      <p class="font-semibold">Andrés Gallardo</p>
+                      <p>El color es magnifico</p>
+                      <img class="inline mr-2" src="assets/img/icons/thumbs-up-outline.svg" alt="">
+                      <span class="align-middle">0</span>
+                    </div>
+                  </div>
+                </div> -->
         </section>
+        }
         }
         }
 
@@ -481,11 +485,13 @@
           </ol>
           }
 
+          @if (auction() && auction().data && !auction().data.attributes.comingSoon) {
           @defer (when specificAuction().data) {
           @if (specificAuction().data.status === 'active') {
           <button (click)="openMakeAnOfferModal()" classes="font-optima font-semibold" sharedPrimaryButton>
             HACER UNA OFERTA
           </button>
+          }
           }
           }
         </section>
@@ -496,6 +502,7 @@
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
+        @if (auction() && auction().data && !auction().data.attributes.comingSoon) {
         @if (specificAuction().data && specificAuction().data.status !== 'preview')
         {
         <bid-history (loadMoreBidsChange)="getBids(false)"
@@ -503,6 +510,7 @@
           [userName]="specificAuction().data && specificAuction().data.winnerInfo ? specificAuction().data.winnerInfo.userName : undefined"
           [purchaseDate]="specificAuction().data && specificAuction().data.winnerInfo ? specificAuction().data.winnerInfo.purchaseDate : undefined"
           [bids]="bids()" [isWinnerInfoInitialized]="!!specificAuction().data.winnerInfo"></bid-history>
+        }
         }
 
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {

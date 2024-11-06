@@ -104,12 +104,12 @@
       </h1>
       }
 
+      @if (auction() && auction().data && !auction().data.attributes.comingSoon) {
       <div class="flex w-full justify-between">
         <div
           class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
           @if(specificAuction().data && specificAuction().data.bids.length > 0) {
 
-          @if (!auction().data.attributes.comingSoon) {
           <div class="py-1">
             <p class="leading-5">
               {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
@@ -118,7 +118,6 @@
             <span class="text-sm">Precio de salida</span>
             }
           </div>
-          }
 
           <div>
             @if (specificAuction().data.bids[0].userId !== null) {
@@ -143,7 +142,6 @@
           </div>
           }
           @if (auction().data) {
-          @if (!auction().data.attributes.comingSoon) {
           @switch (auction().data.attributes.status) {
           @case (auctionCarStatus.Preview) {
           @if (specificAuction().data) {
@@ -167,7 +165,6 @@
               <br>
             </div>
           </div>
-          }
           }
           }
           }
@@ -211,6 +208,7 @@
           </div>
         </div>
       </div>
+      }
     </div>
   </div>
 
@@ -357,12 +355,14 @@
         </section>
         }
 
+        @if (auction() && auction().data && !auction().data.attributes.comingSoon) {
         @defer (when auction().data) {
         @if (auction().data.attributes.status !== auctionCarStatus.Preview) {
         <auction-summary [auction]="auction()" [metrics]="metrics()" [auctionType]="auctionType.art"
           [countdownConfig]="countdownConfig()" [specificAuction]="specificAuction()"
           (makeAnOfferModalIsOpenChanged)="openMakeAnOfferModal($event)">
         </auction-summary>
+        }
         }
 
         @if (specificAuction().data && specificAuction().data.status !== 'preview') {
@@ -453,7 +453,9 @@
           <button classes="font-optima font-semibold" sharedPrimaryButton>VENDE CON NOSOTROS</button>
         </section>
 
-        @if (specificAuction().data && specificAuction().data.status !== 'preview') {
+        @if (auction() && auction().data && !auction().data.attributes.comingSoon && specificAuction().data &&
+        specificAuction().data.status !==
+        'preview') {
         <bid-history (loadMoreBidsChange)="getBids(false)"
           [amount]="specificAuction().data && specificAuction().data.winnerInfo ? specificAuction().data.winnerInfo.amount : undefined"
           [userName]="specificAuction().data && specificAuction().data.winnerInfo ? specificAuction().data.winnerInfo.userName : undefined"

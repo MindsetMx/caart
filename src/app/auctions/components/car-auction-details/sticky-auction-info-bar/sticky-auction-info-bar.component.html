@@ -21,6 +21,7 @@
     </h1>
     }
 
+    @if (auction() && auction().data && !auction().data.attributes.comingSoon) {
     <div class="flex w-full justify-between mt-1">
       <div
         class="grid items-center text-xs md:text-xl gap-3 grid-flow-col lg:grid-cols-3 lg:gap-x-4 md:gap-y-0 w-fit divide-x divide-gray3">
@@ -29,12 +30,11 @@
         <div class="py-1">
           {{specificAuction().data.winnerInfo.amount | currency:'USD':'symbol':'1.0-2'}} MXN
           <!-- <p class="text-sm">
-            Vendido en
-          </p> -->
+              Vendido en
+            </p> -->
         </div>
         } @else {
         @if(specificAuction().data.bids.length > 0) {
-        @if (!auction().data.attributes.comingSoon) {
         <div class="py-1 leading-5">
           <p>
             {{specificAuction().data.bids[0].bidAmount | currency:'USD':'symbol':'1.0-2'}} MXN
@@ -44,7 +44,6 @@
           <span class="text-sm">Precio de salida</span>
           }
         </div>
-        }
         }
         }
 
@@ -115,8 +114,8 @@
       </div>
       <div class="flex lg:grid lg:grid-flow-col gap-x-2 md:gap-x-4 gap-y-4 items-center md:text-center">
         <!-- <div class="ml-auto">
-          <img class="inline-block w-5 h-5 md:w-7 md:h-7" src="assets/img/icons/share.svg" alt="">
-        </div> -->
+            <img class="inline-block w-5 h-5 md:w-7 md:h-7" src="assets/img/icons/share.svg" alt="">
+          </div> -->
         <button (click)="followOrUnfollowAuction(auction().data.attributes.originalAuctionCarId)">
           <shared-star [shouldFill]="isFollowing() ? true : false"
             classes="inline-block w-5 h-5 md:w-7 md:h-7"></shared-star>
@@ -133,5 +132,6 @@
         </div>
       </div>
     </div>
+    }
   </div>
 </div>
