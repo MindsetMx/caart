@@ -180,11 +180,6 @@
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
   }
   }
-  @empty {
-  <div class="col-span-3 mt-12">
-    <p class=" text-center text-gray4">No se encontraron resultados.</p>
-  </div>
-  }
   }
   @else {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
@@ -215,11 +210,6 @@
   @loading (after 100ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
   }
-  }
-  @empty {
-  <div class="col-span-3 mt-12">
-    <p class=" text-center text-gray4">No se encontraron resultados.</p>
-  </div>
   }
   }
 </div>
