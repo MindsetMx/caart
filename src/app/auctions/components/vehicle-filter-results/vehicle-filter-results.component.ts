@@ -1,18 +1,18 @@
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, HostListener, WritableSignal, effect, inject, model, signal, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, debounceTime } from 'rxjs';
-import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { AuctionCardComponent } from '@app/auctions/components/auction-card/auction-card.component';
+import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
 import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
-import { GetLiveCarAuction, VehicleAuction } from '@app/auctions/interfaces';
+import { GetLiveCarAuction, VehicleAuction } from '@auctions/interfaces';
 import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
-import { VehicleFilterService } from '@app/auctions/services/vehicle-filter.service';
+import { VehicleFilterService } from '@auctions/services/vehicle-filter.service';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
@@ -42,8 +42,6 @@ export class VehicleFilterResultsComponent {
 
   currentPage = signal<number>(1);
   size = signal<number>(10);
-  currentPage2 = signal<number>(1);
-  size2 = signal<number>(10);
 
   auctionType = signal<string[]>([]);
   category = signal<string[]>([]);
@@ -133,9 +131,10 @@ export class VehicleFilterResultsComponent {
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
   #vehicleFilterService = inject(VehicleFilterService);
+  #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
 
   auctions = signal<VehicleAuction>({} as VehicleAuction);
-  comingSoonAuctions = signal<VehicleAuction>({} as VehicleAuction);
 
   updatedAuctionCarEffect = effect(() => {
     this.addCarAuction();
@@ -149,14 +148,6 @@ export class VehicleFilterResultsComponent {
     this.getLiveAuctions(true);
   }, { allowSignalWrites: true });
 
-  getComingSoonAuctionsEffect = effect(() => {
-    untracked(() => {
-      this.currentPage2.set(1);
-    });
-
-    this.getComingSoonAuctions(true);
-  });
-
   auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
   categoryEffect = effect(() => this.categoryControl.setValue(this.category(), { emitEvent: false }));
   eraEffect = effect(() => this.eraControl.setValue(this.era(), { emitEvent: false }));
@@ -165,8 +156,33 @@ export class VehicleFilterResultsComponent {
   orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy(), { emitEvent: false }));
   endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn(), { emitEvent: false }));
   statesEffect = effect(() => this.statesControl.setValue(this.states(), { emitEvent: false }));
+  searchEffect = effect(() => this.searchControl.setValue(this.search(), { emitEvent: false }));
 
   constructor() {
+    // Leer query params iniciales
+    this.#activatedRoute.queryParams.pipe(
+      takeUntilDestroyed()
+    ).subscribe(params => {
+      if (Object.keys(params).length > 0) {
+        this.auctionType.set(params['auctionType']?.split(',') || []);
+        this.category.set(params['category']?.split(',') || []);
+        this.era.set(params['era']?.split(',') || []);
+        if (params['yearRange']) {
+          const [yearFrom, yearTo] = params['yearRange'].split('-').map(Number);
+          if (!isNaN(yearFrom) && !isNaN(yearTo)) {
+            this.yearRange.set({ yearFrom, yearTo });
+          }
+        } else {
+          this.yearRange.set(undefined);
+        }
+        this.currentOffer.set(params['currentOffer']?.split(',') || []);
+        this.orderBy.set(params['orderBy'] || 'EndingSoonest');
+        this.endsIn.set(params['endsIn']?.split(',') || []);
+        this.states.set(params['states']?.split(',') || []);
+        this.search.set(params['search'] || '');
+      }
+    });
+
     this.initializeControl(this.searchControl, this.search, 300);
     this.initializeControl(this.orderByControl, this.orderBy);
     this.initializeControl(this.auctionTypeControl, this.auctionType);
@@ -178,12 +194,35 @@ export class VehicleFilterResultsComponent {
     this.initializeControl(this.statesControl, this.states);
   }
 
+  private updateQueryParams(): void {
+    const queryParams: any = {};
+
+    if (this.auctionType().length) queryParams.auctionType = this.auctionType().join(',');
+    if (this.category().length) queryParams.category = this.category().join(',');
+    if (this.era().length) queryParams.era = this.era().join(',');
+    if (this.yearRange()?.yearFrom && this.yearRange()?.yearTo) {
+      queryParams.yearRange = `${this.yearRange()?.yearFrom}-${this.yearRange()?.yearTo}`;
+    }
+    if (this.currentOffer().length) queryParams.currentOffer = this.currentOffer().join(',');
+    if (this.orderBy() !== 'EndingSoonest') queryParams.orderBy = this.orderBy();
+    if (this.endsIn().length) queryParams.endsIn = this.endsIn().join(',');
+    if (this.states().length) queryParams.states = this.states().join(',');
+    if (this.search()) queryParams.search = this.search();
+
+    this.#router.navigate([], {
+      relativeTo: this.#activatedRoute,
+      queryParams,
+      replaceUrl: true,
+    });
+  }
+
   private initializeControl(control: AbstractControl, target: WritableSignal<any>, debounce: number = 0) {
     control.valueChanges.pipe(
       takeUntilDestroyed(),
       debounceTime(debounce),
     ).subscribe((value) => {
       target.set(value);
+      this.updateQueryParams();
     });
   }
 
@@ -197,6 +236,11 @@ export class VehicleFilterResultsComponent {
     this.endsIn.set([]);
     this.states.set([]);
     this.search.set('');
+
+    this.#router.navigate([], {
+      relativeTo: this.#activatedRoute,
+      queryParams: {},
+    });
   }
 
   addCarAuction(): void {
@@ -255,34 +299,6 @@ export class VehicleFilterResultsComponent {
           }
 
           this.auctions.update((auction) => {
-            return {
-              data: auction ? [...auction.data, ...auctions.data] : auctions.data,
-              meta: auctions.meta,
-            };
-          });
-        });
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-  }
-
-  getComingSoonAuctions(replace: boolean = false): void {
-    this.#vehicleFilterService.getComingSoonAuctions$(
-      untracked(() => this.currentPage2()),
-      untracked(() => this.size2()),
-    ).subscribe({
-      next: (auctions: VehicleAuction) => {
-        untracked(() => {
-          if (replace) {
-            this.comingSoonAuctions.set(auctions);
-            this.currentPage2.update((page) => page + 1);
-            this.getComingSoonAuctions(false);
-            return;
-          }
-
-          this.comingSoonAuctions.update((auction) => {
             return {
               data: auction ? [...auction.data, ...auctions.data] : auctions.data,
               meta: auctions.meta,

@@ -1,22 +1,21 @@
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, HostListener, WritableSignal, effect, inject, model, signal, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { AllLiveAuctionsFilterMenuMobileComponent } from '@auctions/components/all-live-auctions-filter-menu-mobile/all-live-auctions-filter-menu-mobile.component';
 import { ArtAuctionCardComponent } from '@auctions/components/art-auction-card/art-auction-card.component';
 import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
 import { AuctionTypesAll } from '@auctions/enums';
 import { GetAllAuctions, GetLiveArtAuction, GetLiveCarAuction } from '@auctions/interfaces';
 import { GetAllAuctionsService } from '@auctions/services/all-auctions.service';
-import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
-import { MemorabiliaAuctionCard2Component } from '@auctions/components/memorabilia-auction-card2/memorabilia-auction-card2.component';
+import { IntersectionDirective, PrimaryButtonDirective } from '@shared/directives';
 import { states } from '@shared/states';
 import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
-import { AllLiveAuctionsFilterMenuMobileComponent } from '@auctions/components/all-live-auctions-filter-menu-mobile/all-live-auctions-filter-menu-mobile.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime } from 'rxjs';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -32,10 +31,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
     IntersectionDirective,
     MatFormFieldModule,
     MatSelectModule,
-    MemorabiliaAuctionCard2Component,
     PrimaryButtonDirective,
     RouterModule,
-    TertiaryButtonDirective,
     YearRangeComponent,
   ],
   templateUrl: './all-auctions-filter-results.component.html',
@@ -48,8 +45,6 @@ export class AllAuctionsFilterResultsComponent {
 
   currentPage = signal<number>(1);
   size = signal<number>(10);
-  currentPage2 = signal<number>(1);
-  size2 = signal<number>(10);
 
   auctionType = signal<string[]>([]);
   era = signal<string[]>([]);
@@ -128,9 +123,10 @@ export class AllAuctionsFilterResultsComponent {
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
   #allAuctionsService = inject(GetAllAuctionsService);
+  #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
 
   auctions = signal<GetAllAuctions>({} as GetAllAuctions);
-  comingSoonAuctions = signal<GetAllAuctions>({} as GetAllAuctions);
 
   get auctionTypesAll(): typeof AuctionTypesAll {
     return AuctionTypesAll;
@@ -152,14 +148,6 @@ export class AllAuctionsFilterResultsComponent {
     this.getLiveAuctions(true);
   }, { allowSignalWrites: true });
 
-  getAllComingSoonAuctionsEffect = effect(() => {
-    untracked(() => {
-      this.currentPage2.set(1);
-    });
-
-    this.getAllComingSoonAuctions(true);
-  }, { allowSignalWrites: true });
-
   auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
   eraEffect = effect(() => this.eraControl.setValue(this.era(), { emitEvent: false }));
   yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange(), { emitEvent: false }), { allowSignalWrites: true });
@@ -167,8 +155,32 @@ export class AllAuctionsFilterResultsComponent {
   orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy(), { emitEvent: false }));
   endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn(), { emitEvent: false }));
   statesEffect = effect(() => this.statesControl.setValue(this.states(), { emitEvent: false }));
+  searchEffect = effect(() => this.searchControl.setValue(this.search(), { emitEvent: false }));
 
   constructor() {
+    // Leer query params iniciales
+    this.#activatedRoute.queryParams.pipe(
+      takeUntilDestroyed()
+    ).subscribe(params => {
+      if (Object.keys(params).length > 0) {
+        this.auctionType.set(params['auctionType']?.split(',') || []);
+        this.era.set(params['era']?.split(',') || []);
+        if (params['yearRange']) {
+          const [yearFrom, yearTo] = params['yearRange'].split('-').map(Number);
+          if (!isNaN(yearFrom) && !isNaN(yearTo)) {
+            this.yearRange.set({ yearFrom, yearTo });
+          }
+        } else {
+          this.yearRange.set(undefined);
+        }
+        this.currentOffer.set(params['currentOffer']?.split(',') || []);
+        this.orderBy.set(params['orderBy'] || 'EndingSoonest');
+        this.endsIn.set(params['endsIn']?.split(',') || []);
+        this.states.set(params['states']?.split(',') || []);
+        this.search.set(params['search'] || '');
+      }
+    });
+
     this.initializeControl(this.searchControl, this.search, 300);
     this.initializeControl(this.orderByControl, this.orderBy);
     this.initializeControl(this.auctionTypeControl, this.auctionType);
@@ -179,12 +191,34 @@ export class AllAuctionsFilterResultsComponent {
     this.initializeControl(this.statesControl, this.states);
   }
 
+  private updateQueryParams(): void {
+    const queryParams: any = {};
+
+    if (this.auctionType().length) queryParams.auctionType = this.auctionType().join(',');
+    if (this.era().length) queryParams.era = this.era().join(',');
+    if (this.yearRange()?.yearFrom && this.yearRange()?.yearTo) {
+      queryParams.yearRange = `${this.yearRange()?.yearFrom}-${this.yearRange()?.yearTo}`;
+    }
+    if (this.currentOffer().length) queryParams.currentOffer = this.currentOffer().join(',');
+    if (this.orderBy() !== 'EndingSoonest') queryParams.orderBy = this.orderBy();
+    if (this.endsIn().length) queryParams.endsIn = this.endsIn().join(',');
+    if (this.states().length) queryParams.states = this.states().join(',');
+    if (this.search().trim()) queryParams.search = this.search().trim();
+
+    this.#router.navigate([], {
+      relativeTo: this.#activatedRoute,
+      queryParams,
+      replaceUrl: true,
+    });
+  }
+
   private initializeControl(control: AbstractControl, target: WritableSignal<any>, debounce: number = 0) {
     control.valueChanges.pipe(
       takeUntilDestroyed(),
       debounceTime(debounce),
     ).subscribe((value) => {
       target.set(value);
+      this.updateQueryParams();
     });
   }
 
@@ -197,6 +231,11 @@ export class AllAuctionsFilterResultsComponent {
     this.endsIn.set([]);
     this.states.set([]);
     this.search.set('');
+
+    this.#router.navigate([], {
+      relativeTo: this.#activatedRoute,
+      queryParams: {},
+    });
   }
 
   addCarAuction(): void {
@@ -293,29 +332,6 @@ export class AllAuctionsFilterResultsComponent {
       error: (err) => {
         console.error(err);
       },
-    });
-  }
-
-  getAllComingSoonAuctions(replace: boolean = false): void {
-    this.#allAuctionsService.getAllComingSoonAuctions$(
-      untracked(() => this.currentPage2()),
-      untracked(() => this.size2())
-    ).subscribe((response) => {
-      untracked(() => {
-        if (replace) {
-          this.comingSoonAuctions.set(response);
-          this.currentPage2.update((page) => page + 1);
-          this.getAllComingSoonAuctions(false);
-          return;
-        }
-
-        this.comingSoonAuctions.update((auction) => {
-          return {
-            data: auction ? [...auction.data, ...response.data] : response.data,
-            meta: response.meta,
-          };
-        });
-      });
     });
   }
 

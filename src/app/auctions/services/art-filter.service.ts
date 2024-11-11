@@ -45,14 +45,4 @@ export class ArtFilterService {
 
     return this.#http.get<ArtAuction>(url, { params });
   }
-
-  getComingSoonArtAuctions$(page: number, size: number): Observable<ArtAuction> {
-    const url = `${this.#baseUrl}/auctions-cars/coming-soon-art`;
-
-    let params = new HttpParams()
-      .set('page', page)
-      .set('size', size);
-
-    return this.#http.get<ArtAuction>(url, { params });
-  }
 }

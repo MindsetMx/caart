@@ -1,0 +1,23 @@
+<label for="search" class="sr-only">Search</label>
+<div class="relative">
+  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+    <img class="h-7 w-7" src="assets/img/navbar/search-outline.svg" alt="ícono lupa">
+  </div>
+  <input [formControl]="searchControl" id="search" (click)="onInputClick()"
+    class="block w-full rounded-full bg-gray1 py-2 pl-[3.25rem] pr-3 text-gray-900 placeholder:text-gray2 placeholder:font-montserrat focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    placeholder="Buscar" type="search">
+  @if (showDropdown() && auctions().data.length > 0) {
+  <ul class="absolute mt-2 w-full h-fit bg-white rounded-lg shadow-2xl py-2" [@slideInOut]>
+    @for (auction of this.auctions().data; track auction.id; let i = $index) {
+    <li>
+      <a [routerLink]="['/subasta', auction.originalAuctionId]" (click)="navigateToAuction(auction.originalAuctionId)"
+        class="flex gap-x-4 items-center px-4 py-2 cursor-pointer text-sm text-gray-900 hover:bg-gray-100"
+        [class.bg-gray-100]="selectedIndex() === i">
+        <img [src]="auction.attributes.cover" [alt]="auction.attributes.title" class="h-12 w-12 rounded-sm">
+        {{auction.attributes.title}}
+      </a>
+    </li>
+    }
+  </ul>
+  }
+</div>

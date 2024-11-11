@@ -41,11 +41,11 @@ export class GetAllAuctionsService {
   }
 
   // http://localhost:3000/auctions-cars/coming-soon-auctions?page=1&size=10
-  getAllComingSoonAuctions$(page: number, size: number): Observable<GetAllAuctions> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+  // getAllComingSoonAuctions$(page: number, size: number): Observable<GetAllAuctions> {
+  //   let params = new HttpParams()
+  //     .set('page', page.toString())
+  //     .set('size', size.toString());
 
-    return this.#http.get<GetAllAuctions>(`${this.#baseUrl}/auctions-cars/coming-soon-auctions`, { params });
-  }
+  //   return this.#http.get<GetAllAuctions>(`${this.#baseUrl}/auctions-cars/coming-soon-auctions`, { params });
+  // }
 }

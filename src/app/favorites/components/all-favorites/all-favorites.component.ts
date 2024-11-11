@@ -11,7 +11,7 @@ import { LastChanceArtCardComponent } from '@app/last-chance/components/last-cha
 import { LastChanceVehicleCardComponent } from '@app/last-chance/components/last-chance-vehicle-card/last-chance-vehicle-card.component';
 import { ArtAuctionCardComponent } from '@auctions/components/art-auction-card/art-auction-card.component';
 import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
-import { AuctionTypes } from '@auctions/enums';
+import { AuctionStatus, AuctionTypes } from '@auctions/enums';
 
 import { FavoritesService } from '@favorites/services/favorites.service';
 import { IntersectionDirective } from '@shared/directives';
@@ -45,6 +45,8 @@ export class AllFavoritesComponent {
 
   searchControl = new FormControl<string>('');
   orderByControl = new FormControl<string>('asc');
+
+  status = AuctionStatus;
 
   orderByList: { value: string; label: string }[] = [
     {

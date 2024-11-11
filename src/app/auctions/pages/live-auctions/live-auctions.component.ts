@@ -19,7 +19,6 @@ import { GetLiveArtAuction, GetLiveCarAuction } from '@auctions/interfaces';
     CommonModule,
     TabsWithIconsComponent,
     VehicleFilterResultsComponent,
-    MemorabiliaFilterResultsComponent,
     AllAuctionsFilterResultsComponent,
     ArtFilterResultsComponent
   ],

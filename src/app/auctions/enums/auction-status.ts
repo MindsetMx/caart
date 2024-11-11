@@ -1,5 +1,6 @@
 export enum AuctionStatus {
   active = 'active',
   completed = 'completed',
-  cancelled = 'cancelled'
+  cancelled = 'cancelled',
+  comingSoon = 'comingSoon'
 }

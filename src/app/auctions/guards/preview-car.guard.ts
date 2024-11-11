@@ -17,6 +17,7 @@ export const PreviewCarGuard: CanActivateFn = (route, state) => {
       return true;
     }),
     catchError(error => {
+      //si está en preview y no tiene token o el token no pertenece al dueño de la subasta
       if (error.error.statusCode === 401) {
         return authService.checkAuthStatus$().pipe(
           map(() => {

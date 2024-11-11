@@ -1,17 +1,20 @@
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, HostListener, WritableSignal, effect, inject, model, signal, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, effect, inject, model, signal, untracked } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { debounceTime } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { ArtFilterService } from '@auctions/services/art-filter.service';
-import { states } from '@shared/states';
-import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
-import { RouterModule } from '@angular/router';
-import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
-import { ArtAuctionCardComponent } from '../art-auction-card/art-auction-card.component';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { ArtAuction } from '@auctions/interfaces/art-auction';
-import { GetLiveArtAuction } from '@auctions/interfaces';
+import { ArtAuctionCardComponent } from '@auctions/components/art-auction-card/art-auction-card.component';
+import { ArtFilterService } from '@auctions/services/art-filter.service';
 import { CarAuctionFilterMenuMobileComponent } from '@auctions/components/car-auction-filter-menu-mobile/car-auction-filter-menu-mobile.component';
+import { GetLiveArtAuction } from '@auctions/interfaces';
+import { IntersectionDirective, PrimaryButtonDirective, TertiaryButtonDirective } from '@shared/directives';
+import { states } from '@shared/states';
+import { YearRangeComponent } from '@shared/components/year-range/year-range.component';
 
 const MOBILE_SCREEN_WIDTH = 1024;
 
@@ -20,7 +23,7 @@ const MOBILE_SCREEN_WIDTH = 1024;
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
     CarAuctionFilterMenuMobileComponent,
@@ -38,10 +41,8 @@ const MOBILE_SCREEN_WIDTH = 1024;
 export class ArtFilterResultsComponent {
   updatedArtAuction = model<GetLiveArtAuction>({} as GetLiveArtAuction);
 
-  currentPage = signal<number>(0);
+  currentPage = signal<number>(1);
   size = signal<number>(10);
-  currentPage2 = signal<number>(1);
-  size2 = signal<number>(10);
 
   auctionType = signal<string[]>([]);
   category = signal<string[]>([]);
@@ -53,6 +54,16 @@ export class ArtFilterResultsComponent {
   states = signal<string[]>([]);
 
   search = signal<string>('');
+
+  auctionTypeControl = new FormControl<string[]>([]);
+  categoryControl = new FormControl<string[]>([]);
+  eraControl = new FormControl<string[]>([]);
+  yearRangeControl = new FormControl<{ yearFrom: number, yearTo: number } | undefined>(undefined);
+  currentOfferControl = new FormControl<string[]>([]);
+  orderByControl = new FormControl<string>('EndingSoonest');
+  endsInControl = new FormControl<string[]>([]);
+  statesControl = new FormControl<string[]>([]);
+  searchControl = new FormControl<string>('');
 
   auctionFilterMenuIsOpen = signal<boolean>(false);
 
@@ -170,6 +181,8 @@ export class ArtFilterResultsComponent {
   statesList: { value: string; label: string }[] = states.map((state) => ({ value: state, label: state }));
 
   #artFilterService = inject(ArtFilterService);
+  #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
 
   auctions = signal<ArtAuction>({} as ArtAuction);
   comingSoonAuctions = signal<ArtAuction>({} as ArtAuction);
@@ -178,16 +191,90 @@ export class ArtFilterResultsComponent {
     this.addArtAuction();
   }, { allowSignalWrites: true });
 
-  getComingSoonArtAuctionsEffect = effect(() => {
+  getLiveAuctionsEffect = effect(() => {
     untracked(() => {
-      this.currentPage2.set(1);
+      this.currentPage.set(1);
     });
 
-    this.getComingSoonArtAuctions(true);
-  });
-
-  ngOnInit(): void {
     this.getLiveAuctions(true);
+  }, { allowSignalWrites: true });
+
+  auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
+  categoryEffect = effect(() => this.categoryControl.setValue(this.category(), { emitEvent: false }));
+  eraEffect = effect(() => this.eraControl.setValue(this.era(), { emitEvent: false }));
+  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange(), { emitEvent: false }), { allowSignalWrites: true });
+  currentOfferEffect = effect(() => this.currentOfferControl.setValue(this.currentOffer(), { emitEvent: false }));
+  orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy(), { emitEvent: false }));
+  endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn(), { emitEvent: false }));
+  statesEffect = effect(() => this.statesControl.setValue(this.states(), { emitEvent: false }));
+  searchEffect = effect(() => this.searchControl.setValue(this.search(), { emitEvent: false }));
+
+  constructor() {
+    // Leer query params iniciales
+    this.#activatedRoute.queryParams.pipe(
+      takeUntilDestroyed()
+    ).subscribe(params => {
+      if (Object.keys(params).length > 0) {
+        this.auctionType.set(params['auctionType']?.split(',') || []);
+        this.category.set(params['category']?.split(',') || []);
+        this.era.set(params['era']?.split(',') || []);
+        if (params['yearRange']) {
+          const [yearFrom, yearTo] = params['yearRange'].split('-').map(Number);
+          if (!isNaN(yearFrom) && !isNaN(yearTo)) {
+            this.yearRange.set({ yearFrom, yearTo });
+          }
+        } else {
+          this.yearRange.set(undefined);
+        }
+        this.currentOffer.set(params['currentOffer']?.split(',') || []);
+        this.orderBy.set(params['orderBy'] || 'EndingSoonest');
+        this.endsIn.set(params['endsIn']?.split(',') || []);
+        this.states.set(params['states']?.split(',') || []);
+        this.search.set(params['search'] || '');
+      }
+    });
+
+    this.initializeControl(this.searchControl, this.search, 300);
+    this.initializeControl(this.orderByControl, this.orderBy);
+    this.initializeControl(this.auctionTypeControl, this.auctionType);
+    this.initializeControl(this.categoryControl, this.category);
+    this.initializeControl(this.eraControl, this.era);
+    this.initializeControl(this.yearRangeControl, this.yearRange, 500);
+    this.initializeControl(this.endsInControl, this.endsIn);
+    this.initializeControl(this.currentOfferControl, this.currentOffer);
+    this.initializeControl(this.statesControl, this.states);
+  }
+
+  private updateQueryParams(): void {
+    const queryParams: any = {};
+
+    if (this.auctionType().length) queryParams.auctionType = this.auctionType().join(',');
+    if (this.category().length) queryParams.category = this.category().join(',');
+    if (this.era().length) queryParams.era = this.era().join(',');
+    if (this.yearRange()?.yearFrom && this.yearRange()?.yearTo) {
+      queryParams.yearRange = `${this.yearRange()?.yearFrom}-${this.yearRange()?.yearTo}`;
+    }
+    if (this.currentOffer().length) queryParams.currentOffer = this.currentOffer().join(',');
+    if (this.orderBy() !== 'EndingSoonest') queryParams.orderBy = this.orderBy();
+    if (this.endsIn().length) queryParams.endsIn = this.endsIn().join(',');
+    if (this.states().length) queryParams.states = this.states().join(',');
+    if (this.search()) queryParams.search = this.search();
+
+    this.#router.navigate([], {
+      relativeTo: this.#activatedRoute,
+      queryParams,
+      replaceUrl: true,
+    });
+  }
+
+  private initializeControl(control: AbstractControl, target: WritableSignal<any>, debounce: number = 0) {
+    control.valueChanges.pipe(
+      takeUntilDestroyed(),
+      debounceTime(debounce),
+    ).subscribe((value) => {
+      target.set(value);
+      this.updateQueryParams();
+    });
   }
 
   clearFilters(): void {
@@ -200,9 +287,11 @@ export class ArtFilterResultsComponent {
     this.endsIn.set([]);
     this.states.set([]);
     this.search.set('');
-    // TODO: eliminar cuando se implemente el menu de filtros
-    this.resetPage();
-    this.getLiveAuctions(true);
+
+    this.#router.navigate([], {
+      relativeTo: this.#activatedRoute,
+      queryParams: {},
+    });
   }
 
   addArtAuction(): void {
@@ -234,10 +323,8 @@ export class ArtFilterResultsComponent {
   }
 
   getLiveAuctions(replace: boolean = false): void {
-    this.currentPage.update((page) => page + 1);
-
     this.#artFilterService.getLiveAuctions$(
-      this.currentPage(),
+      untracked(() => this.currentPage()),
       this.size(),
       this.auctionType().join(','),
       this.category().join(','),
@@ -250,42 +337,20 @@ export class ArtFilterResultsComponent {
       this.search(),
     ).subscribe({
       next: (auctions: ArtAuction) => {
-        if (replace) {
-          this.auctions.set(auctions);
-          this.getLiveAuctions(false);
-          return;
-        }
+        untracked(() => {
+          if (replace) {
+            this.auctions.set(auctions);
+            this.currentPage.update((page) => page + 1);
+            this.getLiveAuctions(false);
+            return;
+          }
 
-        this.auctions.update((auction) => {
-          return {
-            data: auction ? [...auction.data, ...auctions.data] : auctions.data,
-            meta: auctions.meta,
-          };
-        });
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-  }
-
-  getComingSoonArtAuctions(replace: boolean = false): void {
-    this.#artFilterService.getComingSoonArtAuctions$(
-      untracked(() => this.currentPage2() + 1),
-      untracked(() => this.size2()),
-    ).subscribe({
-      next: (auctions: ArtAuction) => {
-        if (replace) {
-          this.comingSoonAuctions.set(auctions);
-          this.getComingSoonArtAuctions(false);
-          return;
-        }
-
-        this.comingSoonAuctions.update((auction) => {
-          return {
-            data: auction ? [...auction.data, ...auctions.data] : auctions.data,
-            meta: auctions.meta,
-          };
+          this.auctions.update((auction) => {
+            return {
+              data: auction ? [...auction.data, ...auctions.data] : auctions.data,
+              meta: auctions.meta,
+            };
+          });
         });
       },
       error: (err) => {
@@ -296,60 +361,6 @@ export class ArtFilterResultsComponent {
 
   resetPage(): void {
     this.currentPage.set(0);
-  }
-
-  setSearch(value: string): void {
-    this.search.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setAuctionType(value: string[]): void {
-    this.auctionType.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setCategory(value: string[]): void {
-    this.category.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setEra(value: string[]): void {
-    this.era.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setEndsIn(value: string[]): void {
-    this.endsIn.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setCurrentOffer(value: string[]): void {
-    this.currentOffer.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setStates(value: string[]): void {
-    this.states.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setOrderBy(value: string): void {
-    this.orderBy.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
-  }
-
-  setYearRange(value: { yearFrom: number, yearTo: number }): void {
-    this.yearRange.set(value);
-    this.resetPage();
-    this.getLiveAuctions(true);
   }
 
   openAuctionFilterMenu(): void {

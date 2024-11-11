@@ -11,6 +11,7 @@ import { RegisterModalComponent } from '@auth/modals/register-modal/register-mod
 import { EmailForPasswordResetInputComponentModalComponent } from '@auth/modals/email-for-password-reset-input-component-modal/email-for-password-reset-input-component-modal.component';
 import { UserData } from '@auth/interfaces';
 import { CommonModule } from '@angular/common';
+import { SearchbarComponent } from "../searchbar/searchbar.component";
 
 @Component({
   selector: 'shared-navbar',
@@ -24,6 +25,7 @@ import { CommonModule } from '@angular/common';
     RegisterModalComponent,
     EmailForPasswordResetInputComponentModalComponent,
     RouterModule,
+    SearchbarComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
