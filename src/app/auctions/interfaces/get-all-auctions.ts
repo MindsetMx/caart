@@ -13,20 +13,21 @@ export interface GetAllAuctionsData {
 }
 
 export interface GetAllAuctionsAttributes {
-  startDate: string;
-  reserve: boolean;
-  premium: boolean;
-  lastBid: number;
-  title: string;
-  endDate: string;
-  cover: string;
   artist?: string;
   artTitle?: string;
-  materials?: string;
-  rarity?: string;
+  cover: string;
+  comingSoon: boolean;
+  endDate: string;
   extract: string;
+  lastBid: number;
+  materials?: string;
+  premium: boolean;
+  rarity?: string;
+  reserve: boolean;
   secondsRemaining: number;
+  startDate: string;
   status: AuctionStatus;
+  title: string;
 }
 
 export interface GetAllAuctionsMeta {

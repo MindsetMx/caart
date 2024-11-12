@@ -12,7 +12,7 @@
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-lato font-semibold text-xl">
+    <p class="font-lato font-semibold text-xl h-14 line-clamp-2" style="word-wrap: break-word;">
       {{title()}}
     </p>
     @if (reserve() === false || premium() || status() === statusTypes.cancelled || status() === statusTypes.completed) {

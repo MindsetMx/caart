@@ -27,4 +27,5 @@ export interface GetLiveCarAuctionAttributes {
   status: AuctionStatus;
   secondsRemaining: number;
   startDate: string;
+  comingSoon: boolean;
 }

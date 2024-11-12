@@ -24,6 +24,7 @@ export interface ArtAuctionAttributes {
   status: AuctionStatus;
   secondsRemaining: number;
   startDate: string;
+  comingSoon: boolean;
 }
 
 export interface ArtAuctionMeta {

@@ -20,6 +20,7 @@ export interface GetLiveArtAuctionAttributes {
   cover: string;
   year: number;
   extract: string;
+  comingSoon: boolean;
   status: AuctionStatus;
   secondsRemaining: number;
   startDate: string;

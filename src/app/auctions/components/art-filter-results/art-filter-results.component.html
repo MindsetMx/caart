@@ -155,60 +155,53 @@
 }
 
 <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-8 mt-4">
-  @if ( auctions()) {
+  @defer (when auctions() && auctions().data) {
   @for (auction of auctions().data; track $index; let last = $last) {
-  @defer () {
   @if (last) {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.cover"
-    [startDate]="auction.attributes.startDate" [isComingSoon]="false" [status]="auction.attributes.status"
-    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
-    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
-    [secondsRemaining]="auction.attributes.secondsRemaining" intersection
+    [startDate]="auction.attributes.startDate" [isComingSoon]="auction.attributes.comingSoon"
+    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getLiveAuctions(false)"></art-auction-card>
   }
   @else {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.cover"
-    [startDate]="auction.attributes.startDate" [isComingSoon]="false" [status]="auction.attributes.status"
-    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
-    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
-    [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
-  }
-  } @placeholder (minimum 300ms) {
-  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
-  }
-  @loading (after 100ms) {
-  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+    [startDate]="auction.attributes.startDate" [isComingSoon]="auction.attributes.comingSoon"
+    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
   }
   }
+  @empty {
+  <div class="col-span-3 mt-12">
+    <p class=" text-center text-gray4">
+      No hay subastas en vivo en este momento.
+    </p>
+  </div>
   }
-  @else {
+  }
+  @placeholder(minimum 300ms) {
   <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
   }
 
   <!-- comingSoonAuctions -->
   @if (comingSoonAuctions()) {
   @for (auction of comingSoonAuctions().data; track $index; let last = $last) {
-  @defer () {
   @if (last) {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.cover"
-    [startDate]="auction.attributes.startDate" [isComingSoon]="true" [status]="auction.attributes.status"
-    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
-    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
-    [secondsRemaining]="auction.attributes.secondsRemaining" intersection
+    [startDate]="auction.attributes.startDate" [isComingSoon]="auction.attributes.comingSoon"
+    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining" intersection
     (visible)="getLiveAuctions(false)"></art-auction-card>
   }
   @else {
   <art-auction-card [originalAuctionArtId]="auction.originalAuctionArtId" [cover]="auction.attributes.cover"
-    [startDate]="auction.attributes.startDate" [isComingSoon]="true" [status]="auction.attributes.status"
-    [title]="auction.attributes.title" [reserve]="auction.attributes.reserve" [premium]="auction.attributes.premium"
-    [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"
-    [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
-  }
-  } @placeholder (minimum 300ms) {
-  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
-  }
-  @loading (after 100ms) {
-  <ng-container *ngTemplateOutlet="auctionCardSkeleton"></ng-container>
+    [startDate]="auction.attributes.startDate" [isComingSoon]="auction.attributes.comingSoon"
+    [status]="auction.attributes.status" [title]="auction.attributes.title" [reserve]="auction.attributes.reserve"
+    [premium]="auction.attributes.premium" [extract]="auction.attributes.extract" [lastBid]="auction.attributes.lastBid"
+    [endDate]="auction.attributes.endDate" [secondsRemaining]="auction.attributes.secondsRemaining"></art-auction-card>
   }
   }
   }
