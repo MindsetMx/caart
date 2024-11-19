@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, WritableSignal, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -209,14 +209,17 @@ export class ArtAuctionImageAssignmentAndReorderComponent {
   }
 
   dropPhotos(event: CdkDragDrop<{ imageUrl: string, index: number }>, formArray: FormArray) {
-    const previousIndex = event.previousContainer.data.index;
-    const currentIndex = event.container.data.index;
+    // const previousIndex = event.previousContainer.data.index;
+    // const currentIndex = event.container.data.index;
 
-    const previousValue = formArray.at(previousIndex).value;
-    const currentValue = formArray.at(currentIndex).value;
+    // const previousValue = formArray.at(previousIndex).value;
+    // const currentValue = formArray.at(currentIndex).value;
 
-    formArray.at(previousIndex).patchValue(currentValue);
-    formArray.at(currentIndex).patchValue(previousValue);
+    // formArray.at(previousIndex).patchValue(currentValue);
+    // formArray.at(currentIndex).patchValue(previousValue);
+
+    moveItemInArray(formArray.value, event.previousIndex, event.currentIndex);
+    formArray.setValue(formArray.value);
   }
 
   getImagesPublish(): void {
