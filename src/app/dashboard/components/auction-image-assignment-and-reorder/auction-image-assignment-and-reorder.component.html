@@ -39,18 +39,18 @@
   @defer (when fotosSliderPrincipal()) {
   <div>
     <h2 class="mb-2">Fotos slider principal</h2>
-    <div class="board" cdkDropListGroup>
+    <div class="board" cdkDropList cdkDropListOrientation="mixed"
+      (cdkDropListDropped)="dropPhotos($event, fotosSliderPrincipalFormArray)">
       @for (imageUrl of fotosSliderPrincipal(); track i; let i = $index) {
-      <div>
-        <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosSliderPrincipalFormArray)"
-          [cdkDropListData]=" {imageUrl, index: i}">
+      <div cdkDrag>
+        <div>
           @if (imageUrl) {
           <button type="button" class="w-full"
             (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', true, i)">
-            <img cdkDrag [src]="imageUrl" class="cell object-contain" />
+            <img [src]="imageUrl" class="cell object-contain" />
           </button>
           } @else {
-          <button cdkDrag type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', true, i)"
+          <button type="button" (click)="openModal(carPhotoGalleryIsOpen, 'fotosSliderPrincipal', true, i)"
             class="cell">
             Subir foto
           </button>
@@ -75,12 +75,12 @@
         Eliminar todas las fotos mecánicas
       </button>
     </h2>
-    <div class="board" cdkDropListGroup>
+    <div class="board" cdkDropList cdkDropListOrientation="mixed"
+      (cdkDropListDropped)="dropPhotos($event, fotosMecanicasFormArray)">
       @for (imageUrl of fotosMecanicas(); track i; let i = $index) {
-      <div>
-        <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosMecanicasFormArray)"
-          [cdkDropListData]="{imageUrl, index: i}">
-          <button cdkDrag type="button" class="w-full relative"
+      <div cdkDrag>
+        <div>
+          <button type="button" class="w-full relative"
             (click)="openModal(carPhotoGalleryIsOpen, 'fotosMecanicas', false, i)">
             <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
 
@@ -119,12 +119,12 @@
         Eliminar todas las fotos interiores
       </button>
     </h2>
-    <div class="board" cdkDropListGroup>
+    <div class="board" cdkDropList cdkDropListOrientation="mixed"
+      (cdkDropListDropped)="dropPhotos($event, fotosInteriorFormArray)">
       @for (imageUrl of fotosInterior(); track i; let i = $index) {
-      <div>
-        <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosInteriorFormArray)"
-          [cdkDropListData]="{imageUrl, index: i}">
-          <button cdkDrag type="button" class="w-full relative"
+      <div cdkDrag>
+        <div>
+          <button type="button" class="w-full relative"
             (click)="openModal(carPhotoGalleryIsOpen, 'fotosInterior', false, i)">
             <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
 
@@ -163,12 +163,12 @@
         Eliminar todas las fotos exteriores
       </button>
     </h2>
-    <div class="board" cdkDropListGroup>
+    <div class="board" cdkDropList cdkDropListOrientation="mixed"
+      (cdkDropListDropped)="dropPhotos($event, fotosExteriorFormArray)">
       @for (imageUrl of fotosExterior(); track i; let i = $index) {
-      <div>
-        <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosExteriorFormArray)"
-          [cdkDropListData]="{imageUrl, index: i}">
-          <button cdkDrag type="button" class="w-full relative"
+      <div cdkDrag>
+        <div>
+          <button type="button" class="w-full relative"
             (click)="openModal(carPhotoGalleryIsOpen, 'fotosExterior', false, i)">
             <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
 

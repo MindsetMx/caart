@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { CdkDragDrop, CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -24,7 +24,6 @@ import { MediaCollection, UploadAction } from '@dashboard/enums';
   selector: 'car-auction-image-assignment-and-reorder',
   standalone: true,
   imports: [
-    CdkDropListGroup,
     CdkDropList,
     CdkDrag,
     CarPhotoGalleryComponent,
@@ -278,14 +277,17 @@ export class AuctionImageAssignmentAndReorderComponent {
   }
 
   dropPhotos(event: CdkDragDrop<{ imageUrl: string, index: number }>, formArray: FormArray) {
-    const previousIndex = event.previousContainer.data.index;
-    const currentIndex = event.container.data.index;
+    // const previousIndex = event.previousContainer.data.index;
+    // const currentIndex = event.container.data.index;
 
-    const previousValue = formArray.at(previousIndex).value;
-    const currentValue = formArray.at(currentIndex).value;
+    // const previousValue = formArray.at(previousIndex).value;
+    // const currentValue = formArray.at(currentIndex).value;
 
-    formArray.at(previousIndex).patchValue(currentValue);
-    formArray.at(currentIndex).patchValue(previousValue);
+    // formArray.at(previousIndex).patchValue(currentValue);
+    // formArray.at(currentIndex).patchValue(previousValue);
+
+    moveItemInArray(formArray.value, event.previousIndex, event.currentIndex);
+    formArray.setValue(formArray.value);
   }
 
   getImagesPublish(): void {

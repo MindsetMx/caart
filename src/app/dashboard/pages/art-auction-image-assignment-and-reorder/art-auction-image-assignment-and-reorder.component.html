@@ -43,12 +43,11 @@
     </pre> -->
     <h2 class="mb-2">Fotos carrusel</h2>
 
-    <div class="board" cdkDropListGroup>
+    <div class="board" cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosCarruselFormArray)">
       @for (imageUrl of fotosCarrusel(); track i; let i = $index) {
-      <div>
-        <div cdkDropList (cdkDropListDropped)="dropPhotos($event, fotosCarruselFormArray)"
-          [cdkDropListData]="{imageUrl, index: i}">
-          <button cdkDrag type="button" class="w-full relative"
+      <div cdkDrag>
+        <div>
+          <button type="button" class="w-full relative"
             (click)="openModal(artPhotoGalleryIsOpen, 'fotosCarrusel', false, i)">
             <img [src]="imageUrl" class="cell w-full h-40 object-contain" />
 

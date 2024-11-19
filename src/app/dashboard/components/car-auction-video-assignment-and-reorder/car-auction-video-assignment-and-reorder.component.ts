@@ -25,7 +25,6 @@ import { AllVideosDeletionConfirmationModalComponent } from '@dashboard/modals/a
     CdkDrag,
     MatIcon,
     VideoGalleryComponent,
-    JsonPipe,
     SpinnerComponent,
     PrimaryButtonDirective,
     AuctionVideoDeletionConfirmationModalComponent,

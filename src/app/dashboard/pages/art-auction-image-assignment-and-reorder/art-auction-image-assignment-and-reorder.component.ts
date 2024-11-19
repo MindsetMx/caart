@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, WritableSignal, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -21,8 +21,6 @@ import { ValidatorsService } from '@shared/services/validators.service';
   selector: 'art-auction-image-assignment-and-reorder',
   standalone: true,
   imports: [
-    SidebarComponent,
-    CdkDropListGroup,
     CdkDropList,
     CdkDrag,
     ArtPhotoGalleryComponent,
