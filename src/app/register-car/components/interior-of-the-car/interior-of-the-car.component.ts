@@ -15,6 +15,8 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { environments } from '@env/environments';
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
+import { UserData } from '@auth/interfaces';
+import { AuthService } from '@auth/services/auth.service';
 
 @Component({
   selector: 'interior-of-the-car',
@@ -42,6 +44,7 @@ export class InteriorOfTheCarComponent {
   #fb = inject(FormBuilder);
   #completeCarRegistrationService = inject(CompleteCarRegistrationService);
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
+  #authService = inject(AuthService);
 
   interiorOfTheCarForm: FormGroup;
 
@@ -184,6 +187,10 @@ export class InteriorOfTheCarComponent {
     this.batchTokenDirect();
   }
 
+  get user(): UserData | null {
+    return this.#authService.currentUser();
+  }
+
   get interiorColorControl(): FormControl {
     return this.interiorOfTheCarForm.get('interiorColor') as FormControl;
   }
@@ -246,15 +253,24 @@ export class InteriorOfTheCarComponent {
           interiorVideos,
         } = interiorOfTheCar;
 
-        //Sobreescribir con valores de prueba
-        interiorColor = interiorColor || 'Black';
-        material = material || 'Leather';
-        interiorCondition = interiorCondition || 'excellent';
-        interiorModifications = interiorModifications || false;
-        accessoriesFunctioning = accessoriesFunctioning || true;
-        comments = comments || 'No comments';
-        interiorPhotos = (interiorPhotos && interiorPhotos.length > 0) ? interiorPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
-        interiorVideos = interiorVideos || [];
+        const emails = [
+          'fernandovelaz96@gmail.com',
+          'jansmithers30@gmail.com',
+          'rafaelmaggio@gmail.com',
+          'luisenrique.lopez01@gmail.com',
+        ];
+
+        if (this.user && emails.includes(this.user.attributes.email)) {
+          //Sobreescribir con valores de prueba
+          interiorColor = interiorColor || 'Black';
+          material = material || 'Leather';
+          interiorCondition = interiorCondition || 'excellent';
+          interiorModifications = interiorModifications || false;
+          accessoriesFunctioning = accessoriesFunctioning || true;
+          comments = comments || 'No comments';
+          // interiorPhotos = (interiorPhotos && interiorPhotos.length > 0) ? interiorPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
+          interiorVideos = interiorVideos || [];
+        }
 
         this.interiorOfTheCarForm.patchValue({
           interiorColor,

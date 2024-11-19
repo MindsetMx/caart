@@ -1,21 +1,22 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { AppService } from '@app/app.service';
+import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
 import { AuctionCarService } from '@dashboard/services/auction-car.service';
+import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/car-photo-gallery.component';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { MediaCollection, UploadAction } from '@dashboard/enums';
+import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/car-photo-gallery.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
-import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIcon } from '@angular/material/icon';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { JsonPipe } from '@angular/common';
-import { MediaCollection, UploadAction } from '@dashboard/enums';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   standalone: true,
@@ -30,7 +31,10 @@ import { MediaCollection, UploadAction } from '@dashboard/enums';
     AuctionCarDetailsModalComponent,
     MatMenuModule,
     InputDirective,
-    MatIcon, JsonPipe
+    MatIcon,
+    CdkDropList,
+    CdkDrag,
+    JsonPipe
   ],
   templateUrl: './add-car-history.component.html',
   styleUrl: './add-car-history.component.css',
@@ -143,12 +147,17 @@ export class AddCarHistoryComponent {
     });
   }
 
+  drop(event: CdkDragDrop<string[]>, formArray: FormArray): void {
+    moveItemInArray(formArray.controls, event.previousIndex, event.currentIndex);
+    formArray.updateValueAndValidity();
+  }
+
   removeExtraInfo(index: number): void {
     this.extraInfoFormArray.removeAt(index);
   }
 
   addExtraInfo(): void {
-    this.extraInfoFormArray.push(this.#formBuilder.control('', Validators.required));
+    this.extraInfoFormArray.push(this.#formBuilder.control(''));
   }
 
   deleteBlock(index: number): void {

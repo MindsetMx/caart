@@ -9,7 +9,7 @@ import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 import { AppComponent } from '@app/app.component';
 import { ArtAuctionDetailsService } from '@auctions/services/art-auction-details.service';
 import { ArtAuctionImageAssigmentAndReorderService } from '@dashboard/services/art-auction-image-assigment-and-reorder.service';
-import { ArtImagesPublish } from '@app/dashboard/interfaces';
+import { ArtImagesPublish, AuctionCarStatus } from '@app/dashboard/interfaces';
 import { ArtMetrics } from '@auctions/interfaces/art-metrics';
 import { AuctionDetailsService } from '@auctions/services/auction-details.service';
 import { AuctionFollowService } from '@auctions/services/auction-follow.service';
@@ -121,6 +121,8 @@ export class LastChanceArtDetailComponent {
   #videoGalleryService = inject(VideoGalleryService);
   #renderer = inject(Renderer2);
 
+  auctionCarStatus = AuctionCarStatus;
+
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;
   }
@@ -134,12 +136,7 @@ export class LastChanceArtDetailComponent {
   }
 
   authStatusEffect = effect(() => {
-    switch (this.authStatus) {
-      case AuthStatus.authenticated:
-        this.getMetrics(this.auctionId());
-
-        break;
-    }
+    this.getMetrics(this.auctionId());
   });
 
   auctionEffect = effect(() => {
@@ -521,7 +518,6 @@ export class LastChanceArtDetailComponent {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
-      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

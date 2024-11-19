@@ -8,12 +8,12 @@
     class="absolute top-3 right-5">
   </follow-button>
 
-  <div class="mt-4">
+  <div class="mt-4 space-y-1">
     <p class="font-optima font-semibold text-xl">
       {{auction().attributes.title}}
     </p>
     @if (auction().attributes.reserve === false || auction().attributes.premium) {
-    <div class="space-x-2">
+    <div class="space-x-2 my-1">
       @if (auction().attributes.reserve === false) {
       <no-reserve-tag-component></no-reserve-tag-component>
       }
@@ -25,7 +25,7 @@
     </div>
     }
     <p class="text-gray4 line-clamp-3" style="word-wrap: break-word;"
-      [ngClass]="{'mt-9': !auction().attributes.reserve === false && !auction().attributes.premium}">
+      [ngClass]="{'!mt-9': !auction().attributes.reserve === false && !auction().attributes.premium}">
       {{auction().attributes.extract}}
     </p>
     <span class="mt-2 flex items-center bg-gray1 rounded-md px-4 py-2">Oferta: {{ auction().attributes.lastBid

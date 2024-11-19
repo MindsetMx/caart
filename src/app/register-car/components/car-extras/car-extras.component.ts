@@ -13,6 +13,8 @@ import { DecimalPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NgxMaskDirective } from 'ngx-mask';
 import { bothOrNoneValidator } from '@shared/validations';
+import { UserData } from '@auth/interfaces';
+import { AuthService } from '@auth/services/auth.service';
 
 @Component({
   selector: 'car-extras',
@@ -39,6 +41,7 @@ export class CarExtrasComponent {
   #router = inject(Router);
   // TODO: refactorizar usando signals
   #changeDetectorRef = inject(ChangeDetectorRef);
+  #authService = inject(AuthService);
 
   carExtrasForm: FormGroup;
 
@@ -73,6 +76,10 @@ export class CarExtrasComponent {
       termsConditionsAccepted: ['', Validators.required],
       originalAuctionCarId: [this.originalAuctionCarId, Validators.required],
     });
+  }
+
+  get user(): UserData | null {
+    return this.#authService.currentUser();
   }
 
   get originalAuctionCarId(): string {
@@ -123,16 +130,25 @@ export class CarExtrasComponent {
           termsConditionsAccepted,
         } = carExtras.data.attributes;
 
-        //Sobreescribir con valores de prueba
-        toolBox = true;
-        carCover = true;
-        batteryCharger = true;
-        manuals = true;
-        tireInflator = true;
-        numberOfKeys = 2;
-        others = 'Otros';
-        comments = 'Comentarios';
-        termsConditionsAccepted = true;
+        const emails = [
+          'fernandovelaz96@gmail.com',
+          'jansmithers30@gmail.com',
+          'rafaelmaggio@gmail.com',
+          'luisenrique.lopez01@gmail.com',
+        ];
+
+        if (this.user && emails.includes(this.user.attributes.email)) {
+          //Sobreescribir con valores de prueba
+          toolBox = true;
+          carCover = true;
+          batteryCharger = true;
+          manuals = true;
+          tireInflator = true;
+          numberOfKeys = 2;
+          others = 'Otros';
+          comments = 'Comentarios';
+          termsConditionsAccepted = true;
+        }
 
         this.carExtrasForm.patchValue({
           toolBox,
@@ -164,19 +180,21 @@ export class CarExtrasComponent {
 
         // TODO:eliminar cuando ya no se necesite
         else {
-          //Sobreescribir con valores de prueba
-          const aditionalChargesFormGroups = [
-            this.#fb.group({
-              chargeType: ['Cargo adicional 1'],
-              amount: [100],
-            }, { validators: bothOrNoneValidator() }),
-            this.#fb.group({
-              chargeType: ['Cargo adicional 2'],
-              amount: [200],
-            }, { validators: bothOrNoneValidator() }),
-          ];
+          if (this.user && emails.includes(this.user.attributes.email)) {
+            //Sobreescribir con valores de prueba
+            const aditionalChargesFormGroups = [
+              this.#fb.group({
+                chargeType: ['Cargo adicional 1'],
+                amount: [100],
+              }, { validators: bothOrNoneValidator() }),
+              this.#fb.group({
+                chargeType: ['Cargo adicional 2'],
+                amount: [200],
+              }, { validators: bothOrNoneValidator() }),
+            ];
 
-          this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
+            this.carExtrasForm.setControl('additionalCharges', this.#fb.array(aditionalChargesFormGroups));
+          }
         }
         // TODO:eliminar cuando ya no se necesite
       },

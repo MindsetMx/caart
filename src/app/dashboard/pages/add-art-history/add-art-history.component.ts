@@ -1,19 +1,21 @@
-import { CommonModule, JsonPipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { AppService } from '@app/app.service';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { ArtPhotoGalleryComponent } from '@dashboard/modals/art-photo-gallery/art-photo-gallery.component';
 import { AuctionArtDetailsModalComponent } from '@dashboard/modals/auction-art-details-modal/auction-art-details-modal.component';
 import { AuctionArtService } from '@dashboard/services/auction-art.service';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   standalone: true,
@@ -29,6 +31,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
     MatMenuModule,
     InputDirective,
     MatIcon,
+    CdkDropList,
+    CdkDrag,
     JsonPipe
   ],
   templateUrl: './add-art-history.component.html',
@@ -88,6 +92,11 @@ export class AddArtHistoryComponent {
     });
 
     this.getArtHistory();
+  }
+
+  drop(event: CdkDragDrop<string[]>, formArray: FormArray): void {
+    moveItemInArray(formArray.controls, event.previousIndex, event.currentIndex);
+    formArray.updateValueAndValidity();
   }
 
   addArtHistory(): void {
@@ -151,7 +160,7 @@ export class AddArtHistoryComponent {
   }
 
   addExtraInfo(): void {
-    this.extraInfoFormArray.push(this.#formBuilder.control('', Validators.required));
+    this.extraInfoFormArray.push(this.#formBuilder.control(''));
   }
 
   deleteBlock(index: number): void {

@@ -4,7 +4,6 @@ import { Router, type CanActivateFn } from '@angular/router';
 
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
-import { saveCurrentUrlInLocalStorage } from '@shared/common/saveCurrentUrlInLocalStorage';
 
 export const VerifiedGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -13,9 +12,12 @@ export const VerifiedGuard: CanActivateFn = (route, state) => {
   return authService.checkAuthStatus$().pipe(
     map(() => {
       if (authService.authStatus() === AuthStatus.authenticated && !authService.currentUser()?.attributes?.accountVerified) {
-        saveCurrentUrlInLocalStorage(state);
-
-        router.navigate(['/confirmacion']);
+        router.navigate(['/confirmacion'], {
+          queryParams: {
+            returnUrl: state.url
+          },
+          replaceUrl: true
+        });
 
         return false;
       }

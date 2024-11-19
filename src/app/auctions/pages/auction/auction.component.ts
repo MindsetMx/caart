@@ -190,13 +190,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     return AuctionTypes;
   }
 
-  authStatusEffect = effect(() => {
-    switch (this.authStatus) {
-      case AuthStatus.authenticated:
-        this.getMetrics(this.auctionId());
-
-        break;
-    }
+  getMetricsEffect = effect(() => {
+    this.getMetrics(this.auctionId());
   });
 
   videoGalleryEffect = effect(() => {
@@ -484,8 +479,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
-      // save current URL in local storage
-      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

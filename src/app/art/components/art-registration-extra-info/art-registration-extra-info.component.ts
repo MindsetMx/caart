@@ -133,21 +133,21 @@ export class ArtRegistrationExtraInfoComponent {
 
   constructor() {
     this.extraInfoForm = this.#fb.group({
-      // certificadoAutenticidad: ['', Validators.required],
-      // entidadCertificado: ['', Validators.required],
-      // entregaConMarco: ['', Validators.required],
-      // firmaArtista: ['', Validators.required],
-      // procedenciaObra: ['', Validators.required],
-      // historiaArtista: [''],
-      // photos: [[]],
-
-      certificadoAutenticidad: [true, Validators.required],
-      entidadCertificado: ['Entidad de prueba', Validators.required],
-      entregaConMarco: [true, Validators.required],
-      firmaArtista: [false, Validators.required],
-      procedenciaObra: ['Museo de Arte Moderno, Nueva York', Validators.required],
-      historiaArtista: ['Nacido en 1977 en Barcelona, España. Estudió Bellas Artes en la Universidad de Barcelona. Ha expuesto su obra en varias galerías internacionales.'],
+      certificadoAutenticidad: ['', Validators.required],
+      entidadCertificado: ['', Validators.required],
+      entregaConMarco: ['', Validators.required],
+      firmaArtista: ['', Validators.required],
+      procedenciaObra: ['', Validators.required],
+      historiaArtista: [''],
       photos: [[]],
+
+      // certificadoAutenticidad: [true, Validators.required],
+      // entidadCertificado: ['Entidad de prueba', Validators.required],
+      // entregaConMarco: [true, Validators.required],
+      // firmaArtista: [false, Validators.required],
+      // procedenciaObra: ['Museo de Arte Moderno, Nueva York', Validators.required],
+      // historiaArtista: ['Nacido en 1977 en Barcelona, España. Estudió Bellas Artes en la Universidad de Barcelona. Ha expuesto su obra en varias galerías internacionales.'],
+      // photos: [[]],
       additionalCharges: this.#fb.array(
         [
           this.#fb.group({

@@ -18,6 +18,8 @@ import { DecimalPipe } from '@angular/common';
 import { environments } from '@env/environments';
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
 import { NgxMaskDirective } from 'ngx-mask';
+import { UserData } from '@auth/interfaces';
+import { AuthService } from '@auth/services/auth.service';
 
 @Component({
   selector: 'general-details-and-exterior-of-the-car',
@@ -47,6 +49,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
   #fb = inject(FormBuilder);
   #completeCarRegistrationService = inject(CompleteCarRegistrationService);
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
+  #authService = inject(AuthService);
 
   exteriorOfTheCarForm: FormGroup;
   currentYear = new Date().getFullYear();
@@ -207,6 +210,10 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
     this.batchTokenDirect();
   }
 
+  get user(): UserData | null {
+    return this.#authService.currentUser();
+  }
+
   get specificColorControl(): FormControl {
     return this.exteriorOfTheCarForm.get('specificColor') as FormControl;
   }
@@ -362,31 +369,40 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
           exteriorVideos,
         } = response;
 
-        //Sobreescribir con valores de prueba
-        VIN = VIN || '1HGCM82633A123456';
-        kmInput = kmInput || 123456;
-        brand = brand || 'Toyota';
-        year = year || 2020;
-        carModel = carModel || 'Corolla';
-        odometerVerified = odometerVerified || 'true';
-        transmissionType = transmissionType || 'Manual';
-        otherTransmission = otherTransmission || 'N/A';
-        warranties = warranties || 'false';
-        wichWarranties = wichWarranties || 'N/A';
-        invoiceType = invoiceType || 'invoice';
-        invoiceDetails = invoiceDetails || 'Paid in cash';
-        carHistory = carHistory || 'No accidents';
-        exteriorColor = exteriorColor || 'Blue';
-        specificColor = specificColor || 'N/A';
-        accident = accident || 'false';
-        raced = raced || 'false';
-        originalPaint = originalPaint || 'true';
-        paintMeter = paintMeter || 'false';
-        exteriorModified = exteriorModified || 'false';
-        exteriorCondition = exteriorCondition || 'excellent';
-        detailComments = detailComments || 'No comments';
-        exteriorPhotos = (exteriorPhotos && exteriorPhotos.length > 0) ? exteriorPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
-        exteriorVideos = exteriorVideos || [];
+        const emails = [
+          'fernandovelaz96@gmail.com',
+          'jansmithers30@gmail.com',
+          'rafaelmaggio@gmail.com',
+          'luisenrique.lopez01@gmail.com',
+        ];
+
+        if (this.user && emails.includes(this.user.attributes.email)) {
+          //Sobreescribir con valores de prueba
+          VIN = VIN || '1HGCM82633A123456';
+          kmInput = kmInput || 123456;
+          brand = brand || 'Toyota';
+          year = year || 2020;
+          carModel = carModel || 'Corolla';
+          odometerVerified = odometerVerified || 'true';
+          transmissionType = transmissionType || 'Manual';
+          otherTransmission = otherTransmission || 'N/A';
+          warranties = warranties || 'false';
+          wichWarranties = wichWarranties || 'N/A';
+          invoiceType = invoiceType || 'invoice';
+          invoiceDetails = invoiceDetails || 'Paid in cash';
+          carHistory = carHistory || 'No accidents';
+          exteriorColor = exteriorColor || 'Blue';
+          specificColor = specificColor || 'N/A';
+          accident = accident || 'false';
+          raced = raced || 'false';
+          originalPaint = originalPaint || 'true';
+          paintMeter = paintMeter || 'false';
+          exteriorModified = exteriorModified || 'false';
+          exteriorCondition = exteriorCondition || 'excellent';
+          detailComments = detailComments || 'No comments';
+          // exteriorPhotos = (exteriorPhotos && exteriorPhotos.length > 0) ? exteriorPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
+          exteriorVideos = exteriorVideos || [];
+        }
 
         this.exteriorOfTheCarForm.patchValue({
           VIN,

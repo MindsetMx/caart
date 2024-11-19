@@ -263,10 +263,13 @@
 
           @defer (when metrics().data) {
           <div class="text-gray4 text-sm flex space-x-4">
+            @if (auction().data.attributes.status !== auctionCarStatus.Preview || auction().data.attributes.comingSoon)
+            {
             <div class="flex items-center">
               <img class="mr-2" src="assets/img/icons/eye-outline.svg">
               {{metrics().data.attributes.visualizations | number}}
             </div>
+            }
             <div class="flex items-center">
               <shared-star class="mr-2" classes="text-gray4 w-5 h-5"></shared-star>
               {{metrics().data.attributes.followedCount | number}}
@@ -291,7 +294,11 @@
               @if (auction().data) {
               <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
                 @for (item of auction().data.attributes.artHistory.extraInfo; track $index) {
+                @if (item) {
                 <li>{{item}}</li>
+                }@else {
+                <br>
+                }
                 }
               </ul>
               <h3 class="font-semibold mt-4 mb-2">Vista general de Lote</h3>
@@ -312,7 +319,9 @@
                 </span>
               </div>
               <div>
-                <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+                <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">
+                  {{auction().data.attributes.dataUser.sellerType}}
+                </span>
               </div>
               <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>
               <ol class="list-inside list-disc mb-8">
@@ -418,7 +427,11 @@
           @if (auction().data) {
           <ul class="list-inside list-disc text-gray4" style="word-wrap: break-word">
             @for (item of auction().data.attributes.artHistory.extraInfo; track $index) {
+            @if (item) {
             <li>{{item}}</li>
+            }@else {
+            <br>
+            }
             }
           </ul>
 
@@ -443,7 +456,9 @@
           </div>
 
           <div>
-            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">Privado</span>
+            <p class="text-gray4 inline-block">Tipo de vendedor:</p>&nbsp;<span class="font-semibold">
+              {{auction().data.attributes.dataUser.sellerType}}
+            </span>
           </div>
 
           <h3 class="font-semibold mt-4 mb-2">Cargos adicionales</h3>

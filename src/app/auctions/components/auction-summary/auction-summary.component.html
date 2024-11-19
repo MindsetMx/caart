@@ -129,10 +129,13 @@
   <div class="lg:flex lg:justify-between">
     <div class="md:flex md:items-center md:space-x-4 md:divide-x md:divide-gray3">
       <div class="underline">¿Cómo funciona?</div>
+      @if (auction().data.attributes.status !== auctionCarStatus.Preview || auction().data.attributes.comingSoon)
+      {
       <div class="mt-2 md:mt-0 md:pl-4 text-sm text-gray4">
         <img class="inline mr-2" src="assets/img/icons/eye-outline.svg">
         {{metrics().data.attributes.visualizations | number}} visualizaciones
       </div>
+      }
       <div class="md:pl-4 text-sm text-gray4">
         <shared-star class="inline mr-2" classes="inline text-gray4 w-5 h-5"></shared-star>
         {{metrics().data.attributes.followedCount | number}} seguidos

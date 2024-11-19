@@ -60,6 +60,8 @@ export class AuctionSummaryComponent {
   #biddingArtConditionsService = inject(BiddingArtConditionsService);
   #authService = inject(AuthService);
 
+  auctionCarStatus = AuctionCarStatus;
+
   minimumNextBidChangedEffect = effect(() => {
     this.offerAmountControl.addValidators(Validators.min(this.minimumNextBid()));
   });

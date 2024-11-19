@@ -12,11 +12,11 @@
   </follow-button>
 
   <div class="mt-4">
-    <p class="font-lato font-semibold text-xl h-14 line-clamp-2" style="word-wrap: break-word;">
+    <p class="font-lato font-semibold text-xl line-clamp-1" style="word-wrap: break-word;">
       {{title()}}
     </p>
     @if (reserve() === false || premium() || status() === statusTypes.cancelled || status() === statusTypes.completed) {
-    <div class="space-x-2">
+    <div class="space-x-2 my-1">
       @if (reserve() === false) {
       <no-reserve-tag-component></no-reserve-tag-component>
       }
@@ -45,12 +45,12 @@
     }
     @if (!isHomeRoute) {
     <p class="text-gray4 line-clamp-3 min-h-[72px]" style="word-wrap: break-word;"
-      [ngClass]="{'mt-8': reserve() === true && !premium() && status() !== statusTypes.cancelled}">
+      [ngClass]="{'mt-10': reserve() === true && !premium() && status() !== statusTypes.cancelled}">
       {{extract()}}
     </p>
     }
     <span class="flex items-center bg-gray1 rounded-md px-4 py-2"
-      [ngClass]="{'mt-8': reserve() === true && !premium() && isHomeRoute}">
+      [ngClass]="{'mt-10': reserve() === true && !premium() && isHomeRoute}">
       @if (isComingSoon()) {
       @if (startDate()) {
       Próximamente: {{ startDate() | date: 'dd/MM/yyyy' }}

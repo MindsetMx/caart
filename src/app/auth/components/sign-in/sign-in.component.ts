@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '@auth/services/auth.service';
 import { InputDirective } from '@shared/directives/input.directive';
@@ -35,6 +35,7 @@ export class SignInComponent {
   #authService = inject(AuthService);
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
+  #activatedRoute = inject(ActivatedRoute);
 
   isButtonSubmitDisabled = signal<boolean>(false);
   showPassword = signal<boolean>(false);
@@ -60,19 +61,24 @@ export class SignInComponent {
         this.errorMessage.set('');
 
         if (this.#authService.currentUser()?.attributes?.accountVerified) {
-          const url = localStorage.getItem('url');
+          const returnUrl = this.#activatedRoute.snapshot.queryParams['returnUrl'];
 
-          if (url) {
-            if (url) this.#router.navigate([url]);
-
-            localStorage.removeItem('url');
+          if (returnUrl) {
+            this.#router.navigate([returnUrl]);
           } else {
             if (this.#router.url === '/iniciar-sesion') {
               this.#router.navigate(['/home']);
             }
           }
         } else {
-          this.#router.navigate(['/confirmacion']);
+          const originalReturnUrl = this.#activatedRoute.snapshot.queryParams['returnUrl'] || this.#router.url;
+
+          this.#router.navigate(['/confirmacion'], {
+            queryParams: {
+              returnUrl: originalReturnUrl
+            },
+            replaceUrl: true
+          });
         }
 
         this.signInModalIsOpenChange.emit(false);

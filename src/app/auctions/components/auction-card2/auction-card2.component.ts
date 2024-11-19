@@ -30,15 +30,11 @@ export class AuctionCard2Component {
   }
 
   countdownConfig(auction: VehicleAuctionData): CountdownConfig {
-    let leftTime = this.getSecondsUntilEndDate(auction.attributes.endDate);
+    let leftTime = auction.attributes.secondsRemaining;
     return {
       leftTime: leftTime,
       format: this.getFormat(leftTime)
     };
-  }
-
-  getSecondsUntilEndDate(endDate: string): number {
-    return this.#countdownService.getSecondsUntilEndDate(endDate);
   }
 
   getFormat(seconds: number): string {

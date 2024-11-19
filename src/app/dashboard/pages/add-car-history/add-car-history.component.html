@@ -9,6 +9,10 @@
       </div> -->
     </div>
 
+    <!-- <pre>
+      {{ addCarHistoryForm.value | json }}
+    </pre> -->
+
     <section class="no-tailwindcss-base">
       <form [formGroup]="addCarHistoryForm" (ngSubmit)="addCarHistory()" class="space-y-6">
         <div>
@@ -21,9 +25,10 @@
             Ver detalles del auto
           </button>
 
-          <div formArrayName="blocks" class="space-y-4 mb-4">
+          <div formArrayName="blocks" class="space-y-4 mb-4" cdkDropList
+            (cdkDropListDropped)="drop($event, blocksFormArray)">
             @for (block of blocksFormArrayControls; track block; let i = $index) {
-            <div [formGroupName]="i">
+            <div [formGroupName]="i" cdkDrag>
               @switch (block.value.type) {
               @case ('text') {
               <!-- delete button -->
@@ -80,9 +85,10 @@
         </div> -->
 
         <!-- extraInfo -->
-        <div class="col-span-2 grid gap-5" formArrayName="extraInfo">
+        <div class="col-span-2 grid gap-5" formArrayName="extraInfo" cdkDropList
+          (cdkDropListDropped)="drop($event, extraInfoFormArray)">
           @for (charge of extraInfoFormArrayControls; track charge; let i = $index) {
-          <div class="flex gap-5">
+          <div class="flex gap-5" cdkDrag>
             <div class="w-full">
               <label [for]="'additionalCharge' + i" class="block text-sm mb-2">Información adicional {{i+1}}</label>
               <textarea [formControlName]="i" [id]="'additionalCharge' + i" cols="30" rows="1" sharedInput></textarea>

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, OnDestroy, OnInit, Output, WritableSignal, inject, input, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
 
 import { AppService } from '@app/app.service';
@@ -45,6 +45,7 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
   #validatorsService = inject(ValidatorsService);
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
   #destroyRef: DestroyRef = inject(DestroyRef);
+  #activatedRoute = inject(ActivatedRoute);
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   // previewImages: WritableSignal<string[]> = signal(['', '']);
@@ -107,14 +108,10 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
       next: () => {
         this.toastSuccess('Registro completado con éxito');
 
-        // this.completeRegisterForm.reset();
-        const url = localStorage.getItem('url');
+        const returnUrl = this.#activatedRoute.snapshot.queryParams['returnUrl'];
 
-        if (url) {
-          if (url) this.#router.navigate([url]);
-
-          localStorage.removeItem('url');
-
+        if (returnUrl) {
+          this.#router.navigate([returnUrl]);
           return;
         }
 

@@ -1,10 +1,10 @@
-import { Router, type CanActivateFn } from '@angular/router';
-import { GeneralInfoService } from '../services/general-info.service';
 import { inject } from '@angular/core';
 import { map, of, switchMap } from 'rxjs';
-import { saveCurrentUrlInLocalStorage } from '@shared/common/saveCurrentUrlInLocalStorage';
+import { Router, type CanActivateFn } from '@angular/router';
+
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
+import { GeneralInfoService } from '@auth/services/general-info.service';
 
 export const CompleteAccountGuard: CanActivateFn = (route, state) => {
   const generalInfoService = inject(GeneralInfoService);
@@ -12,25 +12,15 @@ export const CompleteAccountGuard: CanActivateFn = (route, state) => {
 
   const authService = inject(AuthService);
 
-  console.log({ authStatus: authService.authStatus() });
-
-  // return generalInfoService.getGeneralInfo$().pipe(
-  //   map((response) => {
-  //     if (response.data.attributes.hasGeneralInfo) {
-  //       return true;
-  //     }
-
-  //     saveCurrentUrlInLocalStorage(state);
-  //     router.navigate(['/completar-registro']);
-  //     return false;
-  //   })
-  // );
-
   return authService.checkAuthStatus$().pipe(
     switchMap(() => {
       if (authService.authStatus() === AuthStatus.notAuthenticated) {
-        saveCurrentUrlInLocalStorage(state);
-        router.navigate(['/completar-registro']);
+        router.navigate(['/completar-registro'], {
+          queryParams: {
+            returnUrl: state.url
+          },
+          replaceUrl: true
+        });
         return of(false);
       }
 
@@ -40,8 +30,12 @@ export const CompleteAccountGuard: CanActivateFn = (route, state) => {
             return true;
           }
 
-          saveCurrentUrlInLocalStorage(state);
-          router.navigate(['/completar-registro']);
+          router.navigate(['/completar-registro'], {
+            queryParams: {
+              returnUrl: state.url
+            },
+            replaceUrl: true
+          });
           return false;
         })
       );

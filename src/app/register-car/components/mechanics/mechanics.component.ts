@@ -15,6 +15,8 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { CompleteCarRegistrationService } from '@app/register-car/services/complete-car-registration.service';
 import { environments } from '@env/environments';
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
+import { AuthService } from '@auth/services/auth.service';
+import { UserData } from '@auth/interfaces';
 
 @Component({
   selector: 'mechanics',
@@ -42,6 +44,7 @@ export class MechanicsComponent {
   #fb = inject(FormBuilder);
   #completeCarRegistrationService = inject(CompleteCarRegistrationService);
   #cloudinaryCroppedImageService = inject(CloudinaryCroppedImageService);
+  #authService = inject(AuthService);
 
   mechanicsForm: FormGroup;
 
@@ -205,6 +208,10 @@ export class MechanicsComponent {
     this.batchTokenDirect();
   }
 
+  get user(): UserData | null {
+    return this.#authService.currentUser();
+  }
+
   get mechanicsPhotos(): FormControl {
     return this.mechanicsForm.get('mechanicsPhotos') as FormControl;
   }
@@ -263,23 +270,32 @@ export class MechanicsComponent {
           mechanicsVideos,
         } = mechanics.data.attributes;
 
-        //Sobreescribir con valores de prueba
-        originalRims = true;
-        tireBrand = 'Michelin';
-        tireSize = '205/55 R16';
-        tireDate = '2021-08-01';
-        tireCondition = 'Excelente';
-        extraTiresOrRims = 'false';
-        spareTire = true;
-        originalTransmissionEngine = true;
-        improvementModificationOriginal = true;
-        performedServicesWithDates = 'Cambio de aceite 2021-08-01';
-        mechanicalProblemDetail = false;
-        illuminatedDashboardSensor = true;
-        factoryEquipment = false;
-        extraEquipment = false;
-        comments = 'Comentarios de prueba';
-        mechanicsPhotos = (mechanicsPhotos && mechanicsPhotos.length > 0) ? mechanicsPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
+        const emails = [
+          'fernandovelaz96@gmail.com',
+          'jansmithers30@gmail.com',
+          'rafaelmaggio@gmail.com',
+          'luisenrique.lopez01@gmail.com',
+        ];
+
+        if (this.user && emails.includes(this.user.attributes.email)) {
+          //Sobreescribir con valores de prueba
+          originalRims = true;
+          tireBrand = 'Michelin';
+          tireSize = '205/55 R16';
+          tireDate = '2021-08-01';
+          tireCondition = 'Excelente';
+          extraTiresOrRims = 'false';
+          spareTire = true;
+          originalTransmissionEngine = true;
+          improvementModificationOriginal = true;
+          performedServicesWithDates = 'Cambio de aceite 2021-08-01';
+          mechanicalProblemDetail = false;
+          illuminatedDashboardSensor = true;
+          factoryEquipment = false;
+          extraEquipment = false;
+          comments = 'Comentarios de prueba';
+          // mechanicsPhotos = (mechanicsPhotos && mechanicsPhotos.length > 0) ? mechanicsPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
+        }
 
         this.mechanicsForm.patchValue({
           originalRims,

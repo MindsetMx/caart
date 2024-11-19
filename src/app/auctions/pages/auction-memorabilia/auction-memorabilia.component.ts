@@ -36,6 +36,7 @@ import { RecentlyCompletedMemorabiliaAuctionComponent } from '@auctions/componen
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { AuctionCarStatus } from '@dashboard/interfaces';
 
 @Component({
   standalone: true,
@@ -98,6 +99,8 @@ export class AuctionMemorabiliaComponent {
   #paymentMethodsService = inject(PaymentMethodsService);
   #route = inject(ActivatedRoute);
 
+  auctionCarStatus = AuctionCarStatus;
+
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
   }
@@ -142,12 +145,7 @@ export class AuctionMemorabiliaComponent {
   }
 
   authStatusEffect = effect(() => {
-    switch (this.authStatus) {
-      case AuthStatus.authenticated:
-        this.getMetrics(this.auctionId());
-
-        break;
-    }
+    this.getMetrics(this.auctionId());
   });
 
   videoGalleryEffect = effect(() => {
@@ -355,7 +353,6 @@ export class AuctionMemorabiliaComponent {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
-      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

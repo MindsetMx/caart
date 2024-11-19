@@ -182,7 +182,6 @@ export const routes: Routes = [
         loadComponent: () => import('./dashboard/pages/add-art-history/add-art-history.component').then((m) => m.AddArtHistoryComponent),
       },
       {
-        // auction-image-assignment-and-reorder
         path: 'asignar-y-reordenar-multimedia-autos/:id',
         loadComponent: () => import('./dashboard/pages/car-auction-media-assignment-and-reorder/car-auction-media-assignment-and-reorder.component').then((m) => m.CarAuctionMediaAssignmentAndReorderComponent),
       },
@@ -190,7 +189,6 @@ export const routes: Routes = [
         path: 'asignar-y-reordenar-multimedia-arte/:id',
         loadComponent: () => import('./dashboard/pages/art-auction-media-assignment-and-reorder/art-auction-media-assignment-and-reorder.component').then((m) => m.ArtAuctionMediaAssignmentAndReorderComponent),
       },
-      // subastas en vivo
       {
         path: 'subastas-en-vivo',
         loadComponent: () => import('./dashboard/pages/live-auctions/live-auctions.component').then((m) => m.LiveAuctionsComponent),

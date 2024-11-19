@@ -8,11 +8,11 @@
   <follow-button [auctionId]="originalAuctionId()" [auctionType]="auctionType.car" class="absolute top-3 right-5">
   </follow-button>
 
-  <div class="mt-4">
+  <div class="mt-4 space-y-1">
     <div class="min-h-[60px]">
       <p class="font-optima font-semibold text-xl">{{title()}}</p>
       @if (hasReserve() === false || isPremium()) {
-      <div class="space-x-2">
+      <div class="space-x-2 my-1">
         @if (hasReserve() === false) {
         <no-reserve-tag-component></no-reserve-tag-component>
         }

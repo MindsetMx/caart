@@ -46,7 +46,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { BidHistoryComponent } from '@auctions/components/bid-history/bid-history.component';
 import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
 import { MediaType } from '@dashboard/enums';
-import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
+import { AuctionCarStatus, VideoGallery as VideosGallery } from '@dashboard/interfaces';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
@@ -132,6 +132,8 @@ export class LastChanceDetailComponent implements AfterViewInit {
   #appService = inject(AppService);
   #videoGalleryService = inject(VideoGalleryService);
 
+  auctionCarStatus = AuctionCarStatus;
+
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
   }
@@ -180,12 +182,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   });
 
   authStatusEffect = effect(() => {
-    switch (this.authStatus) {
-      case AuthStatus.authenticated:
-        this.getMetrics(this.auctionId());
-
-        break;
-    }
+    this.getMetrics(this.auctionId());
   });
 
   videoGalleryEffect = effect(() => {
@@ -423,7 +420,6 @@ export class LastChanceDetailComponent implements AfterViewInit {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
-      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

@@ -15,6 +15,7 @@ export interface AuctionMemorabiliaDetailsAttributes {
   originalMemorabiliaId: string;
   hasAuthenticityCertificate: boolean;
   isWithReserve: boolean;
+  comingSoon: boolean;
   startDate: string;
   endDate: string;
   status: string;

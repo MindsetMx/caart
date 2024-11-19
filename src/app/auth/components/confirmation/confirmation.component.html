@@ -20,6 +20,10 @@
         </div>
         @if (formHasError()) {
         <shared-input-error class="mt-1" [message]="getFirstError()"></shared-input-error>
+        } @else {
+        @if (serverError()) {
+        <shared-input-error class="mt-1" [message]="serverError()"></shared-input-error>
+        }
         }
       </div>
 
@@ -34,8 +38,8 @@
 
       <div class="text-center">
         <p>El mensaje puede tardar hasta 1 minuto</p>
-        <p class="mb-2">Si no te llego el mensaje&nbsp;&nbsp;<a routerLink="" class="font-bold underline"
-            (click)="resendCode()">Enviar otro mensaje</a>
+        <p class="mb-2">Si no te llego el mensaje&nbsp;&nbsp;<button class="font-bold underline"
+            (click)="resendCode()">Enviar otro mensaje</button>
         </p>
 
         <span>¿No puedes verificar por Whatsapp? Da click <button type="button" (click)="resendCodeToEmail()"

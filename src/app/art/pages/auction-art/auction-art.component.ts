@@ -204,12 +204,7 @@ export class AuctionArtComponent implements OnDestroy {
   });
 
   authStatusEffect = effect(() => {
-    switch (this.authStatus) {
-      case AuthStatus.authenticated:
-        this.getMetrics(this.auctionId());
-
-        break;
-    }
+    this.getMetrics(this.auctionId());
   });
 
   auctionEffect = effect(() => {
@@ -630,7 +625,6 @@ export class AuctionArtComponent implements OnDestroy {
     this.offeredAmount.set(undefined);
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
-      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

@@ -67,7 +67,6 @@ export class LastChanceVehicleCardComponent {
     $event.stopPropagation();
 
     if (this.authStatus === AuthStatus.notAuthenticated) {
-      localStorage.setItem('redirectUrl', window.location.pathname);
       this.openSignInModal();
 
       return;

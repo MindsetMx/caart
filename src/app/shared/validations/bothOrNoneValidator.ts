@@ -7,12 +7,11 @@ export function bothOrNoneValidator(): ValidatorFn {
 
     console.log({ chargeType, amount });
 
-
-    if ((chargeType && chargeType.value) || (amount && amount.value)) {
-      console.log('bothOrNone1');
-      if (!chargeType?.value || !amount?.value) {
-        console.log('bothOrNone2');
-
+    if ((chargeType && chargeType.value) || (amount && amount.value !== null && amount.value !== undefined)) {
+      if (!chargeType?.value ||
+        (amount?.value === null ||
+          amount?.value === undefined ||
+          amount?.value === '')) {
         return { bothOrNone: true };
       }
     }

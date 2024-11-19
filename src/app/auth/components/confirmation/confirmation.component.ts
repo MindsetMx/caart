@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, signal, inject, ElementRef, HostListener, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { AppService } from '@app/app.service';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -33,10 +33,13 @@ export class ConfirmationComponent {
   #router = inject(Router);
   #validatorsService = inject(ValidatorsService);
   #verificationService = inject(VerificationService);
+  #activatedRoute = inject(ActivatedRoute);
 
   codeForm: FormGroup;
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
   editableIndex: WritableSignal<number> = signal(0);
+
+  serverError = signal<string | undefined>(undefined);
 
   constructor() {
     this.codeForm = this.#fb.group({
@@ -96,12 +99,16 @@ export class ConfirmationComponent {
     this.#verificationService.confirmAccount$(code).subscribe({
       next: () => {
         this.toastSuccess('Tu cuenta ha sido verificada');
-        this.#router.navigate([localStorage.getItem('redirectUrl') || '/']);
-        localStorage.removeItem('redirectUrl');
+        const returnUrl = this.#activatedRoute.snapshot.queryParams['returnUrl'];
+
+        returnUrl
+          ? this.#router.navigate([returnUrl])
+          : this.#router.navigate(['/subastas-en-vivo']);
       },
       error: (error) => {
         console.error(error);
 
+        this.serverError.set(error.error.error);
         this.#validatorsService.addServerErrorsToFormArray(this.digitsArray, error.error.error);
       }
     }).add(() => {
@@ -118,7 +125,6 @@ export class ConfirmationComponent {
       }
     }
   }
-
 
   @HostListener('input', ['$event.target'])
   onInput(target: HTMLInputElement) {
