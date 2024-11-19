@@ -6,6 +6,7 @@ import { LiveArtGuard, PreviewArtGuard } from '@art/guards';
 import { liveCarGuard, PreviewCarGuard } from '@auctions/guards';
 import { WizardCompletionArtGuard } from '@art/guards';
 import { WizardCompletionCarGuard } from '@app/register-car/guards';
+import { adminGuard } from '@dashboard/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -155,7 +156,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canActivate: [AuthGuard, VerifiedGuard],
+    canActivate: [AuthGuard, adminGuard, VerifiedGuard],
     children: [
       {
         path: 'publicaciones',

@@ -96,7 +96,7 @@
         @if (imagesPublish() && imagesPublish().data) {
         <div class="col-span-12 md:col-span-8">
           <div class="flex h-full">
-            <a class="w-full flex" [href]="auction().data.attributes.auctionCarForm.photos[0]" data-fancybox="gallery">
+            <a class="w-full flex" [href]="imagesPublish().data.fotoPrincipal" data-fancybox="gallery">
               <img class="h-full object-cover w-full md:max-h-60 lg:max-h-80 xl:max-h-[30rem] 2xl:max-h-[35rem]"
                 [src]="imagesPublish().data.fotoPrincipal" [alt]="auction().data.attributes.title">
             </a>

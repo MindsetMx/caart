@@ -14,6 +14,7 @@ interface User {
   lastName: string;
   email: string;
   accountVerified: boolean;
+  admin: boolean;
 }
 
 interface Meta {
