@@ -393,7 +393,7 @@ export class AuctionArtComponent implements OnDestroy {
   }
 
   getAllVideos(): void {
-    this.#videoGalleryService.getAllVideos$(this.auctionId()!, this.mediaTypes.Car).subscribe((response) => {
+    this.#videoGalleryService.getAllVideos$(this.auctionId()!, this.mediaTypes.Art).subscribe((response) => {
       this.videos.set(response.data);
     });
   }
