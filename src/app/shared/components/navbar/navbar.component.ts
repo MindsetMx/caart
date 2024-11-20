@@ -41,7 +41,6 @@ export class NavbarComponent {
   menuIsOpen = signal<boolean>(false);
   categoriesDropdownIsOpen = signal<boolean>(false);
   userDropdownIsOpen = signal<boolean>(false);
-  emailForPasswordResetModalIsOpen = signal(false);
 
   dropdownLinksCategories: DropdownLink[] = [
     {

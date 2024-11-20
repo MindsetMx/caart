@@ -1,4 +1,4 @@
-<shared-dropdown width="w-60" [isOpen]="isOpen" sharedClickOutside (clickOutside)="close()">
+<shared-dropdown width="w-60" [isOpen]="isOpen()" sharedClickOutside (clickOutside)="close()">
   <button type="button" (click)="toggle()"
     class="inline-flex border h-full items-center w-full justify-center gap-x-2 rounded-md bg-white px-4 py-2 text-sm hover:bg-gray-50"
     aria-expanded="true" aria-haspopup="true">

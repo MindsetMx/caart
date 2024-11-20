@@ -1,4 +1,4 @@
-import { AuctionStatus } from "@auctions/enums";
+import { AuctionStatus, AuctionTypesAll } from "@auctions/enums";
 
 export interface GetAllAuctions {
   data: GetAllAuctionsData[];
@@ -7,7 +7,7 @@ export interface GetAllAuctions {
 
 export interface GetAllAuctionsData {
   id: string;
-  type: string;
+  type: AuctionTypesAll;
   originalAuctionId: string;
   attributes: GetAllAuctionsAttributes;
 }

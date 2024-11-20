@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, model, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { AppService } from '@app/app.service';
+import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
+import { PasswordResetService } from '@auth/services/password-reset.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { ValidatorsService } from '@shared/services/validators.service';
-import { PasswordResetService } from '../../services/password-reset.service';
-import { AppService } from '@app/app.service';
 
 @Component({
   selector: 'email-for-password-reset-input-component-modal',
@@ -24,8 +25,7 @@ import { AppService } from '@app/app.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmailForPasswordResetInputComponentModalComponent {
-  isOpen = input.required<boolean>();
-  @Output() emailForPasswordResetModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  isOpen = model.required<boolean>();
 
   #validatorsService = inject(ValidatorsService);
   #formBuilder = inject(FormBuilder);
@@ -56,7 +56,7 @@ export class EmailForPasswordResetInputComponentModalComponent {
     this.#passwordResetService.requestPasswordReset$(this.resetPasswordForm.value.email).subscribe({
       next: () => {
         this.resetPasswordForm.reset();
-        this.emitEmailForPasswordResetModalIsOpenChange(false);
+        this.isOpen.set(false);
 
         this.toastSuccess('Se ha enviado un correo electrónico con las instrucciones para restablecer la contraseña');
       },
@@ -77,10 +77,6 @@ export class EmailForPasswordResetInputComponentModalComponent {
     if (!form) return undefined;
 
     return this.#validatorsService.getError(form, field);
-  }
-
-  emitEmailForPasswordResetModalIsOpenChange(isOpen: boolean): void {
-    this.emailForPasswordResetModalIsOpenChange.emit(isOpen);
   }
 
   toastSuccess(message: string): void {

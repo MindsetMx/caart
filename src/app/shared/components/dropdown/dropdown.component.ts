@@ -1,4 +1,4 @@
-import { Component, Input, WritableSignal, signal } from '@angular/core';
+import { Component, Input, WritableSignal, input, signal } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 
 
@@ -21,6 +21,6 @@ import { trigger, style, transition, animate } from '@angular/animations';
   styleUrls: ['./dropdown.component.css'],
 })
 export class DropdownComponent {
-  @Input({ required: true }) isOpen: WritableSignal<boolean> = signal(false);
-  @Input() width = 'w-48';
+  isOpen = input.required<boolean>();
+  width = input<string>('w-48');
 }

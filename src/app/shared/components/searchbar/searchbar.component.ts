@@ -1,19 +1,19 @@
-import { ChangeDetectionStrategy, Component, HostListener, computed, effect, inject, signal, untracked } from '@angular/core';
-import { GetAllAuctionsService } from '@auctions/services/all-auctions.service';
-import { GetAllAuctions, GetAllAuctionsData } from '@auctions/interfaces';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ChangeDetectionStrategy, Component, HostListener, effect, inject, signal, untracked } from '@angular/core';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { GetAllAuctions, GetAllAuctionsData } from '@auctions/interfaces';
+import { GetAllAuctionsService } from '@auctions/services/all-auctions.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuctionTypesAll } from '@auctions/enums';
 
 @Component({
   selector: 'searchbar',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    RouterLink,
   ],
   templateUrl: './searchbar.component.html',
   styleUrl: './searchbar.component.css',
@@ -58,6 +58,8 @@ export class SearchbarComponent {
   showDropdown = signal<boolean>(false);
   selectedIndex = signal<number>(-1);
 
+  auctionTypesAll = AuctionTypesAll;
+
   getAllLiveAuctionsEffect = effect(() => this.getAllLiveAuctions());
 
   @HostListener('document:click', ['$event'])
@@ -87,7 +89,7 @@ export class SearchbarComponent {
       case 'Enter':
         event.preventDefault();
         if (this.selectedIndex() >= 0) {
-          this.navigateToAuction(this.auctions().data[this.selectedIndex()].originalAuctionId);
+          this.navigateToAuction(this.auctions().data[this.selectedIndex()]);
         }
         break;
       case 'Escape':
@@ -104,8 +106,18 @@ export class SearchbarComponent {
     }
   }
 
-  navigateToAuction(id: string) {
-    this.router.navigate(['/subasta', id]);
+  navigateToAuction(auction: GetAllAuctionsData) {
+    switch (auction.type) {
+      case AuctionTypesAll.auctionsCar:
+        this.router.navigate(['/subasta', auction.originalAuctionId]);
+        break;
+      case AuctionTypesAll.auctionsArt:
+        this.router.navigate(['/subasta-arte', auction.originalAuctionId]);
+        console.log('auction', auction);
+
+        break;
+    }
+
     this.showDropdown.set(false);
     this.selectedIndex.set(-1);
   }

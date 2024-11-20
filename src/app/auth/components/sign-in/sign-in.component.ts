@@ -8,6 +8,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { EmailForPasswordResetInputComponentModalComponent } from "@auth/modals/email-for-password-reset-input-component-modal/email-for-password-reset-input-component-modal.component";
 
 @Component({
   selector: 'sign-in',
@@ -17,7 +18,8 @@ import { ValidatorsService } from '@shared/services/validators.service';
     InputErrorComponent,
     PrimaryButtonDirective,
     ReactiveFormsModule,
-    SpinnerComponent
+    SpinnerComponent,
+    EmailForPasswordResetInputComponentModalComponent
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
@@ -27,7 +29,6 @@ export class SignInComponent {
   @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
   @Output() signInModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() registerModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() emailForPasswordResetModalIsOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() mt: string = 'mt-16';
   @Input() mb: string = 'mb-32';
@@ -38,6 +39,7 @@ export class SignInComponent {
   #activatedRoute = inject(ActivatedRoute);
 
   isButtonSubmitDisabled = signal<boolean>(false);
+  isPasswordResetModalOpen = signal<boolean>(false);
   showPassword = signal<boolean>(false);
   errorMessage = signal<string>('');
 
@@ -98,8 +100,8 @@ export class SignInComponent {
   }
 
   openEmailForPasswordResetModal(): void {
-    this.signInModalIsOpenChange.emit(false);
-    this.emailForPasswordResetModalIsOpenChange.emit(true);
+    // this.signInModalIsOpenChange.emit(false);
+    this.isPasswordResetModalOpen.set(true);
   }
 
   togglePassword(): void {

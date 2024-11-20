@@ -1,11 +1,11 @@
-import { AuctionStatus } from "@auctions/enums";
+import { AuctionStatus, AuctionTypesAll } from "@auctions/enums";
 
 export interface GetLiveArtAuction {
   data: GetLiveArtAuctionData;
 }
 
 export interface GetLiveArtAuctionData {
-  type: string;
+  type: AuctionTypesAll.auctionsArt;
   id: string;
   originalAuctionArtId: string;
   attributes: GetLiveArtAuctionAttributes;

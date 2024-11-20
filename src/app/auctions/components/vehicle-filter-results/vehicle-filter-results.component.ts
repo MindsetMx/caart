@@ -298,6 +298,8 @@ export class VehicleFilterResultsComponent {
             return;
           }
 
+          this.currentPage.update((page) => page + 1);
+
           this.auctions.update((auction) => {
             return {
               data: auction ? [...auction.data, ...auctions.data] : auctions.data,

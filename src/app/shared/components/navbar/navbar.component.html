@@ -88,7 +88,7 @@
 
 
           <!-- user menu -->
-          <shared-dropdown [isOpen]="userDropdownIsOpen" sharedClickOutside
+          <shared-dropdown [isOpen]="userDropdownIsOpen()" sharedClickOutside
             (clickOutside)="closeDropdown(userDropdownIsOpen)">
             <button type="button" (click)="toggleUserDropdown()"
               class="relative inline-flex items-center justify-center rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
@@ -302,12 +302,7 @@
 </div>
 
 <auth-sign-in-modal (registerModalIsOpenChange)="registerModalIsOpen.set($event)"
-  (emailForPasswordResetModalIsOpenChange)="emailForPasswordResetModalIsOpen.set($event)"
   [isOpen]="signInModalIsOpen"></auth-sign-in-modal>
-@defer (when emailForPasswordResetModalIsOpen()) {
-<email-for-password-reset-input-component-modal
-  (emailForPasswordResetModalIsOpenChange)="emailForPasswordResetModalIsOpen.set($event)"
-  [isOpen]="emailForPasswordResetModalIsOpen()"></email-for-password-reset-input-component-modal>
-}
+
 <register-modal (signInModalIsOpenChange)="signInModalIsOpen.set($event)"
   [isOpen]="registerModalIsOpen"></register-modal>
