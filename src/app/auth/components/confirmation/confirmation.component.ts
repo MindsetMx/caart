@@ -116,15 +116,15 @@ export class ConfirmationComponent {
     });
   }
 
-  handleClick(index: number) {
-    if (index !== this.editableIndex() && this.digitInputs) {
-      const editableInput = this.digitInputs.toArray()[this.editableIndex()];
+  // handleClick(index: number) {
+  //   if (index !== this.editableIndex() && this.digitInputs) {
+  //     const editableInput = this.digitInputs.toArray()[this.editableIndex()];
 
-      if (editableInput) {
-        editableInput.nativeElement.focus();
-      }
-    }
-  }
+  //     if (editableInput) {
+  //       editableInput.nativeElement.focus();
+  //     }
+  //   }
+  // }
 
   @HostListener('input', ['$event.target'])
   onInput(target: HTMLInputElement) {
@@ -141,7 +141,9 @@ export class ConfirmationComponent {
         if (nextInput) {
           this.editableIndex.set(currentControlIndex + 1);
 
-          nextInput.focus();
+          requestAnimationFrame(() => {
+            nextInput.focus({ preventScroll: true });
+          });
         }
       }
 
@@ -166,7 +168,9 @@ export class ConfirmationComponent {
           if (previousInput) {
             this.editableIndex.set(currentControlIndex - 1);
 
-            previousInput.focus();
+            requestAnimationFrame(() => {
+              previousInput.focus({ preventScroll: true });
+            });
           }
         }
       }
@@ -202,16 +206,19 @@ export class ConfirmationComponent {
       if (nextInput) {
         this.editableIndex.set(digitsArray.length);
 
-        nextInput.focus();
+        requestAnimationFrame(() => {
+          nextInput.focus({ preventScroll: true });
+        });
       }
     } else {
       const lastInput = this.digitInputs?.toArray()[digitsArray.length - 1].nativeElement;
       if (lastInput) {
         this.editableIndex.set(digitsArray.length - 1);
 
-        lastInput.focus();
-
-        this.confirm();
+        requestAnimationFrame(() => {
+          lastInput.focus({ preventScroll: true });
+          this.confirm();
+        });
       }
     }
   }

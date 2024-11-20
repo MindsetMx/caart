@@ -10,10 +10,11 @@
       <div formArrayName="digits">
         <div class="grid grid-cols-6 gap-4">
           @for (control of digitsArray.controls; track i; let i = $index) {
-          <label class="block relative" (click)="handleClick(i)" [class.group]="i === editableIndex()">
+          <label class="block relative" [class.group]="i === editableIndex()">
             <input #digitInputs [formControlName]="i" [readonly]="i !== editableIndex()"
               [ngClass]="{'focus:ring-2 focus:ring-inset focus:ring-black': i === editableIndex()}"
-              class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" maxlength="1" type="text">
+              class="bg-gray1 h-12 w-full outline-none px-4 py-8 rounded-lg text-center" maxlength="1" type="tel"
+              inputmode="numeric" pattern="[0-9]*">
             <div class="absolute group-focus-within:border-b border-black bottom-3 left-0 right-0 mx-4"></div>
           </label>
           }
