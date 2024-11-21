@@ -53,7 +53,8 @@
     [originalAuctionId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
     [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
     [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-results-vehicle-card>
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" intersection
+    (visible)="getFavorites(false)"></auction-results-vehicle-card>
   }
 
   @case (favoritesSource.comingSoon) {
@@ -90,7 +91,9 @@
     [originalAuctionId]="auction.originalAuctionId" [cover]="auction.attributes.cover"
     [title]="auction.attributes.title" [hasReserve]="auction.attributes.reserve"
     [isPremium]="auction.attributes.premium" [extract]="auction.attributes.extract"
-    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate"></auction-results-vehicle-card>
+    [lastBid]="auction.attributes.lastBid" [endDate]="auction.attributes.endDate" intersection
+    (visible)="getFavorites(false)">
+  </auction-results-vehicle-card>
   }
 
   @case (favoritesSource.comingSoon) {

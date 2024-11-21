@@ -143,7 +143,6 @@ export class MemorabiliaFilterResultsComponent {
       next: (auctions: MemorabiliaAuction) => {
         if (replace) {
           this.auctions.set(auctions);
-          this.getLiveAuctions(false);
           return;
         }
 

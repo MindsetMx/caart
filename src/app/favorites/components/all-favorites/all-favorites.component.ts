@@ -103,23 +103,19 @@ export class AllFavoritesComponent {
       this.orderByControl.value!,
       untracked(() => this.auctionType())
     ).subscribe((response) => {
-      console.log(response);
+      if (replace) {
+        this.favorites.set(response);
+        this.currentPage.update((page) => page + 1);
+        return;
+      }
 
-      untracked(() => {
-        if (replace) {
-          this.favorites.set(response);
-          this.currentPage.update((page) => page + 1);
+      this.currentPage.update((page) => page + 1);
 
-          this.getFavorites(false);
-          return;
-        }
-
-        this.favorites.update((favorites) => {
-          return {
-            data: favorites ? [...favorites.data, ...response.data] : response.data,
-            meta: response.meta,
-          };
-        });
+      this.favorites.update((favorites) => {
+        return {
+          data: favorites ? [...favorites.data, ...response.data] : response.data,
+          meta: response.meta,
+        };
       });
     });
   }

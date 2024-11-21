@@ -317,7 +317,6 @@ export class AllAuctionsFilterResultsComponent {
           if (replace) {
             this.auctions.set(auctions);
             this.currentPage.update((page) => page + 1);
-            this.getLiveAuctions(false);
             return;
           }
 
