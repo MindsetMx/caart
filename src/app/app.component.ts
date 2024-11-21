@@ -1,6 +1,6 @@
 import { AuthService } from '@auth/services/auth.service';
-import { AfterViewInit, Component, OnDestroy, WritableSignal, effect, inject, signal } from '@angular/core';
-import { Router, RouterOutlet, } from '@angular/router';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, WritableSignal, effect, inject, signal } from '@angular/core';
+import { Router, RouterOutlet, Scroll, Event } from '@angular/router';
 import { trigger, transition, query, animateChild } from '@angular/animations';
 
 import { AuthStatus } from '@auth/enums';
@@ -11,6 +11,8 @@ import { SignInComponent } from '@auth/components/sign-in/sign-in.component';
 import { NotificationComponent } from '@shared/components/notification/notification.component';
 import { environments } from '@env/environments';
 import { UserData } from '@auth/interfaces';
+import { ViewportScroller } from '@angular/common';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +21,6 @@ import { UserData } from '@auth/interfaces';
     RouterOutlet,
     NavbarComponent,
     FooterComponent,
-    ModalComponent,
-    SignInComponent,
     NotificationComponent,
   ],
   templateUrl: './app.component.html',
@@ -40,12 +40,24 @@ export class AppComponent implements OnDestroy, AfterViewInit {
 
   #authService = inject(AuthService);
   #router = inject(Router);
+  #viewportScroller = inject(ViewportScroller);
 
   signInModalIsOpen: WritableSignal<boolean> = signal(false);
   registerModalIsOpen: WritableSignal<boolean> = signal(false);
 
   eventSource?: EventSource;
   messages = signal<string[]>([]);
+
+  constructor() {
+    this.#router.events.pipe(filter((event: Event): event is Scroll => event instanceof Scroll)
+    ).subscribe(e => {
+      requestAnimationFrame(() => {
+        if (e.position) {
+          this.#viewportScroller.scrollToPosition(e.position);
+        }
+      });
+    });
+  }
 
   authStatusChangedEffect = effect(() => {
     switch (this.#authService.authStatus()) {
