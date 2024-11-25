@@ -96,6 +96,7 @@ select {
 
 .uppy-Dashboard-AddFiles-title {
   font-family: "optima";
+  z-index: 1000000;
 }
 
 .uppy-Dashboard-AddFiles-title {

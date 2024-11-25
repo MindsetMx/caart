@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgClass } from '@angular/common';
+import { CurrencyPipe, DatePipe, JsonPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -16,6 +16,8 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
     NgClass,
     CurrencyPipe,
     MatPaginatorModule,
+    DatePipe,
+    JsonPipe,
   ],
   templateUrl: './live-auctions.component.html',
   styleUrl: './live-auctions.component.css',
