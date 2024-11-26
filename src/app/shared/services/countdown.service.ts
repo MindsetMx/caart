@@ -21,4 +21,12 @@ export class CountdownService {
     // 02 horas, 35 minutos, 00 segundos
     return seconds >= 86400 ? 'd\' Días, \'H\' horas, \'m\' minutos, \'s\' segundos\'' : 'HH:mm:ss';
   }
+
+  prettyText(secondsRemaining: number, text: string): string {
+    if (secondsRemaining >= 86400) {
+      const days = Math.floor(secondsRemaining / (24 * 60 * 60));
+      return `${days} Día(s)`;
+    }
+    return text;
+  }
 }

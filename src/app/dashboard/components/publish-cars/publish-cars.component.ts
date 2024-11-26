@@ -7,12 +7,13 @@ import { RouterLink } from '@angular/router';
 
 import { AppService } from '@app/app.service';
 import { AuctionCarDetailsModalComponent } from '@dashboard/modals/auction-car-details-modal/auction-car-details-modal.component';
-import { AuctionCarInfo, AuctionCarStatus } from '@dashboard/interfaces';
+import { AuctionCarInfo, AuctionCarInfoData, AuctionCarStatus } from '@dashboard/interfaces';
 import { AuctionCarService } from '@dashboard/services/auction-car.service';
 import { ConfirmReleaseAuctionModalComponent } from '@dashboard/modals/confirm-release-auction-modal/confirm-release-auction-modal.component';
 import { ReleaseCarAuctionForPreviewModalComponent } from '@dashboard/modals/release-car-auction-for-preview-modal/release-car-auction-for-preview-modal.component';
 import { EditCarAuctionPreviewModalComponent } from '@app/dashboard/modals/edit-car-auction-preview-modal/edit-car-auction-preview-modal.component';
 import { AuctionTypes } from '@auctions/enums';
+import { EditAuctionDateModalComponent } from "@dashboard/modals/edit-auction-date-modal/edit-auction-date-modal.component";
 
 @Component({
   selector: 'publish-cars',
@@ -26,7 +27,8 @@ import { AuctionTypes } from '@auctions/enums';
     AuctionCarDetailsModalComponent,
     ReleaseCarAuctionForPreviewModalComponent,
     ConfirmReleaseAuctionModalComponent,
-    EditCarAuctionPreviewModalComponent
+    EditCarAuctionPreviewModalComponent,
+    EditAuctionDateModalComponent
   ],
   templateUrl: './publish-cars.component.html',
   styleUrl: './publish-cars.component.css',
@@ -37,11 +39,12 @@ export class PublishCarsComponent {
   #appService = inject(AppService);
 
   auctionCarInfo = signal<AuctionCarInfo>({} as AuctionCarInfo);
-  auctionCarId = signal<string>('');
+  auction = signal<AuctionCarInfoData>({} as AuctionCarInfoData);
   auctionCarDetailsModalIsOpen = signal<boolean>(false);
   addCarHistoryModalIsOpen = signal<boolean>(false);
   releaseAuctionForPreviewModalIsOpen = signal<boolean>(false);
   confirmReleaseAuctionModalIsOpen = signal<boolean>(false);
+  editAuctionDateModalIsOpen = signal<boolean>(false);
   isConfirmReleaseAuctionButtonDisabled = signal<boolean>(false);
   editAuctionPreviewModalIsOpen = signal<boolean>(false);
 
@@ -58,7 +61,7 @@ export class PublishCarsComponent {
   releaseCarForLiveAuction(event: { startDate: string; endDate: string }): void {
     this.isConfirmReleaseAuctionButtonDisabled.set(true);
 
-    this.#auctionCarService.releaseCarForLiveAuction$(this.auctionCarId(), event.startDate, event.endDate).subscribe({
+    this.#auctionCarService.releaseCarForLiveAuction$(this.auction().auctionCarId, event.startDate, event.endDate).subscribe({
       next: () => {
         this.releaseAuctionForPreviewModalIsOpen.set(false);
         this.confirmReleaseAuctionModalIsOpen.set(false);
@@ -96,6 +99,11 @@ export class PublishCarsComponent {
     });
   }
 
+  openEditAuctionDateModal(auction: AuctionCarInfoData): void {
+    this.auction.set(auction);
+    this.editAuctionDateModalIsOpen.set(true);
+  }
+
   closeAddCarHistoryModal(): void {
     this.addCarHistoryModalIsOpen.set(false);
   }
@@ -104,28 +112,32 @@ export class PublishCarsComponent {
     this.releaseAuctionForPreviewModalIsOpen.set(false);
   }
 
-  openConfirmReleaseAuctionModal(auctionId: string): void {
-    this.auctionCarId.set(auctionId);
+  closeEditAuctionDateModal(): void {
+    this.editAuctionPreviewModalIsOpen.set(false);
+  }
+
+  openConfirmReleaseAuctionModal(auction: AuctionCarInfoData): void {
+    this.auction.set(auction);
     this.confirmReleaseAuctionModalIsOpen.set(true);
   }
 
-  openAuctionCarDetailsModal(auctionId: string): void {
-    this.auctionCarId.set(auctionId);
+  openAuctionCarDetailsModal(auction: AuctionCarInfoData): void {
+    this.auction.set(auction);
     this.auctionCarDetailsModalIsOpen.set(true);
   }
 
-  openAddCarHistoryModal(auctionId: string): void {
-    this.auctionCarId.set(auctionId);
+  openAddCarHistoryModal(auction: AuctionCarInfoData): void {
+    this.auction.set(auction);
     this.addCarHistoryModalIsOpen.set(true);
   }
 
-  openModalToReleaseAuctionForPreview(auctionId: string): void {
-    this.auctionCarId.set(auctionId);
+  openModalToReleaseAuctionForPreview(auction: AuctionCarInfoData): void {
+    this.auction.set(auction);
     this.releaseAuctionForPreviewModalIsOpen.set(true);
   }
 
-  openEditAuctionPreviewModal(auctionId: string): void {
-    this.auctionCarId.set(auctionId);
+  openEditAuctionPreviewModal(auction: AuctionCarInfoData): void {
+    this.auction.set(auction);
     this.editAuctionPreviewModalIsOpen.set(true);
   }
 

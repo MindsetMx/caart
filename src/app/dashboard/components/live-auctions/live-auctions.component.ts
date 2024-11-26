@@ -17,7 +17,6 @@ import { CountdownConfig, CountdownModule } from 'ngx-countdown';
     CurrencyPipe,
     MatPaginatorModule,
     DatePipe,
-    JsonPipe,
   ],
   templateUrl: './live-auctions.component.html',
   styleUrl: './live-auctions.component.css',

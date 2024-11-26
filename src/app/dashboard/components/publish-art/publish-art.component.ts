@@ -7,12 +7,13 @@ import { RouterLink } from '@angular/router';
 
 import { AppService } from '@app/app.service';
 import { AuctionArtDetailsModalComponent } from '@dashboard/modals/auction-art-details-modal/auction-art-details-modal.component';
-import { AuctionArtInfo, AuctionArtStatus } from '@dashboard/interfaces';
+import { AuctionArtInfo, AuctionArtInfoData, AuctionArtStatus } from '@dashboard/interfaces';
 import { AuctionArtService } from '@dashboard/services/auction-art.service';
 import { ConfirmReleaseAuctionModalComponent } from '@dashboard/modals/confirm-release-auction-modal/confirm-release-auction-modal.component';
 import { ReleaseArtAuctionForPreviewModalComponent } from '@dashboard/modals/release-art-auction-for-preview-modal/release-art-auction-for-preview-modal.component';
 import { EditArtAuctionPreviewComponent } from '@dashboard/modals/edit-art-auction-preview-modal/edit-art-auction-preview-modal.component';
 import { AuctionTypes } from '@auctions/enums';
+import { EditAuctionDateModalComponent } from "@dashboard/modals/edit-auction-date-modal/edit-auction-date-modal.component";
 
 @Component({
   selector: 'publish-art',
@@ -26,7 +27,8 @@ import { AuctionTypes } from '@auctions/enums';
     AuctionArtDetailsModalComponent,
     ReleaseArtAuctionForPreviewModalComponent,
     ConfirmReleaseAuctionModalComponent,
-    EditArtAuctionPreviewComponent
+    EditArtAuctionPreviewComponent,
+    EditAuctionDateModalComponent
   ],
   templateUrl: './publish-art.component.html',
   styleUrl: './publish-art.component.css',
@@ -37,11 +39,11 @@ export class PublishArtComponent {
   #appService = inject(AppService);
 
   auctionArtInfo = signal<AuctionArtInfo>({} as AuctionArtInfo);
-  auctionArtId = signal<string>('');
+  auction = signal<AuctionArtInfoData>({} as AuctionArtInfoData);
   auctionArtDetailsModalIsOpen = signal<boolean>(false);
   releaseAuctionForPreviewModalIsOpen = signal<boolean>(false);
-  // auctionArtDetailsModalIsOpen = signal<boolean>(false);
   confirmReleaseAuctionModalIsOpen = signal<boolean>(false);
+  editAuctionDateModalIsOpen = signal<boolean>(false);
   isConfirmReleaseAuctionButtonDisabled = signal<boolean>(false);
   editAuctionPreviewModalIsOpen = signal<boolean>(false);
 
@@ -58,7 +60,7 @@ export class PublishArtComponent {
   releaseArtForLiveAuction(event: { startDate: string; endDate: string }): void {
     this.isConfirmReleaseAuctionButtonDisabled.set(true);
 
-    this.#auctionArtService.releaseArtForLiveAuction$(this.auctionArtId(), event.startDate, event.endDate).subscribe({
+    this.#auctionArtService.releaseArtForLiveAuction$(this.auction().auctionArtId, event.startDate, event.endDate).subscribe({
       next: (response) => {
         this.releaseAuctionForPreviewModalIsOpen.set(false);
         this.confirmReleaseAuctionModalIsOpen.set(false);
@@ -81,8 +83,8 @@ export class PublishArtComponent {
     });
   }
 
-  openConfirmReleaseAuctionModal(auctionId: string): void {
-    this.auctionArtId.set(auctionId);
+  openConfirmReleaseAuctionModal(auction: AuctionArtInfoData): void {
+    this.auction.set(auction);
     this.confirmReleaseAuctionModalIsOpen.set(true);
   }
 
@@ -102,13 +104,22 @@ export class PublishArtComponent {
     });
   }
 
-  openModalToReleaseAuctionForPreview(auctionId: string): void {
-    this.auctionArtId.set(auctionId);
+  openEditAuctionDateModal(auction: AuctionArtInfoData): void {
+    this.auction.set(auction);
+    this.editAuctionDateModalIsOpen.set(true);
+  }
+
+  closeEditAuctionDateModal(): void {
+    this.editAuctionPreviewModalIsOpen.set(false);
+  }
+
+  openModalToReleaseAuctionForPreview(auction: AuctionArtInfoData): void {
+    this.auction.set(auction);
     this.releaseAuctionForPreviewModalIsOpen.set(true);
   }
 
-  openEditAuctionPreviewModal(auctionId: string): void {
-    this.auctionArtId.set(auctionId);
+  openEditAuctionPreviewModal(auction: AuctionArtInfoData): void {
+    this.auction.set(auction);
     this.editAuctionPreviewModalIsOpen.set(true);
   }
 
@@ -116,8 +127,8 @@ export class PublishArtComponent {
     this.releaseAuctionForPreviewModalIsOpen.set(false);
   }
 
-  openAuctionArtDetailsModal(auctionId: string): void {
-    this.auctionArtId.set(auctionId);
+  openAuctionArtDetailsModal(auction: AuctionArtInfoData): void {
+    this.auction.set(auction);
     this.auctionArtDetailsModalIsOpen.set(true);
   }
 

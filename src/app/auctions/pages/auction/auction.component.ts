@@ -221,7 +221,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
           { label: 'Entregado en', value: 'CDMX, México' },
         ]);
 
-        this.getBids();
+        console.log('auctionEffect');
+
+        this.page2.set(0);
+        this.getBids(true);
       });
     }
   });
@@ -309,6 +312,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     return {
       leftTime: this.secondsRemaining(),
       format: this.getFormat(this.secondsRemaining()),
+      prettyText: (text) => this.#countdownService.prettyText(this.secondsRemaining(), text),
     };
   }
 
@@ -326,6 +330,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   getBids(replace: boolean = false): void {
+    console.log('getBids');
+
     this.page2.update((page) => page + 1);
 
     this.#auctionDetailsService.getPanelBids$(this.auction().data.attributes.originalAuctionCarId, this.page2(), this.size2()).subscribe({
@@ -432,6 +438,8 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   }
 
   getAuctionDetails(auctionId: string | null): void {
+    console.log('getAuctionDetails');
+
     if (!auctionId) return;
 
     this.#auctionDetailsService.getAuctionDetails$(auctionId).pipe(

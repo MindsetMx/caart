@@ -333,7 +333,8 @@ export class AuctionMemorabiliaComponent {
     let leftTime = this.getSecondsUntilEndDate(this.auction().data.attributes.endDate);
     return {
       leftTime: leftTime,
-      format: this.getFormat(leftTime)
+      format: this.getFormat(leftTime),
+      prettyText: (text) => this.#countdownService.prettyText(leftTime, text),
     };
   }
 

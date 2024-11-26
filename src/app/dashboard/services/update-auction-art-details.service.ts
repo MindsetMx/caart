@@ -28,4 +28,8 @@ export class UpdateAuctionArtDetailsService {
 
     return this.#http.put(`${this.#baseUrl}/auctions-cars/update-art-details/${auctionArtId}`, trimmedArtDetails);
   }
+
+  updateAuctionDates$(auctionId: string, startDate: string, endDate: string): Observable<any> {
+    return this.#http.post(`${this.#baseUrl}/auctions-cars/update-dates-art`, { auctionId, startDate, endDate });
+  }
 }

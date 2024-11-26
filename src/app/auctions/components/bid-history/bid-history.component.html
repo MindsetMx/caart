@@ -35,12 +35,14 @@
           <!-- <p>Jorge Sanders</p> -->
         <p>{{item.userName || 'Precio de salida'}}</p>
         <!-- <span>Hace 10 minutos</span> -->
+        @if (item.userName) {
         @if (isGetBidsBid(item)) {
         <span>{{transformDate(item.bidTime) | amTimeAgo}}</span>
         }
 
         @if (isLastChanceBidsBid(item)) {
         <span>{{transformDate(item.bidDate) | amTimeAgo}}</span>
+        }
         }
       </div>
     </div>

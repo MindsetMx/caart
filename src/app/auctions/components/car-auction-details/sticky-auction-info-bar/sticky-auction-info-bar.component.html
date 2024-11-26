@@ -57,16 +57,28 @@
         }
         }
 
+        <!-- <pre class="text-xs font-normal">
+          specificAuction: {{specificAuction().data.bids[specificAuction().data.bids.length - 1] | json}}
+          bids: {{specificAuction().data.bids | json}}
+        </pre> -->
         @if (specificAuction().data.status !== 'completed' && specificAuction().data.bids.length > 0 &&
-        specificAuction().data.bids[0].userId !== null) {
+        (specificAuction().data.bids[specificAuction().data.bids.length - 1].userId !== null ||
+        specificAuction().data.bids[specificAuction().data.bids.length - 1].userId === null &&
+        specificAuction().data.bids.length > 1)) {
         <div class="py-1" [ngClass]="{'pl-4': specificAuction().data.bids.length > 0}">
           <p class="inline lg:block">
-            <span class="font-bold">{{specificAuction().data ? specificAuction().data.bids.length - 1 : 0}}</span>
-            @if (specificAuction().data.bids.length - 1 === 1) {
+            <span class="font-bold">
+              @if (specificAuction().data.bids[specificAuction().data.bids.length - 1].userId) {
+              {{specificAuction().data ? specificAuction().data.bids.length : 0}}
+              }@else {
+              {{specificAuction().data ? specificAuction().data.bids.length - 1 : 0}}
+              }
+            </span>
+            <!-- @if (specificAuction().data.bids.length - 1 === 1) {
             Oferta
-            } @else {
-            Ofertas
-            }
+            } @else { -->
+            Oferta(s)
+            <!-- } -->
           </p>
         </div>
         }

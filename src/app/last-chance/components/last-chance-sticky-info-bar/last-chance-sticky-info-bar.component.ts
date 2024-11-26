@@ -98,7 +98,8 @@ export class LastChanceStickyInfoBarComponent {
 
     return {
       leftTime: leftTime,
-      format: this.getFormat(leftTime)
+      format: this.getFormat(leftTime),
+      prettyText: (text) => this.#countdownService.prettyText(leftTime, text),
     };
   }
 

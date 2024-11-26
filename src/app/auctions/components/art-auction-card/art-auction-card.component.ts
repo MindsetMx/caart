@@ -112,7 +112,8 @@ export class ArtAuctionCardComponent implements OnDestroy {
   countdownConfig(): CountdownConfig {
     return {
       leftTime: this.secondsRemaining(),
-      format: this.getFormat(this.secondsRemaining())
+      format: this.getFormat(this.secondsRemaining()),
+      prettyText: (text) => this.#countdownService.prettyText(this.secondsRemaining(), text),
     };
   }
 

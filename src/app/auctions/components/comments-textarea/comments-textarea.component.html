@@ -1,4 +1,7 @@
 @if (createComment) {
+<!-- <pre>
+    {{ createComment.value | json }}
+  </pre> -->
 <form [formGroup]="createComment" (submit)="createCommentSubmit()">
   <textarea formControlName="text"
     class="rounded-lg border border-gray-300 w-full px-4 focus:outline-none focus:ring-0 resize-none h-auto overflow-hidden pt-2"

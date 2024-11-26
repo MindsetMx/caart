@@ -10,6 +10,8 @@ export interface AuctionArtInfoData {
   name: string;
   paymentCompleted: boolean;
   published: boolean;
+  startDate: string;
+  endDate: string;
   publishImages: boolean;
   status: AuctionArtStatus;
   wizardSteps: AuctionArtInfoWizardSteps;

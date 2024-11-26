@@ -16,6 +16,7 @@ import { AuctionTypesComments } from '@auctions/enums';
 import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 import { MatIcon } from '@angular/material/icon';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'comments-textarea',
@@ -28,6 +29,7 @@ import { InputErrorComponent } from '@shared/components/input-error/input-error.
     MatIcon,
     InputErrorComponent,
     SpinnerComponent,
+    JsonPipe
   ],
   templateUrl: './comments-textarea.component.html',
   styleUrls: ['./comments-textarea.component.css'],
@@ -62,6 +64,11 @@ export class CommentsTextareaComponent {
     this.createComment?.get('itemId')?.setValue(this.auctionCarPublishId());
   });
 
+  parentCommentIdEffect = effect(() => {
+    console.log('parentCommentIdEffect', this.parentCommentId());
+    this.createComment?.get('parentCommentId')?.setValue(this.parentCommentId() || null);
+  });
+
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
   }
@@ -73,7 +80,7 @@ export class CommentsTextareaComponent {
       isSeller: [this.isSeller() || this.user?.id === this.auctioneerUserId(), Validators.required],
       itemId: ['', Validators.required],
       images: [[], Validators.maxLength(5)],
-      parentCommentId: [this.parentCommentId() || null],
+      parentCommentId: [],
     });
 
     this.setupConditionalValidation();

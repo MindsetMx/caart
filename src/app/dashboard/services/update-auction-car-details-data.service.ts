@@ -48,4 +48,8 @@ export class UpdateAuctionCarDetailsDataService {
 
     return this.#http.put(`${this.#baseUrl}/auctions-cars/update-register-car-details/${auctionCarId}`, trimmedRegisterCarDetails);
   }
+
+  updateAuctionDates$(auctionId: string, startDate: string, endDate: string): Observable<any> {
+    return this.#http.post(`${this.#baseUrl}/auctions-cars/update-dates`, { auctionId, startDate, endDate });
+  }
 }

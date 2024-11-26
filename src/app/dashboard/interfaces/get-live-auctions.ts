@@ -18,6 +18,8 @@ export interface GetLiveAuctionsAttributes {
   tiempo?: string;
   reserva: number;
   ofertaMasAlta: number;
+  startDate: string;
+  endDate: string;
 }
 
 export interface GetLiveAuctionsMeta {

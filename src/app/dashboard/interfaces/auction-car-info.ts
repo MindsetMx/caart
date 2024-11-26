@@ -11,6 +11,8 @@ export interface AuctionCarInfoData {
   model: string;
   paymentCompleted: boolean;
   published: boolean;
+  startDate: string;
+  endDate: string;
   publishImages: boolean;
   status: AuctionCarStatus;
   wizardSteps: AuctionCarInfoWizardSteps;
