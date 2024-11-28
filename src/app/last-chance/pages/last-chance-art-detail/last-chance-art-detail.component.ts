@@ -43,6 +43,8 @@ import { GetBidsBid } from '@auctions/interfaces/get-bids';
 import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
 import { MediaType } from '@dashboard/enums';
 import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
+import { IncrementViewsService } from '@auctions/services/increment-views.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -53,11 +55,9 @@ import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
     CommentsTextareaComponent,
     PrimaryButtonDirective,
     CommentComponent,
-    AuctionSummaryComponent,
     MomentModule,
     LastChanceBidModalComponent,
     PaymentMethodModalComponent,
-    AuctionCancelledComponent,
     TwoColumnAuctionGridComponent,
     AuctionDetailsTableComponentComponent,
     LastChanceBuyNowModalComponent,
@@ -120,6 +120,7 @@ export class LastChanceArtDetailComponent {
   #appService = inject(AppService);
   #videoGalleryService = inject(VideoGalleryService);
   #renderer = inject(Renderer2);
+  #incrementViewsService = inject(IncrementViewsService);
 
   auctionCarStatus = AuctionCarStatus;
 
@@ -279,8 +280,12 @@ export class LastChanceArtDetailComponent {
   });
 
   constructor() {
-    this.#route.paramMap.subscribe(params => {
+    this.#route.paramMap.pipe(
+      takeUntilDestroyed()
+    ).subscribe(params => {
       let id = params.get('id');
+
+      this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.art).subscribe();
 
       this.auctionId.set(id);
       this.getAuctionDetails();

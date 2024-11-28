@@ -49,6 +49,8 @@ import { GetBidsBid } from '@auctions/interfaces/get-bids';
 import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
 import { MediaType } from '@dashboard/enums';
 import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
+import { IncrementViewsService } from '@auctions/services/increment-views.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -133,6 +135,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   #activityRequestsService = inject(ActivityRequestsService);
   #appService = inject(AppService);
   #decimalPipe = inject(DecimalPipe);
+  #incrementViewsService = inject(IncrementViewsService);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -272,10 +275,12 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   });
 
   constructor() {
-    this.auctionId.set(this.#route.snapshot.paramMap.get('id'));
-
-    this.#route.paramMap.subscribe(params => {
+    this.#route.paramMap.pipe(
+      takeUntilDestroyed()
+    ).subscribe(params => {
       let id = params.get('id');
+
+      this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.car).subscribe();
 
       this.auctionId.set(id);
       this.getAuctionDetails(id);

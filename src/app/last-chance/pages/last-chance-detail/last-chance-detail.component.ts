@@ -47,26 +47,23 @@ import { BidHistoryComponent } from '@auctions/components/bid-history/bid-histor
 import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
 import { MediaType } from '@dashboard/enums';
 import { AuctionCarStatus, VideoGallery as VideosGallery } from '@dashboard/interfaces';
+import { IncrementViewsService } from '@auctions/services/increment-views.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'last-chance-detail',
   standalone: true,
   imports: [
     CommonModule,
-    InputDirective,
     LastChanceBidModalComponent,
     PrimaryButtonDirective,
     StarComponent,
-    SlicePipe,
     CurrencyPipe,
     MomentModule,
     ImageGalleryComponent,
     PaymentMethodModalComponent,
     CommentsTextareaComponent,
     CommentComponent,
-    RecentlyCompletedAuctionsComponent,
-    AuctionSummaryComponent,
     CurrentAuctionsComponent,
-    AuctionCancelledComponent,
     LastChanceStickyInfoBarComponent,
     TwoColumnAuctionGridComponent,
     AuctionDetailsTableComponentComponent,
@@ -131,6 +128,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   #decimalPipe = inject(DecimalPipe);
   #appService = inject(AppService);
   #videoGalleryService = inject(VideoGalleryService);
+  #incrementViewsService = inject(IncrementViewsService);
 
   auctionCarStatus = AuctionCarStatus;
 
@@ -244,10 +242,12 @@ export class LastChanceDetailComponent implements AfterViewInit {
   });
 
   constructor() {
-    this.auctionId.set(this.#route.snapshot.paramMap.get('id'));
-
-    this.#route.paramMap.subscribe(params => {
+    this.#route.paramMap.pipe(
+      takeUntilDestroyed()
+    ).subscribe(params => {
       let id = params.get('id');
+
+      this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.car).subscribe();
 
       this.auctionId.set(id);
       this.getAuctionDetails(id);

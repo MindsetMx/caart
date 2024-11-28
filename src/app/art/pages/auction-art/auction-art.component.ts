@@ -47,6 +47,8 @@ import { GetBidsBid } from '@auctions/interfaces/get-bids';
 import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
 import { MediaType } from '@dashboard/enums';
 import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
+import { IncrementViewsService } from '@auctions/services/increment-views.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface EventData {
   type: string;
@@ -141,6 +143,7 @@ export class AuctionArtComponent implements OnDestroy {
   #appService = inject(AppService);
   #renderer = inject(Renderer2);
   #videoGalleryService = inject(VideoGalleryService);
+  #incrementViewsService = inject(IncrementViewsService);
 
   get user(): UserData | null {
     return this.#authService.currentUser();
@@ -377,8 +380,11 @@ export class AuctionArtComponent implements OnDestroy {
   });
 
   constructor() {
-    this.#route.paramMap.subscribe(params => {
+    this.#route.paramMap.pipe(
+      takeUntilDestroyed()
+    ).subscribe(params => {
       let id = params.get('id');
+      this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.art).subscribe();
 
       this.auctionId.set(id);
       this.getAuctionDetails(id);
