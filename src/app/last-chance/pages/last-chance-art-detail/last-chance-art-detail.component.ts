@@ -284,10 +284,8 @@ export class LastChanceArtDetailComponent {
       takeUntilDestroyed()
     ).subscribe(params => {
       let id = params.get('id');
-
-      this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.art).subscribe();
-
       this.auctionId.set(id);
+      this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.art).subscribe();
       this.getAuctionDetails();
       this.getImagesPublish(id!);
     });
