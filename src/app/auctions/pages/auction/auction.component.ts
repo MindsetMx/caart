@@ -1,7 +1,7 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, untracked } from '@angular/core';
-import { CommonModule, CurrencyPipe, DecimalPipe, SlicePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { CountdownConfig } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
 import { MatPaginator } from '@angular/material/paginator';
@@ -36,12 +36,10 @@ import { EventData } from '@app/art/pages/auction-art/auction-art.component';
 import { GetComments } from '@auctions/interfaces/get-comments';
 import { ImageGalleryComponent } from '@auctions/components/image-gallery/image-gallery.component';
 import { ImagesPublish } from '@dashboard/interfaces/images-publish';
-import { InputDirective } from '@shared/directives/input.directive';
 import { MakeAnOfferModalComponent } from '@auctions/modals/make-an-offer-modal/make-an-offer-modal.component';
 import { PaymentMethodModalComponent } from '@app/register-car/modals/payment-method-modal/payment-method-modal.component';
 import { PaymentMethodsService } from '@shared/services/payment-methods.service';
 import { PrimaryButtonDirective } from '@shared/directives/primary-button.directive';
-import { RecentlyCompletedAuctionsComponent } from '@auctions/components/recently-completed-auctions/recently-completed-auctions.component';
 import { StarComponent } from '@shared/components/icons/star/star.component';
 import { StickyAuctionInfoBarComponent } from '@auctions/components/car-auction-details/sticky-auction-info-bar/sticky-auction-info-bar.component';
 import { TwoColumnAuctionGridComponent } from '@auctions/components/two-column-auction-grid/two-column-auction-grid.component';
@@ -56,18 +54,15 @@ import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
   standalone: true,
   imports: [
     CommonModule,
-    InputDirective,
     MakeAnOfferModalComponent,
     PrimaryButtonDirective,
     StarComponent,
-    SlicePipe,
     CurrencyPipe,
     MomentModule,
     ImageGalleryComponent,
     PaymentMethodModalComponent,
     CommentsTextareaComponent,
     CommentComponent,
-    RecentlyCompletedAuctionsComponent,
     AuctionSummaryComponent,
     CurrentAuctionsComponent,
     AuctionCancelledComponent,
@@ -263,6 +258,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
             if (auctions) {
               untracked(() => {
                 this.secondsRemaining.set(auctions[0].secondsRemaining);
+                console.log({ secondsRemaining: this.secondsRemaining() });
               });
             }
             break;

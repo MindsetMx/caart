@@ -24,8 +24,11 @@ export class CountdownService {
 
   prettyText(secondsRemaining: number, text: string): string {
     if (secondsRemaining >= 86400) {
-      const days = Math.floor(secondsRemaining / (24 * 60 * 60));
-      return `${days} Día(s)`;
+      const days = secondsRemaining / (24 * 60 * 60);
+      console.log({ days });
+
+      const roundedDays = (days % 1 >= 0.5) ? Math.ceil(days) : Math.floor(days);
+      return `${roundedDays} Día(s)`;
     }
     return text;
   }
