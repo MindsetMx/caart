@@ -16,6 +16,9 @@ import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinar
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { JsonPipe } from '@angular/common';
 
+const DEFAULT_INE_FRONT_IMAGE_URL = 'https://placehold.co/600x400?text=INE+Frontal';
+const DEFAULT_INE_BACK_IMAGE_URL = 'https://placehold.co/600x400?text=INE+Posterior';
+
 @Component({
   selector: 'complete-register',
   standalone: true,
@@ -63,12 +66,13 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
       postalCode: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       validationType: [idTypes.ine, [Validators.required]],
       validationImg: this.#fb.array([
-        ['', [Validators.required]],
-        ['', [Validators.required]]
+        [DEFAULT_INE_FRONT_IMAGE_URL, [Validators.required]],
+        [DEFAULT_INE_BACK_IMAGE_URL, [Validators.required]]
       ]),
     });
 
     this.subscribeToValidationImgChanges();
+    this.validationImg.set(this.validationImgFormArray.value);
   }
 
   get idTypes(): typeof idTypes {
@@ -149,8 +153,8 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
     switch (type) {
       case idTypes.ine:
         this.completeRegisterForm?.setControl('validationImg', new FormArray([
-          new FormControl('', Validators.required),
-          new FormControl('', Validators.required),
+          new FormControl(DEFAULT_INE_FRONT_IMAGE_URL, Validators.required),
+          new FormControl(DEFAULT_INE_BACK_IMAGE_URL, Validators.required),
         ]));
 
         break;
@@ -163,6 +167,7 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
     }
 
     this.subscribeToValidationImgChanges();
+    this.validationImg.set(this.validationImgFormArray.value);
   }
 
   private subscribeToValidationImgChanges(): void {
