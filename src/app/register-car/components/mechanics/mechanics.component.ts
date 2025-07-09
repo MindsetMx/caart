@@ -176,7 +176,7 @@ export class MechanicsComponent {
     this.mechanicsForm = this.#fb.group({
       tireBrand: [''],
       tireSize: [''],
-      spareTire: ['', [Validators.required]],
+      spareTire: [true, [Validators.required]],
       comments: ['', [Validators.required]],
       mechanicsPhotos: [[], [Validators.required]],
       mechanicsVideos: [[]],
@@ -246,10 +246,10 @@ export class MechanicsComponent {
 
         if (this.user && emails.includes(this.user.attributes.email)) {
           // Sobreescribir con valores de prueba
-          tireBrand = 'Michelin';
-          tireSize = '205/55 R16';
+          tireBrand = '';
+          tireSize = '';
           spareTire = true;
-          comments = 'Comentarios de prueba';
+          comments = '';
 
           mechanicsPhotos =
             mechanicsPhotos && mechanicsPhotos.length > 0
