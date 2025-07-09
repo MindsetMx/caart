@@ -14,7 +14,7 @@ import XHRUpload from '@uppy/xhr-upload';
 import { AppComponent } from '@app/app.component';
 import { AuthService } from '@auth/services/auth.service';
 import { AuthStatus } from '@auth/enums';
-import { Brands, Colors } from '@app/register-car/interfaces';
+import { Brands } from '@app/register-car/interfaces';
 import { CloudinaryCroppedImageService } from '@app/dashboard/services/cloudinary-cropped-image.service';
 import { CompleteRegisterModalComponent } from '@auth/modals/complete-register-modal/complete-register-modal.component';
 import { environments } from '@env/environments';
@@ -57,7 +57,6 @@ export class CarRegisterComponent {
 
   brands = signal<string[]>([]);
   carRegisterForm: FormGroup;
-  colors = signal<Colors[]>([]);
   currentSubastaAutomovilesType = signal<SubastaAutomovilesTypes>(SubastaAutomovilesTypes.AUTOMOVILES);
   currentYear = new Date().getFullYear();
   isButtonSubmitDisabled = signal(false);
@@ -260,10 +259,6 @@ export class CarRegisterComponent {
       brand: ['', Validators.required],
       year: ['', [Validators.required, Validators.min(1500), Validators.max(this.currentYear)]],
       carModel: ['', Validators.required],
-      exteriorColor: ['', Validators.required],
-      specificColor: ['', Validators.required],
-      interiorColor: ['', Validators.required],
-      generalCondition: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
@@ -277,14 +272,12 @@ export class CarRegisterComponent {
       howDidYouHearAboutUs: ['', Validators.required],
       photos: [[], Validators.required],
       videos: [[]],
-      interest: ['', Validators.required],
       acceptTerms: ['', Validators.required],
     });
 
     this.batchTokenDirect();
 
     this.getBrands();
-    this.getColors();
 
     this.filteredStates = this.stateControl.valueChanges.pipe(
       startWith(''),
@@ -361,16 +354,6 @@ export class CarRegisterComponent {
       });
   }
 
-  getColors(): void {
-    this.#registerCarService.getColors$().subscribe({
-      next: (response: Colors[]) => {
-        this.colors.set(response);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
 
   batchTokenDirect(): void {
     this.#cloudinaryCroppedImageService.batchTokenDirect$().
