@@ -324,10 +324,15 @@ export class CarRegisterComponent {
     }
 
     this.#registerCarService.registerCar$(this.carRegisterForm).subscribe({
-      next: () => {
+      next: (response) => {
         this.carRegisterForm.reset();
 
-        this.#router.navigate(['/registro-exitoso']);
+        const id = response?.meta?.auctionCarPublishId;
+        if (id) {
+          this.#router.navigate(['/completar-registro-vehiculo', id]);
+        } else {
+          this.#router.navigate(['/registro-exitoso']);
+        }
       },
       error: (error) => {
         console.error(error);
