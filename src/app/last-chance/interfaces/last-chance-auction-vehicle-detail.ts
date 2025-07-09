@@ -161,14 +161,11 @@ export interface LastChanceAuctionVehicleDetailInteriorDetails {
   _id: string;
   originalAuctionCarId: string;
   __v: number;
-  accessoriesFunctioning: boolean;
-  comments: string;
   interiorColor: string;
-  interiorCondition: string;
-  interiorModifications: boolean;
+  material: string;
+  interiorDetails: string;
   interiorPhotos: string[];
   interiorVideos: any[];
-  material: string;
 }
 
 export interface LastChanceAuctionVehicleDetailMechanicsDetails {
