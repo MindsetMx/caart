@@ -86,7 +86,7 @@ export class CarRegisterComponent {
         restrictions: {
           maxFileSize: 20000000,
           // maxNumberOfFiles: 20,
-          minNumberOfFiles: 1,
+          minNumberOfFiles: 0,
           allowedFileTypes: ['image/*'],
         },
       }).use(Dashboard,
@@ -143,7 +143,7 @@ export class CarRegisterComponent {
         restrictions: {
           maxFileSize: 500000000,
           // maxNumberOfFiles: 20,
-          minNumberOfFiles: 1,
+          minNumberOfFiles: 0,
           allowedFileTypes: ['video/*'],
         },
       }).use(Dashboard,
@@ -270,7 +270,7 @@ export class CarRegisterComponent {
       otherTransmission: [null],
       engine: ['', Validators.required],
       howDidYouHearAboutUs: ['', Validators.required],
-      photos: [[], Validators.required],
+      photos: [[]],
       videos: [[]],
       acceptTerms: ['', Validators.required],
     });
