@@ -19,6 +19,14 @@ export class RegisterArtService {
 
     trimmedFormGroup.reserve = trimmedFormGroup.reserve === 'true';
 
+    trimmedFormGroup.photos = [
+      'http://res.cloudinary.com/demo/image/upload/v1/exterior1.jpg',
+      'http://res.cloudinary.com/demo/image/upload/v1/exterior2.jpg'
+    ];
+    trimmedFormGroup.videos = [
+      'http://res.cloudinary.com/demo/image/upload/v1/exterior1.jpg'
+    ];
+
     const url = `${this.#baseUrl}/auction-items/register-art`;
 
     return this.#http.post<any>(url, trimmedFormGroup);
