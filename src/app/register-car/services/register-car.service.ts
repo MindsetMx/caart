@@ -21,6 +21,14 @@ export class RegisterCarService {
 
     trimmedRegisterCar.reserve = trimmedRegisterCar.reserve === 'true';
 
+    trimmedRegisterCar.photos = [
+      'http://res.cloudinary.com/demo/image/upload/v1/exterior1.jpg',
+      'http://res.cloudinary.com/demo/image/upload/v1/exterior2.jpg'
+    ];
+    trimmedRegisterCar.videos = [
+      'http://res.cloudinary.com/demo/image/upload/v1/exterior1.jpg'
+    ];
+
     const token = localStorage.getItem('token');
 
     if (!token) throw new Error('No token found');
