@@ -183,7 +183,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
       invoiceType: ['', [Validators.required]],
       invoiceDetails: ['', [Validators.required]],
       carHistory: ['', [Validators.required]],
-      exteriorPhotos: [[], [Validators.required]],
+      exteriorPhotos: [[]],
       exteriorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId(), [Validators.required]],
     });
@@ -269,39 +269,9 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
           exteriorVideos,
         } = response;
 
-        const emails = [
-          'fernandovelaz96@gmail.com',
-          'jansmithers30@gmail.com',
-          'rafaelmaggio@gmail.com',
-          'luisenrique.lopez01@gmail.com',
-        ];
+        exteriorPhotos = exteriorPhotos ?? [];
+        exteriorVideos = exteriorVideos ?? [];
 
-        if (this.user && emails.includes(this.user.attributes.email)) {
-          // Sobreescribir con valores de prueba
-          kmInput = kmInput || 123456;
-          brand = brand || 'Toyota';
-          year = year || 2020;
-          carModel = carModel || 'Corolla';
-          invoiceType = invoiceType || 'invoice';
-          invoiceDetails = invoiceDetails || 'Paid in cash';
-          carHistory = carHistory || 'Historia del auto';
-
-          exteriorPhotos =
-            exteriorPhotos && exteriorPhotos.length > 0
-              ? exteriorPhotos
-              : [
-                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/a135dd45-6c21-4dcd-b6b7-2b6619696500/public',
-                ];
-          exteriorVideos =
-            exteriorVideos && exteriorVideos.length > 0
-              ? exteriorVideos
-              : [
-                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/8e340451-9379-474c-85e4-2b0d2c0c3a00/public',
-                ];
-
-          this.exteriorPhotos.clearValidators();
-          this.exteriorPhotos.updateValueAndValidity();
-        }
 
         this.exteriorOfTheCarForm.patchValue({
           kmInput,
