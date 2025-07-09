@@ -173,7 +173,7 @@ export class InteriorOfTheCarComponent {
 
   constructor() {
     this.interiorOfTheCarForm = this.#fb.group({
-      interiorColor: [{ value: '', disabled: true }, [Validators.required]],
+      interiorColor: ['', [Validators.required]],
       material: ['', [Validators.required]],
       interiorDetails: ['', [Validators.required]],
       interiorPhotos: [[]],
