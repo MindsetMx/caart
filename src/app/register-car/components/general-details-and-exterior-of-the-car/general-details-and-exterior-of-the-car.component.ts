@@ -7,7 +7,6 @@ import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 
 import { AutoResizeTextareaDirective } from '@shared/directives/auto-resize-textarea.directive';
-import { Colors } from '@app/register-car/interfaces/colors.interface';
 import { CompleteCarRegistrationService } from '../../services/complete-car-registration.service';
 import { InputDirective } from '@shared/directives/input.directive';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
@@ -54,7 +53,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
   exteriorOfTheCarForm: FormGroup;
   currentYear = new Date().getFullYear();
   brands: WritableSignal<string[]> = signal([]);
-  // colors: WritableSignal<Colors[]> = signal([]);
   token = signal<string>('');
 
   isButtonSubmitDisabled: WritableSignal<boolean> = signal(false);
@@ -182,27 +180,10 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
       brand: [{ value: '', disabled: true }, [Validators.required]],
       year: [{ value: '', disabled: true }, [Validators.required, Validators.min(1500), Validators.max(this.currentYear)]],
       carModel: [{ value: '', disabled: true }, [Validators.required]],
-      // mileage: ['', [Validators.required]],
-      odometerVerified: ['', [Validators.required]],
-      transmissionType: [{ value: '', disabled: true }, [Validators.required]],
-      otherTransmission: [{ value: '', disabled: true }],
-      // sellerType: ['', [Validators.required]],
-      VIN: ['', [Validators.required]],
-      warranties: ['', [Validators.required]],
-      wichWarranties: [''],
       invoiceType: ['', [Validators.required]],
       invoiceDetails: ['', [Validators.required]],
       carHistory: ['', [Validators.required]],
-      exteriorColor: [{ value: '', disabled: true }, [Validators.required]],
-      specificColor: [{ value: '', disabled: true }, [Validators.required]],
-      accident: ['', [Validators.required]],
-      raced: ['', [Validators.required]],
-      originalPaint: ['', [Validators.required]],
-      paintMeter: ['', [Validators.required]],
-      exteriorModified: ['', [Validators.required]],
-      exteriorCondition: ['', [Validators.required]],
-      detailComments: ['', [Validators.required]],
-      exteriorPhotos: [[], [Validators.required]],
+      exteriorPhotos: [[]],
       exteriorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId(), [Validators.required]],
     });
@@ -214,13 +195,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
     return this.#authService.currentUser();
   }
 
-  get specificColorControl(): FormControl {
-    return this.exteriorOfTheCarForm.get('specificColor') as FormControl;
-  }
-
-  get exteriorColorControl(): FormControl {
-    return this.exteriorOfTheCarForm.get('exteriorColor') as FormControl;
-  }
 
   get carModelControl(): FormControl {
     return this.exteriorOfTheCarForm.get('carModel') as FormControl;
@@ -238,28 +212,8 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
     return this.exteriorOfTheCarForm.get('kmInput') as FormControl;
   }
 
-  get transmissionTypeControl(): FormControl {
-    return this.exteriorOfTheCarForm.get('transmissionType') as FormControl;
-  }
-
-  get otherTransmissionControl(): FormControl {
-    return this.exteriorOfTheCarForm.get('otherTransmission') as FormControl;
-  }
-
-  get wichWarrantiesControl(): FormControl {
-    return this.exteriorOfTheCarForm.get('wichWarranties') as FormControl;
-  }
-
-  get warrantiesControl(): FormControl {
-    return this.exteriorOfTheCarForm.get('warranties') as FormControl;
-  }
-
   get originalAuctionCarId(): WritableSignal<string> {
     return this.#completeCarRegistrationService.originalAuctionCarId;
-  }
-
-  get detailVideos(): FormControl {
-    return this.exteriorOfTheCarForm.get('detailVideos') as FormControl;
   }
 
   get exteriorPhotos(): FormControl {
@@ -272,26 +226,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getColors();
-
-    this.warrantiesControl.valueChanges.subscribe((value) => {
-      if (value === 'true') {
-        this.wichWarrantiesControl?.setValidators([Validators.required]);
-      } else {
-        this.wichWarrantiesControl?.clearValidators();
-      }
-
-      this.wichWarrantiesControl?.updateValueAndValidity();
-    });
-
-    this.transmissionTypeControl.valueChanges.subscribe((value) => {
-      if (value === 'Otro') {
-        this.otherTransmissionControl?.setValidators([Validators.required]);
-      } else {
-        this.otherTransmissionControl?.clearValidators();
-      }
-
-      this.otherTransmissionControl?.updateValueAndValidity();
-    });
   }
 
   exteriorOfTheCarFormSubmit() {
@@ -304,15 +238,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
       return;
     }
 
-    this.kmInputControl.enable();
-    this.brandControl.enable();
-    this.yearControl.enable();
-    this.carModelControl.enable();
-    this.transmissionTypeControl.enable();
-    this.otherTransmissionControl.enable();
-    this.exteriorColorControl.enable();
-    this.specificColorControl.enable();
-
     this.#completeCarRegistrationService.saveGeneralDetailsAndExteriorOfTheCar$(this.exteriorOfTheCarForm)
       .subscribe({
         next: () => {
@@ -322,14 +247,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
           window.scrollTo(0, 0);
         },
         error: (error) => {
-          this.kmInputControl.disable();
-          this.brandControl.disable();
-          this.yearControl.disable();
-          this.carModelControl.disable();
-          this.transmissionTypeControl.disable();
-          this.otherTransmissionControl.disable();
-          this.exteriorColorControl.disable();
-          this.specificColorControl.disable();
           console.error(error);
         },
       }).add(() => {
@@ -341,94 +258,29 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
     this.#completeCarRegistrationService.getGeneralInformation$(this.originalAuctionCarId()).subscribe({
       next: (response) => {
         let {
-          VIN,
           kmInput,
           brand,
           year,
           carModel,
-          // mileage,
-          odometerVerified,
-          transmissionType,
-          otherTransmission,
-          // sellerType,
-          warranties,
-          wichWarranties,
           invoiceType,
           invoiceDetails,
           carHistory,
-          exteriorColor,
-          specificColor,
-          accident,
-          raced,
-          originalPaint,
-          paintMeter,
-          exteriorModified,
-          exteriorCondition,
-          detailComments,
           exteriorPhotos,
           exteriorVideos,
         } = response;
 
-        const emails = [
-          'fernandovelaz96@gmail.com',
-          'jansmithers30@gmail.com',
-          'rafaelmaggio@gmail.com',
-          'luisenrique.lopez01@gmail.com',
-        ];
+        exteriorPhotos = exteriorPhotos ?? [];
+        exteriorVideos = exteriorVideos ?? [];
 
-        if (this.user && emails.includes(this.user.attributes.email)) {
-          //Sobreescribir con valores de prueba
-          VIN = VIN || '1HGCM82633A123456';
-          kmInput = kmInput || 123456;
-          brand = brand || 'Toyota';
-          year = year || 2020;
-          carModel = carModel || 'Corolla';
-          odometerVerified = odometerVerified || 'true';
-          transmissionType = transmissionType || 'Manual';
-          otherTransmission = otherTransmission || 'N/A';
-          warranties = warranties || 'false';
-          wichWarranties = wichWarranties || 'N/A';
-          invoiceType = invoiceType || 'invoice';
-          invoiceDetails = invoiceDetails || 'Paid in cash';
-          carHistory = carHistory || 'No accidents';
-          exteriorColor = exteriorColor || 'Blue';
-          specificColor = specificColor || 'N/A';
-          accident = accident || 'false';
-          raced = raced || 'false';
-          originalPaint = originalPaint || 'true';
-          paintMeter = paintMeter || 'false';
-          exteriorModified = exteriorModified || 'false';
-          exteriorCondition = exteriorCondition || 'excellent';
-          detailComments = detailComments || 'No comments';
-          // exteriorPhotos = (exteriorPhotos && exteriorPhotos.length > 0) ? exteriorPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
-          exteriorVideos = exteriorVideos || [];
-        }
 
         this.exteriorOfTheCarForm.patchValue({
-          VIN,
           kmInput,
           brand,
           year,
           carModel,
-          // mileage,
-          odometerVerified,
-          transmissionType,
-          otherTransmission,
-          // sellerType,
-          warranties,
-          wichWarranties,
           invoiceType,
           invoiceDetails,
           carHistory,
-          exteriorColor,
-          specificColor,
-          accident,
-          raced,
-          originalPaint,
-          paintMeter,
-          exteriorModified,
-          exteriorCondition,
-          detailComments,
           exteriorPhotos,
           exteriorVideos,
         });

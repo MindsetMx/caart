@@ -15,8 +15,8 @@
       "@lastChance/*": [
         "./src/app/last-chance/*"
       ],
-      "@env/*": [
-        "./src/environments/*"
+      "@env/environments": [
+        "./src/environments/environments.ts"
       ],
       "@registerCarComponents/*": [
         "./src/app/register-car/components/*"

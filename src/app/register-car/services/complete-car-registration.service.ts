@@ -81,7 +81,25 @@ export class CompleteCarRegistrationService {
   }
 
   saveMechanics$(mechanics: FormGroup): Observable<any> {
-    const trimmedMechanics = this.#appService.trimObjectValues(mechanics.value);
+    const {
+      tireBrand,
+      tireSize,
+      spareTire,
+      comments,
+      mechanicsPhotos,
+      mechanicsVideos,
+      originalAuctionCarId,
+    } = mechanics.value;
+
+    const trimmedMechanics = this.#appService.trimObjectValues({
+      tireBrand,
+      tireSize,
+      spareTire,
+      comments,
+      mechanicsPhotos,
+      mechanicsVideos,
+      originalAuctionCarId,
+    });
 
     const url = `${this.#baseUrl}/mechanics-detail-cars`;
 
@@ -89,7 +107,13 @@ export class CompleteCarRegistrationService {
   }
 
   saveCarExtras$(carExtras: FormGroup): Observable<any> {
-    const trimmedCarExtras = this.#appService.trimObjectValues(carExtras.value);
+    const { comments, termsConditionsAccepted, originalAuctionCarId } = carExtras.value;
+
+    const trimmedCarExtras = this.#appService.trimObjectValues({
+      comments,
+      termsConditionsAccepted,
+      originalAuctionCarId,
+    });
 
     const url = `${this.#baseUrl}/extras`;
 

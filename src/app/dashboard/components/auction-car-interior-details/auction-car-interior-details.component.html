@@ -46,56 +46,13 @@
     }
   </div>
 
-  <!-- Condiciones del interior select -->
+  <!-- Cúentanos cualquier detalle importante sobre el interior -->
   <div class="col-span-2">
-    <label for="interiorCondition" class="block mb-1 text-sm">Condiciones del interior <span
+    <label for="interiorDetails" class="block mb-1 text-sm">Cúentanos cualquier detalle importante sobre el interior <span
         class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="interiorCondition" formControlName="interiorCondition" sharedInput>
-      <!-- <option value disabled selected>Condiciones del interior</option> -->
-      <option value="excellent">Excelente</option>
-      <option value="good">Buena</option>
-      <option value="regular">Regular</option>
-      <option value="bad">Mala</option>
-    </select>
-    @if (hasError('interiorCondition')) {
-    <shared-input-error [message]="getError('interiorCondition')"></shared-input-error>
-    }
-  </div>
-
-  <!-- ¿Ha tenido modificaciones en el interior? select -->
-  <div class="col-span-2">
-    <label for="interiorModifications" class="block mb-1 text-sm">¿Ha tenido modificaciones en el
-      interior? <span class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="interiorModifications" formControlName="interiorModifications" sharedInput>
-      <!-- <option value disabled selected>¿Ha tenido modificaciones en el interior?</option> -->
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('interiorModifications')) {
-    <shared-input-error [message]="getError('interiorModifications')"></shared-input-error>
-    }
-  </div>
-
-  <!-- ¿Los accesorios y electrónicos funcionan? input-->
-  <div class="col-span-2">
-    <label for="accessoriesFunctioning" class="block mb-1 text-sm">¿Los accesorios y electrónicos
-      funcionan? <span class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="accessoriesFunctioning" formControlName="accessoriesFunctioning" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('accessoriesFunctioning')) {
-    <shared-input-error [message]="getError('accessoriesFunctioning')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Comentarios sobre detalles textarea -->
-  <div class="col-span-2">
-    <label for="comments" class="block mb-1 text-sm">Comentarios sobre detalles <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="comments" formControlName="comments" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
-    @if (hasError('comments')) {
-    <shared-input-error [message]="getError('comments')"></shared-input-error>
+    <textarea id="interiorDetails" formControlName="interiorDetails" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
+    @if (hasError('interiorDetails')) {
+    <shared-input-error [message]="getError('interiorDetails')"></shared-input-error>
     }
   </div>
 

@@ -69,6 +69,7 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
     });
 
     this.subscribeToValidationImgChanges();
+    this.validationImg.set(this.validationImgFormArray.value);
   }
 
   get idTypes(): typeof idTypes {
@@ -163,6 +164,7 @@ export class CompleteRegisterComponent implements OnInit, OnDestroy {
     }
 
     this.subscribeToValidationImgChanges();
+    this.validationImg.set(this.validationImgFormArray.value);
   }
 
   private subscribeToValidationImgChanges(): void {

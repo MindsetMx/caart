@@ -71,56 +71,6 @@
         }
       </div>
 
-      <div>
-        <label for="exteriorColor" class="block mb-1 text-sm">Color exterior <span
-            class="font-bold text-red-500 inline-block">*</span></label>
-        <select formControlName="exteriorColor" id="exteriorColor" sharedInput>
-          @for (color of colors(); track $index) {
-          <option [value]="color.name">{{color.name}}</option>
-          }
-        </select>
-        @if (hasError('exteriorColor')) {
-        <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
-        }
-      </div>
-
-      <!-- specificColor -->
-      <div>
-        <label for="specificColor" class="block mb-1 text-sm">Color específico <span
-            class="font-bold text-red-500 inline-block">*</span></label>
-        <input formControlName="specificColor" id="specificColor" type="text" sharedInput>
-        @if (hasError('specificColor')) {
-        <shared-input-error [message]="getError('specificColor')"></shared-input-error>
-        }
-      </div>
-
-      <div>
-        <label for="interiorColor" class="block mb-1 text-sm">Color interior <span
-            class="font-bold text-red-500 inline-block">*</span></label>
-        <select formControlName="interiorColor" id="interiorColor" sharedInput>
-          @for (color of colors(); track $index) {
-          <option [value]="color.name">{{color.name}}</option>
-          }
-        </select>
-        @if (hasError('interiorColor')) {
-        <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
-        }
-      </div>
-
-      <!-- generalCondition -->
-      <div>
-        <label for="generalCondition" class="block mb-1 text-sm">Condición general <span
-            class="font-bold text-red-500 inline-block">*</span></label>
-        <select formControlName="generalCondition" id="generalCondition" sharedInput>
-          <option value="Excelente">Excelente</option>
-          <option value="Buena">Buena</option>
-          <option value="Regular">Regular</option>
-          <option value="Mala">Mala</option>
-        </select>
-        @if (hasError('generalCondition')) {
-        <shared-input-error [message]="getError('generalCondition')"></shared-input-error>
-        }
-      </div>
 
       <div>
         <label for="city" class="block mb-1 text-sm">Ciudad <span
@@ -294,7 +244,7 @@
       </div>
 
       <div class="col-span-2">
-        <p class="text-xl font-bold">Subir fotos del auto <span class="font-bold text-red-500 inline-block">*</span></p>
+        <p class="text-xl font-bold">Subir fotos del auto</p>
         <p class="mb-2 text-sm">Se recomienda subir fotos con orientación horizontal</p>
         <div #uppyDashboardImages></div>
 
@@ -313,43 +263,6 @@
         }
       </div>
 
-      <div class="col-span-2 mt-4">
-        <p class="text-xl font-bold">Elige tu paquete <span class="font-bold text-red-500 inline-block">*</span>
-        </p>
-        <p class="text-red-500 text-sm mb-4">La sesión de fotos y videos a domicilio es una herramienta indispensable
-          para potenciar las ofertas de tu pieza.
-        </p>
-        <fieldset>
-          <legend class="sr-only">Elige tu paquete</legend>
-          <div class="space-y-2">
-            <div>
-              <input formControlName="interest" value="ListInMarketplacePlusPhotoshoot"
-                id="ListInMarketplacePlusPhotoshoot" type="radio" checked class="h-4 w-4">
-              <label for="ListInMarketplacePlusPhotoshoot" class="ml-3 leading-6 inline mr-4">Publicar mi pieza + Sesión
-                fotográfica
-                profesional</label>
-              <span class="bg-red-500 text-white text-sm px-2 py-1 rounded-md ml-auto inline-block">
-                Recomendado por CAART
-              </span>
-            </div>
-            <div class="flex items-center">
-              <input formControlName="interest" value="ListInMarketplace" id="ListInMarketplace" type="radio"
-                class="h-4 w-4">
-              <label for="ListInMarketplace" class="ml-3 block leading-6">
-                Publicar mi pieza</label>
-            </div>
-          </div>
-        </fieldset>
-
-        @if (hasError('interest')) {
-        <shared-input-error [message]="getError('interest')"></shared-input-error>
-        }
-      </div>
-
-      <div class="col-span-2">
-        <p class="text-xs text-gray-400">*Si la pieza no alcanza el precio de reserva, se publicará durante un mes en la
-          sección de última oportunidad sin costo adicional.</p>
-      </div>
 
       <div class="col-span-2">
         <div class="flex items-center text-xs">
@@ -371,7 +284,7 @@
           @if (isButtonSubmitDisabled()) {
           <shared-spinner></shared-spinner>
           } @else {
-          Enviar solicitud a revisión
+          Empezar mi registro
           }
         </button>
       </div>
@@ -385,5 +298,4 @@
 
   }
   }
-
 </div>

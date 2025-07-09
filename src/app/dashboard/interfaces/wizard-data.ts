@@ -66,14 +66,11 @@ export interface WizardDataInteriorDetails {
   _id: string;
   originalAuctionCarId: string;
   __v: number;
-  accessoriesFunctioning: boolean;
-  comments: string;
   interiorColor: string;
-  interiorCondition: string;
-  interiorModifications: boolean;
-  interiorPhotos: string[];
-  interiorVideos: any[];
   material: string;
+  interiorDetails: string;
+  interiorPhotos?: string[];
+  interiorVideos?: any[];
 }
 
 export interface WizardDataMechanicsDetails {

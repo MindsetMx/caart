@@ -41,75 +41,6 @@
     }
   </div>
 
-  <div>
-    <label for="odometerVerified" class="block mb-1 text-sm">¿El odómetro es acertado? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="odometerVerified" formControlName="odometerVerified" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('odometerVerified')) {
-    <shared-input-error [message]="getError('odometerVerified')"></shared-input-error>
-    }
-  </div>
-
-  <!-- transmision select -->
-  <div>
-    <label for="transmissionType" class="block mb-1 text-sm">Transmisión <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="transmissionType" formControlName="transmissionType" type="text" sharedInput>
-    @if (hasError('transmissionType')) {
-    <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
-    }
-  </div>
-
-  <!-- other transmission type -->
-
-  @if (transmissionTypeControl.value === 'Otro') {
-  <div>
-    <label for="otherTransmission" class="block mb-1 text-sm">Otro tipo de transmisión <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="otherTransmission" formControlName="otherTransmission" type="text" sharedInput>
-    @if (hasError('otherTransmission')) {
-    <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
-    }
-  </div>
-  }
-
-  <!-- VIN -->
-  <div>
-    <label for="vin" class="block mb-1 text-sm">VIN <span class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="vin" formControlName="VIN" type="text" sharedInput>
-    @if (hasError('VIN')) {
-    <shared-input-error [message]="getError('VIN')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Garantías del auto select -->
-  <div class="col-span-1">
-    <label for="warranties" class="block mb-1 text-sm">Garantías del auto <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="warranties" formControlName="warranties" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('warranties')) {
-    <shared-input-error [message]="getError('warranties')"></shared-input-error>
-    }
-  </div>
-
-  <!-- wichWarranties -->
-  @if (warrantiesControl.value === 'true') {
-  <div class="col-span-2">
-    <label for="wichWarranties" class="block mb-1 text-sm">¿Cuáles? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="wichWarranties" formControlName="wichWarranties" rows="4" sharedInput
-      sharedAutoResizeTextarea></textarea>
-    @if (hasError('wichWarranties')) {
-    <shared-input-error [message]="getError('wichWarranties')"></shared-input-error>
-    }
-  </div>
-  }
 
   <!-- Factura / Pedimento select -->
   <div class="col-span-2">
@@ -139,136 +70,22 @@
     }
   </div>
 
-  <!-- Historia del auto textarea -->
+  <!-- Car history textarea -->
   <div class="col-span-2">
-    <label for="carHistory" class="block mb-1 text-sm">Historia del auto <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="carHistory" formControlName="carHistory" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
+    <label for="carHistory" class="block mb-1 text-sm">Cuéntanos del exterior del auto <span class="font-bold text-red-500 inline-block">*</span></label>
+    <textarea id="carHistory" formControlName="carHistory" rows="6" placeholder="Lo compré hace 5 años, nunca ha tenido choques. La pintura es original, aunque tiene un par de rayones leves en la puerta del copiloto. Le cambié los rines hace un año. En general, luce muy bien y siempre llama la atención en la calle." sharedInput
+      sharedAutoResizeTextarea></textarea>
     @if (hasError('carHistory')) {
     <shared-input-error [message]="getError('carHistory')"></shared-input-error>
     }
   </div>
 
-  <div class="col-span-2 mt-4">
-    <h2 class="text-xl font-bold">Exterior del auto</h2>
-  </div>
-
-  <!-- Color exterior select -->
-  <div>
-    <label for="exteriorColor" class="block mb-1 text-sm">Color exterior <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="exteriorColor" formControlName="exteriorColor" type="text" sharedInput>
-    @if (hasError('exteriorColor')) {
-    <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Color específico -->
-  <div>
-    <label for="specificColor" class="block mb-1 text-sm">Color específico <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="specificColor" formControlName="specificColor" type="text" sharedInput>
-    @if (hasError('specificColor')) {
-    <shared-input-error [message]="getError('specificColor')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Ha estado involucrado en un accidente select -->
-  <div class="col-span-2">
-    <label for="accident" class="block mb-1 text-sm">¿Ha estado involucrado en un accidente? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="accident" formControlName="accident" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('accident')) {
-    <shared-input-error [message]="getError('accident')"></shared-input-error>
-    }
-  </div>
-
-  <!-- El auto se ha corrido en pista / autodromo select -->
-  <div class="col-span-2">
-    <label for="raced" class="block mb-1 text-sm">¿El auto se ha corrido en pista / autodromo? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="raced" formControlName="raced" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('raced')) {
-    <shared-input-error [message]="getError('raced')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Pintura original select -->
-  <div>
-    <label for="originalPaint" class="block mb-1 text-sm">¿Pintura original? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="originalPaint" formControlName="originalPaint" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('originalPaint')) {
-    <shared-input-error [message]="getError('originalPaint')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Cuentas con medidor de pintura select -->
-  <div>
-    <label for="paintMeter" class="block mb-1 text-sm">¿Cuentas con medidor de pintura? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="paintMeter" formControlName="paintMeter" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('paintMeter')) {
-    <shared-input-error [message]="getError('paintMeter')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Se le ha modificado el exterior select -->
-  <div>
-    <label for="exteriorModified" class="block mb-1 text-sm">¿Se le ha modificado el exterior? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="exteriorModified" formControlName="exteriorModified" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('exteriorModified')) {
-    <shared-input-error [message]="getError('exteriorModified')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Condición del exterior select -->
-  <div>
-    <label for="exteriorCondition" class="block mb-1 text-sm">Condición del exterior <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="exteriorCondition" formControlName="exteriorCondition" sharedInput>
-      <option value="excellent">Excelente</option>
-      <option value="good">Buena</option>
-      <option value="regular">Regular</option>
-      <option value="bad">Mala</option>
-    </select>
-    @if (hasError('exteriorCondition')) {
-    <shared-input-error [message]="getError('exteriorCondition')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Comentarios sobre detalles textarea -->
-  <div class="col-span-2">
-    <label for="detailComments" class="block mb-1 text-sm">Comentarios sobre detalles <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="detailComments" formControlName="detailComments" rows="6"
-      placeholder="Explícanos más sobre pintura, pista, sucesos, etc.." sharedInput sharedAutoResizeTextarea></textarea>
-    @if (hasError('detailComments')) {
-    <shared-input-error [message]="getError('detailComments')"></shared-input-error>
-    }
-  </div>
 
   <!-- Fotos del exterior del auto -->
   <div class="col-span-2">
     <label for="exteriorImagesOrVideos" class="text-sm cursor-pointer">
       Fotos del exterior del auto
-      <span class="font-bold text-red-500 inline-block">*</span></label>
+    </label>
 
     <p class="mb-2 text-sm">Se recomienda subir fotos con orientación horizontal</p>
 

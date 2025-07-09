@@ -45,10 +45,7 @@ export class AuctionCarInteriorDetailsComponent {
     this.interiorOfTheCarForm = this.#formBuilder.group({
       interiorColor: [{ value: '' }, [Validators.required]],
       material: ['', [Validators.required]],
-      interiorCondition: ['', [Validators.required]],
-      interiorModifications: ['', [Validators.required]],
-      accessoriesFunctioning: ['', [Validators.required]],
-      comments: ['', [Validators.required]],
+      interiorDetails: ['', [Validators.required]],
       interiorPhotos: [[], [Validators.required]],
       interiorVideos: [[]],
       originalAuctionCarId: ['', [Validators.required]],
@@ -65,10 +62,7 @@ export class AuctionCarInteriorDetailsComponent {
       this.interiorOfTheCarForm.patchValue({
         interiorColor: interiorDetails.interiorColor,
         material: interiorDetails.material,
-        interiorCondition: interiorDetails.interiorCondition,
-        interiorModifications: interiorDetails.interiorModifications,
-        accessoriesFunctioning: interiorDetails.accessoriesFunctioning,
-        comments: interiorDetails.comments,
+        interiorDetails: interiorDetails.interiorDetails,
         interiorPhotos: interiorDetails.interiorPhotos,
         interiorVideos: interiorDetails.interiorVideos,
         originalAuctionCarId: this.auctionCarId(),

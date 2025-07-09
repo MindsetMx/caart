@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, effect, inject, signal, viewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, ElementRef, WritableSignal, effect, inject, signal, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
 import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
@@ -174,35 +174,13 @@ export class MechanicsComponent {
 
   constructor() {
     this.mechanicsForm = this.#fb.group({
-      originalRims: ['', [Validators.required]],
-      // rimsDetail: ['', [Validators.required]],
       tireBrand: [''],
       tireSize: [''],
-      tireDate: [''],
-      tireCondition: ['', [Validators.required]],
-      extraTiresOrRims: ['', [Validators.required]],
-      // extraBrand: ['', [Validators.required]],
-      // extraColor: ['', [Validators.required]],
-      // extraSize: ['', [Validators.required]],
-      spareTire: ['', [Validators.required]],
-      originalTransmissionEngine: ['', [Validators.required]],
-      improvementModificationOriginal: ['', [Validators.required]],
-      // whatImprovement: ['', [Validators.required]],
-      performedServicesWithDates: [''],
-      mechanicalProblemDetail: ['', [Validators.required]],
-      // whatMechanicalProblem: ['', [Validators.required]],
-      illuminatedDashboardSensor: ['', [Validators.required]],
-      // whichIlluminatedSensor: ['', [Validators.required]],
-      factoryEquipment: ['', [Validators.required]],
-      extraEquipment: ['', [Validators.required]],
-      // whatExtraEquipment: ['', [Validators.required]],
+      spareTire: [true, [Validators.required]],
       comments: ['', [Validators.required]],
       mechanicsPhotos: [[], [Validators.required]],
       mechanicsVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId, [Validators.required]],
-      // dashboardWarningLight: ['', [Validators.required]],
-      // servicesDoneWithDates: ['', [Validators.required]],
-      // improvementOrModification: ['', [Validators.required]],
     });
 
     this.batchTokenDirect();
@@ -251,20 +229,9 @@ export class MechanicsComponent {
     this.#completeCarRegistrationService.getMechanics$(this.originalAuctionCarId).subscribe({
       next: (mechanics) => {
         let {
-          originalRims,
           tireBrand,
           tireSize,
-          tireDate,
-          tireCondition,
-          extraTiresOrRims,
           spareTire,
-          originalTransmissionEngine,
-          improvementModificationOriginal,
-          performedServicesWithDates,
-          mechanicalProblemDetail,
-          illuminatedDashboardSensor,
-          factoryEquipment,
-          extraEquipment,
           comments,
           mechanicsPhotos,
           mechanicsVideos,
@@ -278,40 +245,35 @@ export class MechanicsComponent {
         ];
 
         if (this.user && emails.includes(this.user.attributes.email)) {
-          //Sobreescribir con valores de prueba
-          originalRims = true;
-          tireBrand = 'Michelin';
-          tireSize = '205/55 R16';
-          tireDate = '2021-08-01';
-          tireCondition = 'Excelente';
-          extraTiresOrRims = 'false';
+          // Sobreescribir con valores de prueba
+          tireBrand = '';
+          tireSize = '';
           spareTire = true;
-          originalTransmissionEngine = true;
-          improvementModificationOriginal = true;
-          performedServicesWithDates = 'Cambio de aceite 2021-08-01';
-          mechanicalProblemDetail = false;
-          illuminatedDashboardSensor = true;
-          factoryEquipment = false;
-          extraEquipment = false;
-          comments = 'Comentarios de prueba';
-          // mechanicsPhotos = (mechanicsPhotos && mechanicsPhotos.length > 0) ? mechanicsPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
+          comments = '';
+
+          mechanicsPhotos =
+            mechanicsPhotos && mechanicsPhotos.length > 0
+              ? mechanicsPhotos
+              : [
+                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public',
+                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public',
+                ];
+
+          mechanicsVideos =
+            mechanicsVideos && mechanicsVideos.length > 0
+              ? mechanicsVideos
+              : [
+                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/8e340451-9379-474c-85e4-2b0d2c0c3a00/public',
+                ];
+
+          this.mechanicsPhotos.clearValidators();
+          this.mechanicsPhotos.updateValueAndValidity();
         }
 
         this.mechanicsForm.patchValue({
-          originalRims,
           tireBrand,
           tireSize,
-          tireDate,
-          tireCondition,
-          extraTiresOrRims,
           spareTire,
-          originalTransmissionEngine,
-          improvementModificationOriginal,
-          performedServicesWithDates,
-          mechanicalProblemDetail,
-          illuminatedDashboardSensor,
-          factoryEquipment,
-          extraEquipment,
           comments,
           mechanicsPhotos,
           mechanicsVideos,
