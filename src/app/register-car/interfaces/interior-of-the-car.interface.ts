@@ -1,10 +1,8 @@
 export interface InteriorOfTheCar {
   interiorColor: string;
   material: string;
-  interiorCondition: string;
-  interiorModifications: boolean;
-  accessoriesFunctioning: boolean;
-  comments: string;
+  interiorDetails: string;
   interiorPhotos: string[];
   interiorVideos: string[];
+  originalAuctionCarId: string;
 }

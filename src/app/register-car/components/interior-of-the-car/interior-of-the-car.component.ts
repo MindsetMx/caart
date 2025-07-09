@@ -175,10 +175,7 @@ export class InteriorOfTheCarComponent {
     this.interiorOfTheCarForm = this.#fb.group({
       interiorColor: [{ value: '', disabled: true }, [Validators.required]],
       material: ['', [Validators.required]],
-      interiorCondition: ['', [Validators.required]],
-      interiorModifications: ['', [Validators.required]],
-      accessoriesFunctioning: ['', [Validators.required]],
-      comments: ['', [Validators.required]],
+      interiorDetails: ['', [Validators.required]],
       interiorPhotos: [[], [Validators.required]],
       interiorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId, [Validators.required]],
@@ -245,10 +242,7 @@ export class InteriorOfTheCarComponent {
         let {
           interiorColor,
           material,
-          interiorCondition,
-          interiorModifications,
-          accessoriesFunctioning,
-          comments,
+          interiorDetails,
           interiorPhotos,
           interiorVideos,
         } = interiorOfTheCar;
@@ -264,10 +258,7 @@ export class InteriorOfTheCarComponent {
           //Sobreescribir con valores de prueba
           interiorColor = interiorColor || 'Black';
           material = material || 'Leather';
-          interiorCondition = interiorCondition || 'excellent';
-          interiorModifications = interiorModifications || false;
-          accessoriesFunctioning = accessoriesFunctioning || true;
-          comments = comments || 'No comments';
+          interiorDetails = interiorDetails || 'No comments';
           // interiorPhotos = (interiorPhotos && interiorPhotos.length > 0) ? interiorPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
           interiorVideos = interiorVideos || [];
         }
@@ -275,10 +266,7 @@ export class InteriorOfTheCarComponent {
         this.interiorOfTheCarForm.patchValue({
           interiorColor,
           material,
-          interiorCondition,
-          interiorModifications,
-          accessoriesFunctioning,
-          comments,
+          interiorDetails,
           interiorPhotos,
           interiorVideos,
         });
