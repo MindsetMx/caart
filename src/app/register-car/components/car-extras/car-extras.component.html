@@ -248,11 +248,12 @@
     <button (click)="addAdditionalCharge()" type="button" class="underline">Añadir cargo</button>
   </div>
 
-  <!-- ¿Algo más que nos quisieras comentar de tu auto? textarea -->
+  <!-- Comentarios adicionales del auto -->
   <div class="col-span-2">
-    <label for="comments" class="block text-sm mb-2">¿Algo más que nos quisieras comentar de tu auto? <span
+    <label for="comments" class="block text-sm mb-2">Cuéntanos cualquier cosa extra que deba saber el comprador sobre este coche <span
         class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="comments" rows="6" name="comments" formControlName="comments" sharedInput sharedTextarea></textarea>
+    <textarea id="comments" rows="6" name="comments" formControlName="comments" sharedInput sharedTextarea
+      placeholder="Incluye extras como caja de herramientas, cubierta, cargador de batería, manuales o inflallantas"></textarea>
     @if (hasError('comments')) {
     <shared-input-error [message]="getError('comments')"></shared-input-error>
     }
