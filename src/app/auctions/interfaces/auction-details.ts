@@ -175,8 +175,8 @@ export interface AuctionDetailsInteriorDetails {
   interiorColor: string;
   material: string;
   interiorDetails: string;
-  interiorPhotos: string[];
-  interiorVideos: any[];
+  interiorPhotos?: string[];
+  interiorVideos?: any[];
 }
 
 export interface AuctionDetailsMechanicsDetails {
