@@ -37,7 +37,25 @@ export class UpdateAuctionCarDetailsDataService {
 
   // /update-mechanics-details/:auctionCarId
   updateMechanicsDetails$(auctionCarId: string, form: FormGroup): Observable<any> {
-    const trimmedMechanicsDetails = this.#appService.trimObjectValues(form.value);
+    const {
+      tireBrand,
+      tireSize,
+      spareTire,
+      comments,
+      mechanicsPhotos,
+      mechanicsVideos,
+      originalAuctionCarId,
+    } = form.value;
+
+    const trimmedMechanicsDetails = this.#appService.trimObjectValues({
+      tireBrand,
+      tireSize,
+      spareTire,
+      comments,
+      mechanicsPhotos,
+      mechanicsVideos,
+      originalAuctionCarId,
+    });
 
     return this.#http.put(`${this.#baseUrl}/auctions-cars/update-mechanics-details/${auctionCarId}`, trimmedMechanicsDetails);
   }
