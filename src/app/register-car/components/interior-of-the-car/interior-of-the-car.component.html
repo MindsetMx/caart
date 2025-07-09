@@ -72,7 +72,9 @@
   <div class="col-span-2">
     <label for="comments" class="block mb-1 text-sm">Comentarios sobre detalles <span
         class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="comments" formControlName="comments" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
+    <textarea id="comments" formControlName="comments" rows="6"
+      placeholder="El interior está en perfecto estado, cuenta con asientos de cuero en excelente condición, sin rasgaduras ni daños visibles. El tablero y la consola se mantienen originales y funcionan correctamente, al igual que todos los accesorios y electrónicos del vehículo."
+      sharedInput sharedAutoResizeTextarea></textarea>
     @if (hasError('comments')) {
     <shared-input-error [message]="getError('comments')"></shared-input-error>
     }
