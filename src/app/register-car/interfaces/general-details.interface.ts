@@ -6,6 +6,6 @@ export interface GeneralDetails {
   invoiceType: string;
   invoiceDetails: string;
   carHistory: string;
-  exteriorPhotos: string[];
-  exteriorVideos: string[];
+  exteriorPhotos?: string[];
+  exteriorVideos?: string[];
 }
