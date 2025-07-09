@@ -250,7 +250,24 @@ export class MechanicsComponent {
           tireSize = '205/55 R16';
           spareTire = true;
           comments = 'Comentarios de prueba';
-          // mechanicsPhotos = (mechanicsPhotos && mechanicsPhotos.length > 0) ? mechanicsPhotos : ['https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public', 'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public'];
+
+          mechanicsPhotos =
+            mechanicsPhotos && mechanicsPhotos.length > 0
+              ? mechanicsPhotos
+              : [
+                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public',
+                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public',
+                ];
+
+          mechanicsVideos =
+            mechanicsVideos && mechanicsVideos.length > 0
+              ? mechanicsVideos
+              : [
+                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/8e340451-9379-474c-85e4-2b0d2c0c3a00/public',
+                ];
+
+          this.mechanicsPhotos.clearValidators();
+          this.mechanicsPhotos.updateValueAndValidity();
         }
 
         this.mechanicsForm.patchValue({
