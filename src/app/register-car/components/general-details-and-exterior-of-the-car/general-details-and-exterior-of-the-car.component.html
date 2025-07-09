@@ -141,9 +141,9 @@
 
   <!-- Historia del auto textarea -->
   <div class="col-span-2">
-    <label for="carHistory" class="block mb-1 text-sm">Historia del auto <span
+    <label for="carHistory" class="block mb-1 text-sm">Cuéntanos del exterior del auto <span
         class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="carHistory" formControlName="carHistory" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
+    <textarea id="carHistory" formControlName="carHistory" rows="6" placeholder="Ejemplo: Lo compré hace 5 años luego de un choque, reparé la pintura y cambié los rines. Describe experiencias, modificaciones y cualquier detalle relevante del exterior." sharedInput sharedAutoResizeTextarea></textarea>
     @if (hasError('carHistory')) {
     <shared-input-error [message]="getError('carHistory')"></shared-input-error>
     }
