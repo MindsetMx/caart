@@ -182,6 +182,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
       carModel: [{ value: '', disabled: true }, [Validators.required]],
       invoiceType: ['', [Validators.required]],
       invoiceDetails: ['', [Validators.required]],
+      carHistory: ['', [Validators.required]],
       exteriorPhotos: [[], [Validators.required]],
       exteriorVideos: [[]],
       originalAuctionCarId: [this.originalAuctionCarId(), [Validators.required]],
@@ -237,11 +238,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
       return;
     }
 
-    this.kmInputControl.enable();
-    this.brandControl.enable();
-    this.yearControl.enable();
-    this.carModelControl.enable();
-
     this.#completeCarRegistrationService.saveGeneralDetailsAndExteriorOfTheCar$(this.exteriorOfTheCarForm)
       .subscribe({
         next: () => {
@@ -251,10 +247,6 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
           window.scrollTo(0, 0);
         },
         error: (error) => {
-          this.kmInputControl.disable();
-          this.brandControl.disable();
-          this.yearControl.disable();
-          this.carModelControl.disable();
           console.error(error);
         },
       }).add(() => {
@@ -272,6 +264,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
           carModel,
           invoiceType,
           invoiceDetails,
+          carHistory,
           exteriorPhotos,
           exteriorVideos,
         } = response;
@@ -291,6 +284,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
           carModel = carModel || 'Corolla';
           invoiceType = invoiceType || 'invoice';
           invoiceDetails = invoiceDetails || 'Paid in cash';
+          carHistory = carHistory || 'Historia del auto';
 
           exteriorPhotos =
             exteriorPhotos && exteriorPhotos.length > 0
@@ -316,6 +310,7 @@ export class GeneralDetailsAndExteriorOfTheCarComponent implements OnInit {
           carModel,
           invoiceType,
           invoiceDetails,
+          carHistory,
           exteriorPhotos,
           exteriorVideos,
         });

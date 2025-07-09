@@ -70,6 +70,16 @@
     }
   </div>
 
+  <!-- Car history textarea -->
+  <div class="col-span-2">
+    <label for="carHistory" class="block mb-1 text-sm">Cuéntanos del exterior del auto <span class="font-bold text-red-500 inline-block">*</span></label>
+    <textarea id="carHistory" formControlName="carHistory" rows="6" placeholder="Explica detalles de el exterior, pintura, etc. Aquí un texto informativo para invitar a que se explayen con todo del exterior." sharedInput
+      sharedAutoResizeTextarea></textarea>
+    @if (hasError('carHistory')) {
+    <shared-input-error [message]="getError('carHistory')"></shared-input-error>
+    }
+  </div>
+
 
   <!-- Fotos del exterior del auto -->
   <div class="col-span-2">

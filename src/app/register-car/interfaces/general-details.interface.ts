@@ -5,6 +5,7 @@ export interface GeneralDetails {
   kmInput: number;
   invoiceType: string;
   invoiceDetails: string;
+  carHistory: string;
   exteriorPhotos: string[];
   exteriorVideos: string[];
 }
