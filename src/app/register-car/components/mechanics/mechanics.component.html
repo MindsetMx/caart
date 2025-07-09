@@ -3,20 +3,6 @@
 <h2 class="text-xl font-bold mb-5">Llantas y rines</h2>
 
 <form [formGroup]="mechanicsForm" (ngSubmit)="mechanicsFormSubmit()" class="grid grid-cols-2 items-end gap-5">
-  <!-- Rines originales select -->
-  <div>
-    <label for="originalRims" class="block mb-1 text-sm">¿Rines originales? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="originalRims" formControlName="originalRims" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('originalRims')) {
-    <shared-input-error [message]="getError('originalRims')"></shared-input-error>
-    }
-  </div>
-
   <!-- Marca de llantas -->
   <div>
     <label for="tireBrand" class="block mb-1 text-sm">Marca de llantas</label>
@@ -35,44 +21,6 @@
     }
   </div>
 
-  <!-- tireDate input -->
-  <div>
-    <label for="tireDate" class="block mb-1 text-sm">Fecha de llantas</label>
-    <input id="tireDate" formControlName="tireDate" type="date" sharedInput>
-    @if (hasError('tireDate')) {
-    <shared-input-error [message]="getError('tireDate')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Condición de llantas -->
-  <div>
-    <label for="tireCondition" class="block mb-1 text-sm">Condición de llantas <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="tireCondition" formControlName="tireCondition" sharedInput>
-      <option value="Excelente">Excelente</option>
-      <option value="Buena">Buena</option>
-      <option value="Regular">Regular</option>
-      <option value="Mala">Mala</option>
-    </select>
-    @if (hasError('tireCondition')) {
-    <shared-input-error [message]="getError('tireCondition')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Llantas o rines extras select -->
-  <div>
-    <label for="extraTiresOrRims" class="block mb-1 text-sm">¿Llantas o rines extras? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="extraTiresOrRims" formControlName="extraTiresOrRims" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('extraTiresOrRims')) {
-    <shared-input-error [message]="getError('extraTiresOrRims')"></shared-input-error>
-    }
-  </div>
-
   <!-- Llanta de refacción select -->
   <div>
     <label for="spareTire" class="block mb-1 text-sm">¿Llanta de refacción? <span
@@ -84,104 +32,6 @@
 
     @if (hasError('spareTire')) {
     <shared-input-error [message]="getError('spareTire')"></shared-input-error>
-    }
-  </div>
-
-  <div class="col-span-2 mt-4">
-    <h2 class="text-xl font-bold">Mecánica</h2>
-  </div>
-
-  <!-- Transmisión y motor original select -->
-  <div>
-    <label for="originalTransmissionEngine" class="block mb-1 text-sm">¿Transmisión y motor original? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="originalTransmissionEngine" formControlName="originalTransmissionEngine" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('originalTransmissionEngine')) {
-    <shared-input-error [message]="getError('originalTransmissionEngine')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Mejora o modificación general select -->
-  <div>
-    <label for="improvementModificationOriginal" class="block mb-1 text-sm">¿Mejora o modificación general? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="improvementModificationOriginal" formControlName="improvementModificationOriginal" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('improvementModificationOriginal')) {
-    <shared-input-error [message]="getError('improvementModificationOriginal')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Servicios realizados con fechas textarea -->
-  <div class="col-span-2">
-    <label for="performedServicesWithDates" class="block mb-1 text-sm">Servicios realizados con fechas</label>
-    <textarea id="performedServicesWithDates" formControlName="performedServicesWithDates" rows="4" sharedInput
-      sharedAutoResizeTextarea></textarea>
-    @if (hasError('performedServicesWithDates')) {
-    <shared-input-error [message]="getError('performedServicesWithDates')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Problema o detalle mecánico select -->
-  <div>
-    <label for="mechanicalProblemDetail" class="block mb-1 text-sm">¿Problema o detalle mecánico? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="mechanicalProblemDetail" formControlName="mechanicalProblemDetail" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('mechanicalProblemDetail')) {
-    <shared-input-error [message]="getError('mechanicalProblemDetail')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Sensor iluminado en el tablero select -->
-  <div>
-    <label for="illuminatedDashboardSensor" class="block mb-1 text-sm">¿Sensor iluminado en el tablero? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="illuminatedDashboardSensor" formControlName="illuminatedDashboardSensor" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('illuminatedDashboardSensor')) {
-    <shared-input-error [message]="getError('illuminatedDashboardSensor')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Equipamiento de fabrica select -->
-  <div>
-    <label for="factoryEquipment" class="block mb-1 text-sm">¿Equipamiento de fabrica? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="factoryEquipment" formControlName="factoryEquipment" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('factoryEquipment')) {
-    <shared-input-error [message]="getError('factoryEquipment')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Equipamiento extra select -->
-  <div>
-    <label for="extraEquipment" class="block mb-1 text-sm">¿Equipamiento extra? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="extraEquipment" formControlName="extraEquipment" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('extraEquipment')) {
-    <shared-input-error [message]="getError('extraEquipment')"></shared-input-error>
     }
   </div>
 
@@ -232,5 +82,4 @@
       Siguiente
       }
     </button>
-  </div>
-</form>
+  </div></form>
