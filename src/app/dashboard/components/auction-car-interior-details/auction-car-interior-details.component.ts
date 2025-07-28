@@ -1,16 +1,15 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Fancybox } from '@fancyapps/ui';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgxMaskDirective } from 'ngx-mask';
 
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { AppService } from '@app/app.service';
-import { WizardData } from '@app/dashboard/interfaces/wizard-data';
-import { UpdateAuctionCarDetailsDataService } from '@app/dashboard/services/update-auction-car-details-data.service';
+import { UpdateAuctionCarDetailsDataService } from '@dashboard/services/update-auction-car-details-data.service';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { WizardData } from '@dashboard/interfaces/wizard-data';
+import { AppService } from '@app/app.service';
 
 @Component({
   selector: 'auction-car-interior-details',
@@ -21,7 +20,6 @@ import { ValidatorsService } from '@shared/services/validators.service';
     InputErrorComponent,
     SpinnerComponent,
     PrimaryButtonDirective,
-    NgxMaskDirective,
   ],
   templateUrl: './auction-car-interior-details.component.html',
   styleUrl: './auction-car-interior-details.component.css',
@@ -37,13 +35,12 @@ export class AuctionCarInteriorDetailsComponent {
   #updateAuctionCarDetailsDataService = inject(UpdateAuctionCarDetailsDataService);
   #appService = inject(AppService);
 
-  interiorOfTheCarForm: FormGroup;
-  currentYear = new Date().getFullYear();
+  interiorForm: FormGroup;
   isButtonSubmitDisabled = signal<boolean>(false);
 
   constructor() {
-    this.interiorOfTheCarForm = this.#formBuilder.group({
-      interiorColor: [{ value: '' }, [Validators.required]],
+    this.interiorForm = this.#formBuilder.group({
+      interiorColor: ['', [Validators.required]],
       material: ['', [Validators.required]],
       interiorDetails: ['', [Validators.required]],
       interiorPhotos: [[], [Validators.required]],
@@ -51,21 +48,22 @@ export class AuctionCarInteriorDetailsComponent {
       originalAuctionCarId: ['', [Validators.required]],
     });
 
-    Fancybox.bind("[data-fancybox='interiorPhotos']", { Hash: false });
+    // Initialize Fancybox for photo galleries
+    Fancybox.bind("[data-fancybox='interiorPhotosGallery']", { Hash: false });
   }
 
   wizardDataEffect = effect(() => {
     if (this.wizardData().data) {
-      this.interiorOfTheCarForm.reset();
+      this.interiorForm.reset();
 
       const interiorDetails = this.wizardData().data.interiorDetails;
-      this.interiorOfTheCarForm.patchValue({
+      this.interiorForm.patchValue({
         interiorColor: interiorDetails.interiorColor,
         material: interiorDetails.material,
         interiorDetails: interiorDetails.interiorDetails,
         interiorPhotos: interiorDetails.interiorPhotos,
         interiorVideos: interiorDetails.interiorVideos,
-        originalAuctionCarId: this.auctionCarId(),
+        originalAuctionCarId: interiorDetails.originalAuctionCarId,
       });
     }
   });
@@ -73,40 +71,46 @@ export class AuctionCarInteriorDetailsComponent {
   updateInteriorDetails(): void {
     this.isButtonSubmitDisabled.set(true);
 
-    const isValid = this.#validatorsService.isValidForm(this.interiorOfTheCarForm);
+    const isValid = this.#validatorsService.isValidForm(this.interiorForm);
 
     if (!isValid) {
       this.isButtonSubmitDisabled.set(false);
       return;
     }
 
-    this.#updateAuctionCarDetailsDataService.updateInteriorDetails$(this.auctionCarId(), this.interiorOfTheCarForm).subscribe({
+    this.#updateAuctionCarDetailsDataService.updateInteriorDetails$(this.auctionCarId(), this.interiorForm).subscribe({
       next: () => {
-        this.toastSuccess('Detalles del interior del coche actualizados correctamente');
+        this.toastSuccess('Detalles del interior actualizados correctamente');
       },
       error: (error) => {
         console.error(error);
-      },
+      }
     }).add(() => {
       this.isButtonSubmitDisabled.set(false);
     });
   }
 
-  getSafeUrl(video: string): SafeResourceUrl {
-    return this.#sanitizer.bypassSecurityTrustResourceUrl(video);
+  hasError(field: string): boolean {
+    const control = this.interiorForm.get(field);
+    return control ? control.invalid && (control.dirty || control.touched) : false;
+  }
+
+  getError(field: string): string | undefined {
+    const control = this.interiorForm.get(field);
+    if (control && control.errors) {
+      const errors = control.errors;
+      if (errors['required']) {
+        return 'Este campo es requerido';
+      }
+    }
+    return undefined;
+  }
+
+  getSafeUrl(url: string): SafeResourceUrl {
+    return this.#sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   toastSuccess(message: string): void {
     this.#appService.toastSuccess(message);
-  }
-
-  hasError(field: string): boolean {
-    return this.#validatorsService.hasError(this.interiorOfTheCarForm, field);
-  }
-
-  getError(field: string): string | undefined {
-    if (!this.interiorOfTheCarForm) return undefined;
-
-    return this.#validatorsService.getError(this.interiorOfTheCarForm, field);
   }
 }

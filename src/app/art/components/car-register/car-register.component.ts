@@ -24,7 +24,7 @@ import { RegisterCarService } from '@app/register-car/services/register-car.serv
 import { Router } from '@angular/router';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { states } from '@shared/states';
-import { SubastaAutomovilesTypes } from '@app/register-car/enums/subastaAutomovilesTypes.enum';
+import { SubastaAutomovilesTypes } from '@app/register-car/enums/SubastaAutomovilesTypes.enum';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 

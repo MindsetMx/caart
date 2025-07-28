@@ -1,3 +1,372 @@
 :host {
   display: block;
 }
+
+/* Custom Modal Styling */
+::ng-deep .mat-mdc-tab-group {
+  --mdc-tab-indicator-active-indicator-color: #374151;
+  --mat-mdc-tab-header-active-ripple-color: rgba(55, 65, 81, 0.1);
+  --mat-mdc-tab-header-inactive-ripple-color: rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .mat-mdc-tab-header {
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+::ng-deep .mat-mdc-tab-label-container {
+  padding: 0 1rem;
+}
+
+::ng-deep .mat-mdc-tab-label {
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  border-radius: 0.5rem 0.5rem 0 0;
+  margin: 0 0.25rem;
+}
+
+::ng-deep .mat-mdc-tab-label:hover {
+  background-color: rgba(55, 65, 81, 0.05);
+  color: #374151;
+}
+
+::ng-deep .mat-mdc-tab-label.mat-mdc-tab-label-active {
+  color: #374151;
+  background-color: rgba(55, 65, 81, 0.1);
+}
+
+::ng-deep .mat-mdc-tab-body-content {
+  overflow: visible;
+}
+
+/* Header Animation */
+.bg-gradient-to-r {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Car Details Banner */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Loading Animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Smooth Transitions */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Card Hover Effects */
+.bg-white:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Enhanced Shadows */
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .md\:grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+/* Focus Styles */
+*:focus {
+  outline: 2px solid #374151;
+  outline-offset: 2px;
+}
+
+/* Enhanced Typography */
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* Status Indicators */
+.text-green-600 {
+  color: #059669;
+}
+
+.text-orange-600 {
+  color: #ea580c;
+}
+
+/* Tab Content Animation */
+.mat-mdc-tab-body-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header Icon Animation */
+.w-12.h-12 svg {
+  transition: transform 0.3s ease;
+}
+
+.w-12.h-12:hover svg {
+  transform: scale(1.1);
+}
+
+/* User Section Enhancements */
+.bg-gradient-to-r.from-teal-50.to-cyan-50 {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Enhanced Border Radius */
+.rounded-t-lg {
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+.rounded-lg {
+  border-radius: 0.75rem;
+}
+
+/* Improved Spacing */
+.min-h-\[600px\] {
+  min-height: 600px;
+}
+
+/* Modal Max Width Enhancement */
+.sm\:max-w-4xl {
+  max-width: 56rem;
+}
+
+/* Enhanced Grid Layout */
+.grid {
+  display: grid;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+/* Text Color Enhancements */
+.text-blue-100 {
+  color: #dbeafe;
+}
+
+.text-blue-200 {
+  color: #bfdbfe;
+}
+
+/* Background Opacity */
+.bg-opacity-10 {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bg-opacity-20 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced Padding */
+.p-6 {
+  padding: 1.5rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Border Enhancements */
+.border-gray-200 {
+  border-color: #e5e7eb;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+}
+
+/* Flex Enhancements */
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.space-x-3 > * + * {
+  margin-left: 0.75rem;
+}
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+/* Text Enhancements */
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+/* Margin Enhancements */
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+/* Container Enhancements */
+.max-w-4xl {
+  max-width: 56rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Background Color Enhancements */
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+/* Overflow Handling */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+/* Enhanced Loading State */
+.h-64 {
+  height: 16rem;
+}
+
+/* Icon Enhancements */
+.w-7.h-7 {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.w-5.h-5 {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.w-4.h-4 {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Enhanced Grid Responsiveness */
+@media (min-width: 768px) {
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Enhanced Text Alignment */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}

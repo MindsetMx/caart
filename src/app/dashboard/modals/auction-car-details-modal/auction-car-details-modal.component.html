@@ -1,59 +1,91 @@
-<shared-modal [(isOpen)]="isOpen" [verticalCenter]="true" modalMaxWidth="sm:max-w-2xl">
-  <div class="relative">
-    <h3 class="text-center font-bold text-lg mb-12">Detalles del auto en subasta</h3>
-
-    <hr class="absolute w-full -bottom-4">
+<shared-modal [(isOpen)]="isOpen" [verticalCenter]="true" modalMaxWidth="sm:max-w-4xl">
+  <!-- Simple Header -->
+  <div class="bg-white border-b border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">Detalles del Auto en Subasta</h2>
+          @if (wizardData().data && wizardData().data.registerCarDetails) {
+            <p class="text-sm font-medium text-gray-700">
+              {{wizardData().data.registerCarDetails.brand}} {{wizardData().data.registerCarDetails.carModel}} {{wizardData().data.registerCarDetails.year}}
+            </p>
+          }
+          <p class="text-xs text-gray-500">ID: {{auctionCarId()}}</p>
+        </div>
+      </div>
+      
+      <!-- User Info Button -->
+      @if (userDetails().data) {
+        <button (click)="toggleUserInfo()" 
+                class="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          <span class="text-sm font-medium text-gray-700">Detalles del vendedor</span>
+        </button>
+      }
+    </div>
   </div>
 
-  <section class="container">
+  <!-- Main Content -->
+  <div class="bg-white">
     @if (wizardData().data && userDetails().data) {
-    <mat-tab-group [selectedIndex]="selectedTabIndex()" (selectedIndexChange)="changeTab($event)">
-      <mat-tab label="Exterior">
-        <auction-car-exterior-details class="mt-4" [auctionCarId]="auctionCarId()"
-          [wizardData]="wizardData()"></auction-car-exterior-details>
-      </mat-tab>
-      <mat-tab label="Extra">
-        <auction-car-extra-details class="mt-4" [auctionCarId]="auctionCarId()"
-          [wizardData]="wizardData()"></auction-car-extra-details>
-      </mat-tab>
-      <mat-tab label="Interior">
-        <auction-car-interior-details class="mt-4" [auctionCarId]="auctionCarId()"
-          [wizardData]="wizardData()"></auction-car-interior-details>
-      </mat-tab>
-      <mat-tab label="Mecánica">
-        <auction-car-mechanical-details class="mt-4" [auctionCarId]="auctionCarId()"
-          [wizardData]="wizardData()"></auction-car-mechanical-details>
-      </mat-tab>
-      <mat-tab label="Registro">
-        <auction-car-register-details class="mt-4" [auctionCarId]="auctionCarId()"
-          [wizardData]="wizardData()"></auction-car-register-details>
-      </mat-tab>
-      <!-- Usuario -->
-      <mat-tab label="Usuario">
-        <p class="mt-4"><b>ID:</b> {{userDetails().data._id}}</p>
-        <p><b>Foto identificación:</b>
-        </p>
-        <div class="flex flex-wrap gap-4 mt-2">
-          @for (image of userDetails().data.validationImg; track image) {
-          <a [href]="image" data-fancybox="idPhotoGallery">
-            <img [src]="image" class="object-cover w-28 h-28" alt="">
-          </a>
-          }
+      <!-- Tabs Section -->
+      <mat-tab-group [selectedIndex]="selectedTabIndex()" (selectedIndexChange)="changeTab($event)" 
+                     class="max-w-4xl mx-auto">
+        <mat-tab label="Registro">
+          <auction-car-register-details class="mt-6" [auctionCarId]="auctionCarId()"
+            [wizardData]="wizardData()"></auction-car-register-details>
+        </mat-tab>
+        <mat-tab label="Exterior">
+          <auction-car-exterior-details class="mt-6" [auctionCarId]="auctionCarId()"
+            [wizardData]="wizardData()"></auction-car-exterior-details>
+        </mat-tab>
+        <mat-tab label="Interior">
+          <auction-car-interior-details class="mt-6" [auctionCarId]="auctionCarId()"
+            [wizardData]="wizardData()"></auction-car-interior-details>
+        </mat-tab>
+        <mat-tab label="Mecánica">
+          <auction-car-mechanical-details class="mt-6" [auctionCarId]="auctionCarId()"
+            [wizardData]="wizardData()"></auction-car-mechanical-details>
+        </mat-tab>
+        <mat-tab label="Extra">
+          <auction-car-extra-details class="mt-6" [auctionCarId]="auctionCarId()"
+            [wizardData]="wizardData()"></auction-car-extra-details>
+        </mat-tab>
+      </mat-tab-group>
+
+      <!-- User Info Modal (Hidden by default) -->
+      @if (showUserInfo()) {
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-900">Información del Vendedor</h3>
+              <button (click)="toggleUserInfo()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="p-6">
+              <auction-car-user-details [userDetails]="userDetails()"></auction-car-user-details>
+            </div>
+          </div>
         </div>
-        <p><b>Nombre:</b> {{userDetails().data.firstName}} {{userDetails().data.lastName}}</p>
-        <p><b>Nombre de usuario:</b> {{userDetails().data.username}}</p>
-        <p><b>Tipo de vendedor:</b> {{userDetails().data.sellerType}}</p>
-        <p><b>País:</b> {{userDetails().data.country}}</p>
-        <p><b>Ciudad:</b> {{userDetails().data.city}}</p>
-        <p><b>Estado:</b> {{userDetails().data.state}}</p>
-        <p><b>Teléfono:</b> {{userDetails().data.phoneNumber}}</p>
-        <p><b>Correo electrónico:</b> {{userDetails().data.email}}</p>
-        <p><b>Código postal:</b> {{userDetails().data.postalCode}}</p>
-        <p><b>Calle y número:</b> {{userDetails().data.streetAndNumber}}</p>
-        <p><b>Acepta términos y condiciones:</b> {{userDetails().data.acceptTermsAndConditions ? 'Sí' : 'No'}}</p>
-        <p><b>Verificación de cuenta:</b> {{userDetails().data.accountVerified ? 'Sí' : 'No'}}</p>
-      </mat-tab>
-    </mat-tab-group>
+      }
+    } @else {
+      <!-- Loading State -->
+      <div class="flex items-center justify-center h-64">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600 mx-auto mb-4"></div>
+          <p class="text-gray-600">Cargando información del vehículo...</p>
+        </div>
+      </div>
     }
-  </section>
+  </div>
 </shared-modal>

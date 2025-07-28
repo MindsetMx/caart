@@ -1,95 +1,62 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
-import { NgxMaskDirective } from 'ngx-mask';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Fancybox } from '@fancyapps/ui';
-
-import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { AppService } from '@app/app.service';
-import { WizardData } from '@app/dashboard/interfaces/wizard-data';
-import { UpdateAuctionCarDetailsDataService } from '@app/dashboard/services/update-auction-car-details-data.service';
+import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { UpdateAuctionCarDetailsDataService } from '@dashboard/services/update-auction-car-details-data.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Fancybox } from '@fancyapps/ui';
+import { AppService } from '@app/app.service';
+import { WizardData } from '@dashboard/interfaces/wizard-data';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
+import { states } from '@shared/states';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { startWith, map, Observable } from 'rxjs';
-import { RegisterCarService } from '@app/register-car/services/register-car.service';
-import { states } from '@shared/states';
-import { Brands, Colors } from '@app/register-car/interfaces';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'auction-car-register-details',
+  templateUrl: './auction-car-register-details.component.html',
+  styleUrls: ['./auction-car-register-details.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    InputDirective,
     InputErrorComponent,
-    SpinnerComponent,
-    PrimaryButtonDirective,
-    NgxMaskDirective,
-    MatAutocompleteModule,
-    AsyncPipe
-  ],
-  templateUrl: './auction-car-register-details.component.html',
-  styleUrl: './auction-car-register-details.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  ]
 })
 export class AuctionCarRegisterDetailsComponent {
   wizardData = input.required<WizardData>();
   auctionCarId = input.required<string>();
 
-  brands = signal<string[]>([]);
-
-  filteredBrands?: Observable<string[]>;
   filteredStates?: Observable<string[]>;
 
-  #sanitizer = inject(DomSanitizer);
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
   #updateAuctionCarDetailsDataService = inject(UpdateAuctionCarDetailsDataService);
+  #domSanitizer = inject(DomSanitizer);
   #appService = inject(AppService);
-  #registerCarService = inject(RegisterCarService);
 
   carRegisterForm: FormGroup;
   currentYear = new Date().getFullYear();
   isButtonSubmitDisabled = signal<boolean>(false);
 
-  colors = signal<Colors[]>([]);
-
-  get stateControl(): FormControl {
-    return this.carRegisterForm.get('state') as FormControl;
+  get stateControl() {
+    return this.carRegisterForm.get('state');
   }
 
-  get kmTypeControl(): FormControl {
-    return this.carRegisterForm.get('kmType') as FormControl;
+  get reserveControl() {
+    return this.carRegisterForm.get('reserve');
   }
 
-  get reserveControl(): FormControl {
-    return this.carRegisterForm.get('reserve') as FormControl;
+  get reserveAmountControl() {
+    return this.carRegisterForm.get('reserveAmount');
   }
 
-  get reserveAmountControl(): FormControl {
-    return this.carRegisterForm.get('reserveAmount') as FormControl;
-  }
-
-  get transmisionControl(): FormControl {
-    return this.carRegisterForm.get('transmissionType') as FormControl;
-  }
-
-  get brandControl(): FormControl {
-    return this.carRegisterForm.get('brand') as FormControl;
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.brands().filter(street => this._normalizeValue(street).includes(filterValue));
+  get transmissionControl() {
+    return this.carRegisterForm.get('transmissionType');
   }
 
   private _filterStates(value: string): string[] {
     const filterValue = this._normalizeValue(value);
-    return states.filter(street => this._normalizeValue(street).includes(filterValue));
+    return states.filter(state => this._normalizeValue(state).includes(filterValue));
   }
 
   private _normalizeValue(value: string): string {
@@ -98,66 +65,58 @@ export class AuctionCarRegisterDetailsComponent {
 
   constructor() {
     this.carRegisterForm = this.#formBuilder.group({
-      type: ['automobile', Validators.required],
-      brand: ['', Validators.required],
+      type: ['automobile', [Validators.required]],
+      brand: ['', [Validators.required]],
       year: ['', [Validators.required, Validators.min(1500), Validators.max(this.currentYear)]],
-      carModel: ['', Validators.required],
-      exteriorColor: ['', Validators.required],
-      specificColor: ['', Validators.required],
-      interiorColor: ['', Validators.required],
-      generalCondition: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      postalCode: ['', Validators.required],
-      reserve: [null, Validators.required],
+      carModel: ['', [Validators.required]],
+      transmissionType: ['', [Validators.required]],
+      otherTransmission: [''],
+      engine: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      postalCode: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      reserve: [false, [Validators.required]],
       reserveAmount: [''],
-      kmType: ['', Validators.required],
-      kmInput: ['', Validators.required],
-      transmissionType: ['', Validators.required],
-      otherTransmission: [null],
-      engine: ['', Validators.required],
-      howDidYouHearAboutUs: ['', Validators.required],
-      photos: [[], Validators.required],
+      kmType: ['', [Validators.required]],
+      kmInput: ['', [Validators.required]],
+      howDidYouHearAboutUs: ['', [Validators.required]],
+      photos: [[], [Validators.required]],
       videos: [[]],
-      // interest: ['', Validators.required],
-      // acceptTerms: ['', Validators.required],
+      acceptTerms: [false, [Validators.requiredTrue]],
+      status: ['accepted'],
+      userId: [''],
+      lotNumber: [0],
+
     });
 
-    this.getBrands();
-    this.getColors();
-
-    this.filteredStates = this.stateControl.valueChanges.pipe(
+    this.filteredStates = this.stateControl?.valueChanges.pipe(
       startWith(''),
       map(value => this._filterStates(value || '')),
     );
 
-    this.reserveControl.valueChanges.
-      pipe(
-        takeUntilDestroyed()
-      ).subscribe((value) => {
-        if (value === true) {
-          this.reserveAmountControl.setValidators([Validators.required]);
-        } else {
-          this.reserveAmountControl.setValue('');
-          this.reserveAmountControl.clearValidators();
-        }
+    this.reserveControl?.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe((value) => {
+      if (value === true) {
+        this.reserveAmountControl?.setValidators([Validators.required]);
+      } else {
+        this.reserveAmountControl?.setValue('');
+        this.reserveAmountControl?.clearValidators();
+      }
+      this.reserveAmountControl?.updateValueAndValidity();
+    });
 
-        this.reserveAmountControl.updateValueAndValidity();
-      });
-
-    this.transmisionControl.valueChanges.
-      pipe(
-        takeUntilDestroyed()
-      ).subscribe((value) => {
-        if (value === 'other') {
-          this.carRegisterForm.get('otherTransmission')?.setValidators([Validators.required]);
-        } else {
-          this.carRegisterForm.get('otherTransmission')?.setValue('');
-          this.carRegisterForm.get('otherTransmission')?.clearValidators();
-        }
-
-        this.carRegisterForm.get('otherTransmission')?.updateValueAndValidity();
-      });
+    this.transmissionControl?.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe((value) => {
+      if (value === 'other') {
+        this.carRegisterForm.get('otherTransmission')?.setValidators([Validators.required]);
+      } else {
+        this.carRegisterForm.get('otherTransmission')?.setValue('');
+        this.carRegisterForm.get('otherTransmission')?.clearValidators();
+      }
+      this.carRegisterForm.get('otherTransmission')?.updateValueAndValidity();
+    });
 
     Fancybox.bind("[data-fancybox='registerCarPhotoGallery']", { Hash: false });
   }
@@ -172,25 +131,24 @@ export class AuctionCarRegisterDetailsComponent {
         brand: registerCarDetails.brand,
         year: registerCarDetails.year,
         carModel: registerCarDetails.carModel,
-        exteriorColor: registerCarDetails.exteriorColor,
-        specificColor: registerCarDetails.specificColor,
-        interiorColor: registerCarDetails.interiorColor,
-        generalCondition: registerCarDetails.generalCondition,
+        transmissionType: registerCarDetails.transmissionType,
+        otherTransmission: registerCarDetails.otherTransmission,
+        engine: registerCarDetails.engine,
         city: registerCarDetails.city,
-        state: registerCarDetails.state,
         postalCode: registerCarDetails.postalCode,
+        state: registerCarDetails.state,
         reserve: registerCarDetails.reserve,
         reserveAmount: registerCarDetails.reserveAmount,
         kmType: registerCarDetails.kmType,
         kmInput: registerCarDetails.kmInput,
-        transmissionType: registerCarDetails.transmissionType,
-        otherTransmission: registerCarDetails.otherTransmission,
-        engine: registerCarDetails.engine,
         howDidYouHearAboutUs: registerCarDetails.howDidYouHearAboutUs,
         photos: registerCarDetails.photos,
         videos: registerCarDetails.videos,
-        // interest: registerCarDetails.interest,
-        // acceptTerms: registerCarDetails.acceptTerms,
+        acceptTerms: registerCarDetails.acceptTerms,
+        status: registerCarDetails.status,
+        userId: registerCarDetails.userId,
+        lotNumber: registerCarDetails.lotNumber,
+
       });
     }
   });
@@ -207,9 +165,9 @@ export class AuctionCarRegisterDetailsComponent {
 
     this.#updateAuctionCarDetailsDataService.updateRegisterCarDetails$(this.auctionCarId(), this.carRegisterForm).subscribe({
       next: () => {
-        this.toastSuccess('El registro del vehículo se ha actualizado correctamente');
+        this.toastSuccess('Detalles de registro actualizados correctamente');
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error(error);
       }
     }).add(() => {
@@ -217,48 +175,29 @@ export class AuctionCarRegisterDetailsComponent {
     });
   }
 
-  getBrands(): void {
-    this.#registerCarService.getBrands$().
-      subscribe({
-        next: (response: Brands) => {
-          this.brands.set(response.data);
-          this.filteredBrands = this.brandControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this._filter(value || '')),
-          );
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
+  hasError(fieldName: string): boolean {
+    const control = this.carRegisterForm.get(fieldName);
+    return control ? control.invalid && (control.dirty || control.touched) : false;
   }
 
-  getColors(): void {
-    this.#registerCarService.getColors$().subscribe({
-      next: (response: Colors[]) => {
-        this.colors.set(response);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+  getError(fieldName: string): string {
+    const control = this.carRegisterForm.get(fieldName);
+    if (!control || !control.errors) return '';
+
+    const errors = control.errors;
+    if (errors['required']) return 'Este campo es requerido';
+    if (errors['requiredTrue']) return 'Debes aceptar los términos y condiciones';
+    if (errors['min']) return `El valor mínimo es ${errors['min'].min}`;
+    if (errors['max']) return `El valor máximo es ${errors['max'].max}`;
+    
+    return 'Campo inválido';
   }
 
-  getSafeUrl(video: string): SafeResourceUrl {
-    return this.#sanitizer.bypassSecurityTrustResourceUrl(video);
+  getSafeUrl(url: string): any {
+    return this.#domSanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   toastSuccess(message: string): void {
     this.#appService.toastSuccess(message);
-  }
-
-  hasError(field: string): boolean {
-    return this.#validatorsService.hasError(this.carRegisterForm, field);
-  }
-
-  getError(field: string): string | undefined {
-    if (!this.carRegisterForm) return undefined;
-
-    return this.#validatorsService.getError(this.carRegisterForm, field);
   }
 }

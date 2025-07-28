@@ -1,324 +1,157 @@
-<form [formGroup]="exteriorForm" class="grid grid-cols-2 gap-5 items-end" (submit)="updateExteriorDetails()">
-  <!-- <p class="mt-4"><b>ID:</b> {{wizardData().data.exteriorDetails._id}}</p>
-  <p><b>originalAuctionCarId:</b> {{wizardData().data.exteriorDetails.originalAuctionCarId}}</p> -->
-  <!-- <p><b>VIN:</b> {{wizardData().data.exteriorDetails.VIN}}</p> -->
-  <!-- <p><b>Accidente:</b> {{wizardData().data.exteriorDetails.accident ? 'Sí' : 'No'}}</p> -->
-  <!-- <p><b>Marca:</b> {{wizardData().data.exteriorDetails.brand}}</p> -->
-  <!-- <p><b>Historial del auto:</b> {{wizardData().data.exteriorDetails.carHistory}}</p> -->
-  <!-- <p><b>Modelo:</b> {{wizardData().data.exteriorDetails.carModel}}</p> -->
-  <!-- <p><b>Comentarios:</b> {{wizardData().data.exteriorDetails.detailComments}}</p> -->
-  <!-- <p><b>Color exterior:</b> {{wizardData().data.exteriorDetails.exteriorColor}}</p> -->
-  <!-- <p><b>Condición exterior:</b> {{wizardData().data.exteriorDetails.exteriorCondition}}</p> -->
-  <!-- <p><b>Modificaciones exteriores:</b> {{wizardData().data.exteriorDetails.exteriorModified ? 'Sí' : 'No'}}</p> -->
-  <div>
-    <label for="brand" class="block mb-1 text-sm">Marca <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="brand" formControlName="brand" type="text" sharedInput>
-    @if (hasError('brand')) {
-    <shared-input-error [message]="getError('brand')"></shared-input-error>
-    }
-  </div>
-
-  <div>
-    <label for="carModel" class="block mb-1 text-sm">Modelo <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="carModel" formControlName="carModel" type="text" sharedInput>
-    @if (hasError('carModel')) {
-    <shared-input-error [message]="getError('carModel')"></shared-input-error>
-    }
-  </div>
-
-  <div>
-    <label for="year" class="block mb-1 text-sm">Año <span class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="year" formControlName="year" type="number" min="0" [max]="currentYear" sharedInput>
-    @if (hasError('year')) {
-    <shared-input-error [message]="getError('year')"></shared-input-error>
-    }
-  </div>
-
-  <!-- kmInput -->
-  <div>
-    <label for="kmInput" class="block mb-1 text-sm">Kilometraje <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="kmInput" formControlName="kmInput" type="text" mask="separator.0" thousandSeparator="," sharedInput>
-    @if (hasError('kmInput')) {
-    <shared-input-error [message]="getError('kmInput')"></shared-input-error>
-    }
-  </div>
-
-  <div>
-    <label for="odometerVerified" class="block mb-1 text-sm">¿El odómetro es acertado? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="odometerVerified" formControlName="odometerVerified" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('odometerVerified')) {
-    <shared-input-error [message]="getError('odometerVerified')"></shared-input-error>
-    }
-  </div>
-
-  <!-- transmision select -->
-  <div>
-    <label for="transmissionType" class="block mb-1 text-sm">Transmisión <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select formControlName="transmissionType" id="transmissionType" sharedInput>
-      <option value="Automática">Automática</option>
-      <option value="Manual">Manual</option>
-      <option value="Otro">Otro</option>
-    </select>
-    @if (hasError('transmissionType')) {
-    <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
-    }
-  </div>
-
-  <!-- other transmission type -->
-
-  @if (transmissionTypeControl.value === 'Otro') {
-  <div>
-    <label for="otherTransmission" class="block mb-1 text-sm">Otro tipo de transmisión <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="otherTransmission" formControlName="otherTransmission" type="text" sharedInput>
-    @if (hasError('otherTransmission')) {
-    <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
-    }
-  </div>
-  }
-
-  <!-- VIN -->
-  <div>
-    <label for="vin" class="block mb-1 text-sm">VIN <span class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="vin" formControlName="VIN" type="text" sharedInput>
-    @if (hasError('VIN')) {
-    <shared-input-error [message]="getError('VIN')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Garantías del auto select -->
-  <div class="col-span-1">
-    <label for="warranties" class="block mb-1 text-sm">Garantías del auto <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="warranties" formControlName="warranties" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('warranties')) {
-    <shared-input-error [message]="getError('warranties')"></shared-input-error>
-    }
-  </div>
-
-  <!-- wichWarranties -->
-  @if (warrantiesControl.value === 'true' || warrantiesControl.value === true) {
-  <div class="col-span-2">
-    <label for="wichWarranties" class="block mb-1 text-sm">¿Cuáles? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="wichWarranties" formControlName="wichWarranties" rows="4" sharedInput
-      sharedAutoResizeTextarea></textarea>
-    @if (hasError('wichWarranties')) {
-    <shared-input-error [message]="getError('wichWarranties')"></shared-input-error>
-    }
-  </div>
-  }
-
-  <!-- Factura / Pedimento select -->
-  <div class="col-span-2">
-    <label for="invoiceType" class="block mb-1 text-sm">Factura / Pedimento <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="invoiceType" formControlName="invoiceType" sharedInput>
-      <!-- <option value="true">Sí</option>
-      <option value="false">No</option> -->
-      <!-- invoice -->
-      <option value="invoice">Factura</option>
-      <option value="pediment">Pedimento</option>
-      <option value="other">Otro</option>
-    </select>
-    @if (hasError('invoiceType')) {
-    <shared-input-error [message]="getError('invoiceType')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Explica los detalles de Factura / Pedimiento / Otro textarea -->
-  <div class="col-span-2">
-    <label for="invoiceDetails" class="block mb-1 text-sm">Explica los detalles de Factura / Pedimiento /
-      Otro <span class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="invoiceDetails" formControlName="invoiceDetails" rows="4" sharedInput
-      sharedAutoResizeTextarea></textarea>
-    @if (hasError('invoiceDetails')) {
-    <shared-input-error [message]="getError('invoiceDetails')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Cuéntanos del exterior del auto textarea -->
-  <div class="col-span-2">
-    <label for="carHistory" class="block mb-1 text-sm">Cuéntanos del exterior del auto <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="carHistory" formControlName="carHistory" rows="6"
-      placeholder="Yo lo compré hace 5 años, nunca ha sido chocado, bla bla, qué experiencias han tenido con el, modificaciones, háblanos del exterior, pintura, detalles ..."
-      sharedInput sharedAutoResizeTextarea></textarea>
-    @if (hasError('carHistory')) {
-    <shared-input-error [message]="getError('carHistory')"></shared-input-error>
-    }
-  </div>
-
-  <div class="col-span-2 mt-4">
-    <h2 class="text-xl font-bold">Exterior del auto</h2>
-  </div>
-
-  <!-- Color exterior select -->
-  <div>
-    <label for="exteriorColor" class="block mb-1 text-sm">Color exterior <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="exteriorColor" formControlName="exteriorColor" type="text" sharedInput>
-    @if (hasError('exteriorColor')) {
-    <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Color específico -->
-  <div>
-    <label for="specificColor" class="block mb-1 text-sm">Color específico <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="specificColor" formControlName="specificColor" type="text" sharedInput>
-    @if (hasError('specificColor')) {
-    <shared-input-error [message]="getError('specificColor')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Ha estado involucrado en un accidente select -->
-  <div class="col-span-2">
-    <label for="accident" class="block mb-1 text-sm">¿Ha estado involucrado en un accidente? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="accident" formControlName="accident" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('accident')) {
-    <shared-input-error [message]="getError('accident')"></shared-input-error>
-    }
-  </div>
-
-  <!-- El auto se ha corrido en pista / autodromo select -->
-  <div class="col-span-2">
-    <label for="raced" class="block mb-1 text-sm">¿El auto se ha corrido en pista / autodromo? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="raced" formControlName="raced" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('raced')) {
-    <shared-input-error [message]="getError('raced')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Pintura original select -->
-  <div>
-    <label for="originalPaint" class="block mb-1 text-sm">¿Pintura original? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="originalPaint" formControlName="originalPaint" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('originalPaint')) {
-    <shared-input-error [message]="getError('originalPaint')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Cuentas con medidor de pintura select -->
-  <div>
-    <label for="paintMeter" class="block mb-1 text-sm">¿Cuentas con medidor de pintura? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="paintMeter" formControlName="paintMeter" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('paintMeter')) {
-    <shared-input-error [message]="getError('paintMeter')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Se le ha modificado el exterior select -->
-  <div>
-    <label for="exteriorModified" class="block mb-1 text-sm">¿Se le ha modificado el exterior? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="exteriorModified" formControlName="exteriorModified" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-    @if (hasError('exteriorModified')) {
-    <shared-input-error [message]="getError('exteriorModified')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Condición del exterior select -->
-  <div>
-    <label for="exteriorCondition" class="block mb-1 text-sm">Condición del exterior <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="exteriorCondition" formControlName="exteriorCondition" sharedInput>
-      <option value="excellent">Excelente</option>
-      <option value="good">Buena</option>
-      <option value="regular">Regular</option>
-      <option value="bad">Mala</option>
-    </select>
-    @if (hasError('exteriorCondition')) {
-    <shared-input-error [message]="getError('exteriorCondition')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Comentarios sobre detalles textarea -->
-  <div class="col-span-2">
-    <label for="detailComments" class="block mb-1 text-sm">Comentarios sobre detalles <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="detailComments" formControlName="detailComments" rows="6"
-      placeholder="Explícanos más sobre pintura, pista, sucesos, etc.." sharedInput sharedAutoResizeTextarea></textarea>
-    @if (hasError('detailComments')) {
-    <shared-input-error [message]="getError('detailComments')"></shared-input-error>
-    }
-  </div>
-
-  <div class="col-span-2">
-    <p><b>Fotos:</b></p>
-    <div class="grid grid-cols-3 gap-4">
-      @for (photo of wizardData().data.exteriorDetails.exteriorPhotos; track $index) {
-      <a [href]="photo" data-fancybox="exteriorPhotosGallery">
-        <img [src]="photo" alt="Foto exterior">
-      </a>
-      } @empty {
-      <p>No hay fotos</p>
-      }
+<form [formGroup]="exteriorForm" class="space-y-8" (submit)="updateExteriorDetails()">
+  
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-100">
+    <div class="flex items-center space-x-3">
+      <div class="flex-shrink-0">
+        <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Detalles del Exterior</h3>
+        <p class="text-sm text-gray-600">Información sobre el estado exterior del vehículo</p>
+      </div>
     </div>
   </div>
-  <div class="col-span-2">
-    <p><b>Videos:</b></p>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      @for (video of wizardData().data.exteriorDetails.exteriorVideos; track $index) {
-      <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-      } @empty {
-      <p>No hay videos</p>
+
+  <!-- Invoice Information Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Información de Documentación</h4>
+      <p class="text-sm text-gray-600">Detalles sobre la factura o pedimento del vehículo</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="invoiceType" class="block text-sm font-medium text-gray-700 mb-2">
+          Tipo de Documento <span class="text-red-500">*</span>
+        </label>
+        <select id="invoiceType" formControlName="invoiceType" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">Seleccionar tipo</option>
+          <option value="invoice">Factura</option>
+          <option value="pediment">Pedimento</option>
+          <option value="other">Otro</option>
+        </select>
+        @if (hasError('invoiceType')) {
+          <shared-input-error [message]="getError('invoiceType')"></shared-input-error>
+        }
+      </div>
+
+      <div class="md:col-span-2">
+        <label for="invoiceDetails" class="block text-sm font-medium text-gray-700 mb-2">
+          Detalles del Documento <span class="text-red-500">*</span>
+        </label>
+        <textarea id="invoiceDetails" formControlName="invoiceDetails" rows="3"
+                  placeholder="Describe los detalles de la factura, pedimento u otro documento..."
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"></textarea>
+        @if (hasError('invoiceDetails')) {
+          <shared-input-error [message]="getError('invoiceDetails')"></shared-input-error>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Car History Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Historia del Vehículo</h4>
+      <p class="text-sm text-gray-600">Cuéntanos sobre el exterior y la historia del auto</p>
+    </div>
+    
+    <div>
+      <label for="carHistory" class="block text-sm font-medium text-gray-700 mb-2">
+        Historia del Auto <span class="text-red-500">*</span>
+      </label>
+      <textarea id="carHistory" formControlName="carHistory" rows="6"
+                placeholder="Describe la historia del vehículo, su estado exterior, modificaciones, accidentes, mantenimiento, etc..."
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"></textarea>
+      @if (hasError('carHistory')) {
+        <shared-input-error [message]="getError('carHistory')"></shared-input-error>
       }
     </div>
   </div>
 
-  <div class="col-span-2">
-    <button class="flex justify-center mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
-      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
-      @if (isButtonSubmitDisabled()) {
-      <shared-spinner></shared-spinner>
+  <!-- Media Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Multimedia del Exterior</h4>
+      <p class="text-sm text-gray-600">Fotos y videos del estado exterior del vehículo</p>
+    </div>
+
+    <!-- Photos Section -->
+    <div class="mb-6">
+      <h5 class="text-sm font-medium text-gray-700 mb-3">Fotos del Exterior <span class="text-red-500">*</span></h5>
+      @if (wizardData().data.exteriorDetails.exteriorPhotos.length) {
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          @for (photo of wizardData().data.exteriorDetails.exteriorPhotos; track $index) {
+            <div class="relative group">
+              <a [href]="photo" data-fancybox="exteriorPhotosGallery" class="block">
+                <img [src]="photo" alt="Foto exterior" 
+                     class="w-full h-32 object-cover rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+              </a>
+              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                </svg>
+              </div>
+            </div>
+          }
+        </div>
       } @else {
-      Guardar
+        <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">No hay fotos disponibles</p>
+        </div>
+      }
+    </div>
+
+    <!-- Videos Section -->
+    <div>
+      <h5 class="text-sm font-medium text-gray-700 mb-3">Videos del Exterior</h5>
+      @if (wizardData().data.exteriorDetails.exteriorVideos.length) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (video of wizardData().data.exteriorDetails.exteriorVideos; track $index) {
+            <div class="relative">
+              <iframe width="100%" height="200" [src]="getSafeUrl(video)" 
+                      frameborder="0" allowfullscreen
+                      class="rounded-lg border border-gray-200"></iframe>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">No hay videos disponibles</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex justify-end pt-6 border-t border-gray-200">
+    <button type="submit" 
+            [disabled]="isButtonSubmitDisabled()"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+      @if (isButtonSubmitDisabled()) {
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Guardando...
+      } @else {
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Guardar Cambios
       }
     </button>
   </div>
-  <!-- <p><b>Detalles de la factura:</b> {{wizardData().data.exteriorDetails.invoiceDetails}}</p> -->
-  <!-- <p><b>Tipo de factura:</b> {{wizardData().data.exteriorDetails.invoiceType}}</p> -->
-  <!-- <p><b>KM:</b> {{wizardData().data.exteriorDetails.kmInput | number}}</p> -->
-  <!-- <p><b>Odómetro verificado:</b> {{wizardData().data.exteriorDetails.odometerVerified ? 'Sí' : 'No'}}</p> -->
-  <!-- <p><b>Pintura original:</b> {{wizardData().data.exteriorDetails.originalPaint ? 'Sí' : 'No'}}</p> -->
-  <!-- <p><b>Otra transmisión:</b> {{wizardData().data.exteriorDetails.otherTransmission}}</p> -->
-  <!-- <p><b>Medidor de pintura:</b> {{wizardData().data.exteriorDetails.paintMeter ? 'Sí' : 'No'}}</p> -->
-  <!-- <p><b>Carrera:</b> {{wizardData().data.exteriorDetails.raced ? 'Sí' : 'No'}}</p> -->
-  <!-- <p><b>Color específico:</b> {{wizardData().data.exteriorDetails.specificColor}}</p> -->
-  <!-- <p><b>Tipo de transmisión:</b> {{wizardData().data.exteriorDetails.transmissionType}}</p> -->
-  <!-- <p><b>Garantías:</b> {{wizardData().data.exteriorDetails.warranties ? 'Sí' : 'No'}}</p> -->
-  <!-- <p><b>¿Qué garantías?:</b> {{wizardData().data.exteriorDetails.wichWarranties}}</p> -->
-  <!-- <p><b>Año:</b> {{wizardData().data.exteriorDetails.year}}</p> -->
 </form>

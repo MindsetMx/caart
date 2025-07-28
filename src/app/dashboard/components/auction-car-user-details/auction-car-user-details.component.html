@@ -1,0 +1,240 @@
+<div class="space-y-8">
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-lg p-6 border border-teal-100">
+    <div class="flex items-center space-x-3">
+      <div class="flex-shrink-0">
+        <div class="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Información del Usuario</h3>
+        <p class="text-sm text-gray-600">Detalles del vendedor del vehículo</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Information Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Información Personal</h4>
+      <p class="text-sm text-gray-600">Datos básicos del vendedor</p>
+    </div>
+
+    <!-- Personal Details Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Full Name -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Nombre Completo
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.firstName}} {{userDetails().data.lastName}}</span>
+        </div>
+      </div>
+
+      <!-- Username -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Nombre de Usuario
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.username}}</span>
+        </div>
+      </div>
+
+      <!-- Seller Type -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Tipo de Vendedor
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.sellerType}}</span>
+        </div>
+      </div>
+
+      <!-- User ID -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          ID de Usuario
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900 font-mono text-sm">{{userDetails().data._id}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Information Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Información de Contacto</h4>
+      <p class="text-sm text-gray-600">Datos de contacto del vendedor</p>
+    </div>
+
+    <!-- Contact Details Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Correo Electrónico
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.email}}</span>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Teléfono
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.phoneNumber}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Address Information Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Información de Dirección</h4>
+      <p class="text-sm text-gray-600">Ubicación del vendedor</p>
+    </div>
+
+    <!-- Address Details Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Country -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          País
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.country}}</span>
+        </div>
+      </div>
+
+      <!-- State -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Estado
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.state}}</span>
+        </div>
+      </div>
+
+      <!-- City -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Ciudad
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.city}}</span>
+        </div>
+      </div>
+
+      <!-- Postal Code -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Código Postal
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.postalCode}}</span>
+        </div>
+      </div>
+
+      <!-- Street and Number -->
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Calle y Número
+        </label>
+        <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
+          <span class="text-gray-900">{{userDetails().data.streetAndNumber}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Status Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Estado de la Cuenta</h4>
+      <p class="text-sm text-gray-600">Información de verificación y términos</p>
+    </div>
+
+    <!-- Status Details Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Account Verification -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Verificación de Cuenta
+        </label>
+        <div class="flex items-center space-x-2">
+          @if (userDetails().data.accountVerified) {
+            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            <span class="text-green-700 font-medium">Verificada</span>
+          } @else {
+            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+            <span class="text-red-700 font-medium">No Verificada</span>
+          }
+        </div>
+      </div>
+
+      <!-- Terms Acceptance -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Acepta Términos y Condiciones
+        </label>
+        <div class="flex items-center space-x-2">
+          @if (userDetails().data.acceptTermsAndConditions) {
+            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            <span class="text-green-700 font-medium">Aceptados</span>
+          } @else {
+            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+            <span class="text-red-700 font-medium">No Aceptados</span>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Identification Photos Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Fotos de Identificación</h4>
+      <p class="text-sm text-gray-600">Documentos de identificación del vendedor</p>
+    </div>
+
+    @if (userDetails().data.validationImg?.length) {
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        @for (image of userDetails().data.validationImg; track $index) {
+          <div class="relative group">
+            <a [href]="image" data-fancybox="userPhotoGallery" class="block">
+              <img [src]="image" alt="Foto de identificación" 
+                   class="w-full h-32 object-cover rounded-lg border border-gray-200 hover:border-teal-300 transition-colors">
+            </a>
+            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+              </svg>
+            </div>
+          </div>
+        }
+      </div>
+      <p class="text-sm text-gray-500 mt-3">
+        <span class="font-medium">{{userDetails().data.validationImg.length}}</span> fotos de identificación
+      </p>
+    } @else {
+      <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        <p class="mt-2 text-sm text-gray-500">No hay fotos de identificación disponibles</p>
+      </div>
+    }
+  </div>
+</div> 

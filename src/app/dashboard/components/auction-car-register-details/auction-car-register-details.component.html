@@ -1,392 +1,351 @@
-<!-- <div class="mt-4">
-  <p><b>ID:</b> {{ wizardData().data.registerCarDetails._id }}</p>
-  <p><b>Tipo:</b> {{ wizardData().data.registerCarDetails.type }}</p>
-  <p><b>Marca:</b> {{ wizardData().data.registerCarDetails.brand }}</p>
-  <p><b>Año:</b> {{ wizardData().data.registerCarDetails.year }}</p>
-  <p><b>Modelo:</b> {{ wizardData().data.registerCarDetails.carModel }}</p>
-  <p><b>Color exterior:</b> {{ wizardData().data.registerCarDetails.exteriorColor }}</p>
-  <p><b>Color interior:</b> {{ wizardData().data.registerCarDetails.interiorColor }}</p>
-  <p><b>Color específico:</b> {{ wizardData().data.registerCarDetails.specificColor }}</p>
-  <p><b>Condición general:</b> {{ wizardData().data.registerCarDetails.generalCondition }}</p>
-  <p><b>Tipo de transmisión:</b> {{ wizardData().data.registerCarDetails.transmissionType }}</p>
-  <p><b>Otra transmisión:</b> {{ wizardData().data.registerCarDetails.otherTransmission }}</p>
-  <p><b>Motor:</b> {{ wizardData().data.registerCarDetails.engine }}</p>
-  <p><b>Ciudad:</b> {{ wizardData().data.registerCarDetails.city }}</p>
-  <p><b>Código postal:</b> {{ wizardData().data.registerCarDetails.postalCode }}</p>
-  <p><b>Estado:</b> {{ wizardData().data.registerCarDetails.state }}</p>
-  <p><b>Reserva:</b> {{ wizardData().data.registerCarDetails.reserve }}</p>
-  <p><b>Monto de reserva:</b> {{ wizardData().data.registerCarDetails.reserveAmount |
-    currency:'USD':'symbol':'1.0-2' }}</p>
-  <p><b>Tipo de KM:</b> {{ wizardData().data.registerCarDetails.kmType }}</p>
-  <p><b>Entrada KM:</b> {{ wizardData().data.registerCarDetails.kmInput | number }}</p>
-  <p><b>¿Cómo supiste de nosotros?:</b> {{ wizardData().data.registerCarDetails.howDidYouHearAboutUs }}</p>
-  <p><b>Fotos:</b></p>
-  <div class="grid grid-cols-3 gap-4">
-    @for (photo of wizardData().data.registerCarDetails.photos; track $index) {
-    <img [src]="photo" alt="Foto {{ $index + 1 }}">
-    } @empty {
-    <p>No hay fotos</p>
+<form [formGroup]="carRegisterForm" (ngSubmit)="updateRegisterCarDetails()" class="space-y-8">
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-6 border border-red-100">
+    <div class="flex items-center space-x-3">
+      <div class="flex-shrink-0">
+        <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Información de Registro</h3>
+        <p class="text-sm text-gray-600">Detalles básicos del vehículo y ubicación</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vehicle Information Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Información del Vehículo</h4>
+      <p class="text-sm text-gray-600">Detalles básicos del automóvil</p>
+    </div>
+
+    <!-- Vehicle Details Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Brand -->
+      <div>
+        <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">
+          Marca <span class="text-red-500">*</span>
+        </label>
+        <input id="brand" type="text" formControlName="brand"
+               placeholder="Ej: BMW, Mercedes, Audi..."
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('brand')) {
+          <shared-input-error [message]="getError('brand')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Year -->
+      <div>
+        <label for="year" class="block text-sm font-medium text-gray-700 mb-2">
+          Año <span class="text-red-500">*</span>
+        </label>
+        <input id="year" type="number" formControlName="year"
+               placeholder="Ej: 2020"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('year')) {
+          <shared-input-error [message]="getError('year')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Car Model -->
+      <div>
+        <label for="carModel" class="block text-sm font-medium text-gray-700 mb-2">
+          Modelo <span class="text-red-500">*</span>
+        </label>
+        <input id="carModel" type="text" formControlName="carModel"
+               placeholder="Ej: M3, C-Class, A4..."
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('carModel')) {
+          <shared-input-error [message]="getError('carModel')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Engine -->
+      <div>
+        <label for="engine" class="block text-sm font-medium text-gray-700 mb-2">
+          Motor <span class="text-red-500">*</span>
+        </label>
+        <input id="engine" type="text" formControlName="engine"
+               placeholder="Ej: 4 cilindros, V8, 2.0L..."
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('engine')) {
+          <shared-input-error [message]="getError('engine')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Transmission Type -->
+      <div>
+        <label for="transmissionType" class="block text-sm font-medium text-gray-700 mb-2">
+          Transmisión <span class="text-red-500">*</span>
+        </label>
+        <select id="transmissionType" formControlName="transmissionType"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          <option value="">Seleccionar transmisión</option>
+          <option value="Manual">Manual</option>
+          <option value="Automático">Automático</option>
+          <option value="CVT">CVT</option>
+          <option value="other">Otro</option>
+        </select>
+        @if (hasError('transmissionType')) {
+          <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Other Transmission -->
+      @if (transmissionControl?.value === 'other') {
+        <div>
+          <label for="otherTransmission" class="block text-sm font-medium text-gray-700 mb-2">
+            Especificar Transmisión <span class="text-red-500">*</span>
+          </label>
+          <input id="otherTransmission" type="text" formControlName="otherTransmission"
+                 placeholder="Especificar tipo de transmisión"
+                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          @if (hasError('otherTransmission')) {
+            <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Location Information Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Información de Ubicación</h4>
+      <p class="text-sm text-gray-600">Detalles de la ubicación del vehículo</p>
+    </div>
+
+    <!-- Location Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- City -->
+      <div>
+        <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+          Ciudad <span class="text-red-500">*</span>
+        </label>
+        <input id="city" type="text" formControlName="city"
+               placeholder="Ej: Ciudad de México"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('city')) {
+          <shared-input-error [message]="getError('city')"></shared-input-error>
+        }
+      </div>
+
+      <!-- State -->
+      <div>
+        <label for="state" class="block text-sm font-medium text-gray-700 mb-2">
+          Estado <span class="text-red-500">*</span>
+        </label>
+        <input id="state" type="text" formControlName="state"
+               placeholder="Ej: Ciudad de México"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('state')) {
+          <shared-input-error [message]="getError('state')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Postal Code -->
+      <div>
+        <label for="postalCode" class="block text-sm font-medium text-gray-700 mb-2">
+          Código Postal <span class="text-red-500">*</span>
+        </label>
+        <input id="postalCode" type="text" formControlName="postalCode"
+               placeholder="Ej: 05120"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('postalCode')) {
+          <shared-input-error [message]="getError('postalCode')"></shared-input-error>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Auction Details Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Detalles de Subasta</h4>
+      <p class="text-sm text-gray-600">Información específica de la subasta</p>
+    </div>
+
+    <!-- Auction Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- KM Type -->
+      <div>
+        <label for="kmType" class="block text-sm font-medium text-gray-700 mb-2">
+          Tipo de Kilometraje <span class="text-red-500">*</span>
+        </label>
+        <select id="kmType" formControlName="kmType"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          <option value="">Seleccionar tipo</option>
+          <option value="KM">Kilómetros</option>
+          <option value="MI">Millas</option>
+        </select>
+        @if (hasError('kmType')) {
+          <shared-input-error [message]="getError('kmType')"></shared-input-error>
+        }
+      </div>
+
+      <!-- KM Input -->
+      <div>
+        <label for="kmInput" class="block text-sm font-medium text-gray-700 mb-2">
+          Kilometraje <span class="text-red-500">*</span>
+        </label>
+        <input id="kmInput" type="number" formControlName="kmInput"
+               placeholder="Ej: 50000"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('kmInput')) {
+          <shared-input-error [message]="getError('kmInput')"></shared-input-error>
+        }
+      </div>
+
+      <!-- How Did You Hear About Us -->
+      <div>
+        <label for="howDidYouHearAboutUs" class="block text-sm font-medium text-gray-700 mb-2">
+          ¿Cómo nos conoció? <span class="text-red-500">*</span>
+        </label>
+        <select id="howDidYouHearAboutUs" formControlName="howDidYouHearAboutUs"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          <option value="">Seleccionar opción</option>
+          <option value="Redes Sociales">Redes Sociales</option>
+          <option value="Búsqueda en Google">Búsqueda en Google</option>
+          <option value="Recomendación">Recomendación</option>
+          <option value="Anuncio">Anuncio</option>
+          <option value="Otros">Otros</option>
+        </select>
+        @if (hasError('howDidYouHearAboutUs')) {
+          <shared-input-error [message]="getError('howDidYouHearAboutUs')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Lot Number -->
+      <div>
+        <label for="lotNumber" class="block text-sm font-medium text-gray-700 mb-2">
+          Número de Lote
+        </label>
+        <input id="lotNumber" type="number" formControlName="lotNumber"
+               placeholder="Ej: 210"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+      </div>
+    </div>
+
+    <!-- Reserve Section -->
+    <div class="mt-6">
+      <div class="flex items-start space-x-3">
+        <div class="flex items-center h-5">
+          <input id="reserve" 
+                 type="checkbox" 
+                 formControlName="reserve"
+                 class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded">
+        </div>
+        <div class="text-sm">
+          <label for="reserve" class="font-medium text-gray-700">
+            Incluir precio de reserva
+          </label>
+          <p class="text-gray-600 mt-1">
+            Establecer un precio mínimo para la subasta.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reserve Amount -->
+    @if (reserveControl?.value) {
+      <div class="mt-4">
+        <label for="reserveAmount" class="block text-sm font-medium text-gray-700 mb-2">
+          Precio de Reserva <span class="text-red-500">*</span>
+        </label>
+        <input id="reserveAmount" type="number" formControlName="reserveAmount"
+               placeholder="Ej: 1200000"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        @if (hasError('reserveAmount')) {
+          <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
+        }
+      </div>
     }
   </div>
-  <p><b>Videos:</b></p>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    @for (video of wizardData().data.registerCarDetails.videos; track $index) {
-    <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-    } @empty {
-    <p>No hay videos</p>
-    }
+
+  <!-- Media Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Multimedia del Vehículo</h4>
+      <p class="text-sm text-gray-600">Fotos y videos del vehículo</p>
+    </div>
+
+    <!-- Photos Section -->
+    <div class="mb-6">
+      <h5 class="text-sm font-medium text-gray-700 mb-3">Fotos del Vehículo <span class="text-red-500">*</span></h5>
+      @if (wizardData().data.registerCarDetails.photos.length) {
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          @for (photo of wizardData().data.registerCarDetails.photos; track $index) {
+            <div class="relative group">
+              <a [href]="photo" data-fancybox="registerCarPhotoGallery" class="block">
+                <img [src]="photo" alt="Foto del vehículo" 
+                     class="w-full h-32 object-cover rounded-lg border border-gray-200 hover:border-red-300 transition-colors">
+              </a>
+              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                </svg>
+              </div>
+            </div>
+          }
+        </div>
+        <p class="text-sm text-gray-500 mt-3">
+          <span class="font-medium">{{wizardData().data.registerCarDetails.photos.length}}</span> fotos del vehículo
+        </p>
+      } @else {
+        <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">No hay fotos disponibles</p>
+        </div>
+      }
+    </div>
+
+    <!-- Videos Section -->
+    <div>
+      <h5 class="text-sm font-medium text-gray-700 mb-3">Videos del Vehículo</h5>
+      @if (wizardData().data.registerCarDetails.videos.length) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (video of wizardData().data.registerCarDetails.videos; track $index) {
+            <div class="relative">
+              <iframe width="100%" height="200" [src]="getSafeUrl(video)" 
+                      frameborder="0" allowfullscreen
+                      class="rounded-lg border border-gray-200"></iframe>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">No hay videos disponibles</p>
+        </div>
+      }
+    </div>
   </div>
-  <p><b>Interés:</b> {{ wizardData().data.registerCarDetails.interest }}</p>
-  <p><b>Acepta términos:</b> {{ wizardData().data.registerCarDetails.acceptTerms }}</p>
-  <p><b>Estado:</b> {{ wizardData().data.registerCarDetails.status }}</p>
-  <p><b>ID de usuario:</b> {{ wizardData().data.registerCarDetails.userId }}</p>
-  <p><b>Número de lote:</b> {{ wizardData().data.registerCarDetails.lotNumber }}</p>
-</div> -->
 
-<form [formGroup]="carRegisterForm" (ngSubmit)="updateRegisterCarDetails()">
-  <div class="grid grid-cols-2 gap-4">
-    <div>
-      <label for="brand" class="block mb-1 text-sm">Marca <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input type="text" formControlName="brand" [matAutocomplete]="brands" sharedInput>
-      <mat-autocomplete #brands="matAutocomplete">
-        @for (brand of filteredBrands | async; track $index) {
-        <mat-option [value]="brand">{{brand}}</mat-option>
-        }
-      </mat-autocomplete>
-      <!-- <select formControlName="brand" id="brand" sharedInput>
-              @for (brand of brands(); track $index) {
-              <option [value]="brand">{{brand}}</option>
-              }
-            </select> -->
-      @if (hasError('brand')) {
-      <shared-input-error [message]="getError('brand')"></shared-input-error>
+  <!-- Submit Button -->
+  <div class="flex justify-end pt-6 border-t border-gray-200">
+    <button type="submit" 
+            [disabled]="isButtonSubmitDisabled()"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+      @if (isButtonSubmitDisabled()) {
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Guardando...
+      } @else {
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Guardar Cambios
       }
-    </div>
-
-    <div>
-      <label for="year" class="block mb-1 text-sm">Año <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="year" min="1500" [max]="currentYear" id="year" type="number" sharedInput>
-      @if (hasError('year')) {
-      <shared-input-error [message]="getError('year')"></shared-input-error>
-      }
-    </div>
-
-    <div class="col-span-2">
-      <label for="carModel" class="block mb-1 text-sm">Modelo <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="carModel" id="carModel" type="text" sharedInput>
-      @if (hasError('carModel')) {
-      <shared-input-error [message]="getError('carModel')"></shared-input-error>
-      }
-    </div>
-
-    <div>
-      <label for="exteriorColor" class="block mb-1 text-sm">Color exterior <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <select formControlName="exteriorColor" id="exteriorColor" sharedInput>
-        @for (color of colors(); track $index) {
-        <option [value]="color.name">{{color.name}}</option>
-        }
-      </select>
-      @if (hasError('exteriorColor')) {
-      <shared-input-error [message]="getError('exteriorColor')"></shared-input-error>
-      }
-    </div>
-
-    <!-- specificColor -->
-    <div>
-      <label for="specificColor" class="block mb-1 text-sm">Color específico <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="specificColor" id="specificColor" type="text" sharedInput>
-      @if (hasError('specificColor')) {
-      <shared-input-error [message]="getError('specificColor')"></shared-input-error>
-      }
-    </div>
-
-    <div>
-      <label for="interiorColor" class="block mb-1 text-sm">Color interior <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <select formControlName="interiorColor" id="interiorColor" sharedInput>
-        @for (color of colors(); track $index) {
-        <option [value]="color.name">{{color.name}}</option>
-        }
-      </select>
-      @if (hasError('interiorColor')) {
-      <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
-      }
-    </div>
-
-    <!-- generalCondition -->
-    <div>
-      <label for="generalCondition" class="block mb-1 text-sm">Condición general <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <select formControlName="generalCondition" id="generalCondition" sharedInput>
-        <option value="Excelente">Excelente</option>
-        <option value="Buena">Buena</option>
-        <option value="Regular">Regular</option>
-        <option value="Mala">Mala</option>
-      </select>
-      @if (hasError('generalCondition')) {
-      <shared-input-error [message]="getError('generalCondition')"></shared-input-error>
-      }
-    </div>
-
-    <div>
-      <label for="city" class="block mb-1 text-sm">Ciudad <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="city" id="city" type="text" sharedInput>
-      @if (hasError('city')) {
-      <shared-input-error [message]="getError('city')"></shared-input-error>
-      }
-    </div>
-
-    <!-- State autocomplete -->
-    <div>
-      <label for="state" class="block mb-1 text-sm">Estado <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input id="state" type="text" formControlName="state" [matAutocomplete]="states" autocomplete="abc" sharedInput>
-      <mat-autocomplete #states="matAutocomplete">
-        @for (state of filteredStates | async; track $index) {
-        <mat-option [value]="state">{{state}}</mat-option>
-        }
-      </mat-autocomplete>
-      @if (hasError('state')) {
-      <shared-input-error [message]="getError('state')"></shared-input-error>
-      }
-    </div>
-
-    <div>
-      <label for="postalCode" class="block mb-1 text-sm">Código Postal <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="postalCode" id="postalCode" type="text" sharedInput>
-      @if (hasError('postalCode')) {
-      <shared-input-error [message]="getError('postalCode')"></shared-input-error>
-      }
-    </div>
-
-    <div>
-      <label for="reserve" class="block mb-1 text-sm">Reserva <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <select formControlName="reserve" id="reserve" sharedInput>
-        <option [value]="true">Sí</option>
-        <option [value]="false">No</option>
-      </select>
-      @if (hasError('reserve')) {
-      <shared-input-error [message]="getError('reserve')"></shared-input-error>
-      }
-
-      <div class="flex items-center mt-2">
-        <span class="text-gray4 text-xs">¿Qué significa la Reserva?</span>
-        <img class="ml-2" src="assets/img/registrar auto/help-circle-outline.svg" alt="ícono de ayuda">
-      </div>
-    </div>
-
-    @if (carRegisterForm.get('reserve')?.value === "true") {
-    <div>
-      <label for="reserveAmount" class="block mb-1 text-sm">Monto de reserva <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <div class="relative rounded-md shadow-sm">
-        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <span class="text-gray-500 sm:text-sm">$</span>
-        </div>
-        <input formControlName="reserveAmount" type="text" class="pl-7 pr-12" name="price" id="reserveAmount"
-          mask="separator.0" thousandSeparator="," autocomplete="off" placeholder="0.00"
-          aria-describedby="price-currency" sharedInput>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-          <span class="text-gray-500 sm:text-sm" id="price-currency">MXN</span>
-        </div>
-      </div>
-      @if (hasError('reserveAmount')) {
-      <shared-input-error [message]="getError('reserveAmount')"></shared-input-error>
-      }
-    </div>
-    }
-
-    <div class="col-start-1">
-      <label for="kmType" class="block mb-1 text-sm">Tipo de kilometraje <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <select formControlName="kmType" id="kmType" sharedInput>
-        <option value="KM">Kilómetros</option>
-        <option value="MI">Millas</option>
-      </select>
-      @if (hasError('kmType')) {
-      <shared-input-error [message]="getError('kmType')"></shared-input-error>
-      }
-    </div>
-
-    <div class="flex items-end">
-      <!-- <label for="kmInput" class="block mb-1 text-sm">Kilometraje <span
-          class="font-bold text-red-500 inline-block">*</span></label> -->
-      <div class="relative rounded-md shadow-sm w-full">
-        <!-- <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <span class="text-gray-500 sm:text-sm">$</span>
-            </div> -->
-        <input formControlName="kmInput" mask="separator.0" thousandSeparator="," type="text" class="pl pr-12"
-          name="kmInput" id="kmInput" autocomplete="off" sharedInput>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-          @switch (kmTypeControl.value) {
-          @case ('KM') {
-          <span class="text-gray-500 sm:text-sm" id="price-currency">KM</span>
-          }
-          @case ('MI') {
-          <span class="text-gray-500 sm:text-sm" id="price-currency">MI</span>
-          }
-          @default {
-          <span class="text-gray-500 sm:text-sm" id="price-currency">KM</span>
-          }
-          }
-        </div>
-      </div>
-
-      @if (hasError('kmInput')) {
-      <shared-input-error [message]="getError('kmInput')"></shared-input-error>
-      }
-    </div>
-
-    <!-- transmision -->
-    <div>
-      <label for="transmissionType" class="block mb-1 text-sm">Transmisión <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <select formControlName="transmissionType" id="transmissionType" sharedInput>
-        <option value="Automática">Automática</option>
-        <option value="Manual">Manual</option>
-        <option value="Otro">Otro</option>
-      </select>
-      @if (hasError('transmissionType')) {
-      <shared-input-error [message]="getError('transmissionType')"></shared-input-error>
-      }
-    </div>
-
-    <!-- otherTransmission -->
-    @if (transmisionControl.value === "Otro") {
-    <div>
-      <label for="otherTransmission" class="block mb-1 text-sm">Otra transmisión <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="otherTransmission" id="otherTransmission" type="text" sharedInput>
-      @if (hasError('otherTransmission')) {
-      <shared-input-error [message]="getError('otherTransmission')"></shared-input-error>
-      }
-    </div>
-    }
-
-    <!-- engine input -->
-    <div>
-      <label for="engine" class="block mb-1 text-sm">Motor <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <input formControlName="engine" id="engine" type="text" sharedInput>
-      @if (hasError('engine')) {
-      <shared-input-error [message]="getError('engine')"></shared-input-error>
-      }
-    </div>
-
-    <div class="col-span-2">
-      <label for="howDidYouHearAboutUs" class="block mb-1 text-sm">¿Cómo te enteraste de la plataforma? <span
-          class="font-bold text-red-500 inline-block">*</span></label>
-      <select formControlName="howDidYouHearAboutUs" id="howDidYouHearAboutUs" sharedInput>
-        <option value="Búsqueda en Internet">Búsqueda en Internet</option>
-        <option value="Redes sociales">Redes sociales</option>
-        <option value="Publicidad en línea">Publicidad en línea</option>
-        <option value="Anuncios en televisión o radio">Anuncios en televisión o radio</option>
-        <option value="Artículos o reseñas en medios">Artículos o reseñas en medios</option>
-        <option value="Ferias o eventos del sector automovilístico">Ferias o eventos del sector automovilístico
-        </option>
-        <option value="Publicidad impresa (revistas, periódicos, folletos)">Publicidad impresa (revistas,
-          periódicos, folletos)</option>
-        <option value="Correo electrónico o newsletter">Correo electrónico o newsletter</option>
-        <option value="Otros">Otros</option>
-      </select>
-      @if (hasError('howDidYouHearAboutUs')) {
-      <shared-input-error [message]="getError('howDidYouHearAboutUs')"></shared-input-error>
-      }
-    </div>
-
-    <div class="col-span-2">
-      <p><b>Fotos:</b></p>
-      <div class="grid grid-cols-3 gap-4">
-        @for (photo of wizardData().data.registerCarDetails.photos; track $index) {
-        <a [href]="photo" data-fancybox="registerCarPhotoGallery">
-          <img [src]="photo" alt="Foto {{ $index + 1 }}">
-        </a>
-        } @empty {
-        <p>No hay fotos</p>
-        }
-      </div>
-    </div>
-
-    <div class="col-span-2">
-      <p><b>Videos:</b></p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        @for (video of wizardData().data.registerCarDetails.videos; track $index) {
-        <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-        } @empty {
-        <p>No hay videos</p>
-        }
-      </div>
-    </div>
-
-    <!-- <div class="col-span-2 mt-4">
-      <p class="text-xl font-bold">Elige tu paquete <span class="font-bold text-red-500 inline-block">*</span>
-      </p>
-      <p class="text-red-500 text-sm mb-4">La sesión de fotos y videos a domicilio es una herramienta indispensable
-        para potenciar las ofertas de tu pieza.
-      </p>
-      <fieldset>
-        <legend class="sr-only">Elige tu paquete</legend>
-        <div class="space-y-2">
-          <div>
-            <input formControlName="interest" value="ListInMarketplacePlusPhotoshoot"
-              id="ListInMarketplacePlusPhotoshoot" type="radio" checked class="h-4 w-4">
-            <label for="ListInMarketplacePlusPhotoshoot" class="ml-3 leading-6 inline mr-4">Publicar mi pieza + Sesión
-              fotográfica
-              profesional</label>
-            <span class="bg-red-500 text-white text-sm px-2 py-1 rounded-md ml-auto inline-block">
-              Recomendado por CAART
-            </span>
-          </div>
-          <div class="flex items-center">
-            <input formControlName="interest" value="ListInMarketplace" id="ListInMarketplace" type="radio"
-              class="h-4 w-4">
-            <label for="ListInMarketplace" class="ml-3 block leading-6">
-              Publicar mi pieza</label>
-          </div>
-        </div>
-      </fieldset>
-
-      @if (hasError('interest')) {
-      <shared-input-error [message]="getError('interest')"></shared-input-error>
-      }
-    </div>
-
-    <div class="col-span-2">
-      <p class="text-xs text-gray-400">*Si la pieza no alcanza el precio de reserva, se publicará durante un mes en la
-        sección de última oportunidad sin costo adicional.</p>
-    </div>
-
-    <div class="col-span-2">
-      <div class="flex items-center text-xs">
-        <input formControlName="acceptTerms" id="acceptTerms" type="checkbox" class="h-4 w-4">
-        <label for="acceptTerms" class="ml-3 block leading-6">
-          Acepto los <a class="underline">términos y condiciones</a>, <a class="underline">Aviso de privacidad</a> y
-          <a class="underline">Acuerdos de usuarios.</a>
-          <span class="font-bold text-red-500 inline-block">*</span></label>
-      </div>
-
-      @if (hasError('acceptTerms')) {
-      <shared-input-error [message]="getError('acceptTerms')"></shared-input-error>
-      }
-    </div> -->
-
-    <div class="col-span-2">
-      <button type="submit" class="inline-flex justify-center items-center" [disabled]="isButtonSubmitDisabled()"
-        [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
-        @if (isButtonSubmitDisabled()) {
-        <shared-spinner></shared-spinner>
-        } @else {
-        Guardar
-        }
-      </button>
-    </div>
+    </button>
   </div>
 </form>

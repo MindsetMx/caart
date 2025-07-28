@@ -1,44 +1,35 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgxMaskDirective } from 'ngx-mask';
-import { Fancybox } from '@fancyapps/ui';
-
-import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { AppService } from '@app/app.service';
-import { WizardData } from '@app/dashboard/interfaces/wizard-data';
-import { UpdateAuctionCarDetailsDataService } from '@app/dashboard/services/update-auction-car-details-data.service';
 import { ValidatorsService } from '@shared/services/validators.service';
+import { UpdateAuctionCarDetailsDataService } from '@dashboard/services/update-auction-car-details-data.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Fancybox } from '@fancyapps/ui';
+import { AppService } from '@app/app.service';
+import { WizardData } from '@dashboard/interfaces/wizard-data';
+import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 
 @Component({
   selector: 'auction-car-mechanical-details',
+  templateUrl: './auction-car-mechanical-details.component.html',
+  styleUrls: ['./auction-car-mechanical-details.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    InputDirective,
     InputErrorComponent,
-    SpinnerComponent,
-    PrimaryButtonDirective,
-    NgxMaskDirective,
-  ],
-  templateUrl: './auction-car-mechanical-details.component.html',
-  styleUrl: './auction-car-mechanical-details.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  ]
 })
 export class AuctionCarMechanicalDetailsComponent {
   wizardData = input.required<WizardData>();
   auctionCarId = input.required<string>();
 
-  #sanitizer = inject(DomSanitizer);
   #formBuilder = inject(FormBuilder);
   #validatorsService = inject(ValidatorsService);
   #updateAuctionCarDetailsDataService = inject(UpdateAuctionCarDetailsDataService);
+  #domSanitizer = inject(DomSanitizer);
   #appService = inject(AppService);
 
   mechanicsForm: FormGroup;
-  currentYear = new Date().getFullYear();
   isButtonSubmitDisabled = signal<boolean>(false);
 
   wizardDataEffect = effect(() => {
@@ -47,73 +38,29 @@ export class AuctionCarMechanicalDetailsComponent {
 
       const mechanicsDetails = this.wizardData().data.mechanicsDetails;
       this.mechanicsForm.patchValue({
-        originalRims: mechanicsDetails.originalRims,
-        // rimsDetail: mechanicsDetails.rimsDetail,
-        tireBrand: mechanicsDetails.tireBrand,
-        tireSize: mechanicsDetails.tireSize,
-        tireDate: mechanicsDetails.tireDate.split('T')[0],
-        tireCondition: mechanicsDetails.tireCondition,
-        extraTiresOrRims: mechanicsDetails.extraTiresOrRims,
-        // extraBrand: mechanicsDetails.extraBrand,
-        // extraColor: mechanicsDetails.extraColor,
-        // extraSize: mechanicsDetails.extraSize,
-        spareTire: mechanicsDetails.spareTire,
-        originalTransmissionEngine: mechanicsDetails.originalTransmissionEngine,
-        improvementModificationOriginal: mechanicsDetails.improvementModificationOriginal,
-        // whatImprovement: mechanicsDetails.whatImprovement,
-        performedServicesWithDates: mechanicsDetails.performedServicesWithDates,
-        mechanicalProblemDetail: mechanicsDetails.mechanicalProblemDetail,
-        // whatMechanicalProblem: mechanicsDetails.whatMechanicalProblem,
-        illuminatedDashboardSensor: mechanicsDetails.illuminatedDashboardSensor,
-        // whichIlluminatedSensor: mechanicsDetails.whichIlluminatedSensor,
-        factoryEquipment: mechanicsDetails.factoryEquipment,
-        extraEquipment: mechanicsDetails.extraEquipment,
-        // whatExtraEquipment: mechanicsDetails.whatExtraEquipment,
         comments: mechanicsDetails.comments,
         mechanicsPhotos: mechanicsDetails.mechanicsPhotos,
         mechanicsVideos: mechanicsDetails.mechanicsVideos,
+        spareTire: mechanicsDetails.spareTire,
+        tireBrand: mechanicsDetails.tireBrand,
+        tireSize: mechanicsDetails.tireSize,
         originalAuctionCarId: mechanicsDetails.originalAuctionCarId,
-        // dashboardWarningLight: mechanicsDetails.dashboardWarningLight,
-        // servicesDoneWithDates: mechanicsDetails.servicesDoneWithDates,
-        // improvementOrModification: mechanicsDetails.improvementOrModification,
       });
     }
   });
 
   constructor() {
     this.mechanicsForm = this.#formBuilder.group({
-      originalRims: ['', [Validators.required]],
-      // rimsDetail: ['', [Validators.required]],
-      tireBrand: [''],
-      tireSize: [''],
-      tireDate: [''],
-      tireCondition: ['', [Validators.required]],
-      extraTiresOrRims: ['', [Validators.required]],
-      // extraBrand: ['', [Validators.required]],
-      // extraColor: ['', [Validators.required]],
-      // extraSize: ['', [Validators.required]],
-      spareTire: ['', [Validators.required]],
-      originalTransmissionEngine: ['', [Validators.required]],
-      improvementModificationOriginal: ['', [Validators.required]],
-      // whatImprovement: ['', [Validators.required]],
-      performedServicesWithDates: [''],
-      mechanicalProblemDetail: ['', [Validators.required]],
-      // whatMechanicalProblem: ['', [Validators.required]],
-      illuminatedDashboardSensor: ['', [Validators.required]],
-      // whichIlluminatedSensor: ['', [Validators.required]],
-      factoryEquipment: ['', [Validators.required]],
-      extraEquipment: ['', [Validators.required]],
-      // whatExtraEquipment: ['', [Validators.required]],
       comments: ['', [Validators.required]],
       mechanicsPhotos: [[], [Validators.required]],
       mechanicsVideos: [[]],
+      spareTire: [false, [Validators.required]],
+      tireBrand: [''],
+      tireSize: [''],
       originalAuctionCarId: ['', [Validators.required]],
-      // dashboardWarningLight: ['', [Validators.required]],
-      // servicesDoneWithDates: ['', [Validators.required]],
-      // improvementOrModification: ['', [Validators.required]],
     });
 
-    Fancybox.bind("[data-fancybox='mechanicsPhotoGallery']", { Hash: false });
+    Fancybox.bind("[data-fancybox='mechanicsPhotosGallery']", { Hash: false });
   }
 
   updateMechanicsDetails(): void {
@@ -130,7 +77,7 @@ export class AuctionCarMechanicalDetailsComponent {
       next: () => {
         this.toastSuccess('Detalles mecánicos actualizados correctamente');
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error(error);
       }
     }).add(() => {
@@ -138,21 +85,27 @@ export class AuctionCarMechanicalDetailsComponent {
     });
   }
 
-  getSafeUrl(video: string): SafeResourceUrl {
-    return this.#sanitizer.bypassSecurityTrustResourceUrl(video);
+  hasError(fieldName: string): boolean {
+    const control = this.mechanicsForm.get(fieldName);
+    return control ? control.invalid && (control.dirty || control.touched) : false;
+  }
+
+  getError(fieldName: string): string {
+    const control = this.mechanicsForm.get(fieldName);
+    if (!control || !control.errors) return '';
+
+    const errors = control.errors;
+    if (errors['required']) return 'Este campo es requerido';
+    if (errors['requiredTrue']) return 'Debes aceptar los términos y condiciones';
+    
+    return 'Campo inválido';
+  }
+
+  getSafeUrl(url: string): any {
+    return this.#domSanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   toastSuccess(message: string): void {
     this.#appService.toastSuccess(message);
-  }
-
-  hasError(field: string): boolean {
-    return this.#validatorsService.hasError(this.mechanicsForm, field);
-  }
-
-  getError(field: string): string | undefined {
-    if (!this.mechanicsForm) return undefined;
-
-    return this.#validatorsService.getError(this.mechanicsForm, field);
   }
 }

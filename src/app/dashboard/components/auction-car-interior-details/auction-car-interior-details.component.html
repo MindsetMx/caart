@@ -1,92 +1,148 @@
-<!-- <p class="mt-4"><b>ID:</b> {{wizardData().data.interiorDetails._id}}</p>
-<p><b>originalAuctionCarId:</b> {{wizardData().data.interiorDetails.originalAuctionCarId}}</p>
-<p><b>Accesorios funcionando:</b> {{wizardData().data.interiorDetails.accessoriesFunctioning ? 'Sí' : 'No'}}</p>
-<p><b>Comentarios:</b> {{wizardData().data.interiorDetails.comments}}</p>
-<p><b>Color del interior:</b> {{wizardData().data.interiorDetails.interiorColor}}</p>
-<p><b>Condición del interior:</b> {{wizardData().data.interiorDetails.interiorCondition}}</p>
-<p><b>Modificaciones del interior:</b> {{wizardData().data.interiorDetails.interiorModifications ? 'Sí' : 'No'}}
-</p>
-<p><b>Imágenes: </b></p>
-<div class="grid grid-cols-3 gap-4">
-  @for (photo of wizardData().data.interiorDetails.interiorPhotos; track $index) {
-  <img [src]="photo" alt="Foto del interior">
-  } @empty {
-  <p>No hay imágenes</p>
-  }
-</div>
-<p><b>Videos:</b></p>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-  @for (video of wizardData().data.interiorDetails.interiorVideos; track $index) {
-  <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-  } @empty {
-  <p>No hay videos</p>
-  }
-</div>
-<p><b>Material:</b> {{wizardData().data.interiorDetails.material}}</p> -->
-
-<form [formGroup]="interiorOfTheCarForm" (ngSubmit)="updateInteriorDetails()" class="grid grid-cols-2 items-end gap-5">
-
-  <!-- interiorColor select -->
-  <div>
-    <label for="interiorColor" class="block mb-1 text-sm">Color <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="interiorColor" formControlName="interiorColor" type="text" sharedInput>
-    @if (hasError('interiorColor')) {
-    <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
-    }
+<form [formGroup]="interiorForm" class="space-y-8" (submit)="updateInteriorDetails()">
+  
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6 border border-purple-100">
+    <div class="flex items-center space-x-3">
+      <div class="flex-shrink-0">
+        <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Detalles del Interior</h3>
+        <p class="text-sm text-gray-600">Información sobre el estado interior del vehículo</p>
+      </div>
+    </div>
   </div>
 
-  <!-- Material select   -->
-  <div>
-    <label for="material" class="block mb-1 text-sm">Material <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <input id="material" formControlName="material" type="text" sharedInput>
-    @if (hasError('material')) {
-    <shared-input-error [message]="getError('material')"></shared-input-error>
-    }
-  </div>
+  <!-- Interior Information Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Información del Interior</h4>
+      <p class="text-sm text-gray-600">Detalles sobre el color, material y estado del interior</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="interiorColor" class="block text-sm font-medium text-gray-700 mb-2">
+          Color del Interior <span class="text-red-500">*</span>
+        </label>
+        <input id="interiorColor" formControlName="interiorColor" type="text" 
+               placeholder="Ej: Negro, Beige, Gris, etc."
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+        @if (hasError('interiorColor')) {
+          <shared-input-error [message]="getError('interiorColor')"></shared-input-error>
+        }
+      </div>
 
-  <!-- Cúentanos cualquier detalle importante sobre el interior -->
-  <div class="col-span-2">
-    <label for="interiorDetails" class="block mb-1 text-sm">Cúentanos cualquier detalle importante sobre el interior <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="interiorDetails" formControlName="interiorDetails" rows="6" sharedInput sharedAutoResizeTextarea></textarea>
-    @if (hasError('interiorDetails')) {
-    <shared-input-error [message]="getError('interiorDetails')"></shared-input-error>
-    }
-  </div>
+      <div>
+        <label for="material" class="block text-sm font-medium text-gray-700 mb-2">
+          Material <span class="text-red-500">*</span>
+        </label>
+        <input id="material" formControlName="material" type="text" 
+               placeholder="Ej: Piel, Tela, Alcantara, etc."
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+        @if (hasError('material')) {
+          <shared-input-error [message]="getError('material')"></shared-input-error>
+        }
+      </div>
+    </div>
 
-  <div class="col-span-2">
-    <p><b>Imágenes: </b></p>
-    <div class="grid grid-cols-3 gap-4">
-      @for (photo of wizardData().data.interiorDetails.interiorPhotos; track $index) {
-      <a [href]="photo" data-fancybox="interiorPhotos">
-        <img [src]="photo" alt="Foto del interior">
-      </a>
-      } @empty {
-      <p>No hay imágenes</p>
+    <div class="mt-6">
+      <label for="interiorDetails" class="block text-sm font-medium text-gray-700 mb-2">
+        Detalles del Interior <span class="text-red-500">*</span>
+      </label>
+      <textarea id="interiorDetails" formControlName="interiorDetails" rows="4"
+                placeholder="Describe el estado del interior, modificaciones, restauraciones, detalles especiales, etc..."
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"></textarea>
+      @if (hasError('interiorDetails')) {
+        <shared-input-error [message]="getError('interiorDetails')"></shared-input-error>
       }
     </div>
   </div>
 
-  <div class="col-span-2">
-    <p><b>Videos:</b></p>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      @for (video of wizardData().data.interiorDetails.interiorVideos; track $index) {
-      <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-      } @empty {
-      <p>No hay videos</p>
-      }
+  <!-- Media Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Multimedia del Interior</h4>
+      <p class="text-sm text-gray-600">Fotos y videos del estado interior del vehículo</p>
     </div>
-  </div>
 
-  <div class="col-span-2">
-    <button class="flex justify-center mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
-      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
-      @if (isButtonSubmitDisabled()) {
-      <shared-spinner></shared-spinner>
+    <!-- Photos Section -->
+    <div class="mb-6">
+      <h5 class="text-sm font-medium text-gray-700 mb-3">Fotos del Interior <span class="text-red-500">*</span></h5>
+      @if (wizardData().data.interiorDetails.interiorPhotos?.length) {
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          @for (photo of wizardData().data.interiorDetails.interiorPhotos || []; track $index) {
+            <div class="relative group">
+              <a [href]="photo" data-fancybox="interiorPhotosGallery" class="block">
+                <img [src]="photo" alt="Foto interior" 
+                     class="w-full h-32 object-cover rounded-lg border border-gray-200 hover:border-purple-300 transition-colors">
+              </a>
+              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                </svg>
+              </div>
+            </div>
+          }
+        </div>
+        <p class="text-sm text-gray-500 mt-3">
+          <span class="font-medium">{{wizardData().data.interiorDetails.interiorPhotos?.length || 0}}</span> fotos del interior
+        </p>
       } @else {
-      Guardar
+        <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">No hay fotos disponibles</p>
+        </div>
+      }
+    </div>
+
+    <!-- Videos Section -->
+    <div>
+      <h5 class="text-sm font-medium text-gray-700 mb-3">Videos del Interior</h5>
+      @if (wizardData().data.interiorDetails.interiorVideos?.length) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (video of wizardData().data.interiorDetails.interiorVideos || []; track $index) {
+            <div class="relative">
+              <iframe width="100%" height="200" [src]="getSafeUrl(video)" 
+                      frameborder="0" allowfullscreen
+                      class="rounded-lg border border-gray-200"></iframe>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">No hay videos disponibles</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex justify-end pt-6 border-t border-gray-200">
+    <button type="submit" 
+            [disabled]="isButtonSubmitDisabled()"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+      @if (isButtonSubmitDisabled()) {
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Guardando...
+      } @else {
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Guardar Cambios
       }
     </button>
   </div>

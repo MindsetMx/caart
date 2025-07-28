@@ -148,4 +148,35 @@ export class PublishCarsComponent {
   toastSuccess(message: string): void {
     this.#appService.toastSuccess(message);
   }
+
+  calculateProgress(auction: AuctionCarInfoData): number {
+    const steps = [
+      auction.wizardSteps.generalInfo,
+      auction.wizardSteps.exterior,
+      auction.wizardSteps.interior,
+      auction.wizardSteps.mechanics,
+      auction.wizardSteps.extras,
+      auction.carHistoryExists,
+      auction.publishImages,
+      auction.aceeptedByUser
+    ];
+    
+    const completedSteps = steps.filter(step => step === true).length;
+    return Math.round((completedSteps / steps.length) * 100);
+  }
+
+  canReleaseForPreview(auction: AuctionCarInfoData): boolean {
+    return auction.wizardSteps.exterior && 
+           auction.wizardSteps.extras && 
+           auction.wizardSteps.generalInfo && 
+           auction.wizardSteps.interior && 
+           auction.wizardSteps.mechanics && 
+           auction.publishImages && 
+           auction.carHistoryExists;
+  }
+
+  openMultimediaModal(auction: AuctionCarInfoData): void {
+    // Navigate to multimedia management page
+    window.open(`/dashboard/asignar-y-reordenar-multimedia-autos/${auction.auctionCarId}`, '_blank');
+  }
 }

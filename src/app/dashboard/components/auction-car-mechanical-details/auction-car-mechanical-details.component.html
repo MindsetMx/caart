@@ -1,264 +1,166 @@
-<!-- <p class="mt-4"><b>ID:</b> {{wizardData().data.mechanicsDetails._id}}</p>
-<p><b>originalAuctionCarId:</b> {{wizardData().data.mechanicsDetails.originalAuctionCarId}}</p>
-<p><b>Comentarios:</b> {{wizardData().data.mechanicsDetails.comments}}</p>
-<p><b>Equipo extra:</b> {{wizardData().data.mechanicsDetails.extraEquipment ? 'Sí' : 'No'}}</p>
-<p><b>Neumáticos o llantas extra:</b> {{wizardData().data.mechanicsDetails.extraTiresOrRims ? 'Sí' : 'No'}}</p>
-<p><b>Equipo de fábrica:</b> {{wizardData().data.mechanicsDetails.factoryEquipment ? 'Sí' : 'No'}}</p>
-<p><b>Tablero iluminado:</b> {{wizardData().data.mechanicsDetails.illuminatedDashboardSensor ? 'Sí' : 'No'}}</p>
-<p><b>Mejora/modificación original:</b> {{wizardData().data.mechanicsDetails.improvementModificationOriginal ?
-  'Sí' : 'No'}}</p>
-<p><b>Detalle del problema mecánico:</b> {{wizardData().data.mechanicsDetails.mechanicalProblemDetail ? 'Sí' :
-  'No'}}</p>
-<p><b>Fotos:</b></p>
-<div class="grid grid-cols-3 gap-4">
-  @for (photo of wizardData().data.mechanicsDetails.mechanicsPhotos; track $index) {
-  <img [src]="photo" alt="Foto mecánica">
-  } @empty {
-  <p>No hay fotos</p>
-  }
-</div>
-<p><b>Videos:</b></p>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-  @for (video of wizardData().data.mechanicsDetails.mechanicsVideos; track $index) {
-  <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-  } @empty {
-  <p>No hay videos</p>
-  }
-</div>
-<p><b>Llantas originales:</b> {{wizardData().data.mechanicsDetails.originalRims ? 'Sí' : 'No'}}</p>
-<p><b>Motor/transmisión original:</b> {{wizardData().data.mechanicsDetails.originalTransmissionEngine ? 'Sí' :
-  'No'}}</p>
-<p><b>Servicios realizados con fechas:</b> {{wizardData().data.mechanicsDetails.performedServicesWithDates}}</p>
-<p><b>Neumático de repuesto:</b> {{wizardData().data.mechanicsDetails.spareTire ? 'Sí' : 'No'}}</p>
-<p><b>Marca de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireBrand}}</p>
-<p><b>Condición de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireCondition}}</p>
-<p><b>Fecha de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireDate}}</p>
-<p><b>Tamaño de los neumáticos:</b> {{wizardData().data.mechanicsDetails.tireSize}}</p> -->
-
-<form [formGroup]="mechanicsForm" (ngSubmit)="updateMechanicsDetails()" class="grid grid-cols-2 items-end gap-5">
-  <!-- Rines originales select -->
-  <div>
-    <label for="originalRims" class="block mb-1 text-sm">¿Rines originales? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="originalRims" formControlName="originalRims" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('originalRims')) {
-    <shared-input-error [message]="getError('originalRims')"></shared-input-error>
-    }
+<form [formGroup]="mechanicsForm" (ngSubmit)="updateMechanicsDetails()" class="space-y-8">
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-lg p-6 border border-orange-100">
+    <div class="flex items-center space-x-3">
+      <div class="flex-shrink-0">
+        <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Detalles Mecánicos</h3>
+        <p class="text-sm text-gray-600">Información sobre el estado mecánico del vehículo</p>
+      </div>
+    </div>
   </div>
 
-  <!-- Marca de llantas -->
-  <div>
-    <label for="tireBrand" class="block mb-1 text-sm">Marca de llantas</label>
-    <input id="tireBrand" formControlName="tireBrand" type="text" sharedInput>
-    @if (hasError('tireBrand')) {
-    <shared-input-error [message]="getError('tireBrand')"></shared-input-error>
-    }
-  </div>
+  <!-- Mechanical Information Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Información Mecánica</h4>
+      <p class="text-sm text-gray-600">Detalles sobre llantas y estado mecánico</p>
+    </div>
 
-  <!-- tireSize input -->
-  <div>
-    <label for="tireSize" class="block mb-1 text-sm">Medida de llantas</label>
-    <input id="tireSize" formControlName="tireSize" type="text" sharedInput>
-    @if (hasError('tireSize')) {
-    <shared-input-error [message]="getError('tireSize')"></shared-input-error>
-    }
-  </div>
+    <!-- Tire Information -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div>
+        <label for="tireBrand" class="block text-sm font-medium text-gray-700 mb-2">
+          Marca de Llantas
+        </label>
+        <input id="tireBrand" type="text" formControlName="tireBrand"
+               placeholder="Ej: Michelin, Bridgestone, Goodyear..."
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+      </div>
 
-  <!-- tireDate input -->
-  <div>
-    <label for="tireDate" class="block mb-1 text-sm">Fecha de llantas</label>
-    <input id="tireDate" formControlName="tireDate" type="date" sharedInput>
-    @if (hasError('tireDate')) {
-    <shared-input-error [message]="getError('tireDate')"></shared-input-error>
-    }
-  </div>
+      <div>
+        <label for="tireSize" class="block text-sm font-medium text-gray-700 mb-2">
+          Tamaño de Llantas
+        </label>
+        <input id="tireSize" type="text" formControlName="tireSize"
+               placeholder="Ej: 205/55R16, 225/45R17..."
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+      </div>
+    </div>
 
-  <!-- Condición de llantas -->
-  <div>
-    <label for="tireCondition" class="block mb-1 text-sm">Condición de llantas <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="tireCondition" formControlName="tireCondition" sharedInput>
-      <option value="Excelente">Excelente</option>
-      <option value="Buena">Buena</option>
-      <option value="Regular">Regular</option>
-      <option value="Mala">Mala</option>
-    </select>
-    @if (hasError('tireCondition')) {
-    <shared-input-error [message]="getError('tireCondition')"></shared-input-error>
-    }
-  </div>
+    <!-- Spare Tire -->
+    <div class="mb-6">
+      <div class="flex items-start space-x-3">
+        <div class="flex items-center h-5">
+          <input id="spareTire" 
+                 type="checkbox" 
+                 formControlName="spareTire"
+                 class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
+        </div>
+        <div class="text-sm">
+          <label for="spareTire" class="font-medium text-gray-700">
+            Incluye llanta de refacción <span class="text-red-500">*</span>
+          </label>
+          <p class="text-gray-600 mt-1">
+            El vehículo cuenta con una llanta de refacción en buen estado.
+          </p>
+          @if (hasError('spareTire')) {
+            <shared-input-error [message]="getError('spareTire')"></shared-input-error>
+          }
+        </div>
+      </div>
+    </div>
 
-  <!-- Llantas o rines extras select -->
-  <div>
-    <label for="extraTiresOrRims" class="block mb-1 text-sm">¿Llantas o rines extras? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="extraTiresOrRims" formControlName="extraTiresOrRims" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('extraTiresOrRims')) {
-    <shared-input-error [message]="getError('extraTiresOrRims')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Llanta de refacción select -->
-  <div>
-    <label for="spareTire" class="block mb-1 text-sm">¿Llanta de refacción? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="spareTire" formControlName="spareTire" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('spareTire')) {
-    <shared-input-error [message]="getError('spareTire')"></shared-input-error>
-    }
-  </div>
-
-  <div class="col-span-2 mt-4">
-    <h2 class="text-xl font-bold">Mecánica</h2>
-  </div>
-
-  <!-- Transmisión y motor original select -->
-  <div>
-    <label for="originalTransmissionEngine" class="block mb-1 text-sm">¿Transmisión y motor original? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="originalTransmissionEngine" formControlName="originalTransmissionEngine" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('originalTransmissionEngine')) {
-    <shared-input-error [message]="getError('originalTransmissionEngine')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Mejora o modificación general select -->
-  <div>
-    <label for="improvementModificationOriginal" class="block mb-1 text-sm">¿Mejora o modificación general? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="improvementModificationOriginal" formControlName="improvementModificationOriginal" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('improvementModificationOriginal')) {
-    <shared-input-error [message]="getError('improvementModificationOriginal')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Servicios realizados con fechas textarea -->
-  <div class="col-span-2">
-    <label for="performedServicesWithDates" class="block mb-1 text-sm">Servicios realizados con fechas</label>
-    <textarea id="performedServicesWithDates" formControlName="performedServicesWithDates" rows="4" sharedInput
-      sharedAutoResizeTextarea></textarea>
-    @if (hasError('performedServicesWithDates')) {
-    <shared-input-error [message]="getError('performedServicesWithDates')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Problema o detalle mecánico select -->
-  <div>
-    <label for="mechanicalProblemDetail" class="block mb-1 text-sm">¿Problema o detalle mecánico? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="mechanicalProblemDetail" formControlName="mechanicalProblemDetail" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('mechanicalProblemDetail')) {
-    <shared-input-error [message]="getError('mechanicalProblemDetail')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Sensor iluminado en el tablero select -->
-  <div>
-    <label for="illuminatedDashboardSensor" class="block mb-1 text-sm">¿Sensor iluminado en el tablero? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="illuminatedDashboardSensor" formControlName="illuminatedDashboardSensor" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('illuminatedDashboardSensor')) {
-    <shared-input-error [message]="getError('illuminatedDashboardSensor')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Equipamiento de fabrica select -->
-  <div>
-    <label for="factoryEquipment" class="block mb-1 text-sm">¿Equipamiento de fabrica? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="factoryEquipment" formControlName="factoryEquipment" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('factoryEquipment')) {
-    <shared-input-error [message]="getError('factoryEquipment')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Equipamiento extra select -->
-  <div>
-    <label for="extraEquipment" class="block mb-1 text-sm">¿Equipamiento extra? <span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <select id="extraEquipment" formControlName="extraEquipment" sharedInput>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-
-    @if (hasError('extraEquipment')) {
-    <shared-input-error [message]="getError('extraEquipment')"></shared-input-error>
-    }
-  </div>
-
-  <!-- Comentarios sobre mecánica textarea -->
-  <div class="col-span-2">
-    <label for="comments" class="block mb-1 text-sm">Comentarios sobre mecánica<span
-        class="font-bold text-red-500 inline-block">*</span></label>
-    <textarea id="comments" formControlName="comments" rows="4" sharedInput sharedAutoResizeTextarea></textarea>
-    @if (hasError('comments')) {
-    <shared-input-error [message]="getError('comments')"></shared-input-error>
-    }
-  </div>
-
-  <div class="col-span-2">
-    <p><b>Fotos:</b></p>
-    <div class="grid grid-cols-3 gap-4">
-      @for (photo of wizardData().data.mechanicsDetails.mechanicsPhotos; track $index) {
-      <a [href]="photo" data-fancybox="mechanicsPhotoGallery">
-        <img [src]="photo" alt="Foto mecánica">
-      </a>
-      } @empty {
-      <p>No hay fotos</p>
+    <!-- Comments -->
+    <div class="mt-6">
+      <label for="comments" class="block text-sm font-medium text-gray-700 mb-2">
+        Comentarios Mecánicos <span class="text-red-500">*</span>
+      </label>
+      <textarea id="comments" formControlName="comments" rows="4"
+                placeholder="Describe el estado mecánico, problemas conocidos, servicios realizados, modificaciones, etc..."
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"></textarea>
+      @if (hasError('comments')) {
+        <shared-input-error [message]="getError('comments')"></shared-input-error>
       }
     </div>
   </div>
 
-  <div class="col-span-2">
-    <p><b>Videos:</b></p>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      @for (video of wizardData().data.mechanicsDetails.mechanicsVideos; track $index) {
-      <iframe width="100%" height="200" [src]="getSafeUrl(video)" frameborder="0" allowfullscreen></iframe>
-      } @empty {
-      <p>No hay videos</p>
-      }
+  <!-- Media Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="mb-4">
+      <h4 class="text-md font-bold text-gray-900 mb-2">Multimedia Mecánica</h4>
+      <p class="text-sm text-gray-600">Fotos y videos del estado mecánico del vehículo</p>
     </div>
-  </div>
 
-  <div class="col-span-2">
-    <button class="flex justify-center mt-4" type="submit" [disabled]="isButtonSubmitDisabled()"
-      [class.opacity-50]="isButtonSubmitDisabled()" sharedPrimaryButton>
-      @if (isButtonSubmitDisabled()) {
-      <shared-spinner></shared-spinner>
+    <!-- Photos Section -->
+    <div class="mb-6">
+      <h5 class="text-sm font-medium text-gray-700 mb-3">Fotos Mecánicas <span class="text-red-500">*</span></h5>
+      @if (wizardData().data.mechanicsDetails.mechanicsPhotos.length) {
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          @for (photo of wizardData().data.mechanicsDetails.mechanicsPhotos; track $index) {
+            <div class="relative group">
+              <a [href]="photo" data-fancybox="mechanicsPhotosGallery" class="block">
+                <img [src]="photo" alt="Foto mecánica" 
+                     class="w-full h-32 object-cover rounded-lg border border-gray-200 hover:border-orange-300 transition-colors">
+              </a>
+              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                </svg>
+              </div>
+            </div>
+          }
+        </div>
+        <p class="text-sm text-gray-500 mt-3">
+          <span class="font-medium">{{wizardData().data.mechanicsDetails.mechanicsPhotos.length}}</span> fotos mecánicas
+        </p>
       } @else {
-      Guardar
+        <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">No hay fotos disponibles</p>
+        </div>
+      }
+    </div>
+
+    <!-- Videos Section -->
+    <div>
+      <h5 class="text-sm font-medium text-gray-700 mb-3">Videos Mecánicos</h5>
+      @if (wizardData().data.mechanicsDetails.mechanicsVideos.length) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (video of wizardData().data.mechanicsDetails.mechanicsVideos; track $index) {
+            <div class="relative">
+              <iframe width="100%" height="200" [src]="getSafeUrl(video)" 
+                      frameborder="0" allowfullscreen
+                      class="rounded-lg border border-gray-200"></iframe>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">No hay videos disponibles</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex justify-end pt-6 border-t border-gray-200">
+    <button type="submit" 
+            [disabled]="isButtonSubmitDisabled()"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+      @if (isButtonSubmitDisabled()) {
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Guardando...
+      } @else {
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Guardar Cambios
       }
     </button>
   </div>

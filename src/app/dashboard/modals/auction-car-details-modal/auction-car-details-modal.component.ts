@@ -11,6 +11,7 @@ import { AuctionCarExtraDetailsComponent } from '@dashboard/components/auction-c
 import { AuctionCarInteriorDetailsComponent } from '@dashboard/components/auction-car-interior-details/auction-car-interior-details.component';
 import { AuctionCarMechanicalDetailsComponent } from '@dashboard/components/auction-car-mechanical-details/auction-car-mechanical-details.component';
 import { AuctionCarRegisterDetailsComponent } from '@dashboard/components/auction-car-register-details/auction-car-register-details.component';
+import { AuctionCarUserDetailsComponent } from '@dashboard/components/auction-car-user-details/auction-car-user-details.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { UserDetails } from '@dashboard/interfaces';
 import { WizardData } from '@dashboard/interfaces/wizard-data';
@@ -28,6 +29,7 @@ import { WizardDataService } from '@dashboard/services/wizard-data.service';
     AuctionCarInteriorDetailsComponent,
     AuctionCarMechanicalDetailsComponent,
     AuctionCarRegisterDetailsComponent,
+    AuctionCarUserDetailsComponent,
   ],
   templateUrl: './auction-car-details-modal.component.html',
   styleUrl: './auction-car-details-modal.component.css',
@@ -42,6 +44,7 @@ export class AuctionCarDetailsModalComponent {
   wizardData = signal<WizardData>({} as WizardData);
   userDetails = signal<UserDetails>({} as UserDetails);
   selectedTabIndex = signal<number>(0);
+  showUserInfo = signal<boolean>(false);
 
   #wizardDataService = inject(WizardDataService);
 
@@ -52,6 +55,7 @@ export class AuctionCarDetailsModalComponent {
   auctionCarIdAndIsOpenEffect = effect(() => {
     if (this.auctionCarId()) {
       untracked(() => {
+        // Start with "Registro" tab (index 0 in new order)
         this.selectedTabIndex.set(0);
         this.wizardData.set({} as WizardData);
         this.userDetails.set({} as UserDetails);
@@ -80,6 +84,10 @@ export class AuctionCarDetailsModalComponent {
 
   changeTab(index: number): void {
     this.selectedTabIndex.set(index);
+  }
+
+  toggleUserInfo(): void {
+    this.showUserInfo.set(!this.showUserInfo());
   }
 
   getUserDetails(): void {
