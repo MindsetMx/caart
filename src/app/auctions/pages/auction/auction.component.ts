@@ -540,4 +540,15 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   toastSuccess(message: string): void {
     this.#appService.toastSuccess(message);
   }
+
+  // Función para procesar extraInfo y separar los campos
+  processExtraInfo(text: string): string[] {
+    if (!text) return [];
+    
+    // Separar por patrones como "Color:", "Interior:", "Año:", etc.
+    const fields = text.split(/(?=[A-Z][a-z]+:)/);
+    return fields
+      .map(field => field.trim())
+      .filter(field => field.length > 0);
+  }
 }

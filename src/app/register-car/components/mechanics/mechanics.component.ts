@@ -237,38 +237,7 @@ export class MechanicsComponent {
           mechanicsVideos,
         } = mechanics.data.attributes;
 
-        const emails = [
-          'fernandovelaz96@gmail.com',
-          'jansmithers30@gmail.com',
-          'rafaelmaggio@gmail.com',
-          'luisenrique.lopez01@gmail.com',
-        ];
 
-        if (this.user && emails.includes(this.user.attributes.email)) {
-          // Sobreescribir con valores de prueba
-          tireBrand = '';
-          tireSize = '';
-          spareTire = true;
-          comments = '';
-
-          mechanicsPhotos =
-            mechanicsPhotos && mechanicsPhotos.length > 0
-              ? mechanicsPhotos
-              : [
-                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/79c2c836-05b7-4063-de6f-1a8e105eaa00/public',
-                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/27c09383-2145-475d-4992-7b7ecc191200/public',
-                ];
-
-          mechanicsVideos =
-            mechanicsVideos && mechanicsVideos.length > 0
-              ? mechanicsVideos
-              : [
-                  'https://imagedelivery.net/0QBC7WyyrF76Zf9i8s__Sg/8e340451-9379-474c-85e4-2b0d2c0c3a00/public',
-                ];
-
-          this.mechanicsPhotos.clearValidators();
-          this.mechanicsPhotos.updateValueAndValidity();
-        }
 
         this.mechanicsForm.patchValue({
           tireBrand,

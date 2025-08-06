@@ -16,7 +16,7 @@ export class ImageGalleryComponent {
   @Input({ required: true }) photos: string[] = [];
   index = input.required<number>();
 
-  photoGalleryLength: number = 1;
+  photoGalleryLength: number = 4;
 
   isMobile = window.innerWidth < 768;
 
