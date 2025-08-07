@@ -4,7 +4,6 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { forkJoin, tap } from 'rxjs';
-import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 
 import { AuctionDetails, UserDetails } from '@dashboard/interfaces';
 import { ModalComponent } from '@shared/components/modal/modal.component';

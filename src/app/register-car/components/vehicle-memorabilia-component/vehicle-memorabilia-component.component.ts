@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
 import Spanish from '@uppy/locales/lib/es_ES';
-import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 
@@ -29,7 +28,6 @@ import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cr
     PrimaryButtonDirective,
     ReactiveFormsModule,
     SpinnerComponent,
-    UppyAngularDashboardModule,
     NgxMaskDirective
   ],
   templateUrl: './vehicle-memorabilia-component.component.html',
@@ -103,7 +101,7 @@ export class VehicleMemorabiliaComponentComponent {
           }
         })
         .on('complete', (result) => {
-          result.successful.forEach((file: any) => {
+          result.successful?.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
             this.photos.setValue([...this.photos.value, url]);
             this.uppyDashboardImages()?.nativeElement.click();
@@ -155,7 +153,7 @@ export class VehicleMemorabiliaComponentComponent {
         },
       })
       .on('complete', (result) => {
-        result.successful.forEach((file: any) => {
+        result.successful?.forEach((file: any) => {
           const url = file.response.body.result.preview;
           this.videos.setValue([...this.videos.value, url]);
 

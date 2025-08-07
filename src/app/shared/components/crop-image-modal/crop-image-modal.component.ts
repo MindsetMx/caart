@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, model, output, signal, untracked } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { ImageCroppedEvent, ImageCropperModule, ImageTransform, LoadedImage, base64ToFile } from 'ngx-image-cropper';
+import { ImageCroppedEvent, ImageCropperComponent, ImageTransform, LoadedImage, base64ToFile } from 'ngx-image-cropper';
 import { switchMap } from 'rxjs';
 
 import { CloudinaryCroppedImageService } from '@dashboard/services/cloudinary-cropped-image.service';
@@ -15,7 +15,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   standalone: true,
   imports: [
     FormsModule,
-    ImageCropperModule,
+    ImageCropperComponent,
     InputDirective,
     ModalComponent,
     SpinnerComponent,

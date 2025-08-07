@@ -4,7 +4,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { forkJoin, tap } from 'rxjs';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Carousel, Fancybox } from '@fancyapps/ui';
-import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
 
 import { AuctionCarExteriorDetailsComponent } from '@dashboard/components/auction-car-exterior-details/auction-car-exterior-details.component';
 import { AuctionCarExtraDetailsComponent } from '@dashboard/components/auction-car-extra-details/auction-car-extra-details.component';
