@@ -4,7 +4,7 @@ import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { switchMap } from 'rxjs';
-import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
+// Thumbs plugin is bundled in @fancyapps/ui in v5; direct ESM path import removed
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -292,16 +292,14 @@ export class AuctionArtComponent implements OnDestroy {
 
   imagesPublishEffect = effect(() => {
     if (this.imagesPublish().data && this.myCarousel()) {
-      new Carousel(
+      new (Carousel as any)(
         this.myCarousel()?.nativeElement,
         {
           infinite: false,
-          Dots: false,
           Thumbs: {
             type: 'classic',
             Carousel: {
               slidesPerPage: 1,
-              Navigation: true,
               center: true,
               fill: true,
               dragFree: true,
@@ -311,19 +309,15 @@ export class AuctionArtComponent implements OnDestroy {
               },
             },
           },
-        },
-        { Thumbs }
+        }
       );
 
       Fancybox.bind('[data-fancybox="gallery"]', {
         Hash: false,
-        idle: false,
-        compact: false,
         dragToClose: false,
 
-        animated: false,
         showClass: 'f-fadeSlowIn',
-        hideClass: false,
+        hideClass: 'f-fadeSlowOut',
 
         Carousel: {
           infinite: false,
@@ -363,7 +357,7 @@ export class AuctionArtComponent implements OnDestroy {
             },
           },
         },
-      });
+      } as any);
 
       Fancybox.bind("[data-fancybox='gallery2']", { Hash: false });
     }
@@ -671,7 +665,7 @@ export class AuctionArtComponent implements OnDestroy {
   // Función para procesar extraInfo y separar los campos
   processExtraInfo(text: string): string[] {
     if (!text) return [];
-    
+
     // Separar por patrones como "Color:", "Interior:", "Año:", etc.
     const fields = text.split(/(?=[A-Z][a-z]+:)/);
     return fields

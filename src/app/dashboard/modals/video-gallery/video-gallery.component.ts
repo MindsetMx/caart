@@ -111,7 +111,7 @@ export class VideoGalleryComponent {
           allowedMetaFields: ['requireSignedURLs'],
         })
         .on('complete', (result) => {
-          result.successful.forEach((file: any) => {
+          result.successful?.forEach((file: any) => {
             const url = file.response.body.result.preview;
 
             if (this.allowMultipleSelection()) {

@@ -116,7 +116,7 @@ export class ArtRegistrationExtraInfoComponent {
           }
         })
         .on('complete', (result) => {
-          result.successful.forEach((file: any) => {
+          result.successful?.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
             this.photos.setValue([...this.photos.value, url]);
             this.uppyDashboardImages()?.nativeElement.click();
