@@ -11,6 +11,7 @@ import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getSpanishPaginatorIntl } from '@shared/common/spanish-paginator-intl';
 import { tokenInterceptor } from '@shared/interceptors';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 const scrollConfig: InMemoryScrollingOptions = {
   scrollPositionRestoration: 'top',
@@ -38,6 +39,6 @@ export const appConfig: ApplicationConfig = {
     // provideZoneChangeDetection({ eventCoalescing: true }),
     provideEnvironmentNgxMask(),
     provideAnimationsAsync(),
-    provideNgxStripe(environments.stripe.publishableKey)
+    provideNgxStripe(environments.stripe.publishableKey), provideClientHydration(withEventReplay())
   ]
 };
