@@ -4,7 +4,6 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Uppy } from '@uppy/core';
-import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
@@ -35,7 +34,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PrimaryButtonDirective,
     ReactiveFormsModule,
     SpinnerComponent,
-    UppyAngularDashboardModule,
     NgxMaskDirective,
     MatAutocompleteModule,
     AsyncPipe,
@@ -169,7 +167,7 @@ export class ArtRegisterComponent {
           }
         })
         .on('complete', (result) => {
-          result.successful.forEach((file: any) => {
+          result.successful?.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
             this.photos.setValue([...this.photos.value, url]);
             this.uppyDashboardImages()?.nativeElement.click();
@@ -221,7 +219,7 @@ export class ArtRegisterComponent {
         },
       })
       .on('complete', (result) => {
-        result.successful.forEach((file: any) => {
+        result.successful?.forEach((file: any) => {
           const url = file.response.body.result.preview;
           this.videos.setValue([...this.videos.value, url]);
 

@@ -2,7 +2,6 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModu
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, untracked, viewChild, viewChildren } from '@angular/core';
 import { JsonPipe, NgClass } from '@angular/common';
 import { Uppy } from '@uppy/core';
-import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
@@ -25,7 +24,6 @@ import { Observable } from 'rxjs';
     CropImageModalComponent,
     NgClass,
     JsonPipe,
-    UppyAngularDashboardModule,
   ],
   templateUrl: './car-photo-gallery.component.html',
   styleUrl: './car-photo-gallery.component.css',
@@ -125,7 +123,7 @@ export class CarPhotoGalleryComponent {
           }
         })
         .on('complete', (result) => {
-          result.successful.forEach((file: any) => {
+          result.successful?.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
 
             // this.addExtraPhoto([url]);

@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, WritableSignal, effect, inject, signal, viewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
-import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
@@ -28,7 +27,6 @@ import { AuthService } from '@auth/services/auth.service';
     PrimaryButtonDirective,
     ReactiveFormsModule,
     SpinnerComponent,
-    UppyAngularDashboardModule,
   ],
   templateUrl: './interior-of-the-car.component.html',
   styleUrl: './interior-of-the-car.component.css',
@@ -99,7 +97,7 @@ export class InteriorOfTheCarComponent {
           },
         })
         .on('complete', (result) => {
-          result.successful.forEach((file: any) => {
+          result.successful?.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
 
             this.interiorPhotos.setValue([...this.interiorPhotos.value, url]);
@@ -155,7 +153,7 @@ export class InteriorOfTheCarComponent {
         allowedMetaFields: ['requireSignedURLs'],
       })
       .on('complete', (result) => {
-        result.successful.forEach((file: any) => {
+        result.successful?.forEach((file: any) => {
           const url = file.response.body.result.preview;
 
           this.interiorVideos.setValue([...this.interiorVideos.value, url]);

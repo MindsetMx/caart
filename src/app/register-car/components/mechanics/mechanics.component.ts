@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, WritableSignal, effect, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Uppy } from '@uppy/core';
-import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
@@ -28,7 +27,6 @@ import { UserData } from '@auth/interfaces';
     PrimaryButtonDirective,
     ReactiveFormsModule,
     SpinnerComponent,
-    UppyAngularDashboardModule,
   ],
   templateUrl: './mechanics.component.html',
   styleUrl: './mechanics.component.css',
@@ -100,7 +98,7 @@ export class MechanicsComponent {
           },
         })
         .on('complete', (result) => {
-          result.successful.forEach((file: any) => {
+          result.successful?.forEach((file: any) => {
             const url = file.response.body.result.variants[0];
 
             this.mechanicsPhotos.setValue([...this.mechanicsPhotos.value, url]);
@@ -156,7 +154,7 @@ export class MechanicsComponent {
         allowedMetaFields: ['requireSignedURLs'],
       })
       .on('complete', (result) => {
-        result.successful.forEach((file: any) => {
+        result.successful?.forEach((file: any) => {
           const url = file.response.body.result.preview;
 
           this.mechanicsVideos.setValue([...this.mechanicsVideos.value, url]);

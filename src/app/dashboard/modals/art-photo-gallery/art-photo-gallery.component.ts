@@ -2,7 +2,6 @@ import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, output, signal, untracked, viewChild, viewChildren } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Uppy } from '@uppy/core';
-import { UppyAngularDashboardModule } from '@uppy/angular';
 import Dashboard from '@uppy/dashboard';
 import Spanish from '@uppy/locales/lib/es_ES';
 import XHRUpload from '@uppy/xhr-upload';
@@ -23,7 +22,6 @@ import { Observable } from 'rxjs';
     ReactiveFormsModule,
     CropImageModalComponent,
     NgClass,
-    UppyAngularDashboardModule,
   ],
   templateUrl: './art-photo-gallery.component.html',
   styleUrl: './art-photo-gallery.component.css',
