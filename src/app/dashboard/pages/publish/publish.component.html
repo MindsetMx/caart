@@ -1,115 +1,113 @@
-<sidebar-layout>
-  <!-- Modern Header Section -->
-  <div class="bg-white border-b border-gray-200">
-    <div class="px-4 sm:px-6 lg:px-8 py-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-          <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-          </div>
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900">Publicar</h1>
-            <p class="text-sm text-gray-600">Gestiona las publicaciones de vehículos y arte</p>
-          </div>
+<!-- Modern Header Section -->
+<div class="bg-white border-b border-gray-200">
+  <div class="px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
         </div>
-        
-        <!-- Filter Dropdown -->
-        <div class="flex items-center space-x-3">
-          <div class="flex items-center space-x-2">
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
-            </svg>
-            <span class="text-sm font-medium text-gray-700">Filtrar por:</span>
-          </div>
-          <select [formControl]="requestType" 
-                  class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
-            <option [value]="typesOfRequests.Car">Vehículos</option>
-            <option [value]="typesOfRequests.Art">Arte</option>
-          </select>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Publicar</h1>
+          <p class="text-sm text-gray-600">Gestiona las publicaciones de vehículos y arte</p>
         </div>
+      </div>
+      
+      <!-- Filter Dropdown -->
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-2">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
+          </svg>
+          <span class="text-sm font-medium text-gray-700">Filtrar por:</span>
+        </div>
+        <select [formControl]="requestType" 
+                class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+          <option [value]="typesOfRequests.Car">Vehículos</option>
+          <option [value]="typesOfRequests.Art">Arte</option>
+        </select>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Main Content -->
-  <div class="bg-gray-50 min-h-screen">
-    <div class="px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-600">Completados</p>
-                             <p class="text-2xl font-bold text-gray-900">0</p>
-            </div>
+<!-- Main Content -->
+<div class="bg-gray-50 min-h-screen">
+  <div class="px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
           </div>
-        </div>
-        
-        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-              <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-600">Pendientes</p>
-                             <p class="text-2xl font-bold text-gray-900">0</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-600">En Preview</p>
-                             <p class="text-2xl font-bold text-gray-900">0</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-600">En Vivo</p>
-                             <p class="text-2xl font-bold text-gray-900">0</p>
-            </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Completados</p>
+                           <p class="text-2xl font-bold text-gray-900">0</p>
           </div>
         </div>
       </div>
-
-      <!-- Content Section -->
-      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        @switch (requestType.value) {
-        @case (typesOfRequests.Car) {
-        <publish-cars></publish-cars>
-        }
-        @case (typesOfRequests.Art) {
-        <publish-art></publish-art>
-        }
-        @default {
-        <publish-cars></publish-cars>
-        }
-        }
+      
+      <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Pendientes</p>
+                           <p class="text-2xl font-bold text-gray-900">0</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">En Preview</p>
+                           <p class="text-2xl font-bold text-gray-900">0</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">En Vivo</p>
+                           <p class="text-2xl font-bold text-gray-900">0</p>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Content Section -->
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      @switch (requestType.value) {
+      @case (typesOfRequests.Car) {
+      <publish-cars></publish-cars>
+      }
+      @case (typesOfRequests.Art) {
+      <publish-art></publish-art>
+      }
+      @default {
+      <publish-cars></publish-cars>
+      }
+      }
+    </div>
   </div>
-</sidebar-layout>
+</div>

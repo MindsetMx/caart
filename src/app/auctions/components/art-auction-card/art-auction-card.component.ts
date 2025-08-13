@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, model, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, effect, inject, input, model, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { Router, RouterLink } from '@angular/router';
 
@@ -57,6 +57,7 @@ export class ArtAuctionCardComponent implements OnDestroy {
 
   #countdownService = inject(CountdownService);
   #router = inject(Router);
+  platformId = inject(PLATFORM_ID);
 
   eventSource?: EventSource;
 
@@ -73,19 +74,21 @@ export class ArtAuctionCardComponent implements OnDestroy {
   }
 
   constructor() {
-    this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-all-auctions`);
+    if (isPlatformBrowser(this.platformId)) {
+      this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-all-auctions`);
 
-    this.eventSource.onmessage = (event) => {
-      const data: EventData = JSON.parse(event.data);
+      this.eventSource.onmessage = (event) => {
+        const data: EventData = JSON.parse(event.data);
 
-      const auctions = data.auctions;
+        const auctions = data.auctions;
 
-      if (data.type === 'TIME_UPDATE') {
+        if (data.type === 'TIME_UPDATE') {
 
-        const auction = auctions.find(auction => auction.originalAuctionId === this.originalAuctionArtId());
+          const auction = auctions.find(auction => auction.originalAuctionId === this.originalAuctionArtId());
 
-        if (auction) {
-          this.secondsRemaining.set(auction.secondsRemaining);
+          if (auction) {
+            this.secondsRemaining.set(auction.secondsRemaining);
+          }
         }
       }
     }

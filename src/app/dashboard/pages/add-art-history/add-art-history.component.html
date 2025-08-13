@@ -1,128 +1,125 @@
-<sidebar-layout>
-  <div class="px-4 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
-      <h1 class="text-base font-semibold leading-6 text-gray-900 mb-4">Agregar historia del arte</h1>
-      <!-- <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <button type="button"
-          class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add
-          user</button>
-      </div> -->
-    </div>
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <h1 class="text-base font-semibold leading-6 text-gray-900 mb-4">Agregar historia del arte</h1>
+    <!-- <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <button type="button"
+        class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add
+        user</button>
+    </div> -->
+  </div>
 
-    <!-- <pre>
-      {{ addArtHistoryForm.value | json }}
-    </pre> -->
+  <!-- <pre>
+    {{ addArtHistoryForm.value | json }}
+  </pre> -->
 
-    <section class="no-tailwindcss-base">
-      <form [formGroup]="addArtHistoryForm" (ngSubmit)="addArtHistory()" class="space-y-6">
-        <div>
-          <!-- seleccionar fotos de la galería -->
-          <!-- <button type="button" (click)="openArtPhotoGallery()" class="block mb-1 text-sm">
-            <span class="text-blue-500">Seleccionar fotos de la galería</span>
-          </button> -->
+  <section class="no-tailwindcss-base">
+    <form [formGroup]="addArtHistoryForm" (ngSubmit)="addArtHistory()" class="space-y-6">
+      <div>
+        <!-- seleccionar fotos de la galería -->
+        <!-- <button type="button" (click)="openArtPhotoGallery()" class="block mb-1 text-sm">
+          <span class="text-blue-500">Seleccionar fotos de la galería</span>
+        </button> -->
 
-          <button (click)="openAuctionArtDetailsModal()" class="block mb-1 text-sm text-blue-500">
-            Ver detalles del arte
-          </button>
+        <button (click)="openAuctionArtDetailsModal()" class="block mb-1 text-sm text-blue-500">
+          Ver detalles del arte
+        </button>
 
-          <div formArrayName="blocks" class="space-y-4 mb-4" cdkDropList
-            (cdkDropListDropped)="drop($event, blocksFormArray)">
-            @for (block of blocksFormArrayControls; track block; let i = $index) {
-            <div [formGroupName]="i" cdkDrag>
-              @switch (block.value.type) {
-              @case ('text') {
-              <!-- delete button -->
-              <div class="md:flex">
-                <textarea formControlName="content" cols="30" rows="10" sharedInput></textarea>
+        <div formArrayName="blocks" class="space-y-4 mb-4" cdkDropList
+          (cdkDropListDropped)="drop($event, blocksFormArray)">
+          @for (block of blocksFormArrayControls; track block; let i = $index) {
+          <div [formGroupName]="i" cdkDrag>
+            @switch (block.value.type) {
+            @case ('text') {
+            <!-- delete button -->
+            <div class="md:flex">
+              <textarea formControlName="content" cols="30" rows="10" sharedInput></textarea>
 
-                @if (i !== 0) {
-                <button type="button" (click)="deleteBlock(i)">
-                  <mat-icon class="text-3xl size-10">delete</mat-icon>
-                </button>
-                }
-              </div>
-
-              @if(hasError('content', block)) {
-              <shared-input-error [message]="getError('content', block)"></shared-input-error>
-              }
-              }
-              @case ('image') {
-              <img [src]="block.value.content" class="object-contain w-fit md:w-96 inline">
+              @if (i !== 0) {
               <button type="button" (click)="deleteBlock(i)">
                 <mat-icon class="text-3xl size-10">delete</mat-icon>
               </button>
               }
-              }
             </div>
+
+            @if(hasError('content', block)) {
+            <shared-input-error [message]="getError('content', block)"></shared-input-error>
+            }
+            }
+            @case ('image') {
+            <img [src]="block.value.content" class="object-contain w-fit md:w-96 inline">
+            <button type="button" (click)="deleteBlock(i)">
+              <mat-icon class="text-3xl size-10">delete</mat-icon>
+            </button>
+            }
             }
           </div>
-
-          <button type="button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Botón para agregar contenido"
-            type="button">
-            <mat-icon class="text-3xl size-10">add_circle</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button type="button" (click)="addContent('text')" mat-menu-item>
-              <span>Párrafo</span>
-            </button>
-            <button type="button" (click)="openArtPhotoGallery()" mat-menu-item>
-              <span>Imagen</span>
-            </button>
-          </mat-menu>
-
-          @if (hasError('blocks')) {
-          <shared-input-error [message]="getError('blocks')"></shared-input-error>
           }
         </div>
 
-        <!-- Extract textarea-->
-        <!-- <div>
-          <label for="extract" class="block mb-1 text-sm">Extracto</label>
-          <textarea formControlName="extract" class="w-full h-40" sharedInput></textarea>
-          @if (hasError('extract')) {
-          <shared-input-error [message]="getError('extract')"></shared-input-error>
-          }
-        </div> -->
-
-        <div class="col-span-2 grid gap-5" formArrayName="extraInfo" cdkDropList
-          (cdkDropListDropped)="drop($event, extraInfoFormArray)">
-          @for (charge of extraInfoFormArrayControls; track charge; let i = $index) {
-          <div class="flex gap-5" cdkDrag>
-            <div class="w-full">
-              <label [for]="'additionalCharge' + i" class="block text-sm mb-2">Información adicional {{i + 1}}</label>
-              <textarea [formControlName]="i" [id]="'additionalCharge' + i" cols="30" rows="1" sharedInput></textarea>
-              @if (controlHasError(charge)) {
-              <shared-input-error [message]="getErrorFromControl(charge)"></shared-input-error>
-              }
-            </div>
-            <!-- eliminar cargo -->
-            <div class="flex items-center mt-5">
-              <button type="button" class="flex" (click)="removeExtraInfo(i)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-          }
-        </div>
-
-        <div class="col-span-2">
-          <button (click)="addExtraInfo()" type="button" class="underline">Añadir información adicional</button>
-        </div>
-
-        <button class="inline-flex justify-center items-center" type="submit"
-          [disabled]="addArtHistorySubmitButtonIsDisabled()" [class.opacity-50]="addArtHistorySubmitButtonIsDisabled()"
-          sharedPrimaryButton>
-          @if (addArtHistorySubmitButtonIsDisabled()) {
-          <shared-spinner></shared-spinner>
-          } @else {
-          Agregar historia del arte
-          }
+        <button type="button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Botón para agregar contenido"
+          type="button">
+          <mat-icon class="text-3xl size-10">add_circle</mat-icon>
         </button>
-      </form>
-    </section>
-  </div>
+        <mat-menu #menu="matMenu">
+          <button type="button" (click)="addContent('text')" mat-menu-item>
+            <span>Párrafo</span>
+          </button>
+          <button type="button" (click)="openArtPhotoGallery()" mat-menu-item>
+            <span>Imagen</span>
+          </button>
+        </mat-menu>
 
-</sidebar-layout>
+        @if (hasError('blocks')) {
+        <shared-input-error [message]="getError('blocks')"></shared-input-error>
+        }
+      </div>
+
+      <!-- Extract textarea-->
+      <!-- <div>
+        <label for="extract" class="block mb-1 text-sm">Extracto</label>
+        <textarea formControlName="extract" class="w-full h-40" sharedInput></textarea>
+        @if (hasError('extract')) {
+        <shared-input-error [message]="getError('extract')"></shared-input-error>
+        }
+      </div> -->
+
+      <div class="col-span-2 grid gap-5" formArrayName="extraInfo" cdkDropList
+        (cdkDropListDropped)="drop($event, extraInfoFormArray)">
+        @for (charge of extraInfoFormArrayControls; track charge; let i = $index) {
+        <div class="flex gap-5" cdkDrag>
+          <div class="w-full">
+            <label [for]="'additionalCharge' + i" class="block text-sm mb-2">Información adicional {{i + 1}}</label>
+            <textarea [formControlName]="i" [id]="'additionalCharge' + i" cols="30" rows="1" sharedInput></textarea>
+            @if (controlHasError(charge)) {
+            <shared-input-error [message]="getErrorFromControl(charge)"></shared-input-error>
+            }
+          </div>
+          <!-- eliminar cargo -->
+          <div class="flex items-center mt-5">
+            <button type="button" class="flex" (click)="removeExtraInfo(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+
+      <div class="col-span-2">
+        <button (click)="addExtraInfo()" type="button" class="underline">Añadir información adicional</button>
+      </div>
+
+      <button class="inline-flex justify-center items-center" type="submit"
+        [disabled]="addArtHistorySubmitButtonIsDisabled()" [class.opacity-50]="addArtHistorySubmitButtonIsDisabled()"
+        sharedPrimaryButton>
+        @if (addArtHistorySubmitButtonIsDisabled()) {
+        <shared-spinner></shared-spinner>
+        } @else {
+        Agregar historia del arte
+        }
+      </button>
+    </form>
+  </section>
+</div>
 
 <art-photo-gallery [isOpen]="artPhotoGalleryIsOpen()" (isOpenChange)="closeArtPhotoGallery()" [cropImage]="true"
   [aspectRatios]="aspectRatios()" (selectedImageChange)="setImage($event)" [auctionArtId]="originalAuctionArtId()">

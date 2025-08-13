@@ -44,7 +44,7 @@ export class AuctionOffersTableModalComponent {
       this.carAuctionOffers.set({} as CarAuctionOffers);
       this.artAuctionOffers.set({} as ArtAuctionOffers);
     }
-  }, { allowSignalWrites: true });
+  });
 
   auctionTypeEffect = effect(() => {
     if (this.auctionId() && this.auctionType() && this.isOpen()) {

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { Users, UsersData } from '@dashboard/interfaces';
 import { UsersService } from '@dashboard/services/users.service';
 import { UserDetailsModalComponent } from '@dashboard/modals/user-details-modal/user-details-modal.component';
@@ -13,7 +12,6 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule,
-    SidebarComponent,
     UserDetailsModalComponent,
     MatPaginatorModule,
   ],

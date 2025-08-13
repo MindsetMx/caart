@@ -1,5 +1,5 @@
 import { AuthService } from '@auth/services/auth.service';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, WritableSignal, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, WritableSignal, effect, inject, signal ,PLATFORM_ID} from '@angular/core';
 import { Router, RouterOutlet, Scroll, Event } from '@angular/router';
 import { trigger, transition, query, animateChild } from '@angular/animations';
 
@@ -11,7 +11,7 @@ import { SignInComponent } from '@auth/components/sign-in/sign-in.component';
 import { NotificationComponent } from '@shared/components/notification/notification.component';
 import { environments } from '@env/environments';
 import { UserData } from '@auth/interfaces';
-import { ViewportScroller } from '@angular/common';
+import { isPlatformBrowser, ViewportScroller } from '@angular/common';
 import { filter } from 'rxjs';
 
 @Component({
@@ -48,7 +48,10 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   eventSource?: EventSource;
   messages = signal<string[]>([]);
 
+  platformId = inject(PLATFORM_ID);
+
   constructor() {
+    if(isPlatformBrowser(this.platformId)){
     this.#router.events.pipe(filter((event: Event): event is Scroll => event instanceof Scroll)
     ).subscribe(e => {
       requestAnimationFrame(() => {
@@ -58,8 +61,12 @@ export class AppComponent implements OnDestroy, AfterViewInit {
       });
     });
   }
+  }
 
   authStatusChangedEffect = effect(() => {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     switch (this.#authService.authStatus()) {
       case AuthStatus.authenticated:
         this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe/${this.user?.id}`);
@@ -84,12 +91,15 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
     const loader = document.getElementById('globalLoader');
     if (loader) {
       setTimeout(() => {
         loader.style.display = 'none';
       }, 1000);
     }
+  }
+
   }
 
   ngOnDestroy(): void {

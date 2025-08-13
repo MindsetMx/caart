@@ -1,4 +1,4 @@
-import { ElementRef, Injectable, computed, inject, signal } from '@angular/core';
+import { ElementRef, Injectable, computed, inject, signal, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, throwError } from 'rxjs';
@@ -7,6 +7,7 @@ import { AppService } from '@app/app.service';
 import { AuthStatus } from '@auth/enums';
 import { CheckTokenResponse, UserData, RegisterResponse, loginResponse } from '@auth/interfaces';
 import { environments } from '@env/environments';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AuthService {
   #appService = inject(AppService);
   #http = inject(HttpClient);
   #fb = inject(FormBuilder);
+  platformId = inject(PLATFORM_ID);
 
   #currentUser = signal<UserData | null>(null);
   #authStatus = signal<AuthStatus>(AuthStatus.checking);
@@ -33,6 +35,7 @@ export class AuthService {
   }
 
   checkAuthStatus$(): Observable<boolean> {
+    if(isPlatformBrowser(this.platformId)){
     const url = `${this.#baseUrl}/users/check-token`;
     const token = localStorage.getItem('token');
 
@@ -57,6 +60,9 @@ export class AuthService {
           return of(false);
         })
       );
+    }else{
+      return of(false);
+    }
   }
 
   login$(loginForm: FormGroup): Observable<boolean> {

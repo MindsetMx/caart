@@ -4,13 +4,11 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ArtPublicationsComponent } from '@dashboard/components/art-publications/art-publications.component';
 import { VehiclePublicationsComponent } from '@dashboard/components/vehicle-publications/vehicle-publications.component';
 import { TypesOfRequests } from '@dashboard/enums';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { InputDirective } from '@shared/directives';
 
 @Component({
   standalone: true,
   imports: [
-    SidebarComponent,
     ReactiveFormsModule,
     InputDirective,
     VehiclePublicationsComponent,

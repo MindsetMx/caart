@@ -1,9 +1,9 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
 import { AuctionTypes } from '@auctions/enums/auction-types';
-import { CommonModule, CurrencyPipe, SlicePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, SlicePipe, isPlatformBrowser } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, PLATFORM_ID } from '@angular/core';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
@@ -98,6 +98,7 @@ export class AuctionMemorabiliaComponent {
   #countdownService = inject(CountdownService);
   #paymentMethodsService = inject(PaymentMethodsService);
   #route = inject(ActivatedRoute);
+  platformId = inject(PLATFORM_ID);
 
   auctionCarStatus = AuctionCarStatus;
 
@@ -155,6 +156,9 @@ export class AuctionMemorabiliaComponent {
   });
 
   auction2Effect = effect(() => {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     if (this.auctionId2()) {
       this.eventSource?.close();
 

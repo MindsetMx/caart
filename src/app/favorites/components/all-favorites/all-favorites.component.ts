@@ -67,7 +67,7 @@ export class AllFavoritesComponent {
     });
 
     this.getFavorites(true);
-  }, { allowSignalWrites: true });
+  });
 
   auctionTypeEffect = effect(() => {
     untracked(() => {

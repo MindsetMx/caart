@@ -54,7 +54,7 @@ export class AuctionResultsVehicleCardComponent {
           break;
       }
     });
-  }, { allowSignalWrites: true });
+  });
 
   get auctionType(): typeof AuctionTypes {
     return AuctionTypes;

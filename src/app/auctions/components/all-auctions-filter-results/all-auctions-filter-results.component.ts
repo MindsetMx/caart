@@ -1,6 +1,6 @@
 import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ChangeDetectionStrategy, Component, HostListener, WritableSignal, effect, inject, model, signal, untracked } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, HostListener, WritableSignal, effect, inject, model, signal, untracked, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { debounceTime } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -67,11 +67,14 @@ export class AllAuctionsFilterResultsComponent {
 
   auctionFilterMenuIsOpen = signal<boolean>(false);
 
-  isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH;
+  isMobile = false; // Valor por defecto para SSR
+  platformId = inject(PLATFORM_ID);
 
   @HostListener('window:resize', ['$event'])
   onResize(): void {
-    this.isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH; // Actualiza el valor en tiempo real
+    if(isPlatformBrowser(this.platformId)){
+      this.isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH; // Actualiza el valor en tiempo real
+    }
   }
 
   auctionTypeList: { value: string; label: string }[] = [
@@ -134,11 +137,11 @@ export class AllAuctionsFilterResultsComponent {
 
   updatedAuctionCarEffect = effect(() => {
     this.addCarAuction();
-  }, { allowSignalWrites: true });
+  });
 
   updatedAuctionArtEffect = effect(() => {
     this.addArtAuction();
-  }, { allowSignalWrites: true });
+  });
 
   getLiveAuctionsEffect = effect(() => {
     untracked(() => {
@@ -146,11 +149,11 @@ export class AllAuctionsFilterResultsComponent {
     });
 
     this.getLiveAuctions(true);
-  }, { allowSignalWrites: true });
+  });
 
   auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
   eraEffect = effect(() => this.eraControl.setValue(this.era(), { emitEvent: false }));
-  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange(), { emitEvent: false }), { allowSignalWrites: true });
+  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange(), { emitEvent: false }));
   currentOfferEffect = effect(() => this.currentOfferControl.setValue(this.currentOffer(), { emitEvent: false }));
   orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy(), { emitEvent: false }));
   endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn(), { emitEvent: false }));
@@ -158,6 +161,11 @@ export class AllAuctionsFilterResultsComponent {
   searchEffect = effect(() => this.searchControl.setValue(this.search(), { emitEvent: false }));
 
   constructor() {
+    // Inicializar isMobile solo en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH;
+    }
+
     // Leer query params iniciales
     this.#activatedRoute.queryParams.pipe(
       takeUntilDestroyed()

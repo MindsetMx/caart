@@ -1,5 +1,5 @@
 <form [formGroup]="exteriorForm" class="space-y-8" (submit)="updateExteriorDetails()">
-  
+
   <!-- Header Section -->
   <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-100">
     <div class="flex items-center space-x-3">
@@ -23,13 +23,13 @@
       <h4 class="text-md font-bold text-gray-900 mb-2">Información de Documentación</h4>
       <p class="text-sm text-gray-600">Detalles sobre la factura o pedimento del vehículo</p>
     </div>
-    
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <label for="invoiceType" class="block text-sm font-medium text-gray-700 mb-2">
           Tipo de Documento <span class="text-red-500">*</span>
         </label>
-        <select id="invoiceType" formControlName="invoiceType" 
+        <select id="invoiceType" formControlName="invoiceType"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           <option value="">Seleccionar tipo</option>
           <option value="invoice">Factura</option>
@@ -61,7 +61,7 @@
       <h4 class="text-md font-bold text-gray-900 mb-2">Historia del Vehículo</h4>
       <p class="text-sm text-gray-600">Cuéntanos sobre el exterior y la historia del auto</p>
     </div>
-    
+
     <div>
       <label for="carHistory" class="block text-sm font-medium text-gray-700 mb-2">
         Historia del Auto <span class="text-red-500">*</span>
@@ -85,12 +85,12 @@
     <!-- Photos Section -->
     <div class="mb-6">
       <h5 class="text-sm font-medium text-gray-700 mb-3">Fotos del Exterior <span class="text-red-500">*</span></h5>
-      @if (wizardData().data.exteriorDetails.exteriorPhotos.length) {
+      @if (wizardData().data.exteriorDetails.exteriorPhotos?.length) {
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           @for (photo of wizardData().data.exteriorDetails.exteriorPhotos; track $index) {
             <div class="relative group">
               <a [href]="photo" data-fancybox="exteriorPhotosGallery" class="block">
-                <img [src]="photo" alt="Foto exterior" 
+                <img [src]="photo" alt="Foto exterior"
                      class="w-full h-32 object-cover rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
               </a>
               <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
@@ -114,11 +114,11 @@
     <!-- Videos Section -->
     <div>
       <h5 class="text-sm font-medium text-gray-700 mb-3">Videos del Exterior</h5>
-      @if (wizardData().data.exteriorDetails.exteriorVideos.length) {
+      @if (wizardData().data.exteriorDetails.exteriorVideos?.length) {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           @for (video of wizardData().data.exteriorDetails.exteriorVideos; track $index) {
             <div class="relative">
-              <iframe width="100%" height="200" [src]="getSafeUrl(video)" 
+              <iframe width="100%" height="200" [src]="getSafeUrl(video)"
                       frameborder="0" allowfullscreen
                       class="rounded-lg border border-gray-200"></iframe>
             </div>
@@ -137,7 +137,7 @@
 
   <!-- Submit Button -->
   <div class="flex justify-end pt-6 border-t border-gray-200">
-    <button type="submit" 
+    <button type="submit"
             [disabled]="isButtonSubmitDisabled()"
             class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
       @if (isButtonSubmitDisabled()) {

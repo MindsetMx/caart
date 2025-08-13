@@ -3,7 +3,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuctionImageAssignmentAndReorderComponent } from '@dashboard/components/auction-image-assignment-and-reorder/auction-image-assignment-and-reorder.component';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { MultimediaType } from '@dashboard/enums';
 import { InputDirective } from '@shared/directives';
 import { CarAuctionVideoAssignmentAndReorderComponent } from '@dashboard/components/car-auction-video-assignment-and-reorder/car-auction-video-assignment-and-reorder.component';
@@ -11,7 +10,6 @@ import { CarAuctionVideoAssignmentAndReorderComponent } from '@dashboard/compone
 @Component({
   standalone: true,
   imports: [
-    SidebarComponent,
     AuctionImageAssignmentAndReorderComponent,
     ReactiveFormsModule,
     InputDirective,

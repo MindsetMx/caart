@@ -4,13 +4,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { LiveAuctionsTabs } from '@dashboard/enums';
 import { PrimaryButtonDirective, SecondaryButtonDirective } from '@shared/directives';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { LiveCarAuctionsComponent } from '@dashboard/components/live-auctions/live-auctions.component';
 
 @Component({
   standalone: true,
   imports: [
-    SidebarComponent,
     PrimaryButtonDirective,
     SecondaryButtonDirective,
     LiveCarAuctionsComponent,

@@ -1,10 +1,12 @@
 import { type HttpInterceptorFn } from '@angular/common/http';
 import { environments } from '@env/environments';
-
+import { isPlatformBrowser } from '@angular/common';
+import { inject } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   let baseUrl = environments.baseUrl;
-
+  const platformId = inject(PLATFORM_ID);
   const excludedUrls = [
     `${baseUrl}/login`,
     `${baseUrl}/register`,
@@ -18,9 +20,13 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
+  if(isPlatformBrowser(platformId)){
   const header = req.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`);
 
   const reqWithHeader = req.clone({ headers: header });
 
   return next(reqWithHeader);
+  }else{
+    return next(req);
+    }
 };

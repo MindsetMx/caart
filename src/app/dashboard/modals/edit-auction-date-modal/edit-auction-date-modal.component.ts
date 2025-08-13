@@ -51,7 +51,7 @@ export class EditAuctionDateModalComponent {
     if (!this.isOpen()) {
       this.auction.set({} as AuctionCarInfoData);
     }
-  }, { allowSignalWrites: true });
+  });
 
   auctionEffect = effect(() => {
     if (this.auction() && this.auction().startDate && this.auction().endDate) {

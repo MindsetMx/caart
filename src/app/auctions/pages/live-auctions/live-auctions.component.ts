@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { TabsWithIconsComponent } from '@shared/components/tabs-with-icons/tabs-with-icons.component';
@@ -42,6 +42,7 @@ export class LiveAuctionsComponent implements OnDestroy {
   #router = inject(Router);
   #activatedRoute = inject(ActivatedRoute);
   #liveAuctionsService = inject(LiveAuctionsService);
+  platformId = inject(PLATFORM_ID);
 
   constructor() {
     this.#activatedRoute.queryParams.subscribe(params => {
@@ -75,24 +76,25 @@ export class LiveAuctionsComponent implements OnDestroy {
       ];
     });
 
-    this.eventSource?.close();
+    if (isPlatformBrowser(this.platformId)) {
+      this.eventSource?.close();
 
-    this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-all-auctions`);
+      this.eventSource = new EventSource(`${this.#baseUrl}/sse/subscribe-all-auctions`);
 
-    this.eventSource.onmessage = (event) => {
-      if (JSON.parse(event.data).type === 'AUCTION_UPDATE' || JSON.parse(event.data).type === 'LAST_CHANCE' || JSON.parse(event.data).type === 'COMPLETED') {
-        const auctionType = JSON.parse(event.data).auctionType;
+      this.eventSource.onmessage = (event) => {
+        if (JSON.parse(event.data).type === 'AUCTION_UPDATE' || JSON.parse(event.data).type === 'LAST_CHANCE' || JSON.parse(event.data).type === 'COMPLETED') {
+          const auctionType = JSON.parse(event.data).auctionType;
 
-        switch (auctionType) {
-          case UpdatedAuctionTypes.activeAuctionCar:
-            this.getUpdatedCarAuction(JSON.parse(event.data).auctionId);
-            break;
+          switch (auctionType) {
+            case UpdatedAuctionTypes.activeAuctionCar:
+              this.getUpdatedCarAuction(JSON.parse(event.data).auctionId);
+              break;
 
-          case UpdatedAuctionTypes.activeAuctionArt:
-            this.getUpdatedArtAuction(JSON.parse(event.data).auctionId);
-            break;
+            case UpdatedAuctionTypes.activeAuctionArt:
+              this.getUpdatedArtAuction(JSON.parse(event.data).auctionId);
+              break;
+          }
         }
-      }
 
       // if (JSON.parse(event.data).type === 'LAST_CHANCE') {
       //   const auctionType = JSON.parse(event.data).auctionType;
@@ -107,7 +109,8 @@ export class LiveAuctionsComponent implements OnDestroy {
       //       break;
       //   }
       // }
-    };
+      };
+    }
   }
 
   ngOnDestroy(): void {

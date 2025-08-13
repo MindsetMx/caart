@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom, provideZonelessChangeDetection, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideNgxStripe } from 'ngx-stripe';
 import { InMemoryScrollingFeature, InMemoryScrollingOptions, provideRouter, withInMemoryScrolling, } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
@@ -33,7 +33,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         tokenInterceptor,
-      ])
+      ]),
+      withFetch()
     ),
     provideZonelessChangeDetection(),
     // provideZoneChangeDetection({ eventCoalescing: true }),

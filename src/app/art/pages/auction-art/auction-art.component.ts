@@ -1,9 +1,11 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, Renderer2, effect, inject, signal, untracked, viewChild, viewChildren } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, PLATFORM_ID, Renderer2, effect, inject, signal, untracked, viewChild, viewChildren } from '@angular/core';
 import { Carousel, Fancybox } from "@fancyapps/ui";
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { switchMap } from 'rxjs';
+import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
+
 // Thumbs plugin is bundled in @fancyapps/ui in v5; direct ESM path import removed
 import { register } from 'swiper/element/bundle';
 register();
@@ -93,6 +95,8 @@ export class AuctionArtComponent implements OnDestroy {
   videoGallery = viewChild<ElementRef>('videoGallery');
   rightColumn = viewChild<ElementRef>('rightColumn');
   images = viewChildren<ElementRef>('images');
+
+  platformId = inject(PLATFORM_ID);
 
   readonly #baseUrl = environments.baseUrl;
 
@@ -238,6 +242,9 @@ export class AuctionArtComponent implements OnDestroy {
   });
 
   auction2Effect = effect(() => {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     if (this.auctionId2()) {
       this.eventSource?.close();
 
@@ -291,75 +298,85 @@ export class AuctionArtComponent implements OnDestroy {
   });
 
   imagesPublishEffect = effect(() => {
+    if(isPlatformBrowser(this.platformId)){
     if (this.imagesPublish().data && this.myCarousel()) {
-      new (Carousel as any)(
-        this.myCarousel()?.nativeElement,
-        {
-          infinite: false,
+      setTimeout(() => {
+        new Carousel(
+          this.myCarousel()?.nativeElement,
+          {
+            infinite: false,
+            Dots: false,
+            Thumbs: {
+              type: 'classic',
+              Carousel: {
+                slidesPerPage: 1,
+                Navigation: true,
+                center: true,
+                fill: true,
+                dragFree: true,
+                Autoplay: {
+                  autoStart: true,
+                  timeout: 5000,
+                },
+              },
+            },
+          },
+          { Thumbs }
+        );
+
+        Fancybox.bind('[data-fancybox="gallery"]', {
+          Hash: false,
+          idle: false,
+          compact: false,
+          dragToClose: false,
+
+          animated: false,
+          showClass: 'f-fadeSlowIn',
+          hideClass: false,
+
+          Carousel: {
+            infinite: false,
+          },
+
+          Images: {
+            zoom: false,
+            Panzoom: {
+              maxScale: 1.5,
+            },
+          },
+
+          Toolbar: {
+            absolute: true,
+            display: {
+              left: [],
+              middle: [],
+              right: ['close'],
+            },
+          },
+
           Thumbs: {
             type: 'classic',
             Carousel: {
+              axis: 'x',
+
               slidesPerPage: 1,
+              Navigation: true,
               center: true,
               fill: true,
               dragFree: true,
-              Autoplay: {
-                autoStart: true,
-                timeout: 5000,
+
+              breakpoints: {
+                '(min-width: 640px)': {
+                  axis: 'y',
+                },
               },
             },
           },
-        }
-      );
+        });
 
-      Fancybox.bind('[data-fancybox="gallery"]', {
-        Hash: false,
-        dragToClose: false,
-
-        showClass: 'f-fadeSlowIn',
-        hideClass: 'f-fadeSlowOut',
-
-        Carousel: {
-          infinite: false,
-        },
-
-        Images: {
-          zoom: false,
-          Panzoom: {
-            maxScale: 1.5,
-          },
-        },
-
-        Toolbar: {
-          absolute: true,
-          display: {
-            left: [],
-            middle: [],
-            right: ['close'],
-          },
-        },
-
-        Thumbs: {
-          type: 'classic',
-          Carousel: {
-            axis: 'x',
-
-            slidesPerPage: 1,
-            Navigation: true,
-            center: true,
-            fill: true,
-            dragFree: true,
-
-            breakpoints: {
-              '(min-width: 640px)': {
-                axis: 'y',
-              },
-            },
-          },
-        },
-      } as any);
-
-      Fancybox.bind("[data-fancybox='gallery2']", { Hash: false });
+        Fancybox.bind("[data-fancybox='gallery2']", { Hash: false });
+      }, 500);
+      }
     }
   });
 

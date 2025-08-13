@@ -4,7 +4,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { InputDirective } from '@shared/directives';
 import { PublishCarsComponent } from '@dashboard/components/publish-cars/publish-cars.component';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { TypesOfRequests } from '@dashboard/enums';
 import { PublishArtComponent } from '@dashboard/components/publish-art/publish-art.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +12,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   standalone: true,
   imports: [
-    SidebarComponent,
     CommonModule,
     ReactiveFormsModule,
     PublishCarsComponent,

@@ -1,33 +1,30 @@
-<sidebar-layout>
-  <div class="px-4 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold leading-6 text-gray-900">Solicitudes</h1>
-        <p class="mt-2 text-sm text-gray-700">
-          Una lista de todas las solicitudes de publicación de subastas. Puedes aceptar o rechazar cada solicitud.
-        </p>
-      </div>
-      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <select [formControl]="requestType" class="ml-auto mt-4" width="w-36" sharedInput>
-          <option [value]="typesOfRequests.Car">Vehículos</option>
-          <option [value]="typesOfRequests.Art">Arte</option>
-        </select>
-      </div>
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-base font-semibold leading-6 text-gray-900">Solicitudes</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        Una lista de todas las solicitudes de publicación de subastas. Puedes aceptar o rechazar cada solicitud.
+      </p>
     </div>
-
-    <div class="mt-8 flow-root">
-      @switch (requestType.value) {
-      @case (typesOfRequests.Car) {
-      <vehicle-requests [(page)]="page1" [(size)]="size1"></vehicle-requests>
-      }
-      @case (typesOfRequests.Art) {
-      <art-requests [(page)]="page2" [(size)]="size2"></art-requests>
-      }
-      @default {
-      <vehicle-requests [(page)]="page1" [(size)]="size1"></vehicle-requests>
-      }
-      }
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <select [formControl]="requestType" class="ml-auto mt-4" width="w-36" sharedInput>
+        <option [value]="typesOfRequests.Car">Vehículos</option>
+        <option [value]="typesOfRequests.Art">Arte</option>
+      </select>
     </div>
   </div>
 
-</sidebar-layout>
+  <div class="mt-8 flow-root">
+    @switch (requestType.value) {
+    @case (typesOfRequests.Car) {
+    <vehicle-requests [(page)]="page1" [(size)]="size1"></vehicle-requests>
+    }
+    @case (typesOfRequests.Art) {
+    <art-requests [(page)]="page2" [(size)]="size2"></art-requests>
+    }
+    @default {
+    <vehicle-requests [(page)]="page1" [(size)]="size1"></vehicle-requests>
+    }
+    }
+  </div>
+</div>

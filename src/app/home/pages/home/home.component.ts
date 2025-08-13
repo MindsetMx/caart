@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   carousel2 = viewChild.required<ElementRef>('carousel2');
   auctionsPagination = viewChild.required<ElementRef>('auctionsPagination');
 
-  isMobile = window.innerWidth < 768;
+  isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
 
   #vehicleFilterService = inject(VehicleFilterService);
   #memorabiliaFilterService = inject(MemorabiliaFilterService);
@@ -67,7 +67,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(): void {
-    this.isMobile = window.innerWidth < 768; // Actualiza el valor en tiempo real
+    if (typeof window !== 'undefined') {
+      this.isMobile = window.innerWidth < 768; // Actualiza el valor en tiempo real
+    }
   }
 
   ngOnInit(): void {
@@ -76,6 +78,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   carousel2Effect = effect(() => {
+    if (typeof window === 'undefined') return; // Skip on server-side
+
     const swiperEl = this.carousel2().nativeElement;
 
     // swiper parameters
@@ -126,6 +130,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   });
 
   ngAfterViewInit(): void {
+    if (typeof window === 'undefined') return; // Skip on server-side
+
     const swiperEl = this.carousel.nativeElement;
 
     // swiper parameters

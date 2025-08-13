@@ -5,13 +5,11 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ArtAuctionImageAssignmentAndReorderComponent } from '@dashboard/pages/art-auction-image-assignment-and-reorder/art-auction-image-assignment-and-reorder.component';
 import { InputDirective } from '@shared/directives';
 import { MultimediaType } from '@dashboard/enums';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { ArtAuctionVideoAssignmentAndReorderComponent } from '@dashboard/pages/art-auction-video-assignment-and-reorder/art-auction-video-assignment-and-reorder.component';
 
 @Component({
   standalone: true,
   imports: [
-    SidebarComponent,
     ArtAuctionImageAssignmentAndReorderComponent,
     ReactiveFormsModule,
     InputDirective,

@@ -1,4 +1,5 @@
-import { Directive, ElementRef, EventEmitter, Output, OnDestroy, OnInit, inject } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Output, OnDestroy, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Directive({
   selector: '[intersection]',
@@ -11,8 +12,9 @@ export class IntersectionDirective implements OnInit, OnDestroy {
   #lastEmitTime: number = 0;
 
   #elementRef = inject(ElementRef);
-
+  platformId = inject(PLATFORM_ID);
   ngOnInit() {
+    if(isPlatformBrowser(this.platformId)){
     const options = {
       threshold: 0 // Umbral de intersección (0.5 significa que al menos la mitad del elemento debe estar visible)
     };
@@ -24,6 +26,8 @@ export class IntersectionDirective implements OnInit, OnDestroy {
 
     this.#intersectionObserver.observe(this.#elementRef.nativeElement);
   }
+  }
+
 
   ngOnDestroy() {
     this.#intersectionObserver?.disconnect();

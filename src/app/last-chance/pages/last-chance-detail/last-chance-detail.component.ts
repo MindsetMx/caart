@@ -1,7 +1,7 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, untracked } from '@angular/core';
-import { CommonModule, CurrencyPipe, DecimalPipe, SlicePipe } from '@angular/common';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, untracked, PLATFORM_ID } from '@angular/core';
+import { CommonModule, CurrencyPipe, DecimalPipe, SlicePipe, isPlatformBrowser } from '@angular/common';
 import { Fancybox } from "@fancyapps/ui";
 import { forkJoin, switchMap } from 'rxjs';
 import { MomentModule } from 'ngx-moment';
@@ -129,6 +129,7 @@ export class LastChanceDetailComponent implements AfterViewInit {
   #appService = inject(AppService);
   #videoGalleryService = inject(VideoGalleryService);
   #incrementViewsService = inject(IncrementViewsService);
+  platformId = inject(PLATFORM_ID);
 
   auctionCarStatus = AuctionCarStatus;
 
@@ -217,6 +218,9 @@ export class LastChanceDetailComponent implements AfterViewInit {
   });
 
   auction2Effect = effect(() => {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     if (this.auctionId2()) {
       this.eventSource?.close();
 

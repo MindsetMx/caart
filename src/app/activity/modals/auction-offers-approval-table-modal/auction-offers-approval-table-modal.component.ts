@@ -57,7 +57,7 @@ export class AuctionOffersApprovalTableModalComponent {
       this.carAuctionOffers.set({} as CarAuctionOffersApproval);
       this.artAuctionOffers.set({} as ArtAuctionOffersApproval);
     }
-  }, { allowSignalWrites: true });
+  });
 
   auctionTypeEffect = effect(() => {
     if (this.auctionId() && this.auctionType() && this.isOpen()) {

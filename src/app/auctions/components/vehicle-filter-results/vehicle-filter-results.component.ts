@@ -138,7 +138,7 @@ export class VehicleFilterResultsComponent {
 
   updatedAuctionCarEffect = effect(() => {
     this.addCarAuction();
-  }, { allowSignalWrites: true });
+  });
 
   getLiveAuctionsEffect = effect(() => {
     untracked(() => {
@@ -146,12 +146,12 @@ export class VehicleFilterResultsComponent {
     });
 
     this.getLiveAuctions(true);
-  }, { allowSignalWrites: true });
+  });
 
   auctionTypeEffect = effect(() => this.auctionTypeControl.setValue(this.auctionType(), { emitEvent: false }));
   categoryEffect = effect(() => this.categoryControl.setValue(this.category(), { emitEvent: false }));
   eraEffect = effect(() => this.eraControl.setValue(this.era(), { emitEvent: false }));
-  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange(), { emitEvent: false }), { allowSignalWrites: true });
+  yearRangeEffect = effect(() => this.yearRangeControl.setValue(this.yearRange(), { emitEvent: false }));
   currentOfferEffect = effect(() => this.currentOfferControl.setValue(this.currentOffer(), { emitEvent: false }));
   orderByEffect = effect(() => this.orderByControl.setValue(this.orderBy(), { emitEvent: false }));
   endsInEffect = effect(() => this.endsInControl.setValue(this.endsIn(), { emitEvent: false }));

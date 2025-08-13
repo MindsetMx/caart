@@ -1,7 +1,7 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, untracked } from '@angular/core';
-import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, untracked, PLATFORM_ID } from '@angular/core';
+import { CommonModule, CurrencyPipe, DecimalPipe, isPlatformBrowser } from '@angular/common';
 import { CountdownConfig } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
 import { MatPaginator } from '@angular/material/paginator';
@@ -136,6 +136,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   #appService = inject(AppService);
   #decimalPipe = inject(DecimalPipe);
   #incrementViewsService = inject(IncrementViewsService);
+  platformId = inject(PLATFORM_ID);
 
   get authStatus(): AuthStatus {
     return this.#authService.authStatus();
@@ -228,6 +229,9 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   });
 
   auction2Effect = effect(() => {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     if (this.auctionId2()) {
       this.eventSource?.close();
 
@@ -544,7 +548,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   // Función para procesar extraInfo y separar los campos
   processExtraInfo(text: string): string[] {
     if (!text) return [];
-    
+
     // Separar por patrones como "Color:", "Interior:", "Año:", etc.
     const fields = text.split(/(?=[A-Z][a-z]+:)/);
     return fields

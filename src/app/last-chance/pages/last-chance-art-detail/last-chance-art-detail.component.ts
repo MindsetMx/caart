@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Carousel, Fancybox } from '@fancyapps/ui';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Renderer2, effect, inject, signal, untracked, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Renderer2, effect, inject, signal, untracked, viewChild, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
 import { forkJoin, switchMap } from 'rxjs';
 // Thumbs plugin is bundled in @fancyapps/ui in v5; direct ESM path import removed
@@ -121,6 +121,7 @@ export class LastChanceArtDetailComponent {
   #videoGalleryService = inject(VideoGalleryService);
   #renderer = inject(Renderer2);
   #incrementViewsService = inject(IncrementViewsService);
+  platformId = inject(PLATFORM_ID);
 
   auctionCarStatus = AuctionCarStatus;
 
@@ -165,6 +166,9 @@ export class LastChanceArtDetailComponent {
   });
 
   auction2Effect = effect(() => {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     if (this.auctionId2()) {
       this.eventSource?.close();
 
@@ -191,7 +195,7 @@ export class LastChanceArtDetailComponent {
 
   imagesPublishEffect = effect(() => {
     if (this.imagesPublish().data && this.myCarousel()) {
-      new (Carousel as any)(
+      (Carousel as any)(
         this.myCarousel()?.nativeElement,
         {
           infinite: false,
@@ -214,7 +218,7 @@ export class LastChanceArtDetailComponent {
       Fancybox.bind('[data-fancybox="gallery"]', {
         Hash: false,
         dragToClose: false,
-        
+
         showClass: 'f-fadeSlowIn',
         hideClass: 'f-fadeSlowOut',
 

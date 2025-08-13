@@ -12,7 +12,6 @@ import { AuctionArtDetailsModalComponent } from '@dashboard/modals/auction-art-d
 import { AuctionArtService } from '@dashboard/services/auction-art.service';
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -26,7 +25,6 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
     PrimaryButtonDirective,
     InputErrorComponent,
     ArtPhotoGalleryComponent,
-    SidebarComponent,
     AuctionArtDetailsModalComponent,
     MatMenuModule,
     InputDirective,

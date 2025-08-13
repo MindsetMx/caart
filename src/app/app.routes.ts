@@ -7,7 +7,7 @@ import { liveCarGuard, PreviewCarGuard } from '@auctions/guards';
 import { WizardCompletionArtGuard } from '@art/guards';
 import { WizardCompletionCarGuard } from '@app/register-car/guards';
 import { adminGuard } from '@dashboard/guards/admin.guard';
-
+import { AdminDashboardGuard } from '@dashboard/guards/admin-dashboard.guard';
 export const routes: Routes = [
   {
     path: 'home',
@@ -156,12 +156,13 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canActivate: [AuthGuard, adminGuard, VerifiedGuard],
+    canActivate: [AdminDashboardGuard  ],
+    loadComponent: () => import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
     children: [
-      {
-        path: 'publicaciones',
-        loadComponent: () => import('./dashboard/pages/publications/publications.component').then((m) => m.PublicationsComponent),
-      },
+      // {
+      //   path: 'publicaciones',
+      //   loadComponent: () => import('./dashboard/pages/publications/publications.component').then((m) => m.PublicationsComponent),
+      // },
       {
         path: 'solicitudes',
         loadComponent: () => import('./dashboard/pages/requests/requests.component').then((m) => m.RequestsComponent),
@@ -198,7 +199,7 @@ export const routes: Routes = [
         path: 'resultados',
         loadComponent: () => import('./dashboard/pages/auction-results/auction-results.component').then((m) => m.AuctionResultsComponent),
       },
-      { path: '**', redirectTo: 'publicaciones' }
+      { path: '**', redirectTo: 'publicar' }
     ]
   },
   {

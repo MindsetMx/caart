@@ -2,14 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { Router } from '@angular/router';
 
 import { LiveAuctionsTabs } from '@dashboard/enums';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { PrimaryButtonDirective, SecondaryButtonDirective } from '@shared/directives';
 
 @Component({
   selector: 'auction-results',
   standalone: true,
   imports: [
-    SidebarComponent,
     PrimaryButtonDirective,
     SecondaryButtonDirective,
   ],

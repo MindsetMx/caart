@@ -13,7 +13,6 @@ import { CarPhotoGalleryComponent } from '@dashboard/modals/car-photo-gallery/ca
 import { InputDirective, PrimaryButtonDirective } from '@shared/directives';
 import { InputErrorComponent } from '@shared/components/input-error/input-error.component';
 import { MediaCollection, UploadAction } from '@dashboard/enums';
-import { SidebarComponent } from '@dashboard/layout/sidebar/sidebar.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -27,7 +26,6 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
     PrimaryButtonDirective,
     InputErrorComponent,
     CarPhotoGalleryComponent,
-    SidebarComponent,
     AuctionCarDetailsModalComponent,
     MatMenuModule,
     InputDirective,

@@ -55,7 +55,7 @@ export class CropImageModalComponent {
     untracked(() => {
       this.aspectRatio = signal<number>(this.aspectRatios()[0]);
     });
-  }, { allowSignalWrites: true });
+  });
 
   imageCropped(event: ImageCroppedEvent): void {
     this.croppedImage2.set(this.#sanitizer.bypassSecurityTrustUrl(event.objectUrl || event.base64 || ''));
