@@ -13,6 +13,7 @@ import { environments } from '@env/environments';
 import { UserData } from '@auth/interfaces';
 import { isPlatformBrowser, ViewportScroller } from '@angular/common';
 import { filter } from 'rxjs';
+import { SeoService } from '@shared/services/seo.service';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +42,7 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   #authService = inject(AuthService);
   #router = inject(Router);
   #viewportScroller = inject(ViewportScroller);
+  #seoService = inject(SeoService);
 
   signInModalIsOpen: WritableSignal<boolean> = signal(false);
   registerModalIsOpen: WritableSignal<boolean> = signal(false);
@@ -51,6 +53,13 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   platformId = inject(PLATFORM_ID);
 
   constructor() {
+    // Setup default SEO configuration
+    this.#seoService.removeExistingMetas();
+    this.#seoService.setupDefaultSeo();
+
+    // Add organization structured data
+    this.#seoService.addStructuredData(this.#seoService.createOrganizationStructuredData());
+
     if(isPlatformBrowser(this.platformId)){
     this.#router.events.pipe(filter((event: Event): event is Scroll => event instanceof Scroll)
     ).subscribe(e => {

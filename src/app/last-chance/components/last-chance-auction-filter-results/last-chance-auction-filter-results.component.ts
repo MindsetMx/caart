@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject, signal, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -54,11 +55,19 @@ export class LastChanceAuctionFilterResultsComponent {
 
   auctionFilterMenuIsOpen = signal<boolean>(false);
 
-  isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH;
+  isMobile = false;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH;
+    }
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(): void {
-    this.isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH; // Actualiza el valor en tiempo real
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth < MOBILE_SCREEN_WIDTH; // Actualiza el valor en tiempo real
+    }
   }
 
   eraList: { value: string; label: string }[] = [

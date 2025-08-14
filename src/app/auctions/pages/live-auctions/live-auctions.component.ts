@@ -12,6 +12,7 @@ import { environments } from '@env/environments';
 import { UpdatedAuctionTypes } from '@auctions/enums';
 import { LiveAuctionsService } from '@auctions/services/live-auctions.service';
 import { GetLiveArtAuction, GetLiveCarAuction } from '@auctions/interfaces';
+import { SeoService } from '@shared/services/seo.service';
 
 @Component({
   standalone: true,
@@ -42,9 +43,11 @@ export class LiveAuctionsComponent implements OnDestroy {
   #router = inject(Router);
   #activatedRoute = inject(ActivatedRoute);
   #liveAuctionsService = inject(LiveAuctionsService);
+  #seoService = inject(SeoService);
   platformId = inject(PLATFORM_ID);
 
   constructor() {
+    this.#seoService.setupDefaultSeo();
     this.#activatedRoute.queryParams.subscribe(params => {
       let tabId = +params['tab']; // Obtiene el id de la pestaña de los parámetros de consulta
 

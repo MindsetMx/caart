@@ -30,6 +30,7 @@ export interface ArtAuctionDetailsAttributes {
   artDetail: ArtAuctionDetailsArtDetail;
   daysActive: number;
   secondsRemaining: number;
+  fotoPrincipal: string;
 }
 
 export interface ArtAuctionDetailsArtDetail {

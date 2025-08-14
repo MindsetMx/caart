@@ -182,7 +182,7 @@
 
           @defer (when metrics().data) {
           <div class="text-gray4 text-sm flex space-x-4">
-            @if (auction().data.attributes.status !== auctionCarStatus.Preview || auction().data.attributes.comingSoon)
+            @if (auction().data.attributes?.status !== auctionCarStatus.Preview || auction().data.attributes.comingSoon)
             {
             <div class="flex items-center">
               <img class="mr-2" src="assets/img/icons/eye-outline.svg">

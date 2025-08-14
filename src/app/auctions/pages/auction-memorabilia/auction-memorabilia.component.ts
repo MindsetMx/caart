@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuctionTypes } from '@auctions/enums/auction-types';
 import { CommonModule, CurrencyPipe, SlicePipe, isPlatformBrowser } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, PLATFORM_ID } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, WritableSignal, PLATFORM_ID, OnInit } from '@angular/core';
 import { Fancybox } from "@fancyapps/ui";
 import { MomentModule } from 'ngx-moment';
 import { register } from 'swiper/element/bundle';
@@ -37,6 +37,8 @@ import { StarComponent } from '@shared/components/icons/star/star.component';
 import { NoReserveTagComponentComponent } from '@auctions/components/no-reserve-tag-component/no-reserve-tag-component.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { AuctionCarStatus } from '@dashboard/interfaces';
+import { SeoService } from '@shared/services/seo.service';
+import { IncrementViewsService } from '@auctions/services/increment-views.service';
 
 @Component({
   standalone: true,
@@ -67,7 +69,7 @@ import { AuctionCarStatus } from '@dashboard/interfaces';
   styleUrl: './auction-memorabilia.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionMemorabiliaComponent {
+export class AuctionMemorabiliaComponent implements OnInit {
   readonly #baseUrl = environments.baseUrl;
 
   videoGallery = viewChild<ElementRef>('videoGallery');
@@ -98,6 +100,8 @@ export class AuctionMemorabiliaComponent {
   #countdownService = inject(CountdownService);
   #paymentMethodsService = inject(PaymentMethodsService);
   #route = inject(ActivatedRoute);
+  #seoService = inject(SeoService);
+  #incrementViewsService = inject(IncrementViewsService);
   platformId = inject(PLATFORM_ID);
 
   auctionCarStatus = AuctionCarStatus;
@@ -177,14 +181,43 @@ export class AuctionMemorabiliaComponent {
     }
   });
 
-  constructor() {
-    this.auctionId.set(this.#route.snapshot.paramMap.get('id'));
-
+  ngOnInit(): void {
     this.#route.paramMap.subscribe(params => {
       let id = params.get('id');
-
       this.auctionId.set(id);
-      this.getAuctionDetails(id);
+
+      // Obtener información del producto y actualizar SEO antes de isPlatformBrowser
+      this.obtenerPrerender(id);
+
+      if (isPlatformBrowser(this.platformId)) {
+        this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.memorabilia).subscribe();
+      }
+    });
+  }
+
+  obtenerPrerender(auctionId: string | null): void {
+    if (!auctionId) return;
+
+    this.#auctionDetailsService.getMemorabiliaAuctionDetails$(auctionId).pipe(
+      switchMap((auctionDetails) => {
+        this.auction.set(auctionDetails);
+        this.auctionId2.set(auctionDetails.data.id);
+
+        // Actualizar SEO inmediatamente con los datos obtenidos
+        this.setSEOMetaTags();
+
+        if (this.authStatus === AuthStatus.authenticated) {
+          this.getComments();
+        }
+        return this.#auctionDetailsService.getSpecificMemorabiliaAuctionDetails$(auctionDetails.data.attributes.originalMemorabiliaId);
+      })
+    ).subscribe({
+      next: (specificAuctionDetails) => {
+        this.specificAuction.set(specificAuctionDetails);
+      },
+      error: (error) => {
+        console.error(error);
+      }
     });
   }
 
@@ -407,5 +440,33 @@ export class AuctionMemorabiliaComponent {
 
     // and now initialize it
     swiperEl.nativeElement.initialize();
+  }
+
+  private setSEOMetaTags(): void {
+    const auction = this.auction().data;
+    if (!auction) return;
+
+    const memorabiliaDetails = auction.attributes.auctionCarForm;
+    const title = `${memorabiliaDetails.title} - Subasta de Memorabilia en Caart`;
+    const description = `${memorabiliaDetails.title}. Subasta de memorabilia auténtica en Caart.`;
+
+      // Get first image URL from photos array
+      const firstImage = auction.attributes.auctionCarForm.photos[0];
+    const imageUrl = firstImage ?
+      (firstImage.startsWith('http') ? firstImage : `${this.#baseUrl}${firstImage}`) :
+      'https://caart.com.mx/assets/img/icons/logo2.png';
+
+    this.#seoService.updateSeo({
+      title,
+      description,
+      keywords: `${memorabiliaDetails.title}, memorabilia, subasta memorabilia, coleccionables, subasta online`,
+      url: `https://caart.com.mx/subasta-memorabilia/${auction.id}`,
+      image: imageUrl,
+      canonical: this.#seoService.getCanonicalUrl(`/subasta-memorabilia/${auction.id}`),
+      type: 'article',
+      section: 'Memorabilia',
+      tag: memorabiliaDetails.title,
+      publishedTime: new Date(auction.attributes.startDate).toISOString()
+    });
   }
 }

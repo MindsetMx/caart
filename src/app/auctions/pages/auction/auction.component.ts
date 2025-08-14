@@ -1,6 +1,6 @@
 import 'moment/locale/es';
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, untracked, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, signal, inject, effect, viewChild, OnDestroy, OnInit, untracked, PLATFORM_ID } from '@angular/core';
 import { CommonModule, CurrencyPipe, DecimalPipe, isPlatformBrowser } from '@angular/common';
 import { CountdownConfig } from 'ngx-countdown';
 import { Fancybox } from "@fancyapps/ui";
@@ -48,6 +48,7 @@ import { UserData } from '@auth/interfaces';
 import { GetBidsBid } from '@auctions/interfaces/get-bids';
 import { VideoGalleryService } from '@dashboard/services/video-gallery.service';
 import { MediaType } from '@dashboard/enums';
+import { SeoService } from '@shared/services/seo.service';
 import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
 import { IncrementViewsService } from '@auctions/services/increment-views.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -84,7 +85,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './auction.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionComponent implements AfterViewInit, OnDestroy {
+export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly #baseUrl = environments.baseUrl;
 
   videoGallery = viewChild<ElementRef>('videoGallery');
@@ -136,6 +137,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   #appService = inject(AppService);
   #decimalPipe = inject(DecimalPipe);
   #incrementViewsService = inject(IncrementViewsService);
+  #seoService = inject(SeoService);
   platformId = inject(PLATFORM_ID);
 
   get authStatus(): AuthStatus {
@@ -202,6 +204,7 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
   auctionEffect = effect(() => {
     if (this.auction().data) {
       untracked(() => {
+
         this.auctionDetails.set([
           { label: 'Marca', value: this.auction().data.attributes.auctionCarForm.brand },
           { label: 'Modelo', value: this.auction().data.attributes.auctionCarForm.carModel },
@@ -219,7 +222,6 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
           { label: 'Color', value: this.auction().data.attributes.auctionCarForm.exteriorColor },
           { label: 'Entregado en', value: 'CDMX, México' },
         ]);
-
         console.log('auctionEffect');
 
         this.page2.set(0);
@@ -278,15 +280,44 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     this.getAllVideos();
   });
 
-  constructor() {
-    this.#route.paramMap.pipe(
-      takeUntilDestroyed()
-    ).subscribe(params => {
+  ngOnInit(): void {
+    this.#route.paramMap.subscribe(params => {
       let id = params.get('id');
       this.auctionId.set(id);
-      this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.car).subscribe();
-      this.getAuctionDetails(id);
+
+      // Obtener información del producto y actualizar SEO antes de isPlatformBrowser
+      this.obtenerPrerender(id);
+
+      if (isPlatformBrowser(this.platformId)) {
+        this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.car).subscribe();
+      }
+
       this.getImagesPublish(id!);
+    });
+  }
+
+  obtenerPrerender(auctionId: string | null): void {
+    if (!auctionId) return;
+
+    this.#auctionDetailsService.getAuctionDetails$(auctionId).pipe(
+      switchMap((auctionDetails) => {
+        this.auction.set(auctionDetails);
+        this.auctionId2.set(auctionDetails.data.id);
+        // Actualizar SEO inmediatamente con los datos obtenidos
+        this.setupAuctionSeo();
+
+        if (this.authStatus === AuthStatus.authenticated) {
+          this.getComments();
+        }
+        return this.#auctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionCarId);
+      })
+    ).subscribe({
+      next: (specificAuctionDetails) => {
+        this.specificAuction.set(specificAuctionDetails);
+      },
+      error: (error) => {
+        console.error(error);
+      }
     });
   }
 
@@ -378,6 +409,10 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     this.#auctionImageAssigmentAndReorderService.imagesPublish$(originalAuctionCarId).subscribe({
       next: (response: ImagesPublish) => {
         this.imagesPublish.set(response);
+        console.log('response', response);
+        // Actualizar SEO con la imagen principal
+        this.updateSEOImage(response.data.fotoPrincipal);
+        console.log('imagesPublish', this.imagesPublish());
       },
       error: (error) => {
         console.error(error);
@@ -418,6 +453,45 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     }
 
     return pageSizeOptions;
+  }
+
+  private setupAuctionSeo(): void {
+    const auction = this.auction().data;
+    if (!auction) return;
+    this.#seoService.removeExistingMetas();
+    const carDetails = auction.attributes.auctionCarForm;
+    const title = `${carDetails.brand} ${carDetails.carModel} ${carDetails.year} - Subasta en Caart`;
+    const description = `Subasta de ${carDetails.brand} ${carDetails.carModel} ${carDetails.year}. Vehículo premium en subasta con autenticidad garantizada. Motor: ${carDetails.engine}.`;
+    const imagesData = this.imagesPublish()?.data;
+    const firstImage = Array.isArray(imagesData) && imagesData.length > 0 ? imagesData[0] : null;
+    const imageUrl = firstImage?.attributes?.formats?.medium?.url ||
+                     firstImage?.attributes?.url ||
+                     'https://caart.com/assets/img/logo/logo_caart_auctions_blanco.png';
+
+    this.#seoService.updateSeo({
+      title,
+      description,
+      keywords: `${carDetails.brand}, ${carDetails.carModel}, ${carDetails.year}, subasta vehículo, carro clásico, subasta automóvil, ${carDetails.engine}`,
+      url: `https://caart.com.mx/subasta/${auction.id}`,
+      canonical: this.#seoService.getCanonicalUrl(`/auction/${auction.id}`),
+      image: auction.attributes.fotoPrincipal,
+      type: 'product',
+      publishedTime: new Date(auction.attributes.startDate).toISOString(),
+      modifiedTime: new Date(auction.attributes.startDate).toISOString()
+    });
+
+    // Add vehicle structured data
+    const vehicleData = {
+      id: auction.id,
+      brand: carDetails.brand,
+      model: carDetails.carModel,
+      year: carDetails.year.toString(),
+      engineType: carDetails.engine,
+      mileage: 0,
+      color: carDetails.exteriorColor,
+      description: title,    };
+
+    this.#seoService.addStructuredData(this.#seoService.createVehicleStructuredData(vehicleData));
   }
 
   onPageChange(event: any): void {
@@ -554,5 +628,16 @@ export class AuctionComponent implements AfterViewInit, OnDestroy {
     return fields
       .map(field => field.trim())
       .filter(field => field.length > 0);
+  }
+
+  private updateSEOImage(fotoPrincipal: string): void {
+    console.log('updateSEOImage', fotoPrincipal);
+    const imageUrl = fotoPrincipal ?
+      (fotoPrincipal.startsWith('http') ? fotoPrincipal : `${this.#baseUrl}${fotoPrincipal}`) :
+      'https://caart.com.mx/assets/img/icons/logo2.png';
+
+    this.#seoService.updateSeo({
+      image: imageUrl
+    });
   }
 }

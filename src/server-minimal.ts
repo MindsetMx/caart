@@ -17,15 +17,16 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get(/.*\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/, express.static(browserDistFolder, {
-    maxAge: '1y'
-  }));
+  // Serve static files first (no wildcards that could cause issues)
+  server.use('/assets', express.static(join(browserDistFolder, 'assets')));
+  server.use(express.static(browserDistFolder, { index: false }));
 
-  // All regular routes use the Angular engine
-  server.get('*', (req, res, next) => {
+  // Fallback route for Angular SPA routing  
+  server.use((req, res, next) => {
+    // Skip if it's an API call or static file
+    if (req.url.startsWith('/api/') || req.url.includes('.')) {
+      return next();
+    }
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine
@@ -49,7 +50,7 @@ function run(): void {
   // Start up the Node server
   const server = app();
   server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
+    console.log(`Minimal server listening on http://localhost:${port}`);
   });
 }
 

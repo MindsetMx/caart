@@ -1,10 +1,10 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild, WritableSignal, effect, inject, signal, viewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild, WritableSignal, effect, inject, signal, viewChild, PLATFORM_ID } from '@angular/core';
 import { register } from 'swiper/element/bundle';
 register();
 
 import { SecondaryButtonDirective } from '@shared/directives/secondary-button.directive';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { VehicleFilterService } from '@auctions/services/vehicle-filter.service';
 import { GetAllAuctions, MemorabiliaAuction, VehicleAuction, VehicleAuctionData } from '@auctions/interfaces';
 import { AuctionCard2Component } from '@auctions/components/auction-card2/auction-card2.component';
@@ -20,6 +20,7 @@ import { ArtAuctionCardComponent } from '@auctions/components/art-auction-card/a
 import { AuctionCardComponent } from '@auctions/components/auction-card/auction-card.component';
 import { GetAllAuctionsService } from '@auctions/services/all-auctions.service';
 import { AuctionTypesAll } from '@auctions/enums';
+import { SeoService } from '@shared/services/seo.service';
 
 @Component({
   selector: 'home',
@@ -60,6 +61,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   #countdownService = inject(CountdownService);
   #allAuctionsService = inject(GetAllAuctionsService);
+  #seoService = inject(SeoService);
+  #platformId = inject(PLATFORM_ID);
 
   get auctionTypesAll(): typeof AuctionTypesAll {
     return AuctionTypesAll;
@@ -73,8 +76,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.setupHomepageSeo();
     this.getLiveAuctions();
     // this.getMemorabiliaLiveAuctions();
+  }
+
+  private setupHomepageSeo(): void {
+    if (!isPlatformBrowser(this.#platformId)) return;
+
+    this.#seoService.updateSeo({
+      title: 'Caart - Subastas Premium de Arte, Automóviles y Memorabilia',
+      description: 'Descubre subastas exclusivas de arte contemporáneo, automóviles clásicos y memorabilia deportiva. Únete a la plataforma líder en subastas premium con autenticidad garantizada y proceso seguro.',
+      keywords: 'subastas en vivo, arte contemporáneo, carros clásicos, memorabilia deportiva, coleccionables, subastas online México, vehículos vintage, arte mexicano',
+      url: this.#seoService.getCurrentUrl(),
+      canonical: this.#seoService.getCanonicalUrl('/'),
+      type: 'website'
+    });
+
+    // Add ItemList structured data for featured auctions
+    const itemListSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'Subastas Destacadas - Caart',
+      description: 'Descubre las mejores subastas de arte, automóviles y memorabilia',
+      url: 'https://caart.com',
+      numberOfItems: 0
+    };
+
+    this.#seoService.addStructuredData(itemListSchema);
   }
 
   carousel2Effect = effect(() => {

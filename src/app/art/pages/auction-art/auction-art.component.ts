@@ -1,5 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, PLATFORM_ID, Renderer2, effect, inject, signal, untracked, viewChild, viewChildren } from '@angular/core';
+import { Title, Meta } from '@angular/platform-browser';
 import { Carousel, Fancybox } from "@fancyapps/ui";
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CountdownConfig, CountdownModule } from 'ngx-countdown';
@@ -51,6 +52,7 @@ import { MediaType } from '@dashboard/enums';
 import { VideoGallery as VideosGallery } from '@dashboard/interfaces';
 import { IncrementViewsService } from '@auctions/services/increment-views.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SeoService } from '@shared/services/seo.service';
 
 export interface EventData {
   type: string;
@@ -90,7 +92,7 @@ export interface Auction {
   styleUrl: './auction-art.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuctionArtComponent implements OnDestroy {
+export class AuctionArtComponent implements OnInit, OnDestroy {
   myCarousel = viewChild<ElementRef>('myCarousel');
   videoGallery = viewChild<ElementRef>('videoGallery');
   rightColumn = viewChild<ElementRef>('rightColumn');
@@ -148,6 +150,9 @@ export class AuctionArtComponent implements OnDestroy {
   #renderer = inject(Renderer2);
   #videoGalleryService = inject(VideoGalleryService);
   #incrementViewsService = inject(IncrementViewsService);
+  #title = inject(Title);
+  #meta = inject(Meta);
+  #seoService = inject(SeoService);
 
   get user(): UserData | null {
     return this.#authService.currentUser();
@@ -217,6 +222,7 @@ export class AuctionArtComponent implements OnDestroy {
   auctionEffect = effect(() => {
     if (this.auction().data) {
       untracked(() => {
+
         this.auctionDetails.set([
           { label: 'Artista', value: this.auction().data.attributes.auctionArtForm.artist },
           { label: 'Año', value: this.auction().data.attributes.auctionArtForm.year },
@@ -390,15 +396,48 @@ export class AuctionArtComponent implements OnDestroy {
     this.getAllVideos();
   });
 
-  constructor() {
-    this.#route.paramMap.pipe(
-      takeUntilDestroyed()
-    ).subscribe(params => {
+
+
+  ngOnInit(): void {
+    this.#route.paramMap.subscribe(params => {
       let id = params.get('id');
       this.auctionId.set(id);
-      this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.art).subscribe();
-      this.getAuctionDetails(id);
+
+      // Obtener información del producto y actualizar SEO antes de isPlatformBrowser
+      this.obtenerPrerender(id);
+
+      if (isPlatformBrowser(this.platformId)) {
+        this.#incrementViewsService.incrementViews$(this.auctionId()!, this.auctionType.art).subscribe();
+      }
+
       this.getImagesPublish(id!);
+    });
+  }
+
+  obtenerPrerender(auctionId: string | null): void {
+    if (!auctionId) return;
+
+    this.#artAuctionDetailsService.getAuctionDetails$(auctionId).pipe(
+      switchMap((auctionDetails) => {
+        this.auction.set(auctionDetails);
+        console.log('auctionDetails', auctionDetails);
+        this.auctionId2.set(auctionDetails.data.id);
+
+        // Actualizar SEO inmediatamente con los datos obtenidos
+        this.setSEOMetaTags();
+
+        if (this.authStatus === AuthStatus.authenticated) {
+          this.getComments();
+        }
+        return this.#artAuctionDetailsService.getSpecificAuctionDetails$(auctionDetails.data.attributes.originalAuctionArtId);
+      })
+    ).subscribe({
+      next: (specificAuctionDetails) => {
+        this.specificAuction.set(specificAuctionDetails);
+      },
+      error: (error) => {
+        console.error(error);
+      }
     });
   }
 
@@ -499,6 +538,8 @@ export class AuctionArtComponent implements OnDestroy {
     this.#artAuctionImageAssigmentAndReorderService.imagesPublish$(originalAuctionArtId).subscribe({
       next: (response: ArtImagesPublish) => {
         this.imagesPublish.set(response);
+        // Actualizar SEO con la imagen principal
+        this.updateSEOImage(response.data.fotoPrincipal);
       },
       error: (error) => {
         console.error(error);
@@ -688,5 +729,56 @@ export class AuctionArtComponent implements OnDestroy {
     return fields
       .map(field => field.trim())
       .filter(field => field.length > 0);
+  }
+
+  private setSEOMetaTags(): void {
+    const auction = this.auction().data;
+    if (!auction) return;
+    this.#seoService.removeExistingMetas();
+    const artDetails = auction.attributes.auctionArtForm;
+    const title = `${artDetails.title} - ${artDetails.artist} | Subasta de Arte en Caart`;
+    const description = `${artDetails.title} por ${artDetails.artist} (${artDetails.year}). ${artDetails.materials}. Condición: ${artDetails.condition}. Dimensiones: ${artDetails.height}x${artDetails.width} ${artDetails.unit}. Subasta de arte auténtico en Caart.`;
+
+    // Get first image URL
+    const firstImage = auction.attributes.artDetail.photos?.[0];
+
+    this.#seoService.updateSeo({
+      title,
+      description,
+      keywords: `${artDetails.artist}, ${artDetails.title}, ${artDetails.year}, arte, subasta arte, ${artDetails.materials}, obra de arte, galería, colección`,
+      url: `https://caart.com/subasta-arte/${auction.id}`,
+      canonical: this.#seoService.getCanonicalUrl(`/subasta-arte/${auction.id}`),
+      type: 'article',
+      section: 'Arte',
+      tag: artDetails.artist,
+      image: auction.attributes.fotoPrincipal,
+
+      publishedTime: new Date(auction.attributes.startDate).toISOString()
+    });
+
+    // Add artwork structured data
+    const artworkData = {
+      id: auction.id,
+      title: artDetails.title,
+      artist: artDetails.artist,
+      dateCreated: artDetails.year.toString(),
+      medium: artDetails.materials,
+      surface: artDetails.condition,
+      width: `${artDetails.width} ${artDetails.unit}`,
+      height: `${artDetails.height} ${artDetails.unit}`,
+      description: title,
+    };
+
+    this.#seoService.addStructuredData(this.#seoService.createArtStructuredData(artworkData));
+  }
+
+  private updateSEOImage(fotoPrincipal: string): void {
+    const imageUrl = fotoPrincipal ?
+      (fotoPrincipal.startsWith('http') ? fotoPrincipal : `${this.#baseUrl}${fotoPrincipal}`) :
+      'https://caart.com/assets/img/logo/logo_caart_auctions_blanco.png';
+
+    this.#seoService.updateSeo({
+      image: imageUrl
+    });
   }
 }

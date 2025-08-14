@@ -36,6 +36,7 @@ export interface AuctionDetailsAttributes {
   carHistory: AuctionDetailsCarHistory;
   dataUser: AuctionDetailsDataUser;
   secondsRemaining: number;
+  fotoPrincipal: string;
 }
 
 export interface AuctionDetailsAuctionCarForm {

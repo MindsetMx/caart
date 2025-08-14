@@ -1,0 +1,37 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://caart.com/sitemap.xml
+
+# Disallow admin areas
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /api/
+
+# Disallow user-specific areas
+Disallow: /account/
+Disallow: /favorites/
+Disallow: /activity/
+
+# Disallow authentication pages
+Disallow: /auth/
+Disallow: /register/
+Disallow: /login/
+
+# Disallow search result pages with parameters
+Disallow: /*?*
+
+# Allow important static assets
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.ico
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
