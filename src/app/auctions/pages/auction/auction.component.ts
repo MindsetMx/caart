@@ -476,8 +476,6 @@ export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
       canonical: this.#seoService.getCanonicalUrl(`/auction/${auction.id}`),
       image: 'https://caart.com.mx/assets/img/home/caart.jpg',
       type: 'product',
-      publishedTime: new Date(auction.attributes.startDate).toISOString(),
-      modifiedTime: new Date(auction.attributes.startDate).toISOString()
     });
 
     // Add vehicle structured data
@@ -515,7 +513,6 @@ export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getAuctionDetails(auctionId: string | null): void {
-    console.log('getAuctionDetails');
 
     if (!auctionId) return;
 
