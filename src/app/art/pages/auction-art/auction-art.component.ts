@@ -539,7 +539,7 @@ export class AuctionArtComponent implements OnInit, OnDestroy {
       next: (response: ArtImagesPublish) => {
         this.imagesPublish.set(response);
         // Actualizar SEO con la imagen principal
-        this.updateSEOImage(response.data.fotoPrincipal);
+        // this.updateSEOImage(response.data.fotoPrincipal);
       },
       error: (error) => {
         console.error(error);
@@ -739,20 +739,21 @@ export class AuctionArtComponent implements OnInit, OnDestroy {
     const title = `${artDetails.title} - ${artDetails.artist} | Subasta de Arte en Caart`;
     const description = `${artDetails.title} por ${artDetails.artist} (${artDetails.year}). ${artDetails.materials}. Condición: ${artDetails.condition}. Dimensiones: ${artDetails.height}x${artDetails.width} ${artDetails.unit}. Subasta de arte auténtico en Caart.`;
 
-    // Get first image URL
-    const firstImage = auction.attributes.artDetail.photos?.[0];
+    // Ensure absolute URL for image
+    const imageUrl = auction.attributes.fotoPrincipal ?
+        `${auction.attributes.fotoPrincipal}?width=1200&height=630&fit=cover&format=jpeg&quality=85` :
+      'https://caart.com.mx/assets/img/home/caart.jpg';
 
     this.#seoService.updateSeo({
       title,
       description,
       keywords: `${artDetails.artist}, ${artDetails.title}, ${artDetails.year}, arte, subasta arte, ${artDetails.materials}, obra de arte, galería, colección`,
-      url: `https://caart.com/subasta-arte/${auction.id}`,
+      url: `https://caart.com.mx/subasta-arte/${auction.id}`,
       canonical: this.#seoService.getCanonicalUrl(`/subasta-arte/${auction.id}`),
       type: 'article',
       section: 'Arte',
       tag: artDetails.artist,
-      image: auction.attributes.fotoPrincipal,
-
+      image: 'https://caart.com.mx/assets/img/home/caart.jpg',
       publishedTime: new Date(auction.attributes.startDate).toISOString()
     });
 
@@ -775,7 +776,7 @@ export class AuctionArtComponent implements OnInit, OnDestroy {
   private updateSEOImage(fotoPrincipal: string): void {
     const imageUrl = fotoPrincipal ?
       (fotoPrincipal.startsWith('http') ? fotoPrincipal : `${this.#baseUrl}${fotoPrincipal}`) :
-      'https://caart.com/assets/img/logo/logo_caart_auctions_blanco.png';
+      'https://caart.com.mx/assets/img/icons/logo2.png';
 
     this.#seoService.updateSeo({
       image: imageUrl

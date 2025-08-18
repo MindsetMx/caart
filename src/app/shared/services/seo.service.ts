@@ -44,7 +44,7 @@ export class SeoService {
     title: 'Caart - Subastas de Arte y Automóviles Premium',
     description: 'Descubre subastas exclusivas de arte, automóviles clásicos y memorabilia. Plataforma líder en subastas premium con autenticidad garantizada.',
     keywords: 'subastas, arte, automóviles, carros clásicos, memorabilia, coleccionables, subastas online, vehículos premium',
-    image: 'https://caart.com.mx/assets/img/icons/logo2.png',
+    image: 'https://caart.com.mx/assets/img/home/caart.jpg',
     url: 'https://caart.com.mx',
     type: 'website',
     siteName: 'Caart',
@@ -96,6 +96,11 @@ export class SeoService {
     }
     if (config.image) {
       this.#meta.addTag({ property: 'og:image', content: config.image });
+      // WhatsApp specific meta tags
+      this.#meta.addTag({ property: 'og:image:width', content: '1200' });
+      this.#meta.addTag({ property: 'og:image:height', content: '630' });
+      this.#meta.addTag({ property: 'og:image:type', content: 'image/jpeg' });
+      this.#meta.addTag({ property: 'og:image:alt', content: config.title || 'Imagen de Caart' });
     }
     if (config.url) {
       this.#meta.addTag({ property: 'og:url', content: config.url });
@@ -134,6 +139,7 @@ export class SeoService {
     }
     if (config.image) {
       this.#meta.addTag({ name: 'twitter:image', content: config.image });
+      this.#meta.addTag({ name: 'twitter:image:alt', content: config.title || 'Imagen de Caart' });
     }
     // if (config.twitterSite) {
     //   this.#meta.addTag({ name: 'twitter:site', content: config.twitterSite });
@@ -287,7 +293,7 @@ export class SeoService {
       name: 'Caart',
       description: 'Plataforma líder en subastas de arte, automóviles y memorabilia premium',
       url: 'https://caart.com',
-      logo: 'https://caart.com/assets/img/logo/logo_caart_auctions_blanco.png',
+      logo: 'https://caart.com.mx/assets/img/icons/logo2.png',
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'customer service',
@@ -313,6 +319,10 @@ export class SeoService {
       "property='og:title'",
       "property='og:description'",
       "property='og:image'",
+      "property='og:image:width'",
+      "property='og:image:height'",
+      "property='og:image:type'",
+      "property='og:image:alt'",
       "property='og:url'",
       "property='og:type'",
       "property='og:site_name'",
@@ -325,6 +335,7 @@ export class SeoService {
       "name='twitter:title'",
       "name='twitter:description'",
       "name='twitter:image'",
+      "name='twitter:image:alt'",
       "name='twitter:site'",
       "name='twitter:creator'"
     ];

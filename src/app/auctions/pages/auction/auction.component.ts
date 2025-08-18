@@ -411,7 +411,7 @@ export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
         this.imagesPublish.set(response);
         console.log('response', response);
         // Actualizar SEO con la imagen principal
-        this.updateSEOImage(response.data.fotoPrincipal);
+        // this.updateSEOImage(response.data.fotoPrincipal);
         console.log('imagesPublish', this.imagesPublish());
       },
       error: (error) => {
@@ -462,11 +462,11 @@ export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
     const carDetails = auction.attributes.auctionCarForm;
     const title = `${carDetails.brand} ${carDetails.carModel} ${carDetails.year} - Subasta en Caart`;
     const description = `Subasta de ${carDetails.brand} ${carDetails.carModel} ${carDetails.year}. Vehículo premium en subasta con autenticidad garantizada. Motor: ${carDetails.engine}.`;
-    const imagesData = this.imagesPublish()?.data;
-    const firstImage = Array.isArray(imagesData) && imagesData.length > 0 ? imagesData[0] : null;
-    const imageUrl = firstImage?.attributes?.formats?.medium?.url ||
-                     firstImage?.attributes?.url ||
-                     'https://caart.com/assets/img/logo/logo_caart_auctions_blanco.png';
+
+    // Ensure absolute URL for image
+    const imageUrl = auction.attributes.fotoPrincipal ?
+      `${auction.attributes.fotoPrincipal}?width=1200&height=630&fit=cover&format=jpeg&quality=85` :
+      'https://caart.com.mx/assets/img/icons/logo2.png';
 
     this.#seoService.updateSeo({
       title,
@@ -474,7 +474,7 @@ export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
       keywords: `${carDetails.brand}, ${carDetails.carModel}, ${carDetails.year}, subasta vehículo, carro clásico, subasta automóvil, ${carDetails.engine}`,
       url: `https://caart.com.mx/subasta/${auction.id}`,
       canonical: this.#seoService.getCanonicalUrl(`/auction/${auction.id}`),
-      image: auction.attributes.fotoPrincipal,
+      image: 'https://caart.com.mx/assets/img/home/caart.jpg',
       type: 'product',
       publishedTime: new Date(auction.attributes.startDate).toISOString(),
       modifiedTime: new Date(auction.attributes.startDate).toISOString()
