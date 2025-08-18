@@ -210,9 +210,15 @@ export class CarPhotoGalleryComponent {
 
   selectImage(): void {
     if (this.cropImage()) {
+      // Preservar la imagen seleccionada antes de cerrar el modal
+      const selectedImageUrl = this.selectedImage.value;
       this.closeModal();
-
-      this.cropCarHistoryImageModalIsOpen.set(true);
+      
+      // Restaurar el valor después de cerrar el modal
+      setTimeout(() => {
+        this.selectedImage.setValue(selectedImageUrl);
+        this.cropCarHistoryImageModalIsOpen.set(true);
+      }, 0);
     } else {
       if (this.allowMultipleSelection()) {
         this.selectedImagesChange.emit(this.selectedImages?.value);

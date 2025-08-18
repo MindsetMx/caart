@@ -57,6 +57,10 @@ export class CropImageModalComponent {
     });
   });
 
+  imageUrlEffect = effect(() => {
+    console.log('🖼️ ImageUrl recibido:', this.imageUrl());
+  });
+
   imageCropped(event: ImageCroppedEvent): void {
     this.croppedImage2.set(this.#sanitizer.bypassSecurityTrustUrl(event.objectUrl || event.base64 || ''));
 
