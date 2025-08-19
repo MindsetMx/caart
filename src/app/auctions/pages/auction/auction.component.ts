@@ -464,9 +464,7 @@ export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
     const description = `Subasta de ${carDetails.brand} ${carDetails.carModel} ${carDetails.year}. Vehículo premium en subasta con autenticidad garantizada. Motor: ${carDetails.engine}.`;
 
     // Ensure absolute URL for image
-    const imageUrl = auction.attributes.fotoPrincipal ?
-      `${auction.attributes.fotoPrincipal}?width=1200&height=630&fit=cover&format=jpeg&quality=85` :
-      'https://caart.com.mx/assets/img/icons/logo2.png';
+    const imageUrl = (auction.attributes.fotoPrincipal) ? auction.attributes.fotoPrincipal.replace('/public', '/og') : 'https://caart.com.mx/assets/img/home/caart.jpg';
 
     this.#seoService.updateSeo({
       title,
@@ -474,7 +472,7 @@ export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
       keywords: `${carDetails.brand}, ${carDetails.carModel}, ${carDetails.year}, subasta vehículo, carro clásico, subasta automóvil, ${carDetails.engine}`,
       url: `https://caart.com.mx/subasta/${auction.id}`,
       canonical: this.#seoService.getCanonicalUrl(`/auction/${auction.id}`),
-      image: 'https://caart.com.mx/assets/img/home/caart.jpg',
+      image: imageUrl,
       type: 'product',
     });
 
@@ -629,10 +627,7 @@ export class AuctionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private updateSEOImage(fotoPrincipal: string): void {
     console.log('updateSEOImage', fotoPrincipal);
-    const imageUrl = fotoPrincipal ?
-      (fotoPrincipal.startsWith('http') ? fotoPrincipal : `${this.#baseUrl}${fotoPrincipal}`) :
-      'https://caart.com.mx/assets/img/icons/logo2.png';
-
+    const imageUrl = fotoPrincipal ? fotoPrincipal.replace('/public', '/og') : 'https://caart.com.mx/assets/img/home/caart.jpg';
     this.#seoService.updateSeo({
       image: imageUrl
     });

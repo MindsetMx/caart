@@ -740,9 +740,7 @@ export class AuctionArtComponent implements OnInit, OnDestroy {
     const description = `${artDetails.title} por ${artDetails.artist} (${artDetails.year}). ${artDetails.materials}. Condición: ${artDetails.condition}. Dimensiones: ${artDetails.height}x${artDetails.width} ${artDetails.unit}. Subasta de arte auténtico en Caart.`;
 
     // Ensure absolute URL for image
-    const imageUrl = auction.attributes.fotoPrincipal ?
-        `${auction.attributes.fotoPrincipal}?width=1200&height=630&fit=cover&format=jpeg&quality=85` :
-      'https://caart.com.mx/assets/img/home/caart.jpg';
+    const imageUrl = auction.attributes.fotoPrincipal ? auction.attributes.fotoPrincipal.replace('/public', '/og') : 'https://caart.com.mx/assets/img/home/caart.jpg';
 
     this.#seoService.updateSeo({
       title,
@@ -753,7 +751,7 @@ export class AuctionArtComponent implements OnInit, OnDestroy {
       type: 'article',
       section: 'Arte',
       tag: artDetails.artist,
-      image: 'https://caart.com.mx/assets/img/home/caart.jpg',
+      image: imageUrl,
       publishedTime: new Date(auction.attributes.startDate).toISOString()
     });
 
@@ -774,9 +772,7 @@ export class AuctionArtComponent implements OnInit, OnDestroy {
   }
 
   private updateSEOImage(fotoPrincipal: string): void {
-    const imageUrl = fotoPrincipal ?
-      (fotoPrincipal.startsWith('http') ? fotoPrincipal : `${this.#baseUrl}${fotoPrincipal}`) :
-      'https://caart.com.mx/assets/img/icons/logo2.png';
+    const imageUrl = fotoPrincipal ? fotoPrincipal.replace('/public', '/og') : 'https://caart.com.mx/assets/img/home/caart.jpg';
 
     this.#seoService.updateSeo({
       image: imageUrl
